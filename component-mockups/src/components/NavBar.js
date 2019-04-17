@@ -49,6 +49,10 @@ const styles = theme => ({
       marginLeft: theme.spacing.unit * 3,
       width: 'auto',
     },
+    [theme.breakpoints.up('md')]: {
+      marginLeft: theme.spacing.unit * 3,
+      width: 500,
+    },
   },
   searchIcon: {
     width: theme.spacing.unit * 9,
@@ -179,7 +183,7 @@ class PrimarySearchAppBar extends React.Component {
                 <SearchIcon />
               </div>
               <InputBase
-                placeholder="Search…"
+                placeholder="Search directory..."
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,
