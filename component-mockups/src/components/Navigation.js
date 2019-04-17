@@ -17,11 +17,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import Badge from '@material-ui/core/Badge'
-import NotificationsIcon from '@material-ui/icons/Notifications'
-import AccountCircle from '@material-ui/icons/AccountCircle';
 
 import NavBarContents from './NavBar'
 
@@ -88,8 +83,6 @@ const styles = theme => ({
 class PersistentDrawerLeft extends React.Component {
   state = {
     open: true,
-    anchorEl: null,
-    mobileMoreAnchorEl: null,
   };
 
   handleDrawerOpen = () => {
@@ -102,56 +95,7 @@ class PersistentDrawerLeft extends React.Component {
 
   render() {
     const { open } = this.state;
-    const { anchorEl, mobileMoreAnchorEl } = this.state;
     const { classes } = this.props;
-    const isMenuOpen = Boolean(anchorEl);
-    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-    const renderMenu = (
-      <Menu
-        anchorEl={anchorEl}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isMenuOpen}
-        onClose={this.handleMenuClose}
-      >
-        <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
-      </Menu>
-    );
-  
-    const renderMobileMenu = (
-      <Menu
-        anchorEl={mobileMoreAnchorEl}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isMobileMenuOpen}
-        onClose={this.handleMenuClose}
-      >
-        <MenuItem onClick={this.handleMobileMenuClose}>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <MailIcon />
-            </Badge>
-          </IconButton>
-          <p>Messages</p>
-        </MenuItem>
-        <MenuItem onClick={this.handleMobileMenuClose}>
-          <IconButton color="inherit">
-            <Badge badgeContent={11} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          <p>Notifications</p>
-        </MenuItem>
-        <MenuItem onClick={this.handleProfileMenuOpen}>
-          <IconButton color="inherit">
-            <AccountCircle />
-          </IconButton>
-          <p>Profile</p>
-        </MenuItem>
-      </Menu>
-    );
 
     return (
       <div className={classes.root}>
@@ -172,12 +116,10 @@ class PersistentDrawerLeft extends React.Component {
               <MenuIcon />
             </IconButton>
 
-            <NavBarContents anchorEl={anchorEl} isMobileMenuOpen={isMobileMenuOpen} />
+            <NavBarContents />
 
           </Toolbar>
         </AppBar>
-        {renderMenu}
-        {renderMobileMenu}
         <Drawer
           className={classes.drawer}
           variant="persistent"
