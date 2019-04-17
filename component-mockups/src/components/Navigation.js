@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
@@ -17,6 +17,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import Hidden from '@material-ui/core/Hidden'
 
 import NavBarContents from './NavBar'
 
@@ -41,16 +42,18 @@ const styles = theme => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
+  drawer: {
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
+  },
   menuButton: {
     marginLeft: 12,
     marginRight: 20,
   },
   hide: {
     display: 'none',
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
   },
   drawerPaper: {
     width: drawerWidth,
@@ -80,9 +83,10 @@ const styles = theme => ({
   },
 });
 
-class PersistentDrawerLeft extends React.Component {
+class Navigation extends React.Component {
   state = {
-    open: true,
+    open: true, 
+    mobileOpen: false
   };
 
   handleDrawerOpen = () => {
@@ -93,14 +97,78 @@ class PersistentDrawerLeft extends React.Component {
     this.setState({ open: false });
   };
 
-  render() {
-    const { open } = this.state;
-    const { classes } = this.props;
+  handleMobileDrawerOpen = () => {
+    this.setState({ mobileOpen: true });
+  };
 
-    return (
-      <div className={classes.root}>
-        <CssBaseline />
-        <AppBar
+  handleMobileDrawerClose = () => {
+    this.setState({ mobileOpen: false });
+  };
+
+
+  render() {
+    const { open, mobileOpen } = this.state;
+    const { classes, theme } = this.props;
+
+    const drawer = (
+      <Fragment>
+      <div className={classes.drawerHeader}>
+      <IconButton onClick={this.handleDrawerClose}>
+        <ChevronLeftIcon /> 
+      </IconButton>
+    </div>
+    <Divider />
+    <List>
+      {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+        <ListItem button key={text}>
+          <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+          <ListItemText primary={text} />
+        </ListItem>
+      ))}
+    </List>
+    <Divider />
+    <List>
+      {['All mail', 'Trash', 'Spam'].map((text, index) => (
+        <ListItem button key={text}>
+          <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+          <ListItemText primary={text} />
+        </ListItem>
+      ))}
+    </List>
+    </Fragment>
+  );
+
+  const mobileDrawer = (
+    <Fragment>
+      <div className={classes.drawerHeader}>
+      <IconButton onClick={this.handleMobileDrawerClose}>
+        <ChevronLeftIcon /> 
+      </IconButton>
+    </div>
+    <Divider />
+    <List>
+      {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+        <ListItem button key={text}>
+          <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+          <ListItemText primary={text} />
+        </ListItem>
+      ))}
+    </List>
+    <Divider />
+    <List>
+      {['All mail', 'Trash', 'Spam'].map((text, index) => (
+        <ListItem button key={text}>
+          <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+          <ListItemText primary={text} />
+        </ListItem>
+      ))}
+    </List>
+    </Fragment>
+  )
+
+  const appBarMarkup = (
+    <Fragment>
+      <AppBar
           position="fixed"
           className={classNames(classes.appBar, {
             [classes.appBarShift]: open,
@@ -120,39 +188,73 @@ class PersistentDrawerLeft extends React.Component {
 
           </Toolbar>
         </AppBar>
-        <Drawer
-          className={classes.drawer}
-          variant="persistent"
-          anchor="left"
-          open={open}
-          classes={{
-            paper: classes.drawerPaper,
-          }}
+    </Fragment>
+  )
+
+  const mobileAppBarMarkup = (
+    <AppBar
+          position="fixed"
+          className={classNames(classes.appBar, {
+            [classes.appBarShift]: mobileOpen,
+          })}
         >
-          <div className={classes.drawerHeader}>
-            <IconButton onClick={this.handleDrawerClose}>
-              <ChevronLeftIcon /> 
+          <Toolbar disableGutters={false}>
+            <IconButton
+              color="inherit"
+              aria-label="Open drawer"
+              onClick={this.handleMobileDrawerOpen}
+              className={classNames(classes.menuButton, mobileOpen && classes.hide)}
+            >
+              <MenuIcon />
             </IconButton>
-          </div>
-          <Divider />
-          <List>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
-          <Divider />
-          <List>
-            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
-        </Drawer>
+
+            <NavBarContents />
+
+          </Toolbar>
+        </AppBar>
+  )
+
+
+
+    return (
+      <div className={classes.root}>
+        <CssBaseline />
+        <Hidden smUp implementation="css">
+        {mobileAppBarMarkup}
+        </Hidden>
+        <Hidden xsDown implementation="css">
+        {appBarMarkup}
+        </Hidden>
+
+
+        <nav className={classes.drawer}>
+          <Hidden smUp implementation="css">
+            <Drawer
+              container={this.props.container}
+              variant="temporary"
+              anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+              open={mobileOpen}
+              onClose={this.handleDrawerClose}
+              classes={{
+                paper: classes.drawerPaper,
+              }}
+            >
+            {mobileDrawer}
+            </Drawer>
+          </Hidden>
+          <Hidden xsDown implementation="css">
+            <Drawer
+              classes={{
+                paper: classes.drawerPaper,
+              }}
+              variant="persistent"
+              open={open}
+              onClose={this.handleDrawerClose}
+            >
+              {drawer}
+            </Drawer>
+          </Hidden>
+        </nav>
         <main
           className={classNames(classes.content, {
             [classes.contentShift]: open,
@@ -189,9 +291,9 @@ class PersistentDrawerLeft extends React.Component {
   }
 }
 
-PersistentDrawerLeft.propTypes = {
+Navigation.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(PersistentDrawerLeft);
+export default withStyles(styles, { withTheme: true })(Navigation);
