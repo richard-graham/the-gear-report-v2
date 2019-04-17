@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { getIcon } from '../../util/getIcon'
+
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -18,19 +20,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Hidden from '@material-ui/core/Hidden'
 import Collapse from '@material-ui/core/Collapse';
 
-import HomeIcon from '@material-ui/icons/Home'
-import AlertIcon from '@material-ui/icons/Warning'
-import SubscriptionIcon from '@material-ui/icons/Terrain'
-import EventIcon from '@material-ui/icons/EventAvailable'
-import RouteFinderIcon from '@material-ui/icons/Directions'
-import ContributorsIcon from '@material-ui/icons/PersonPin'
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import MySubsIcon from '@material-ui/icons/Terrain';
-import AboutIcon from '@material-ui/icons/Info'
-import FAQIcon from '@material-ui/icons/NotListedLocation'
-import DonateIcon from '@material-ui/icons/Favorite'
-import FeedbackIcon from '@material-ui/icons/Feedback'
 
 import NavBarContents from './NavBar'
 
@@ -131,32 +122,32 @@ class Navigation extends React.Component {
     const { open, mobileOpen, subsOpen } = this.state;
     const { classes, theme } = this.props;
 
-    const getIcon = (index) => {
-      switch(index){
-        case 'Home':
-          return <HomeIcon />
-        case 'Alerts':
-          return <AlertIcon />
-        case 'Subscriptions':
-          return <SubscriptionIcon />
-        case 'Events':
-         return <EventIcon />
-        case 'Route Finder':
-          return <RouteFinderIcon />
-        case 'Contributors':
-          return <ContributorsIcon />
-        case 'About':
-          return <AboutIcon />
-        case 'FAQ':
-          return <FAQIcon />
-        case 'Donate':
-          return <DonateIcon />
-        case 'Send Feedback':
-          return <FeedbackIcon />
-        default:
-          return null
-      }
-    }
+    // const getIcon = (index) => {
+    //   switch(index){
+    //     case 'Home':
+    //       return <HomeIcon />
+    //     case 'Alerts':
+    //       return <AlertIcon />
+    //     case 'Subscriptions':
+    //       return <SubscriptionIcon />
+    //     case 'Events':
+    //      return <EventIcon />
+    //     case 'Route Finder':
+    //       return <RouteFinderIcon />
+    //     case 'Contributors':
+    //       return <ContributorsIcon />
+    //     case 'About':
+    //       return <AboutIcon />
+    //     case 'FAQ':
+    //       return <FAQIcon />
+    //     case 'Donate':
+    //       return <DonateIcon />
+    //     case 'Send Feedback':
+    //       return <FeedbackIcon />
+    //     default:
+    //       return null
+    //   }
+    // }
 
     const drawer = (
       <Fragment>
@@ -184,7 +175,7 @@ class Navigation extends React.Component {
           ))}
       
           <ListItem button onClick={this.handleToggleSubsList}>
-            <MySubsIcon />
+            {getIcon('My Crags')}
             <ListItemText inset primary="My Crags" />
               {!subsOpen ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
@@ -200,7 +191,7 @@ class Navigation extends React.Component {
           </Collapse>
 
           <ListItem button key='Contributors'>
-            <ContributorsIcon />
+            {getIcon('Contributors')}
             <ListItemText primary='Contributors' />
           </ListItem>
         </List>
@@ -247,7 +238,7 @@ class Navigation extends React.Component {
       <List>
         <ListItem button onClick={this.handleToggleSubsList}>
           <ListItemIcon>
-            <MySubsIcon />
+            {getIcon('My Crags')}
           </ListItemIcon>
           <ListItemText inset primary="My Crags" />
             {!subsOpen ? <ExpandLess /> : <ExpandMore />}
