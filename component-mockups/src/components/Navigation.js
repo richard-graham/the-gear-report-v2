@@ -6,7 +6,6 @@ import { withStyles } from '@material-ui/core/styles';
 //Mui
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
@@ -91,6 +90,8 @@ class PersistentDrawerLeft extends React.Component {
         <NavBar
           open={open}
           drawerWidth={drawerWidth}
+          handleDrawerOpen={this.handleDrawerOpen}
+          handleDrawerClose={this.handleDrawerClose}
         >
           <Toolbar disableGutters={!open}>
             <IconButton
