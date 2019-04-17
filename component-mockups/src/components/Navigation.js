@@ -2,10 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
-
-//Mui
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
@@ -13,20 +12,39 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import Badge from '@material-ui/core/Badge'
+import NotificationsIcon from '@material-ui/icons/Notifications'
+import AccountCircle from '@material-ui/icons/AccountCircle';
 
-import NavBar from './NavBar'
+import NavBarContents from './NavBar'
+
 
 const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
     display: 'flex',
+  },
+  appBar: {
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   menuButton: {
     marginLeft: 12,
@@ -69,7 +87,9 @@ const styles = theme => ({
 
 class PersistentDrawerLeft extends React.Component {
   state = {
-    open: false,
+    open: true,
+    anchorEl: null,
+    mobileMoreAnchorEl: null,
   };
 
   handleDrawerOpen = () => {
@@ -81,17 +101,66 @@ class PersistentDrawerLeft extends React.Component {
   };
 
   render() {
-    const { classes, theme } = this.props;
     const { open } = this.state;
+    const { anchorEl, mobileMoreAnchorEl } = this.state;
+    const { classes } = this.props;
+    const isMenuOpen = Boolean(anchorEl);
+    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+    const renderMenu = (
+      <Menu
+        anchorEl={anchorEl}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={isMenuOpen}
+        onClose={this.handleMenuClose}
+      >
+        <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
+        <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
+      </Menu>
+    );
+  
+    const renderMobileMenu = (
+      <Menu
+        anchorEl={mobileMoreAnchorEl}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={isMobileMenuOpen}
+        onClose={this.handleMenuClose}
+      >
+        <MenuItem onClick={this.handleMobileMenuClose}>
+          <IconButton color="inherit">
+            <Badge badgeContent={4} color="secondary">
+              <MailIcon />
+            </Badge>
+          </IconButton>
+          <p>Messages</p>
+        </MenuItem>
+        <MenuItem onClick={this.handleMobileMenuClose}>
+          <IconButton color="inherit">
+            <Badge badgeContent={11} color="secondary">
+              <NotificationsIcon />
+            </Badge>
+          </IconButton>
+          <p>Notifications</p>
+        </MenuItem>
+        <MenuItem onClick={this.handleProfileMenuOpen}>
+          <IconButton color="inherit">
+            <AccountCircle />
+          </IconButton>
+          <p>Profile</p>
+        </MenuItem>
+      </Menu>
+    );
 
     return (
       <div className={classes.root}>
         <CssBaseline />
-        <NavBar
-          open={open}
-          drawerWidth={drawerWidth}
-          handleDrawerOpen={this.handleDrawerOpen}
-          handleDrawerClose={this.handleDrawerClose}
+        <AppBar
+          position="fixed"
+          className={classNames(classes.appBar, {
+            [classes.appBarShift]: open,
+          })}
         >
           <Toolbar disableGutters={!open}>
             <IconButton
@@ -102,11 +171,13 @@ class PersistentDrawerLeft extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" color="inherit" noWrap>
-              Persistent drawer
-            </Typography>
+
+            <NavBarContents anchorEl={anchorEl} isMobileMenuOpen={isMobileMenuOpen} />
+
           </Toolbar>
-        </NavBar>
+        </AppBar>
+        {renderMenu}
+        {renderMobileMenu}
         <Drawer
           className={classes.drawer}
           variant="persistent"
@@ -118,7 +189,7 @@ class PersistentDrawerLeft extends React.Component {
         >
           <div className={classes.drawerHeader}>
             <IconButton onClick={this.handleDrawerClose}>
-              {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+              <ChevronLeftIcon /> 
             </IconButton>
           </div>
           <Divider />
