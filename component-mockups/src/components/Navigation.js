@@ -15,9 +15,18 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import Hidden from '@material-ui/core/Hidden'
+import Collapse from '@material-ui/core/Collapse';
+
+import HomeIcon from '@material-ui/icons/Home'
+import TicketIcon from '@material-ui/icons/Warning'
+import SubscriptionIcon from '@material-ui/icons/Terrain'
+import EventIcon from '@material-ui/icons/EventAvailable'
+import RouteFinderIcon from '@material-ui/icons/Directions'
+import ContributorsIcon from '@material-ui/icons/PersonPin'
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import MySubsIcon from '@material-ui/icons/Terrain';
 
 import NavBarContents from './NavBar'
 
@@ -51,6 +60,9 @@ const styles = theme => ({
   menuButton: {
     marginLeft: 12,
     marginRight: 20,
+  },
+  nested: {
+    paddingLeft: theme.spacing.unit * 2,
   },
   hide: {
     display: 'none',
@@ -86,7 +98,8 @@ const styles = theme => ({
 class Navigation extends React.Component {
   state = {
     open: true, 
-    mobileOpen: false
+    mobileOpen: false,
+    subsOpen: true
   };
 
   handleDrawerOpen = () => {
@@ -105,10 +118,33 @@ class Navigation extends React.Component {
     this.setState({ mobileOpen: false });
   };
 
+  handleToggleSubsList = () => {
+    this.setState({ subsOpen: !this.state.subsOpen })
+  }
+
 
   render() {
-    const { open, mobileOpen } = this.state;
+    const { open, mobileOpen, subsOpen } = this.state;
     const { classes, theme } = this.props;
+
+    const getIcon = (index) => {
+      switch(index){
+        case 'Home':
+          return <HomeIcon />
+        case 'Tickets':
+          return <TicketIcon />
+        case 'Subscriptions':
+          return <SubscriptionIcon />
+        case 'Events':
+         return <EventIcon />
+        case 'Route Finder':
+          return <RouteFinderIcon />
+        case 'Contributors':
+          return <ContributorsIcon />
+        default:
+          return null
+      }
+    }
 
     const drawer = (
       <Fragment>
@@ -119,51 +155,95 @@ class Navigation extends React.Component {
     </div>
     <Divider />
     <List>
-      {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+      {['Home', 'Tickets', 'Subscriptions'].map((text) => (
         <ListItem button key={text}>
-          <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-          <ListItemText primary={text} />
+          {getIcon(text)}
+        <ListItemText primary={text} />
         </ListItem>
       ))}
     </List>
     <Divider />
     <List>
-      {['All mail', 'Trash', 'Spam'].map((text, index) => (
+      {['Events', 'Route Finder'].map((text) => (
         <ListItem button key={text}>
-          <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+          {getIcon(text)}
           <ListItemText primary={text} />
         </ListItem>
       ))}
+  
+      <ListItem button onClick={this.handleToggleSubsList}>
+        <MySubsIcon />
+        <ListItemText inset primary="My Crags" />
+          {!subsOpen ? <ExpandLess /> : <ExpandMore />}
+      </ListItem>
+      <Collapse in={subsOpen} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          <ListItem button className={classes.nested}>
+            <ListItemText inset primary="Kawakawa Bay" />
+          </ListItem>
+          <ListItem button className={classes.nested}>
+            <ListItemText inset primary="Froggatt Edge" />
+          </ListItem>
+        </List>
+      </Collapse>
+
+      <ListItem button key='Contributors'>
+        <ContributorsIcon />
+        <ListItemText primary='Contributors' />
+      </ListItem>
     </List>
+    <Divider />
+
+    
+
+
     </Fragment>
   );
 
   const mobileDrawer = (
     <Fragment>
-      <div className={classes.drawerHeader}>
-      <IconButton onClick={this.handleMobileDrawerClose}>
-        <ChevronLeftIcon /> 
-      </IconButton>
-    </div>
-    <Divider />
-    <List>
-      {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-        <ListItem button key={text}>
-          <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-          <ListItemText primary={text} />
+    <div className={classes.drawerHeader}>
+    <IconButton onClick={this.handleMobileDrawerClose}>
+      <ChevronLeftIcon /> 
+    </IconButton>
+  </div>
+  <Divider />
+  <List>
+    {['Home', 'Tickets', 'Subscriptions'].map((text) => (
+      <ListItem button key={text}>
+        {getIcon(text)}
+      <ListItemText primary={text} />
+      </ListItem>
+    ))}
+  </List>
+  <Divider />
+  <List>
+    {['Events', 'Route Finder', 'Contributors'].map((text) => (
+      <ListItem button key={text}>
+        {getIcon(text)}
+        <ListItemText primary={text} />
+      </ListItem>
+    ))}
+  </List>
+  <Divider />
+
+  <List>
+    <ListItem button onClick={this.handleToggleSubsList}>
+      <ListItemIcon>
+        <MySubsIcon />
+      </ListItemIcon>
+      <ListItemText inset primary="My Crags" />
+        {!subsOpen ? <ExpandLess /> : <ExpandMore />}
+    </ListItem>
+    <Collapse in={subsOpen} timeout="auto" unmountOnExit>
+      <List component="div" disablePadding>
+        <ListItem button className={classes.nested}>
+          <ListItemText inset primary="Kawakawa Bay" />
         </ListItem>
-      ))}
-    </List>
-    <Divider />
-    <List>
-      {['All mail', 'Trash', 'Spam'].map((text, index) => (
-        <ListItem button key={text}>
-          <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-          <ListItemText primary={text} />
-        </ListItem>
-      ))}
-    </List>
-    </Fragment>
+      </List>
+    </Collapse>
+  </List>
+  </Fragment>
   )
 
   const appBarMarkup = (
