@@ -13,7 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Hidden from '@material-ui/core/Hidden'
 
-import NavBarContents from './NavBar'
+import NavBarContents from './NavBarMarkup'
 
 
 const drawerWidth = 240;

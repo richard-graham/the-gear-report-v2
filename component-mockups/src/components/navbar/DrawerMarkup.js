@@ -106,7 +106,6 @@ export class DrawerMarkup extends Component {
 
 DrawerMarkup.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
 };
 
 export default DrawerMarkup
