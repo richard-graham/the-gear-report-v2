@@ -1,27 +1,17 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { getIcon } from '../../util/getIcon'
+import { DrawerMarkup } from './DrawerMarkup'
 
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import Hidden from '@material-ui/core/Hidden'
-import Collapse from '@material-ui/core/Collapse';
-
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
 
 import NavBarContents from './NavBar'
 
@@ -117,142 +107,9 @@ class Navigation extends React.Component {
     this.setState({ subsOpen: !this.state.subsOpen })
   }
 
-
   render() {
-    const { open, mobileOpen, subsOpen } = this.state;
     const { classes, theme } = this.props;
-
-    // const getIcon = (index) => {
-    //   switch(index){
-    //     case 'Home':
-    //       return <HomeIcon />
-    //     case 'Alerts':
-    //       return <AlertIcon />
-    //     case 'Subscriptions':
-    //       return <SubscriptionIcon />
-    //     case 'Events':
-    //      return <EventIcon />
-    //     case 'Route Finder':
-    //       return <RouteFinderIcon />
-    //     case 'Contributors':
-    //       return <ContributorsIcon />
-    //     case 'About':
-    //       return <AboutIcon />
-    //     case 'FAQ':
-    //       return <FAQIcon />
-    //     case 'Donate':
-    //       return <DonateIcon />
-    //     case 'Send Feedback':
-    //       return <FeedbackIcon />
-    //     default:
-    //       return null
-    //   }
-    // }
-
-    const drawer = (
-      <Fragment>
-        <div className={classes.drawerHeader}>
-          <IconButton onClick={this.handleDrawerClose}>
-            <ChevronLeftIcon /> 
-          </IconButton>
-        </div>
-        <Divider />
-        <List>
-          {['Home', 'Alerts', 'Subscriptions'].map((text) => (
-            <ListItem button key={text}>
-              {getIcon(text)}
-            <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['Events', 'Route Finder'].map((text) => (
-            <ListItem button key={text}>
-              {getIcon(text)}
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-      
-          <ListItem button onClick={this.handleToggleSubsList}>
-            {getIcon('My Crags')}
-            <ListItemText inset primary="My Crags" />
-              {!subsOpen ? <ExpandLess /> : <ExpandMore />}
-          </ListItem>
-          <Collapse in={subsOpen} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItem button className={classes.nested}>
-                <ListItemText inset primary="Kawakawa Bay" />
-              </ListItem>
-              <ListItem button className={classes.nested}>
-                <ListItemText inset primary="Froggatt Edge" />
-              </ListItem>
-            </List>
-          </Collapse>
-
-          <ListItem button key='Contributors'>
-            {getIcon('Contributors')}
-            <ListItemText primary='Contributors' />
-          </ListItem>
-        </List>
-        <Divider />
-
-        <List>
-          {['About', 'FAQ', 'Donate', 'Send Feedback'].map((text) => (
-              <ListItem button key={text}>
-                {getIcon(text)}
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-        </List>
-      </Fragment>
-  );
-
-  const mobileDrawer = (
-    <Fragment>
-      <div className={classes.drawerHeader}>
-        <IconButton onClick={this.handleMobileDrawerClose}>
-          <ChevronLeftIcon /> 
-        </IconButton>
-      </div>
-      <Divider />
-      <List>
-        {['Home', 'Alert', 'Subscriptions'].map((text) => (
-          <ListItem button key={text}>
-            {getIcon(text)}
-          <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['Events', 'Route Finder', 'Contributors'].map((text) => (
-          <ListItem button key={text}>
-            {getIcon(text)}
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-
-      <List>
-        <ListItem button onClick={this.handleToggleSubsList}>
-          <ListItemIcon>
-            {getIcon('My Crags')}
-          </ListItemIcon>
-          <ListItemText inset primary="My Crags" />
-            {!subsOpen ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
-        <Collapse in={subsOpen} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItem button className={classes.nested}>
-              <ListItemText inset primary="Kawakawa Bay" />
-            </ListItem>
-          </List>
-        </Collapse>
-      </List>
-    </Fragment>
-  )
+    const { open, mobileOpen } = this.state
 
   const appBarMarkup = (
     <Fragment>
@@ -327,7 +184,15 @@ class Navigation extends React.Component {
                 paper: classes.drawerPaper,
               }}
             >
-            {mobileDrawer}
+
+            <DrawerMarkup
+              screenSize='Mobile'
+              handleMobileDrawerClose={this.handleMobileDrawerClose}
+              handleDrawerClose={this.handleDrawerClose}
+              subsOpen={this.state.subsOpen}
+              classes={classes}
+            />
+
             </Drawer>
           </Hidden>
           <Hidden xsDown implementation="css">
@@ -339,7 +204,14 @@ class Navigation extends React.Component {
               open={open}
               onClose={this.handleDrawerClose}
             >
-              {drawer}
+              
+              <DrawerMarkup 
+                handleMobileDrawerClose={this.handleMobileDrawerClose}
+                handleDrawerClose={this.handleDrawerClose}
+                subsOpen={this.state.subsOpen}
+                classes={classes}
+              />
+
             </Drawer>
           </Hidden>
         </nav>
