@@ -3,32 +3,16 @@ import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { getIcon } from '../../util/getIcon'
 
-import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-
-
-const styles = theme => ({
-  drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
-  },
-  nested: {
-    paddingLeft: theme.spacing.unit * 2,
-  },
-})
 
 export class DrawerMarkup extends Component {
 
@@ -125,4 +109,4 @@ DrawerMarkup.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(DrawerMarkup)
+export default DrawerMarkup

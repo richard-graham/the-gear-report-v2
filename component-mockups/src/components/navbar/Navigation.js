@@ -165,14 +165,14 @@ class Navigation extends React.Component {
       <div className={classes.root}>
         <CssBaseline />
         <Hidden smUp implementation="css">
-        {mobileAppBarMarkup}
+          {mobileAppBarMarkup}
         </Hidden>
         <Hidden xsDown implementation="css">
-        {appBarMarkup}
+          {appBarMarkup}
         </Hidden>
 
-
         <nav className={classes.drawer}>
+
           <Hidden smUp implementation="css">
             <Drawer
               container={this.props.container}
@@ -184,17 +184,16 @@ class Navigation extends React.Component {
                 paper: classes.drawerPaper,
               }}
             >
-
-            <DrawerMarkup
-              screenSize='Mobile'
-              handleMobileDrawerClose={this.handleMobileDrawerClose}
-              handleDrawerClose={this.handleDrawerClose}
-              subsOpen={this.state.subsOpen}
-              classes={classes}
-            />
-
+              <DrawerMarkup
+                screenSize='Mobile'
+                handleMobileDrawerClose={this.handleMobileDrawerClose}
+                handleDrawerClose={this.handleDrawerClose}
+                subsOpen={this.state.subsOpen}
+                classes={classes}
+              />
             </Drawer>
           </Hidden>
+
           <Hidden xsDown implementation="css">
             <Drawer
               classes={{
@@ -204,17 +203,16 @@ class Navigation extends React.Component {
               open={open}
               onClose={this.handleDrawerClose}
             >
-              
               <DrawerMarkup 
                 handleMobileDrawerClose={this.handleMobileDrawerClose}
                 handleDrawerClose={this.handleDrawerClose}
                 subsOpen={this.state.subsOpen}
                 classes={classes}
               />
-
             </Drawer>
           </Hidden>
         </nav>
+        
         <main
           className={classNames(classes.content, {
             [classes.contentShift]: open,
