@@ -71,7 +71,7 @@ export class DrawerMarkup extends Component {
           <ListItem button onClick={this.handleToggleSubsList}>
             {getIcon('My Crags')}
             <ListItemText inset primary="My Crags" />
-              {!subsOpen ? <ExpandLess /> : <ExpandMore />}
+              {!subsOpen ? <ExpandMore /> : <ExpandLess />}
           </ListItem>
           <Collapse in={subsOpen} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
