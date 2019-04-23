@@ -2,13 +2,13 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { DrawerMarkup } from './DrawerMarkup'
+import RouteDisplay from '../../util/RouteDisplay'
 
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Hidden from '@material-ui/core/Hidden'
@@ -220,6 +220,9 @@ class Navigation extends React.Component {
         >
           <div className={classes.drawerHeader} />
            
+          <RouteDisplay />
+
+
         </main>
       </div>
     );
