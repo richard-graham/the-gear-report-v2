@@ -19,7 +19,6 @@ export class DrawerMarkup extends Component {
   state = {
     open: true, 
     mobileOpen: false,
-    subsOpen: true
   };
 
   handleDrawerOpen = () => {
@@ -30,23 +29,18 @@ export class DrawerMarkup extends Component {
     this.setState({ mobileOpen: true });
   };
 
-  handleToggleSubsList = () => {
-    this.setState({ subsOpen: !this.state.subsOpen })
-  }
-
   render() {
-    const { subsOpen } = this.state;
     const { 
+      subsOpen,
       classes,
-      screenSize,
-      handleMobileDrawerClose,
       handleDrawerClose,
+      handleToggleSubsList
     } = this.props
 
     return (
       <Fragment>
         <div className={classes.drawerHeader}>
-          <IconButton onClick={screenSize === 'Mobile' ? handleMobileDrawerClose : handleDrawerClose}>
+          <IconButton onClick={handleDrawerClose}>
             <ChevronLeftIcon /> 
           </IconButton>
         </div>
@@ -68,7 +62,7 @@ export class DrawerMarkup extends Component {
             </ListItem>
           ))}
       
-          <ListItem button onClick={this.handleToggleSubsList}>
+          <ListItem button onClick={handleToggleSubsList}>
             {getIcon('My Crags')}
             <ListItemText inset primary="My Crags" />
               {!subsOpen ? <ExpandMore /> : <ExpandLess />}

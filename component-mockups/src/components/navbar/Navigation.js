@@ -6,6 +6,7 @@ import RouteDisplay from '../../util/RouteDisplay'
 
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -100,9 +101,7 @@ class Navigation extends React.Component {
   };
 
   handleMobileDrawerClose = () => {
-    this.setState({ 
-      mobileOpen: false,
-    });
+    this.setState({ mobileOpen: false });
   };
 
   handleToggleSubsList = () => {
@@ -181,15 +180,14 @@ class Navigation extends React.Component {
               variant="temporary"
               anchor={theme.direction === 'rtl' ? 'right' : 'left'}
               open={mobileOpen}
-              onClose={this.handleDrawerClose}
+              onClose={this.handleMobileDrawerClose}
               classes={{
                 paper: classes.drawerPaper,
               }}
             >
               <DrawerMarkup
-                screenSize='Mobile'
-                handleMobileDrawerClose={this.handleMobileDrawerClose}
-                handleDrawerClose={this.handleDrawerClose}
+                handleDrawerClose={this.handleMobileDrawerClose}
+                handleToggleSubsList={this.handleToggleSubsList}
                 subsOpen={this.state.subsOpen}
                 classes={classes}
               />
@@ -206,8 +204,8 @@ class Navigation extends React.Component {
               onClose={this.handleDrawerClose}
             >
               <DrawerMarkup 
-                handleMobileDrawerClose={this.handleMobileDrawerClose}
                 handleDrawerClose={this.handleDrawerClose}
+                handleToggleSubsList={this.handleToggleSubsList}
                 subsOpen={this.state.subsOpen}
                 classes={classes}
               />
