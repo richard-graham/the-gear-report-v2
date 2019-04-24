@@ -22,7 +22,7 @@ const styles = theme => ({
 
 export class RouteDisplay extends Component {
   render() {
-    const { classes, theme } = this.props
+    const { classes } = this.props
     return (
       <Fragment>
         <div className={classes.root}>
