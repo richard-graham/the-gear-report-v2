@@ -102,7 +102,6 @@ class Navigation extends React.Component {
   handleMobileDrawerClose = () => {
     this.setState({ 
       mobileOpen: false,
-      open: false
     });
   };
 
