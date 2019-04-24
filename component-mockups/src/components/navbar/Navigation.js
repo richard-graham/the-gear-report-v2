@@ -6,7 +6,6 @@ import RouteDisplay from '../../util/RouteDisplay'
 
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -38,7 +37,7 @@ const styles = theme => ({
     }),
   },
   drawer: {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       width: drawerWidth,
       flexShrink: 0,
     },
@@ -165,16 +164,16 @@ class Navigation extends React.Component {
     return (
       <div className={classes.root}>
         <CssBaseline />
-        <Hidden smUp implementation="css">
+        <Hidden mdUp implementation="css">
           {mobileAppBarMarkup}
         </Hidden>
-        <Hidden xsDown implementation="css">
+        <Hidden smDown implementation="css">
           {appBarMarkup}
         </Hidden>
 
         <nav className={classes.drawer}>
 
-          <Hidden smUp implementation="css">
+          <Hidden mdUp implementation="css">
             <Drawer
               container={this.props.container}
               variant="temporary"
@@ -194,7 +193,7 @@ class Navigation extends React.Component {
             </Drawer>
           </Hidden>
 
-          <Hidden xsDown implementation="css">
+          <Hidden smDown implementation="css">
             <Drawer
               classes={{
                 paper: classes.drawerPaper,

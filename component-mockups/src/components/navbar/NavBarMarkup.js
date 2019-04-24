@@ -203,7 +203,6 @@ class NavBar extends React.Component {
             <AccountCircle />
           </IconButton>
         </div>
-        <div className={classes.growTenth} />
         <div className={classes.sectionMobile}>
           <IconButton aria-haspopup="true" onClick={this.handleMobileMenuOpen} color="inherit">
             <MoreIcon />
