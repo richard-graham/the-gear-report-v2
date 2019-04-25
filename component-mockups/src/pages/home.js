@@ -39,17 +39,14 @@ export class home extends Component {
         zoom: 9
       })
     }, () => { // if user says no to tracking location use api
-      console.log('oh no no location')
       fetch('https://ipapi.co/json')
         .then(res => res.json())
         .then(position => {
-          console.log(position)
           this.setState({
             location: {
               lat: position.latitude,
               lng: position.longitude,
             },
-            haveUsersLocation: true,
             zoom: 6
           })
         })
@@ -72,7 +69,7 @@ export class home extends Component {
             icon={greenIcon}
           >
             <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
+              Your Location
             </Popup>
           </Marker>
           }
