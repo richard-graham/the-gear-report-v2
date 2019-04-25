@@ -4,6 +4,9 @@ import { withStyles } from '@material-ui/core/styles';
 import 'leaflet/dist/leaflet.css'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
+//Redux
+import { connect } from 'react-redux'
+import { getUserLocation } from '../redux/actions/userActions'
 
 const styles = {
   map: {
@@ -30,40 +33,38 @@ export class home extends Component {
 
   componentDidMount = () => {
     navigator.geolocation.getCurrentPosition((position) => {
-      this.setState({
-        location: {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        },
-        haveUsersLocation: true,
-        zoom: 9
+      console.log(position);
+      this.props.getUserLocation({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+        zoom: 10,
+        haveUsersLocation: true
       })
     }, () => { // if user says no to tracking location use api
       fetch('https://ipapi.co/json')
         .then(res => res.json())
         .then(position => {
-          this.setState({
-            location: {
-              lat: position.latitude,
-              lng: position.longitude,
-            },
-            zoom: 6
+          this.props.getUserLocation({
+            lat: position.latitude,
+            lng: position.longitude,
+            zoom: 5,
+            haveUsersLocation: false
           })
         })
     });
   }
 
   render() {
-    const { classes } = this.props
-    const position = [this.state.location.lat, this.state.location.lng]
+    const { classes, userLocation } = this.props
+    const position = [userLocation.lat, userLocation.lng]
     return (
       <div className={classes.home}>
-        <Map className={classes.map} center={position} zoom={this.state.zoom}>
+        { userLocation && <Map className={classes.map} center={position} zoom={userLocation.zoom}>
           <TileLayer
             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          { this.state.haveUsersLocation &&
+          { userLocation.haveUsersLocation &&
           <Marker 
             position={position}
             icon={greenIcon}
@@ -74,9 +75,14 @@ export class home extends Component {
           </Marker>
           }
         </Map>
+        }
       </div>
     )
   }
 }
 
-export default withStyles(styles)(home)
+const mapStateToProps = (state) => ({
+  userLocation: state.user.location
+})
+
+export default connect(mapStateToProps, { getUserLocation })(withStyles(styles)(home))
