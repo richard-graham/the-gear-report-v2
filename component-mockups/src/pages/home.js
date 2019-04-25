@@ -21,20 +21,38 @@ var greenIcon = L.icon({
 export class home extends Component {
   state = {
     location: {
-      lat: 51.505,
-      lng: -0.09,
+      lat: -41.162026499999996,
+      lng: 172.0145516,
     },
-    zoom: 13,
+    haveUsersLocation: false,
+    zoom: 5,
   }
 
   componentDidMount = () => {
-    navigator.geolocation.getCurrentPosition(function(position) {
+    navigator.geolocation.getCurrentPosition((position) => {
       this.setState({
         location: {
           lat: position.coords.latitude,
-          long: position.coords.longitude,
-        }
+          lng: position.coords.longitude,
+        },
+        haveUsersLocation: true,
+        zoom: 9
       })
+    }, () => { // if user says no to tracking location use api
+      console.log('oh no no location')
+      fetch('https://ipapi.co/json')
+        .then(res => res.json())
+        .then(position => {
+          console.log(position)
+          this.setState({
+            location: {
+              lat: position.latitude,
+              lng: position.longitude,
+            },
+            haveUsersLocation: true,
+            zoom: 6
+          })
+        })
     });
   }
 
@@ -48,6 +66,7 @@ export class home extends Component {
             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
+          { this.state.haveUsersLocation &&
           <Marker 
             position={position}
             icon={greenIcon}
@@ -56,6 +75,7 @@ export class home extends Component {
               A pretty CSS3 popup. <br /> Easily customizable.
             </Popup>
           </Marker>
+          }
         </Map>
       </div>
     )

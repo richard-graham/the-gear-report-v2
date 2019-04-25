@@ -84,7 +84,7 @@ class Navigation extends React.Component {
   state = {
     open: true, 
     mobileOpen: false,
-    subsOpen: true
+    subsOpen: false
   };
 
   handleDrawerOpen = () => {
