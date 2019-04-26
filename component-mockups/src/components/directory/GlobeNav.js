@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 //Mui
 import { withStyles } from '@material-ui/core/styles';
@@ -8,6 +8,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider';
 import Collapse from '@material-ui/core/Collapse';
+//redux
+import { connect } from 'react-redux'
 
 const styles = theme => ({
   root: {
@@ -36,7 +38,7 @@ export class GlobeNav extends Component {
   };
 
   render() {
-    const { classes } = this.props
+    const { classes, user } = this.props
     return (
       <div className={classes.root}>
         <List>
@@ -45,7 +47,7 @@ export class GlobeNav extends Component {
             selected={this.state.selectedIndex === 0}
             onClick={event => this.handleListItemClick(event, 0)}
            >
-            <ListItemText primary='New Zealand'  />
+            <ListItemText primary={user.countryName}  />
           </ListItem>
           <ListItem 
             button
@@ -75,4 +77,8 @@ GlobeNav.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(GlobeNav)
+const mapStateToProps = (state) => ({
+  user: state.user
+})
+
+export default connect(mapStateToProps)(withStyles(styles)(GlobeNav))

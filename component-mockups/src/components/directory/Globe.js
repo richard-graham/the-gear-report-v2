@@ -30,6 +30,15 @@ class Globe extends Component {
   }
 
   componentDidMount = () => {
+    fetch('https://ipapi.co/json')
+        .then(res => res.json())
+        .then(position => {
+          this.props.updateUserCountry({
+            countryName: position.country_name
+          })
+        })
+        .then(() => {
+
     navigator.geolocation.getCurrentPosition((position) => {
       this.props.updateUserLocation({
         lat: position.coords.latitude,
@@ -37,13 +46,8 @@ class Globe extends Component {
         zoom: 11,
         haveUsersLocation: true
       })
-      fetch('https://ipapi.co/json')
-        .then(res => res.json())
-        .then(position => {
-          this.props.updateUserCountry({
-            countryName: position.country_name
-          })
-        })
+    // })
+      
     }, () => { // if user says no to tracking location use api
       fetch('https://ipapi.co/json')
         .then(res => res.json())
@@ -58,6 +62,8 @@ class Globe extends Component {
         })
     });
   }
+        )}
+
   
   render() {
     const { classes, user } = this.props
