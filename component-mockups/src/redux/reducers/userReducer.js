@@ -1,5 +1,6 @@
 import { 
-  SET_LOCATION
+  SET_USER_LOCATION,
+  SET_USER_COUNTRY
 } from '../types'
 
 const initialState = {
@@ -8,23 +9,26 @@ const initialState = {
   credentials: {},
   likes: [],
   notifications: [],
-  location: {
-    lat: -30.209985,
-    lng: 145.095043,
-    haveUsersLocation: false,
-    zoom: 4
-  }
+  lat: -30.209985,
+  lng: 145.095043,
+  haveUsersLocation: false,
+  zoom: 4,
+  countryName: ''
 }
 
 export default function(state = initialState, action){
   switch(action.type){
-    case SET_LOCATION:
+    case SET_USER_LOCATION:
       return {
         ...state,
-        location: action.payload
+        ...action.payload
+      }
+    case SET_USER_COUNTRY:
+      return {
+        ...state,
+        ...action.payload 
       }
     default:
-      console.log(state);
       return state
   }
 }

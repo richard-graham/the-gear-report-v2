@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { withStyles } from '@material-ui/core/styles';
 //Redux
 import { connect } from 'react-redux'
-import { getUserLocation } from '../../redux/actions/userActions'
+import { updateUserLocation, updateUserCountry } from '../../redux/actions/userActions'
 // leaflet
 import 'leaflet/dist/leaflet.css'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
@@ -11,7 +11,8 @@ import L from 'leaflet'
 
 const styles = {
   map: {
-    height: 500 
+    height: 500,
+    width: '80%'
   }
 }
 
@@ -30,38 +31,46 @@ class Globe extends Component {
 
   componentDidMount = () => {
     navigator.geolocation.getCurrentPosition((position) => {
-      this.props.getUserLocation({
+      this.props.updateUserLocation({
         lat: position.coords.latitude,
         lng: position.coords.longitude,
-        zoom: 10,
+        zoom: 11,
         haveUsersLocation: true
       })
+      fetch('https://ipapi.co/json')
+        .then(res => res.json())
+        .then(position => {
+          this.props.updateUserCountry({
+            countryName: position.country_name
+          })
+        })
     }, () => { // if user says no to tracking location use api
       fetch('https://ipapi.co/json')
         .then(res => res.json())
         .then(position => {
-          this.props.getUserLocation({
+          this.props.updateUserLocation({
             lat: position.latitude,
             lng: position.longitude,
             zoom: 5,
-            haveUsersLocation: false
+            haveUsersLocation: false,
+            countryName: position.country_name
           })
         })
     });
   }
   
   render() {
-    const { classes, userLocation } = this.props
+    const { classes, user } = this.props
     console.log(this.props);
-    const position = [userLocation.lat, userLocation.lng]
+    const position = [user.lat, user.lng]
     return (
       <Fragment>
-      { userLocation && <Map className={classes.map} center={position} zoom={userLocation.zoom}>
+      { user.lat && <Map className={classes.map} center={position} zoom={user.zoom}>
         <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        { userLocation.haveUsersLocation &&
+        { user.haveUsersLocation &&
         <Marker 
           position={position}
           icon={homeIcon}
@@ -79,7 +88,12 @@ class Globe extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  userLocation: state.user.location
+  user: state.user
 })
 
-export default connect(mapStateToProps, { getUserLocation })(withStyles(styles)(Globe))
+const mapActionsToProps = {
+  updateUserLocation,
+  updateUserCountry
+}
+
+export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(Globe))
