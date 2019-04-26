@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { withStyles } from '@material-ui/core/styles';
 //Redux
 import { connect } from 'react-redux'
-import { updateUserLocation, updateUserCountry } from '../../redux/actions/userActions'
+import { updateUserLocation, updateUserCountry } from '../../../../redux/actions/userActions'
 // leaflet
 import 'leaflet/dist/leaflet.css'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
@@ -11,8 +11,8 @@ import L from 'leaflet'
 
 const styles = {
   map: {
-    height: 500,
-    width: '80%'
+    height: '100%',
+    // width: '80%'
   }
 }
 
@@ -64,8 +64,8 @@ class Globe extends Component {
   
   render() {
     const { classes, user } = this.props
-    console.log(this.props);
     const position = [user.lat, user.lng]
+    
     return (
       <Fragment>
       { user.lat && <Map className={classes.map} center={position} zoom={user.zoom}>

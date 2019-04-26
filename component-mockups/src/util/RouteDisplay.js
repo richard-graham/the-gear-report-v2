@@ -30,7 +30,7 @@ export class RouteDisplay extends Component {
             <Router>
               
               <Switch>
-              
+                
                 <Route exact path='/' component={home} />
               
               </Switch>

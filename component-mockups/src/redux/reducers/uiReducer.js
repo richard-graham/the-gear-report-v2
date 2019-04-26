@@ -2,7 +2,8 @@ import { } from '../types'
 
 const initialState = {
   loading: false,
-  errors: null
+  errors: null,
+  recievedNavChildren: false
 }
 
 export default function(state = initialState, action){
