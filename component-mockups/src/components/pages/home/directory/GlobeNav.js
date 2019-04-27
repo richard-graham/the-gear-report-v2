@@ -5,9 +5,6 @@ import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Typography from '@material-ui/core/Typography'
-import Divider from '@material-ui/core/Divider';
-import Collapse from '@material-ui/core/Collapse';
 //redux
 import { connect } from 'react-redux'
 
@@ -43,10 +40,7 @@ export class GlobeNav extends Component {
   };
 
   render() {
-    const { classes, user, UI: {
-      loading,
-      recievedNavChildren
-    } } = this.props
+    const { classes, user } = this.props
 
     const navMarkup = (
       <List className={classes.nav}>

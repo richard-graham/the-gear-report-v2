@@ -1,85 +1,32 @@
 import React, { Component } from 'react'
-import { withStyles } from '@material-ui/core/styles';
-import Globe from '../components/pages/home/directory/Globe'
-import GlobeNav from '../components/pages/home/directory/GlobeNav'
-//Redux
+import DirectoryContainer from '../components/pages/home/directory/DirectoryContainer'
+import { withStyles } from '@material-ui/core/styles'
 //Mui
-import Hidden from '@material-ui/core/Hidden' 
-import Tab from '@material-ui/core/Tab'
-import Paper from '@material-ui/core/Paper'
-import Tabs from '@material-ui/core/Tabs';
-import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography'
 
 const styles = {
-  root: {
-    width: '100%',
+  header: {
+    fontSize: 35,
+    padding: 20
   },
-  nav: {
-    display: 'flex',
-
-  },
-  tabs: {
-    width: '100%'
-  },
-  tabContainer: {
-    padding: 10,
-    height: 350,
-    overflowY: 'scroll'
-  },
-  navContainer: {
-    width: '100%',
-    height: 500,
+  subHeading: {
+    fontSize: 25,
+    paddingBottom: 20
   }
 }
 
 export class home extends Component {
-  state = {
-    value: 0
-  }
-
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
-
   render() {
     const { classes } = this.props
-    const { value } = this.state
     return (
-      <Paper square>
-        <Grid container spacing={0}>
-          <Grid item xs={12}>
-            <Hidden smUp implementation="css">
-              <Tabs
-                centered
-                value={this.state.value}
-                indicatorColor="primary"
-                textColor="primary"
-                onChange={this.handleChange}
-              >
-                <Tab label="Directory" />
-                <Tab label="Map" />
-              </Tabs>
-              <Grid className={classes.tabContainer} item cs={12}>
-                {value === 0 && <GlobeNav />}
-                {value === 1 && <Globe />}
-              </Grid>
-            </Hidden> 
-            <Hidden xsDown implementation='css'>
-              <Grid container spacing={0} className={classes.navContainer} >
-                <Grid item align='center' xs={3}>
-                  <GlobeNav />
-                </Grid>
-                <Grid item xs={9}>
-                  <Globe />
-                </Grid>
-              </Grid>
-            </Hidden>
-          </Grid>
-        </Grid>
-      </Paper>
+      <div>
+        <Typography variant='h2' className={classes.header}>Welcome to the Gear Report</Typography>
+        <Typography variant='display1' className={classes.subHeading}>An attempt to catalog and share dangerous climbing gear with the community to make our sport safer</Typography>
+        <br/>
+        <DirectoryContainer />
+      </div>
     )
   }
 }
-
 
 export default withStyles(styles)(home)

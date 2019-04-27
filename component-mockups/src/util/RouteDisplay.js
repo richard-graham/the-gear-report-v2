@@ -13,7 +13,7 @@ const styles = theme => ({
   },
   content: {
     width: '95%',
-    maxWidth: 1700,
+    maxWidth: 1400,
     [theme.breakpoints.down('sm')]: {
       width: '100%'
     }
