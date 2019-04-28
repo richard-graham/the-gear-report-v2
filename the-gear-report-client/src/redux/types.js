@@ -11,3 +11,10 @@ export const MARK_NOTIFICATIONS_READ = 'MARK_NOTIFICATIONS_READ'
  // UI reducers
  // Data reducers
 export const LOADING_DATA = 'LOADING_DATA'
+export const SET_ALERTS = 'SET_ALERTS' 
+export const LIKE_ALERT = 'LIKE_ALERT' 
+export const UNLIKE_ALERT = 'UNLIKE_ALERT' 
+export const DELETE_ALERT = 'DELETE_ALERT'
+export const POST_ALERT = 'POST_ALERT'
+export const SET_ALERT = 'SET_ALERT'
+export const SUBMIT_COMMENT = 'SUBMIT_COMMENT'
