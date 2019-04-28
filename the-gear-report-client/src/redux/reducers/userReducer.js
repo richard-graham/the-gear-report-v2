@@ -5,8 +5,8 @@ import {
   SET_AUTHENTICATED, 
   SET_UNAUTHENTICATED,
   LOADING_USER,
-  LIKE_SCREAM,
-  UNLIKE_SCREAM,
+  LIKE_ALERT,
+  UNLIKE_ALERT,
   MARK_NOTIFICATIONS_READ
 } from '../types'
 
@@ -53,21 +53,21 @@ export default function(state = initialState, action){
         ...state,
         loading: true
       }
-    case LIKE_SCREAM:
+    case LIKE_ALERT:
       return {
         ...state,
         likes: [
           ...state.likes,
           {
             userHandle: state.credentials.handle,
-            screamId: action.payload.screamId
+            alertId: action.payload.alertId
           }
         ]
       }
-    case UNLIKE_SCREAM:
+    case UNLIKE_ALERT:
       return {
         ...state,
-        likes: state.likes.filter((like) => like.screamId !== action.payload.screamId)
+        likes: state.likes.filter((like) => like.alertId !== action.payload.alertId)
       }
     case MARK_NOTIFICATIONS_READ:
      state.notifications.forEach(note => note.read = true)
