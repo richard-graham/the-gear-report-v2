@@ -1,52 +1,151 @@
 const functions = require('firebase-functions');
-const admin = require('firebase-admin')
+const app = require('express')()
+const FBAuth = require('./util/fbAuth')
 
-admin.initializeApp()
+const cors = require('cors')
+app.use(cors())
 
-const express = require('express')
-const app = express()
+const { db } = require('./util/admin')
+
+const { 
+  getAllAlerts, 
+  postOneAlert, 
+  getAlert, 
+  commentOnAlert, 
+  likeAlert, 
+  unlikeAlert,
+  deleteAlert
+} = require('./handlers/alerts')
+
+const { 
+  signup, 
+  login, 
+  uploadImage, 
+  addUserDetails, 
+  getAuthenticatedUser,
+  getUserDetails,
+  markNotificationsRead
+ } = require('./handlers/users')
+
+// Scream routes
+app.get('/alerts', getAllAlerts)
+app.get('/alert/:alertId', getAlert)
+app.post('/alert', FBAuth, postOneAlert)
+app.post('/alert/:alertId/comment', FBAuth, commentOnAlert)
+app.get('/alert/:alertId/like', FBAuth, likeAlert)
+app.get('/alert/:alertId/unlike', FBAuth, unlikeAlert)
+app.delete('/alert/:alertId', FBAuth, deleteAlert)
 
 
-app.get('/alerts', (req, res) => {
-  admin
-    .firestore()
-    .collection('alerts')
-    .get()
-    .then(data => {
-      let alerts = []
-      data.forEach(doc => {
-        alerts.push(doc.data())
-      })
-      return res.json(alerts)
-    })
-    .catch(err => {
-      console.error(err)
-    })
-})
+// User routes
+app.post('/signup', signup)
+app.post('/login', login)
+app.post('/user/image', FBAuth, uploadImage)
+app.post('/user', FBAuth, addUserDetails)
+app.get('/user', FBAuth, getAuthenticatedUser)
+app.get('/user/:handle', getUserDetails)
+app.post('/notifications', FBAuth, markNotificationsRead)
 
-app.post('/alert', (req, res) => {
-  if(req.method !== 'POST'){
-    return res.status(400).json({ error: 'Method not allowed'})
-  }
-  const newAlert = {
-    body: req.body.body,
-    userHandle: req.body.userHandle,
-    createdAt: admin.firestore.Timestamp.fromDate(new Date())
-  }
 
-  admin
-    .firestore()
-    .collection('alerts')
-    .add(newAlert)
+exports.api = functions.region('us-central1').https.onRequest(app) 
+// exports.api = functions.region('europe-west1').https.onRequest(app)
+
+exports.createNotificationOnLike = functions.region('us-central1').firestore.document('likes/{id}')
+  .onCreate((snapshot) => {
+    return db.doc(`/alerts/${snapshot.data().alertId}`).get()
     .then(doc => {
-      res.json({ message: `document ${doc.id} created successfully`})
+      if(doc.exists && doc.data().userHandle !== snapshot.data().userHandle){ // don't send a notification is liking or commenting on their own post
+        return db.doc(`/notifications/${snapshot.id}`).set({
+          createdAt: new Date().toISOString(),
+          recipient: doc.data().userHandle,
+          sender: snapshot.data().userHandle,
+          type: 'like',
+          read: false,
+          alertId: doc.id
+        })
+      }
     })
     .catch(err => {
-      res.status(500).json({ error: 'something went wrong'})
       console.error(err)
     })
-})
+  })
 
-//https:/baseurl/api/
+exports.deleteNotificationOnUnlike = functions.region('us-central1').firestore.document('likes/{id}')
+  .onDelete((snapshot) => {
+    return db.doc(`/notifications/${snapshot.id}`)
+      .delete()
+      .catch(err => {
+        console.error(err)
+        return
+      })
+  })
 
-exports.api = functions.https.onRequest(app)
+exports.createNotificationOnComment = functions.region('us-central1').firestore.document('comments/{id}')
+  .onCreate((snapshot) => {
+    return db.doc(`/alerts/${snapshot.data().alertId}`).get()
+    .then(doc => {
+      if(doc.exists && doc.data().userHandle !== snapshot.data().userHandle){
+        return db.doc(`/notifications/${snapshot.id}`).set({
+          createdAt: new Date().toISOString(),
+          recipient: doc.data().userHandle,
+          sender: snapshot.data().userHandle,
+          type: 'comment',
+          read: false,
+          alertId: doc.id
+        })
+      }
+    })
+    .catch(err => {
+      console.error(err)
+      return // no need to return as function is a database trigger
+    })
+  })
+
+exports.onUserImageChange = functions.region('us-central1').firestore.document('users/{userId}')
+  .onUpdate((change) => {
+    console.log(change.before.data());
+    console.log(change.after.data());
+    // changing multiple docs so need to use batch
+    if(change.before.data().imageUrl !== change.after.data().imageUrl){
+    console.log('image has changed');
+    let batch = db.batch()
+    return db.collection('alerts').where('userHandle', '==', change.before.data().handle).get()
+      .then((data) => {
+        data.forEach((doc) => { // doc refers to each document the user has created
+          const alert = db.doc(`/alerts/${doc.id}`)
+          batch.update(alert, { userImage: change.after.data().imageUrl })
+        })
+        return batch.commit()
+      })
+    } else {
+      return true
+    }
+  })
+
+exports.onAlertDelete = functions.region('us-central1').firestore.document('alerts/{alertId}')
+  .onDelete((snapshot, context) => { // contest has the params that we have in the url
+    const alertId = context.params.alertId
+    let batch = db.batch()
+    return db.collection('comments').where('alertId', '==', alertId).get() // find comments
+      .then(data => {
+        data.forEach(doc => {
+          batch.delete(db.doc(`/comments/${doc.id}`)) // delete comments
+        })
+        return db.collection('likes').where('alertId', '==', alertId).get() // find likes
+      })
+      .then(data => {
+        data.forEach(doc => {
+          batch.delete(db.doc(`/likes/${doc.id}`)) // delete likes
+        })
+        return db.collection('notifications').where('alertId', '==', alertId).get() //etc etc
+      })
+      .then(data => {
+        data.forEach(doc => {
+          batch.delete(db.doc(`/notifications/${doc.id}`))
+        })
+        return batch.commit()
+      })
+      .catch(err => {
+        console.error(err)
+      })
+  })
