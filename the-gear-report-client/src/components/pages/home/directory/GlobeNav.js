@@ -49,7 +49,7 @@ export class GlobeNav extends Component {
             selected={this.state.selectedIndex === 0}
             onClick={event => this.handleListItemClick(event, 0)}
            >
-            <ListItemText primary={user.countryName}  />
+            <ListItemText primary={user.country}  />
           </ListItem>
           <ListItem 
             button

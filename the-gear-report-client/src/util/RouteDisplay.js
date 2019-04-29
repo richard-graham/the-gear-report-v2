@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { BrowserRouter as Router, Route, Switch  } from 'react-router-dom'
 import home from '../pages/home'
+import NewUserForm from '../components/pages/signup/NewUserForm'
 
 //mui
 import { withStyles } from '@material-ui/core/styles';
@@ -32,7 +33,8 @@ export class RouteDisplay extends Component {
               <Switch>
                 
                 <Route exact path='/' component={home} />
-              
+                <Route exact path='/signup' component={NewUserForm} />
+
               </Switch>
               
             </Router>

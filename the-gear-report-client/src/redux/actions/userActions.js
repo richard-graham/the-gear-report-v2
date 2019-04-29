@@ -20,10 +20,14 @@ export const updateUserLocation = (position) => (dispatch) => {
     })
 }
 
-export const updateUserCountry = (country) => (dispatch) => {
+export const updateUserCountry = (location) => (dispatch) => {
+  console.log(location);
   dispatch({
     type: SET_USER_COUNTRY,
-    payload: country
+    payload: {
+      country: location.countryName,
+      region: location.regionName
+    }
   })
 }
 

@@ -33,8 +33,10 @@ class Globe extends Component {
     fetch('https://ipapi.co/json') // grab country name
       .then(res => res.json())
       .then(position => {
+        console.log(position);
         this.props.updateUserCountry({
-          countryName: position.country_name
+          countryName: position.country_name,
+          regionName: position.region 
         })
       
       navigator.geolocation.getCurrentPosition((userPosition) => { 
@@ -54,7 +56,8 @@ class Globe extends Component {
             lng: position.longitude,
             zoom: 5,
             haveUsersLocation: false,
-            countryName: position.country_name
+            countryName: position.country_name,
+            regionName: position.region 
           })
         })
       });
