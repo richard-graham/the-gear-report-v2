@@ -5,19 +5,9 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core' 
-import { blue, red,  } from '@material-ui/core/colors'
+import themeFile from './util/theme'
 
-const theme = createMuiTheme({
-  palette: {
-    primary: blue,
-    secondary: {
-      main: red.A400,
-      light: red[400],
-      dark: red[800]
-    },
-    type: 'light'
-  }
-})
+const theme = createMuiTheme(themeFile)
 
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>

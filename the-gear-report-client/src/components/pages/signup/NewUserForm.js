@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import FormUserDetails from './FormUserDetails'
 import FormPersonalDetails from './FormPersonalDetails'
 import Confirm from './Confirm'
+import { connect } from 'react-redux'
+import { signupUser } from '../../../redux/actions/userActions'
 
 export class NewUserForm extends Component {
   state = {
@@ -12,6 +14,7 @@ export class NewUserForm extends Component {
     occupation: '',
     city: '',
     bio: '',
+    errors: {}
   }
 
   // Proceed to the next step
@@ -38,6 +41,29 @@ export class NewUserForm extends Component {
     this.setState({
       [input]: e.target.value
     })
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.UI.errors){
+      this.setState({ errors: nextProps.UI.errors })
+    }
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault()
+    this.setState({
+      loading: true
+    })
+    const newUserData = {
+      email: this.state.email,
+      password: this.state.password,
+      confirmPassword: this.state.confirmPassword,
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      bio: this.state.bio,
+      city: this.state.city,
+    }
+    this.props.signupUser(newUserData, this.props.history)
   }
 
   render() {
@@ -68,6 +94,7 @@ export class NewUserForm extends Component {
             nextStep={this.nextStep}
             prevStep={this.prevStep}
             values={values} 
+            handleSubmit={this.handleSubmit}
           />
         )
       default:
@@ -77,4 +104,4 @@ export class NewUserForm extends Component {
   }
 }
 
-export default NewUserForm
+export default connect(null, { signupUser })(NewUserForm)

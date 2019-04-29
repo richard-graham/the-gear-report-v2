@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
@@ -23,7 +23,6 @@ export class FormUserDetails extends Component {
           <TextField 
             variant='outlined'
             className={classes.textField}
-            id="mui-theme-provider-outlined-input"
             label='First Name' 
             onChange={handleChange('firstName')}
             defaultValue={values.firstName}
@@ -32,7 +31,6 @@ export class FormUserDetails extends Component {
           <TextField 
             variant='outlined'
             className={classes.textField}
-            id="mui-theme-provider-outlined-input"
             label='Last Name' 
             onChange={handleChange('lastName')}
             defaultValue={values.lastName}
@@ -41,7 +39,6 @@ export class FormUserDetails extends Component {
           <TextField 
             variant='outlined'
             className={classes.textField}
-            id="mui-theme-provider-outlined-input"
             label='Email' 
             onChange={handleChange('email')}
             defaultValue={values.email}
@@ -50,7 +47,6 @@ export class FormUserDetails extends Component {
           <TextField 
             variant='outlined'
             className={classes.textField}
-            id="mui-theme-provider-outlined-adornment-password"
             label='Password' 
             onChange={handleChange('password')}
             defaultValue={values.password}
@@ -60,7 +56,6 @@ export class FormUserDetails extends Component {
           <TextField 
             variant='outlined'
             className={classes.textField}
-            id="mui-theme-provider-outlined-adornment-password"
             label='Confirm Password' 
             onChange={handleChange('confirmPassword')}
             defaultValue={values.confirmPassword}
@@ -81,8 +76,8 @@ export class FormUserDetails extends Component {
 
 const styles = theme => ({
   button: {
-    margin: theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit * 4
+    margin: theme.spacing.unit * 4,
+    marginBottom: theme.spacing.unit * 6
   },
   paper: {
     width: '40%',
