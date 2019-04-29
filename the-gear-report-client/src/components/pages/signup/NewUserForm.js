@@ -50,6 +50,7 @@ export class NewUserForm extends Component {
   }
 
   handleSubmit = (event) => {
+    console.log(this.state);
     event.preventDefault()
     this.setState({
       loading: true
@@ -62,6 +63,7 @@ export class NewUserForm extends Component {
       lastName: this.state.lastName,
       bio: this.state.bio,
       city: this.state.city,
+      handle: `${this.state.firstName} ${this.state.lastName}`
     }
     this.props.signupUser(newUserData, this.props.history)
   }

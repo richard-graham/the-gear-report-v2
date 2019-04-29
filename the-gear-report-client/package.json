@@ -32,5 +32,6 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "proxy": "https://us-central1-the-gear-report-a2ce8.cloudfunctions.net/api"
 }
