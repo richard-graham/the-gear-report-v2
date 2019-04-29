@@ -16,31 +16,55 @@ export class FormUserDetails extends Component {
     const { values, handleChange, classes } = this.props
 
     return (
-      <Fragment>
-        <Typography variant='h2' className={classes.header}>Welcome to the Gear Report</Typography>
+      <div className={classes.container}>
+        
         <Paper className={classes.paper}>
+        <Typography variant='h2' className={classes.header}>Welcome to the Gear Report</Typography>
           <TextField 
+            variant='outlined'
             className={classes.textField}
-            placeholder='Enter Your First Name'
+            id="mui-theme-provider-outlined-input"
             label='First Name' 
             onChange={handleChange('firstName')}
             defaultValue={values.firstName}
           />
           <br />
           <TextField 
+            variant='outlined'
             className={classes.textField}
-            placeholder='Enter Your Last Name'
+            id="mui-theme-provider-outlined-input"
             label='Last Name' 
             onChange={handleChange('lastName')}
             defaultValue={values.lastName}
           />
           <br />
           <TextField 
+            variant='outlined'
             className={classes.textField}
-            placeholder='Enter Your Email'
+            id="mui-theme-provider-outlined-input"
             label='Email' 
             onChange={handleChange('email')}
             defaultValue={values.email}
+          />
+          <br/>
+          <TextField 
+            variant='outlined'
+            className={classes.textField}
+            id="mui-theme-provider-outlined-adornment-password"
+            label='Password' 
+            onChange={handleChange('password')}
+            defaultValue={values.password}
+            type='password'
+          />
+          <br />
+          <TextField 
+            variant='outlined'
+            className={classes.textField}
+            id="mui-theme-provider-outlined-adornment-password"
+            label='Confirm Password' 
+            onChange={handleChange('confirmPassword')}
+            defaultValue={values.confirmPassword}
+            type='password'
           />
           <br />
           <Button 
@@ -50,26 +74,35 @@ export class FormUserDetails extends Component {
             variant="contained"
           >Continue</Button>
         </Paper>
-      </Fragment>
+      </div>
     )
   }
 }
 
 const styles = theme => ({
   button: {
-    margin: 30,
+    margin: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 4
   },
   paper: {
-    paddingTop: 240,
-    paddingBottom: 240,
-    margin: 70
+    width: '40%',
+    margin: 150,
+    alignSelf: 'center'
   },
   header: {
     fontSize: 35,
-    padding: 20
+    padding: 20,
+    margin: 20,
   },
   textField: {
-
+    margin: theme.spacing.unit,
+    width: '60%',
+  },
+  container: {
+    width: '100%',
+    heigh: '100%',
+    display: 'flex',
+    flexDirection: 'column'
   }
 })
 

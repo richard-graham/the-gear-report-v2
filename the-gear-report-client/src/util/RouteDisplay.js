@@ -17,7 +17,7 @@ const styles = theme => ({
     maxWidth: 1400,
     [theme.breakpoints.down('sm')]: {
       width: '100%'
-    }
+    },
   }
 })
 

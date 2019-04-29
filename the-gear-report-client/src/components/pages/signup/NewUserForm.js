@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import FormUserDetails from './FormUserDetails'
 import FormPersonalDetails from './FormPersonalDetails'
 import Confirm from './Confirm'
-import Paper from '@material-ui/core/Paper'
 
 export class NewUserForm extends Component {
   state = {
@@ -42,7 +41,6 @@ export class NewUserForm extends Component {
   }
 
   render() {
-    const { classes } = this.props
     const { step, firstName, lastName, email, occupation, city, bio } = this.state
     const values = { firstName, lastName, email, occupation, city, bio }
 
