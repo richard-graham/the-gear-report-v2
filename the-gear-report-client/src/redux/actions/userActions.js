@@ -51,14 +51,17 @@ export const loginUser = (userData, history) => (dispatch) => { //where is histo
 
 export const signupUser = (newUserData, history) => (dispatch) => { //where is history coming from?
   dispatch({ type: LOADING_UI })
+  console.log(newUserData );
   axios.post('/signup', newUserData)
       .then(res => {
+        console.log(res);
         setAuthorizationHeader(res.data.token)
         dispatch(getUserData())
         dispatch({ type: CLEAR_ERRORS })
         history.push('/')
       })
       .catch(err => {
+        console.log(err.response.data);
         dispatch({ 
           type: SET_ERRORS, 
           payload: err.response.data 

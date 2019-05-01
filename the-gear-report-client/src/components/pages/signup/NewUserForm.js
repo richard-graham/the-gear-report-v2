@@ -14,7 +14,6 @@ export class NewUserForm extends Component {
     occupation: '',
     city: '',
     bio: '',
-    errors: {}
   }
 
   // Proceed to the next step
@@ -43,11 +42,11 @@ export class NewUserForm extends Component {
     })
   }
 
-  componentWillReceiveProps(nextProps){
-    if(nextProps.UI.errors){
-      this.setState({ errors: nextProps.UI.errors })
-    }
-  }
+  // componentWillReceiveProps(nextProps){
+  //   if(nextProps.UI.errors){
+  //     this.setState({ errors: nextProps.UI.errors })
+  //   }
+  // }
 
   handleSubmit = (event) => {
     console.log(this.state);
@@ -71,7 +70,7 @@ export class NewUserForm extends Component {
   render() {
     const { step, firstName, lastName, email, occupation, city, bio } = this.state
     const values = { firstName, lastName, email, occupation, city, bio }
-
+    const { errors } = this.props
     switch(step) {
       case 1:
         return (
@@ -79,6 +78,7 @@ export class NewUserForm extends Component {
               nextStep={this.nextStep}
               handleChange={this.handleChange}
               values={values}
+              errors={errors}
             />
         )
       case 2:
@@ -88,6 +88,7 @@ export class NewUserForm extends Component {
             prevStep={this.prevStep}
             handleChange={this.handleChange}
             values={values}
+            errors={errors}
           />
         )
       case 3:
@@ -97,6 +98,7 @@ export class NewUserForm extends Component {
             prevStep={this.prevStep}
             values={values} 
             handleSubmit={this.handleSubmit}
+            errors={errors}
           />
         )
       default:
@@ -106,4 +108,8 @@ export class NewUserForm extends Component {
   }
 }
 
-export default connect(null, { signupUser })(NewUserForm)
+const mapStateToProps = state => ({
+  errors: state.UI.errors
+})
+
+export default connect(mapStateToProps, { signupUser })(NewUserForm)

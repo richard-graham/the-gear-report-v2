@@ -42,7 +42,7 @@ export class FormPersonalDetails extends Component {
 
 
   render() {
-    const { values: { firstName, lastName, email, occupation, city, bio }, UI: { loading }, classes, handleSubmit } = this.props
+    const { values: { firstName, lastName, email, occupation, city, bio }, UI: { loading }, classes, handleSubmit, errors } = this.props
 
     return (
       <div className={classes.signupContainer}>
@@ -82,6 +82,9 @@ export class FormPersonalDetails extends Component {
             />
           </List>
           <br />
+          {errors && (
+              Object.values(errors).map(error => <Typography variant='h2' className={classes.signupError}>{error}</Typography>)
+              )}
           <Button 
             color='secondary'
             className={classes.signupButton}
