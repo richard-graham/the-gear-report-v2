@@ -25,6 +25,12 @@ export default {
     padding: 20,
     margin: 20,
   },
+  loginHeader: {
+    fontSize: 35,
+    padding: 20,
+    margin: 20,
+    marginBottom:   80
+  },
   signupTextField: {
     margin: defaultTheme.spacing.unit,
     width: '60%',
@@ -44,6 +50,10 @@ export default {
   signupButton: {
     margin: defaultTheme.spacing.unit * 4,
     marginBottom: defaultTheme.spacing.unit * 6
+  },
+  loginButton: {
+    margin: defaultTheme.spacing.unit * 4,
+
   },
   signupMultiButton: {
     margin: defaultTheme.spacing.unit * 2,

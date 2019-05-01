@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
@@ -19,7 +20,7 @@ export class FormPersonalDetails extends Component {
   }
 
   render() {
-    const { values, handleChange, classes } = this.props
+    const { values, handleChange, classes, UI: { errors } } = this.props
 
     return (
       <div className={classes.signupContainer}>
@@ -41,6 +42,8 @@ export class FormPersonalDetails extends Component {
             label='City' 
             onChange={handleChange('city')}
             defaultValue={values.city}
+            error={errors.city ? true : false}
+            helperText={errors.city}
           />
           <br />
           <TextField 
@@ -92,4 +95,8 @@ const styles = theme => ({
   }
 })
 
-export default withStyles(styles)(FormPersonalDetails)
+const mapStateToProps = state => ({
+  UI: state.UI
+})
+
+export default connect(mapStateToProps)(withStyles(styles)(FormPersonalDetails))

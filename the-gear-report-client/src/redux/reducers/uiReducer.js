@@ -7,7 +7,7 @@ import {
 
 const initialState = {
   loading: false,
-  errors: null
+  errors: {}
 }
 
 export default function(state = initialState, action){

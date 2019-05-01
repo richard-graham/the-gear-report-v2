@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+//Mui
 import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
@@ -13,7 +15,7 @@ export class FormUserDetails extends Component {
   }
 
   render() {
-    const { values, handleChange, classes } = this.props
+    const { values, handleChange, classes, UI: { errors } } = this.props
 
     return (
       <div className={classes.signupContainer}>
@@ -42,6 +44,8 @@ export class FormUserDetails extends Component {
             label='Email' 
             onChange={handleChange('email')}
             defaultValue={values.email}
+            error={errors.email ? true : false}
+            helperText={errors.email}
           />
           <br/>
           <TextField 
@@ -51,6 +55,8 @@ export class FormUserDetails extends Component {
             onChange={handleChange('password')}
             defaultValue={values.password}
             type='password'
+            error={errors.password ? true : false || errors.confirmPassword ? true : false}
+            helperText={errors.password || errors.confirmPassword}
           />
           <br />
           <TextField 
@@ -60,6 +66,8 @@ export class FormUserDetails extends Component {
             onChange={handleChange('confirmPassword')}
             defaultValue={values.confirmPassword}
             type='password'
+            error={errors.confirmPassword ? true : false}
+            helperText={errors.confirmPassword}
           />
           <br />
           <Button 
@@ -80,9 +88,13 @@ const styles = (theme) => ({
     margin: theme.spacing.unit * 4,
     marginBottom: theme.spacing.unit * 6
   },
-  buttonProgress: {
+  buttonProgress: { 
     position: 'absolute'
   },
 })
 
-export default withStyles(styles)(FormUserDetails)
+const mapStateToProps = state => ({
+  UI: state.UI
+})
+
+export default connect(mapStateToProps)(withStyles(styles)(FormUserDetails))
