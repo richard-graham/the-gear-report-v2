@@ -22,12 +22,12 @@ export class FormPersonalDetails extends Component {
     const { values, handleChange, classes } = this.props
 
     return (
-      <div className={classes.container}>
-        <Paper className={classes.paper}>
-        <Typography variant='h2' className={classes.header}>Welcome to the Gear Report</Typography>
+      <div className={classes.signupContainer}>
+        <Paper className={classes.signupPaper}>
+        <Typography variant='h2' className={classes.signupHeader}>Welcome to the Gear Report</Typography>
           <TextField 
             variant='outlined'
-            className={classes.textField}
+            className={classes.signupTextField}
             placeholder='Enter Your Occupation'
             label='Occupation' 
             onChange={handleChange('occupation')}
@@ -36,7 +36,7 @@ export class FormPersonalDetails extends Component {
           <br />
           <TextField 
             variant='outlined'
-            className={classes.textField}
+            className={classes.signupTextField}
             placeholder='Enter Your City'
             label='City' 
             onChange={handleChange('city')}
@@ -45,7 +45,7 @@ export class FormPersonalDetails extends Component {
           <br />
           <TextField 
             variant='outlined'
-            className={classes.textField}
+            className={classes.signupTextField}
             placeholder='Enter Your Bio'
             multiline
             rows="3"
@@ -56,7 +56,7 @@ export class FormPersonalDetails extends Component {
           <br />
           <TextField 
             variant='outlined'
-            className={classes.textField}
+            className={classes.signupTextField}
             placeholder="A short summary of work you've done at crags in the past if any..."
             multiline
             rows="3"
@@ -84,30 +84,11 @@ export class FormPersonalDetails extends Component {
 }
 
 const styles = theme => ({
+  ...theme,
   button: {
     margin: theme.spacing.unit * 2,
     marginTop: theme.spacing.unit * 4,
     marginBottom: theme.spacing.unit * 6
-  },
-  paper: {
-    width: '40%',
-    margin: 150,
-    alignSelf: 'center'
-  },
-  header: {
-    fontSize: 35,
-    padding: 20,
-    margin: 20,
-  },
-  textField: {
-    margin: theme.spacing.unit,
-    width: '60%',
-  },
-  container: {
-    width: '100%',
-    heigh: '100%',
-    display: 'flex',
-    flexDirection: 'column'
   }
 })
 

@@ -16,13 +16,13 @@ export class FormUserDetails extends Component {
     const { values, handleChange, classes } = this.props
 
     return (
-      <div className={classes.container}>
+      <div className={classes.signupContainer}>
         
-        <Paper className={classes.paper}>
-        <Typography variant='h2' className={classes.header}>Welcome to the Gear Report</Typography>
+        <Paper className={classes.signupPaper}>
+        <Typography variant='h2' className={classes.signupHeader}>Welcome to the Gear Report</Typography>
           <TextField 
             variant='outlined'
-            className={classes.textField}
+            className={classes.signupTextField}
             label='First Name' 
             onChange={handleChange('firstName')}
             defaultValue={values.firstName}
@@ -30,7 +30,7 @@ export class FormUserDetails extends Component {
           <br />
           <TextField 
             variant='outlined'
-            className={classes.textField}
+            className={classes.signupTextField}
             label='Last Name' 
             onChange={handleChange('lastName')}
             defaultValue={values.lastName}
@@ -38,7 +38,7 @@ export class FormUserDetails extends Component {
           <br />
           <TextField 
             variant='outlined'
-            className={classes.textField}
+            className={classes.signupTextField}
             label='Email' 
             onChange={handleChange('email')}
             defaultValue={values.email}
@@ -46,7 +46,7 @@ export class FormUserDetails extends Component {
           <br/>
           <TextField 
             variant='outlined'
-            className={classes.textField}
+            className={classes.signupTextField}
             label='Password' 
             onChange={handleChange('password')}
             defaultValue={values.password}
@@ -55,7 +55,7 @@ export class FormUserDetails extends Component {
           <br />
           <TextField 
             variant='outlined'
-            className={classes.textField}
+            className={classes.signupTextField}
             label='Confirm Password' 
             onChange={handleChange('confirmPassword')}
             defaultValue={values.confirmPassword}
@@ -64,7 +64,7 @@ export class FormUserDetails extends Component {
           <br />
           <Button 
             color='primary'
-            className={classes.button}
+            className={classes.signupMultiButton}
             onClick={this.continue}
             variant="contained"
           >Continue</Button>
@@ -74,31 +74,15 @@ export class FormUserDetails extends Component {
   }
 }
 
-const styles = theme => ({
+const styles = (theme) => ({
+  ...theme,
   button: {
     margin: theme.spacing.unit * 4,
     marginBottom: theme.spacing.unit * 6
   },
-  paper: {
-    width: '40%',
-    margin: 150,
-    alignSelf: 'center'
+  buttonProgress: {
+    position: 'absolute'
   },
-  header: {
-    fontSize: 35,
-    padding: 20,
-    margin: 20,
-  },
-  textField: {
-    margin: theme.spacing.unit,
-    width: '60%',
-  },
-  container: {
-    width: '100%',
-    heigh: '100%',
-    display: 'flex',
-    flexDirection: 'column'
-  }
 })
 
 export default withStyles(styles)(FormUserDetails)
