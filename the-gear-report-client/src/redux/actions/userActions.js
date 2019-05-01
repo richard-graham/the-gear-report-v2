@@ -80,7 +80,7 @@ export const getUserData = () => (dispatch) => {
   dispatch({ type: LOADING_USER })
   axios.get('/user')
     .then(res => {
-      console.log('trying to load user');
+      console.log(res.data.credentials);
       dispatch({ 
         type: SET_USER,
         payload: res.data
