@@ -6,21 +6,6 @@ import NewUserForm from '../components/pages/signup/NewUserForm'
 //mui
 import { withStyles } from '@material-ui/core/styles';
 
-const styles = theme => ({
-  root: {
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center'
-  },
-  content: {
-    width: '95%',
-    maxWidth: 1400,
-    [theme.breakpoints.down('sm')]: {
-      width: '100%'
-    },
-  }
-})
-
 export class RouteDisplay extends Component {
   render() {
     const { classes } = this.props
@@ -44,5 +29,20 @@ export class RouteDisplay extends Component {
     )
   }
 }
+
+const styles = theme => ({
+  root: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  content: {
+    width: '95%',
+    maxWidth: 1400,
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
+    },
+  }
+})
 
 export default withStyles(styles)(RouteDisplay)

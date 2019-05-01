@@ -25,7 +25,7 @@ const styles = theme => ({
   grow: {
     flexGrow: 1,
   },
-  title: {
+  navTitle: {
     display: 'none',
     [theme.breakpoints.up('sm')]: {
       display: 'block',
@@ -166,7 +166,7 @@ class NavBar extends React.Component {
 
     return (
       <Fragment>
-        <Typography className={classes.title} variant="h6" color="inherit" noWrap>
+        <Typography className={classes.navTitle} variant="h6" color="inherit" noWrap>
           The Gear Report
         </Typography>
         <div className={classes.grow} />
