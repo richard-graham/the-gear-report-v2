@@ -9,12 +9,15 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
+import { connect } from 'react-redux'
 //icons
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+// Redux
+
 
 
 const styles = theme => ({
@@ -87,6 +90,10 @@ const styles = theme => ({
       display: 'none',
     },
   },
+  navAccountCircle: {
+    maxWidth: 30,
+    borderRadius: '50%'
+  }
 });
 
 class NavBar extends React.Component {
@@ -114,7 +121,7 @@ class NavBar extends React.Component {
 
   render() {
     const { anchorEl, mobileMoreAnchorEl } = this.state;
-    const { classes } = this.props;
+    const { classes, user: { loading, credentials: { imageUrl }}, } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -200,7 +207,7 @@ class NavBar extends React.Component {
             onClick={this.handleProfileMenuOpen}
             color="inherit"
           >
-            <AccountCircle />
+            {imageUrl ? <img src={imageUrl} className={classes.navAccountCircle} /> : <AccountCircle />}
           </IconButton>
         </div>
         <div className={classes.sectionMobile}>
@@ -219,4 +226,8 @@ NavBar.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(NavBar);
+const mapStateToProps = state => ({
+  user: state.user
+})
+
+export default connect(mapStateToProps)(withStyles(styles)(NavBar))
