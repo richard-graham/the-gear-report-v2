@@ -16,15 +16,16 @@ exports.validateSignUpData = (data) => {
   let errors = {}
 
   if (isEmpty(data.email)) {
-    errors.email = 'Must not be empty'
+    errors.email = 'Email must not be empty'
   } else if (!isEmail(data.email)) {
     errors.email = 'Must be a valid email address'
   }
 
-  if (isEmpty(data.password)) errors.password = 'Must not be empty'
+  if (isEmpty(data.password)) errors.password = 'Password must not be empty'
+  if (!data.password || !data.confirmPassword) errors.password = 'Password must not be empty'
   if (data.password !== data.confirmPassword) errors.confirmPassword = 'Passwords must match'
-  if (isEmpty(data.handle)) errors.handle = 'Must not be empty'
-
+  if (isEmpty(data.handle)) errors.handle = 'Name must not be empty'
+  if (isEmpty(data.city)) errors.city = 'City must not be empty'
   return {
     errors,
     valid: Object.keys(errors).length === 0 ? true : false
@@ -49,7 +50,7 @@ exports.reduceUserDetails = (data) => {
   // makes sure we don't submit empty strings overwriting prev user data
 
   if(!isEmpty(data.bio.trim())) userDetails.bio = data.bio
-  if(!isEmpty(data.location.trim())) userDetails.location = data.location
+  if(!isEmpty(data.city.trim())) userDetails.city = data.city
   if(!isEmpty(data.website.trim())){
     // validate if user enters www.test.com as opposed to http://www.test.com
     if(data.website.trim().substring(0, 4) !== 'http'){

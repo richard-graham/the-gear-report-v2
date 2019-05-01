@@ -16,7 +16,11 @@ exports.signup = (req, res) => {
     password: req.body.password,
     confirmPassword: req.body.confirmPassword,
     handle: req.body.handle,
+    city: req.body.city,
+    location: req.body.location,
+    bio: req.body.bio,
   }
+  
 
   const { valid, errors } = validateSignUpData(newUser)
 
@@ -50,7 +54,8 @@ exports.signup = (req, res) => {
         email:newUser.email,
         createdAt: new Date().toISOString(),
         imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${noImg}?alt=media`,
-        userId: userId
+        userId: userId,
+        city: newUser.city
       }
       return db.doc(`/users/${newUser.handle}`).set(userCredentials)
     })
@@ -104,6 +109,7 @@ exports.login = (req, res) => {
 // ADD USER
 
 exports.addUserDetails = (req,res) => {
+  console.log(req.body);
   let userDetails = reduceUserDetails(req.body)
 
   db.doc(`/users/${req.user.handle}`)
@@ -142,7 +148,6 @@ exports.getAuthenticatedUser = (req, res) => {
     })
     .then(data => {
       userData.notifications = []
-      console.log(data);
       data.forEach(doc => {
         userData.notifications.push({
           recipient: doc.data().recipient,
@@ -211,10 +216,6 @@ exports.uploadImage = (req, res) => {
   const busboy = new BusBoy({ headers: req.headers })
 
   busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
-
-    // console.log('fieldname', fieldname)  image
-    // console.log('filename', filename)    user-image.png   
-    // console.log('mimetype', mimetype)    image/png
 
     // validation
 
