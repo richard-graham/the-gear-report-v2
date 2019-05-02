@@ -12,55 +12,8 @@ import Hidden from '@material-ui/core/Hidden'
 import AppBarMarkup from './AppBarMarkup'
 import MobileAppBarMarkup from './MobileAppBarMarkup'
 
-const drawerWidth = 240;
-
 const styles = theme => ({
-  ...theme,
-  root: {
-    display: 'flex',
-  },
-  drawer: {
-    [theme.breakpoints.up('md')]: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-  },
-  menuButton: {
-    marginLeft: 12,
-    marginRight: 20,
-  },
-  nested: {
-    paddingLeft: theme.spacing.unit * 2,
-  },
-  hide: {
-    display: 'none',
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing.unit * 3,
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: -drawerWidth,
-  },
-  contentShift: {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  },
+  ...theme
 });
 
 class Navigation extends Component {
@@ -95,7 +48,7 @@ class Navigation extends Component {
   const { open, mobileOpen } = this.state
 
     return (
-      <div className={classes.root}>
+      <div className={classes.navRoot}>
         <CssBaseline />
         <Hidden mdUp implementation="css">
           <MobileAppBarMarkup mobileOpen={mobileOpen} handleMobileDrawerOpen={this.handleMobileDrawerOpen} />
@@ -104,7 +57,7 @@ class Navigation extends Component {
           <AppBarMarkup open={open} handleDrawerOpen={this.handleDrawerOpen} />
         </Hidden>
 
-        <nav className={classes.drawer}>
+        <nav className={classes.navDrawer}>
 
           <Hidden mdUp implementation="css">
             <Drawer
@@ -114,7 +67,7 @@ class Navigation extends Component {
               open={mobileOpen}
               onClose={this.handleMobileDrawerClose}
               classes={{
-                paper: classes.drawerPaper,
+                paper: classes.navDrawerPaper,
               }}
             >
               <DrawerMarkup
@@ -129,7 +82,7 @@ class Navigation extends Component {
           <Hidden smDown implementation="css">
             <Drawer
               classes={{
-                paper: classes.drawerPaper,
+                paper: classes.navDrawerPaper,
               }}
               variant="persistent"
               open={open}
@@ -146,14 +99,13 @@ class Navigation extends Component {
         </nav>
         
         <main
-          className={classNames(classes.content, {
-            [classes.contentShift]: open,
+          className={classNames(classes.navContent, {
+            [classes.navContentShift]: open,
           })}
         >
-          <div className={classes.drawerHeader} />
+          <div className={classes.navDrawerHeader} />
            
           <RouteDisplay />
-
 
         </main>
       </div>

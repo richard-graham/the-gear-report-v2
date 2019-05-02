@@ -1,6 +1,7 @@
 import { createMuiTheme } from "@material-ui/core/styles";
 
 const defaultTheme = createMuiTheme({ typography: { useNextVariants: true } })
+const navDrawerWidth = 240;
 
 export default {
   typography: {
@@ -87,5 +88,40 @@ export default {
     width: 30,
     height: 30,
     margin: 0,
+  },
+  navRoot: {
+    display: 'flex',
+  },
+  navDrawer: {
+    [defaultTheme.breakpoints.up('md')]: {
+      width: navDrawerWidth,
+      flexShrink: 0,
+    },
+  },
+  navDrawerPaper: {
+    width: navDrawerWidth,
+  },
+  navDrawerHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: '0 8px',
+    ...defaultTheme.mixins.toolbar,
+    justifyContent: 'flex-end',
+  },
+  navContent: {
+    flexGrow: 1,
+    padding: defaultTheme.spacing.unit * 3,
+    transition: defaultTheme.transitions.create('margin', {
+      easing: defaultTheme.transitions.easing.sharp,
+      duration: defaultTheme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: -navDrawerWidth,
+  },
+  navContentShift: {
+    transition: defaultTheme.transitions.create('margin', {
+      easing: defaultTheme.transitions.easing.easeOut,
+      duration: defaultTheme.transitions.duration.enteringScreen,
+    }),
+    marginLeft: 0,
   },
 }
