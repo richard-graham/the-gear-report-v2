@@ -6,7 +6,7 @@ export default {
   typography: {
     useNextVariants: true,
   },
-  // signup
+  // form
   signupPaper: {
     width: '40%',
     [defaultTheme.breakpoints.down('sm')]: {
@@ -81,6 +81,11 @@ export default {
   formError: {
     color: 'red',
     fontSize: '1rem',
-    // margin: '10px auto'
+  },
+  //Nav
+  avatar: {
+    width: 30,
+    height: 30,
+    margin: 0,
   },
 }

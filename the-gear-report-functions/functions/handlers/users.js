@@ -11,16 +11,21 @@ const { validateSignUpData, validateLoginData, reduceUserDetails } = require('..
 // SIGN UP
 
 exports.signup = (req, res) => {
+
+  let avatarLetters = ''
+  req.body.handle.split(' ').map((word) => {
+    avatarLetters += word.charAt(0).toUpperCase()
+  })
+
   const newUser = {
     email: req.body.email,
     password: req.body.password,
     confirmPassword: req.body.confirmPassword,
     handle: req.body.handle,
     city: req.body.city,
-    location: req.body.location,
     bio: req.body.bio,
+    avatarLetters: avatarLetters,
   }
-  
 
   const { valid, errors } = validateSignUpData(newUser)
 
@@ -54,7 +59,9 @@ exports.signup = (req, res) => {
         email:newUser.email,
         createdAt: new Date().toISOString(),
         userId: userId,
-        city: newUser.city
+        city: newUser.city,
+        avatarLetters: newUser.avatarLetters,
+        bio: newUser.bio,ß
       }
       return db.doc(`/users/${newUser.handle}`).set(userCredentials)
     })

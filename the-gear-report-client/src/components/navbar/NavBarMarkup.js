@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux'
 //Mui
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -9,7 +10,7 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import { connect } from 'react-redux'
+import Avatar from '@material-ui/core/Avatar';
 //icons
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -21,6 +22,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 
 
 const styles = theme => ({
+  ...theme,
   root: {
     width: '100%',
     display: 'flex'
@@ -121,7 +123,7 @@ class NavBar extends React.Component {
 
   render() {
     const { anchorEl, mobileMoreAnchorEl } = this.state;
-    const { classes, user: { loading, credentials: { imageUrl }}, } = this.props;
+    const { classes, user: { loading, credentials: { avatarLetters }}, } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -207,7 +209,7 @@ class NavBar extends React.Component {
             onClick={this.handleProfileMenuOpen}
             color="inherit"
           >
-            {imageUrl ? <img src={imageUrl} className={classes.navAccountCircle} /> : <AccountCircle />}
+            {avatarLetters ? <Avatar className={classes.avatar}>{avatarLetters.charAt(0)}</Avatar> : <AccountCircle />}
           </IconButton>
         </div>
         <div className={classes.sectionMobile}>
