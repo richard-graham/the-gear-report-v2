@@ -8,35 +8,30 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
-
-
-class AppBarMarkup extends Component {
-
+class MobileAppBarMarkup extends Component { 
   render() {
-    const { classes, open, handleDrawerOpen } = this.props
-    return(
-      <Fragment>
-        <AppBar
-          position="fixed"
-          className={classNames(classes.appBar, {
-            [classes.appBarShift]: open,
-          })}
-        >
-          <Toolbar disableGutters={!open}>
-            <IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={handleDrawerOpen}
-              className={classNames(classes.menuButton, open && classes.hide)}
-            >
-              <MenuIcon />
-            </IconButton>
+    const { classes, mobileOpen, handleMobileDrawerOpen } = this.props
+    return (
+      <AppBar
+        position="fixed"
+        className={classNames(classes.appBar, {
+          [classes.appBarShift]: mobileOpen,
+        })}
+      >
+        <Toolbar disableGutters={false}>
+          <IconButton
+            color="inherit"
+            aria-label="Open drawer"
+            onClick={handleMobileDrawerOpen}
+            className={classNames(classes.menuButton, mobileOpen && classes.hide)}
+          >
+            <MenuIcon />
+          </IconButton>
 
-            <NavBarMarkup />
+          <NavBarMarkup />
 
-          </Toolbar>
-        </AppBar>
-      </Fragment>
+        </Toolbar>
+      </AppBar>
     )
   }
 }
@@ -68,4 +63,4 @@ const styles = theme => ({
   },
 })
 
-export default withStyles(styles)(AppBarMarkup)
+export default withStyles(styles)(MobileAppBarMarkup)

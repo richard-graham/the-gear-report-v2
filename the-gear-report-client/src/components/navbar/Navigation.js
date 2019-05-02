@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { DrawerMarkup } from './DrawerMarkup'
@@ -7,34 +7,17 @@ import RouteDisplay from '../../util/RouteDisplay'
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import Hidden from '@material-ui/core/Hidden'
 
-import NavBarContents from './NavBarMarkup'
-
+import AppBarMarkup from './AppBarMarkup'
+import MobileAppBarMarkup from './MobileAppBarMarkup'
 
 const drawerWidth = 240;
 
 const styles = theme => ({
+  ...theme,
   root: {
     display: 'flex',
-  },
-  appBar: {
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
   },
   drawer: {
     [theme.breakpoints.up('md')]: {
@@ -80,7 +63,7 @@ const styles = theme => ({
   },
 });
 
-class Navigation extends React.Component {
+class Navigation extends Component {
   state = {
     open: true, 
     mobileOpen: false,
@@ -108,67 +91,17 @@ class Navigation extends React.Component {
   }
 
   render() {
-    const { classes, theme } = this.props;
-    const { open, mobileOpen } = this.state
-
-  const appBarMarkup = (
-    <Fragment>
-      <AppBar
-          position="fixed"
-          className={classNames(classes.appBar, {
-            [classes.appBarShift]: open,
-          })}
-        >
-          <Toolbar disableGutters={!open}>
-            <IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={this.handleDrawerOpen}
-              className={classNames(classes.menuButton, open && classes.hide)}
-            >
-              <MenuIcon />
-            </IconButton>
-
-            <NavBarContents />
-
-          </Toolbar>
-        </AppBar>
-    </Fragment>
-  )
-
-  const mobileAppBarMarkup = (
-    <AppBar
-          position="fixed"
-          className={classNames(classes.appBar, {
-            [classes.appBarShift]: mobileOpen,
-          })}
-        >
-          <Toolbar disableGutters={false}>
-            <IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={this.handleMobileDrawerOpen}
-              className={classNames(classes.menuButton, mobileOpen && classes.hide)}
-            >
-              <MenuIcon />
-            </IconButton>
-
-            <NavBarContents />
-
-          </Toolbar>
-        </AppBar>
-  )
-
-
+  const { classes, theme } = this.props;
+  const { open, mobileOpen } = this.state
 
     return (
       <div className={classes.root}>
         <CssBaseline />
         <Hidden mdUp implementation="css">
-          {mobileAppBarMarkup}
+          <MobileAppBarMarkup mobileOpen={mobileOpen} handleMobileDrawerOpen={this.handleMobileDrawerOpen} />
         </Hidden>
         <Hidden smDown implementation="css">
-          {appBarMarkup}
+          <AppBarMarkup open={open} handleDrawerOpen={this.handleDrawerOpen} />
         </Hidden>
 
         <nav className={classes.drawer}>
