@@ -104,7 +104,8 @@ DrawerMarkup.propTypes = {
 };
 
 const styles = theme => ({
-  ...theme
+  ...theme,
+  
 })
 
 export default withStyles(styles)(DrawerMarkup)

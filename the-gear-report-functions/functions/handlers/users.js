@@ -22,10 +22,12 @@ exports.signup = (req, res) => {
     password: req.body.password,
     confirmPassword: req.body.confirmPassword,
     handle: req.body.handle,
-    city: req.body.city,
-    bio: req.body.bio,
+    city: req.body.city ? req.body.city : '',
+    bio: req.body.bio ? req.body.bio : '',
     avatarLetters: avatarLetters,
   }
+
+  console.log(newUser);
 
   const { valid, errors } = validateSignUpData(newUser)
 
@@ -59,9 +61,10 @@ exports.signup = (req, res) => {
         email:newUser.email,
         createdAt: new Date().toISOString(),
         userId: userId,
+        // imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${noImg}?alt=media`,
         city: newUser.city,
         avatarLetters: newUser.avatarLetters,
-        bio: newUser.bio,ß
+        bio: newUser.bio,
       }
       return db.doc(`/users/${newUser.handle}`).set(userCredentials)
     })
@@ -94,7 +97,7 @@ exports.login = (req, res) => {
   if(Object.keys(errors).length > 0) return res.status(400).json(errors)
 
   // Login
-
+  console.log(user);
   firebase
     .auth()
     .signInWithEmailAndPassword(user.email, user.password)
@@ -133,6 +136,7 @@ exports.addUserDetails = (req,res) => {
 
 exports.getAuthenticatedUser = (req, res) => {
   let userData = {}
+  // console.log(req.user.handle);
   db.doc(`/users/${req.user.handle}`)
     .get()
     .then(doc => {
@@ -142,6 +146,7 @@ exports.getAuthenticatedUser = (req, res) => {
       }
     })
     .then(data => {
+      console.log(data);
       userData.likes = []
       data.forEach(doc => {
         userData.likes.push(doc.data())

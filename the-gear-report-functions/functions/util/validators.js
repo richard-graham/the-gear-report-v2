@@ -1,4 +1,5 @@
 const isEmpty = (string) => {
+  if (!string) return true
   if (string.trim() === '') return true
   else return false 
 }
@@ -14,7 +15,7 @@ const isEmail = (email) => {
 
 exports.validateSignUpData = (data) => {
   let errors = {}
-
+  console.log(data);
   if (isEmpty(data.email)) {
     errors.email = 'Email must not be empty'
   } else if (!isEmail(data.email)) {

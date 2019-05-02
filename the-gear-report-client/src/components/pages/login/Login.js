@@ -60,7 +60,7 @@ export class Login extends Component {
             type='password'
           />
           <br />
-          {errors.general && <Fragment><br /><Typography className={classes.formError}>{errors.general}</Typography></Fragment>}
+          {errors && <Fragment><br /><Typography className={classes.formError}>{errors.general}</Typography></Fragment>}
           <Button 
             color='primary'
             className={classes.signupMultiButton}
