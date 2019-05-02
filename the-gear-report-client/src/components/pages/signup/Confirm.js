@@ -46,7 +46,7 @@ export class FormPersonalDetails extends Component {
 
     return (
       <div className={classes.formContainer}>
-        <Paper className={classes.formPaper}>
+        <Paper className={classes.signupPaper}>
           <Typography variant='h2' className={classes.formHeader}>Welcome to the Gear Report</Typography>
           <List>
             <ListItemText 
@@ -83,7 +83,7 @@ export class FormPersonalDetails extends Component {
           </List>
           <br />
           {errors && (
-              Object.values(errors).map(error => <Typography variant='h2' className={classes.signupError}>{error}</Typography>)
+              Object.values(errors).map(error => <Typography variant='h2' className={classes.formError}>{error}</Typography>)
               )}
           <Button 
             color='secondary'

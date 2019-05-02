@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { loginUser } from '../../../redux/actions/userActions'
 import { connect } from 'react-redux'
@@ -35,11 +35,11 @@ export class Login extends Component {
   }
 
   render() {
-    const { classes, UI: { loading } } = this.props
+    const { classes, UI: { loading, errors } } = this.props
     const { email, password } = this.state
     return (
       <div className={classes.formContainer}>
-        <Paper className={classes.formPaper}>
+        <Paper className={classes.loginPaper}>
         <Typography variant='h2' className={classes.formHeader}>Welcome to the Gear Report</Typography>
           <TextField 
             variant='outlined'
@@ -60,6 +60,7 @@ export class Login extends Component {
             type='password'
           />
           <br />
+          {errors.general && <Fragment><br /><Typography className={classes.formError}>{errors.general}</Typography></Fragment>}
           <Button 
             color='primary'
             className={classes.signupMultiButton}

@@ -24,7 +24,7 @@ export class FormPersonalDetails extends Component {
 
     return (
       <div className={classes.formContainer}>
-        <Paper className={classes.formPaper}>
+        <Paper className={classes.signupPaper}>
         <Typography variant='h2' className={classes.formHeader}>Welcome to the Gear Report</Typography>
           <TextField 
             variant='outlined'

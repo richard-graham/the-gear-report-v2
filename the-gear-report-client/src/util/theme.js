@@ -7,7 +7,7 @@ export default {
     useNextVariants: true,
   },
   // signup
-  formPaper: {
+  signupPaper: {
     width: '40%',
     [defaultTheme.breakpoints.down('sm')]: {
       width: '100%',
@@ -15,10 +15,28 @@ export default {
       minWidth: 0,
       maxWidth: 480
     },
+    [defaultTheme.breakpoints.down('lg')]: {
+      marginTop: 50
+    },
     marginTop: 150,
     alignSelf: 'center',
     minWidth: 520,
     minHeight: 591,
+  },
+  loginPaper: {
+    width: '40%',
+    [defaultTheme.breakpoints.down('sm')]: {
+      width: '100%',
+      margin: 30,
+      minWidth: 0,
+      maxWidth: 480
+    },
+    [defaultTheme.breakpoints.down('lg')]: {
+      marginTop: 50
+    },
+    marginTop: 150,
+    alignSelf: 'center',
+    minWidth: 520,
   },
   formHeader: {
     fontSize: 35,
@@ -60,7 +78,7 @@ export default {
     marginTop: defaultTheme.spacing.unit * 4,
     marginBottom: defaultTheme.spacing.unit * 6
   },
-  signupError: {
+  formError: {
     color: 'red',
     fontSize: '1rem',
     // margin: '10px auto'
