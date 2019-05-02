@@ -1,7 +1,9 @@
 import { createMuiTheme } from "@material-ui/core/styles";
+import { fade } from '@material-ui/core/styles/colorManipulator';
 
 const defaultTheme = createMuiTheme({ typography: { useNextVariants: true } })
 const navDrawerWidth = 240;
+
 
 export default {
   typography: {
@@ -127,4 +129,79 @@ export default {
     }),
     marginLeft: 0,
   },
+  //NavBarMarkup
+  navRoot: {
+    width: '100%',
+    display: 'flex'
+  },
+  navGrow: {
+    flexGrow: 1,
+  },
+  navTitle: {
+    display: 'none',
+    textDecoration: 'none',
+    [defaultTheme.breakpoints.up('sm')]: {
+      display: 'block',
+    },
+  },
+  navSearch: {
+    position: 'relative',
+    borderRadius: defaultTheme.shape.borderRadius,
+    backgroundColor: fade(defaultTheme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: fade(defaultTheme.palette.common.white, 0.25),
+    },
+    marginRight: defaultTheme.spacing.unit * 2,
+    marginLeft: 0,
+    width: '100%',
+    [defaultTheme.breakpoints.up('sm')]: {
+      marginLeft: defaultTheme.spacing.unit * 3,
+      width: 'auto',
+    },
+    [defaultTheme.breakpoints.up('md')]: {
+      marginLeft: defaultTheme.spacing.unit * 3,
+      width: 300,
+    },
+  },
+  navSearchIcon: {
+    width: defaultTheme.spacing.unit * 9,
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  navInputRoot: {
+    color: 'inherit',
+    width: '100%',
+  },
+  navInputInput: {
+    paddingTop: defaultTheme.spacing.unit,
+    paddingRight: defaultTheme.spacing.unit,
+    paddingBottom: defaultTheme.spacing.unit,
+    paddingLeft: defaultTheme.spacing.unit * 10,
+    transition: defaultTheme.transitions.create('width'),
+    width: '100%',
+    [defaultTheme.breakpoints.up('md')]: {
+      width: 200,
+    },
+  },
+  navSectionDesktop: {
+    display: 'none',
+    [defaultTheme.breakpoints.up('md')]: {
+      display: 'flex',
+    },
+
+  },
+  navSectionMobile: {
+    display: 'flex',
+    [defaultTheme.breakpoints.up('md')]: {
+      display: 'none',
+    },
+  },
+  navAccountCircle: {
+    maxWidth: 30,
+    borderRadius: '50%'
+  }
 }

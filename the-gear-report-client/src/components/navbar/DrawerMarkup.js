@@ -49,7 +49,7 @@ export class DrawerMarkup extends Component {
         <Divider />
         <List>
           {['Home', 'Alerts', 'Subscriptions'].map((text) => {
-            const link = text == 'Home' ? '' : text.toLowerCase()
+            const link = text === 'Home' ? '' : text.toLowerCase()
             return (
               <ListItem button key={text} component={Link} to={`/${link}`}>
                 {getIcon(text)}
@@ -58,7 +58,6 @@ export class DrawerMarkup extends Component {
             )
           })}
         </List>
-        <Divider />
         <List>
           {['Events', 'Route Finder'].map((text) => (      
               <ListItem button key={text} component={Link} to={`/${text.toLowerCase()}`}>

@@ -12,7 +12,7 @@ import L from 'leaflet'
 const styles = {
   map: {
     height: '100%',
-    // width: '80%'
+    width: '100%'
   }
 }
 
