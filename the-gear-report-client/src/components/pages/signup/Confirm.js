@@ -45,9 +45,9 @@ export class FormPersonalDetails extends Component {
     const { values: { firstName, lastName, email, occupation, city, bio }, UI: { loading }, classes, handleSubmit, errors } = this.props
 
     return (
-      <div className={classes.signupContainer}>
-        <Paper className={classes.signupPaper}>
-          <Typography variant='h2' className={classes.signupHeader}>Welcome to the Gear Report</Typography>
+      <div className={classes.formContainer}>
+        <Paper className={classes.formPaper}>
+          <Typography variant='h2' className={classes.formHeader}>Welcome to the Gear Report</Typography>
           <List>
             <ListItemText 
               primary='First Name'

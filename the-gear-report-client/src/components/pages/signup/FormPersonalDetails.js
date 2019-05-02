@@ -23,9 +23,9 @@ export class FormPersonalDetails extends Component {
     const { values, handleChange, classes, UI: { errors } } = this.props
 
     return (
-      <div className={classes.signupContainer}>
-        <Paper className={classes.signupPaper}>
-        <Typography variant='h2' className={classes.signupHeader}>Welcome to the Gear Report</Typography>
+      <div className={classes.formContainer}>
+        <Paper className={classes.formPaper}>
+        <Typography variant='h2' className={classes.formHeader}>Welcome to the Gear Report</Typography>
           <TextField 
             variant='outlined'
             className={classes.signupTextField}

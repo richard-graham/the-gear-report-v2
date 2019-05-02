@@ -7,7 +7,7 @@ export default {
     useNextVariants: true,
   },
   // signup
-  signupPaper: {
+  formPaper: {
     width: '40%',
     [defaultTheme.breakpoints.down('sm')]: {
       width: '100%',
@@ -20,7 +20,7 @@ export default {
     minWidth: 520,
     minHeight: 591,
   },
-  signupHeader: {
+  formHeader: {
     fontSize: 35,
     padding: 20,
     margin: 20,
@@ -41,7 +41,7 @@ export default {
       width: '85%'
     }
   },
-  signupContainer: {
+  formContainer: {
     width: '100%',
     heigh: '100%',
     display: 'flex',
