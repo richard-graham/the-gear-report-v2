@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import NavBarMarkup from './NavBarMarkup'
 import classNames from 'classnames';
 //Mui
@@ -8,7 +8,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
-class MobileAppBarMarkup extends Component { 
+class MobileAppBarMarkup extends Component {
+
   render() {
     const { classes, mobileOpen, handleMobileDrawerOpen } = this.props
     return (

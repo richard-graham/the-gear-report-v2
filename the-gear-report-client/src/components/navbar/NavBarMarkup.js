@@ -123,7 +123,7 @@ class NavBar extends React.Component {
 
   render() {
     const { anchorEl, mobileMoreAnchorEl } = this.state;
-    const { classes, user: { loading, credentials: { avatarLetters }}, } = this.props;
+    const { classes, user: { credentials: { avatarLetters }}, } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 

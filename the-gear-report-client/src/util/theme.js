@@ -116,6 +116,9 @@ export default {
       duration: defaultTheme.transitions.duration.leavingScreen,
     }),
     marginLeft: -navDrawerWidth,
+    [defaultTheme.breakpoints.down('sm')]: {
+      marginLeft: 0
+    }
   },
   navContentShift: {
     transition: defaultTheme.transitions.create('margin', {

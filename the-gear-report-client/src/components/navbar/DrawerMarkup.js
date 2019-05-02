@@ -3,6 +3,7 @@ import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { getIcon } from '../../util/getIcon'
 
+import {withStyles} from '@material-ui/core/styles'
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -39,7 +40,7 @@ export class DrawerMarkup extends Component {
 
     return (
       <Fragment>
-        <div className={classes.drawerHeader}>
+        <div className={classes.navDrawerHeader}>
           <IconButton onClick={handleDrawerClose}>
             <ChevronLeftIcon /> 
           </IconButton>
@@ -102,4 +103,8 @@ DrawerMarkup.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default DrawerMarkup
+const styles = theme => ({
+  ...theme
+})
+
+export default withStyles(styles)(DrawerMarkup)
