@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 
 import PropTypes from 'prop-types'
 import { getIcon } from '../../util/getIcon'
+import { Link } from 'react-router-dom'
 
 import {withStyles} from '@material-ui/core/styles'
 import List from '@material-ui/core/List';
@@ -47,20 +48,23 @@ export class DrawerMarkup extends Component {
         </div>
         <Divider />
         <List>
-          {['Home', 'Alerts', 'Subscriptions'].map((text) => (
-            <ListItem button key={text}>
-              {getIcon(text)}
-            <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          {['Home', 'Alerts', 'Subscriptions'].map((text) => {
+            const link = text == 'Home' ? '' : text.toLowerCase()
+            return (
+              <ListItem button key={text} component={Link} to={`/${link}`}>
+                {getIcon(text)}
+                <ListItemText primary={text} />
+              </ListItem>
+            )
+          })}
         </List>
         <Divider />
         <List>
-          {['Events', 'Route Finder'].map((text) => (
-            <ListItem button key={text}>
-              {getIcon(text)}
-              <ListItemText primary={text} />
-            </ListItem>
+          {['Events', 'Route Finder'].map((text) => (      
+              <ListItem button key={text} component={Link} to={`/${text.toLowerCase()}`}>
+                {getIcon(text)}
+                <ListItemText primary={text} />
+              </ListItem> 
           ))}
       
           <ListItem button onClick={handleToggleSubsList}>
@@ -79,7 +83,7 @@ export class DrawerMarkup extends Component {
             </List>
           </Collapse>
 
-          <ListItem button key='Contributors'>
+          <ListItem component={Link} to='/contributors' button key='Contributors'>
             {getIcon('Contributors')}
             <ListItemText primary='Contributors' />
           </ListItem>
@@ -88,11 +92,11 @@ export class DrawerMarkup extends Component {
 
         <List>
           {['About', 'FAQ', 'Donate', 'Send Feedback'].map((text) => (
-              <ListItem button key={text}>
+              <ListItem component={Link} to={`/${text.toLowerCase()}`} button key={text}>
                 {getIcon(text)}
                 <ListItemText primary={text} />
               </ListItem>
-            ))}
+          ))}
         </List>
       </Fragment>
     )
