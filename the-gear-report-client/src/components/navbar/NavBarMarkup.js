@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 //Mui
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -32,6 +33,7 @@ const styles = theme => ({
   },
   navTitle: {
     display: 'none',
+    textDecoration: 'none',
     [theme.breakpoints.up('sm')]: {
       display: 'block',
     },
@@ -175,9 +177,9 @@ class NavBar extends React.Component {
 
     return (
       <Fragment>
-        <Typography className={classes.navTitle} variant="h6" color="inherit" noWrap>
-          The Gear Report
-        </Typography>
+          <Typography component={Link} to='/' className={classes.navTitle} variant="h6" color="inherit" noWrap>
+            The Gear Report
+          </Typography>
         <div className={classes.grow} />
         <div className={classes.search}>
           <div className={classes.searchIcon}>

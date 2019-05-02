@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { DrawerMarkup } from './DrawerMarkup'
 import RouteDisplay from '../../util/RouteDisplay'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -48,67 +49,69 @@ class Navigation extends Component {
   const { open, mobileOpen } = this.state
 
     return (
-      <div className={classes.navRoot}>
-        <CssBaseline />
-        <Hidden mdUp implementation="css">
-          <MobileAppBarMarkup mobileOpen={mobileOpen} handleMobileDrawerOpen={this.handleMobileDrawerOpen} />
-        </Hidden>
-        <Hidden smDown implementation="css">
-          <AppBarMarkup open={open} handleDrawerOpen={this.handleDrawerOpen} />
-        </Hidden>
-
-        <nav className={classes.navDrawer}>
-
+      <Router>
+        <div className={classes.navRoot}>
+          <CssBaseline />
           <Hidden mdUp implementation="css">
-            <Drawer
-              container={this.props.container}
-              variant="temporary"
-              anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-              open={mobileOpen}
-              onClose={this.handleMobileDrawerClose}
-              classes={{
-                paper: classes.navDrawerPaper,
-              }}
-            >
-              <DrawerMarkup
-                handleDrawerClose={this.handleMobileDrawerClose}
-                handleToggleSubsList={this.handleToggleSubsList}
-                subsOpen={this.state.subsOpen}
-                classes={classes}
-              />
-            </Drawer>
+            <MobileAppBarMarkup mobileOpen={mobileOpen} handleMobileDrawerOpen={this.handleMobileDrawerOpen} />
           </Hidden>
-
           <Hidden smDown implementation="css">
-            <Drawer
-              classes={{
-                paper: classes.navDrawerPaper,
-              }}
-              variant="persistent"
-              open={open}
-              onClose={this.handleDrawerClose}
-            >
-              <DrawerMarkup 
-                handleDrawerClose={this.handleDrawerClose}
-                handleToggleSubsList={this.handleToggleSubsList}
-                subsOpen={this.state.subsOpen}
-                classes={classes}
-              />
-            </Drawer>
+            <AppBarMarkup open={open} handleDrawerOpen={this.handleDrawerOpen} />
           </Hidden>
-        </nav>
-        
-        <main
-          className={classNames(classes.navContent, {
-            [classes.navContentShift]: open,
-          })}
-        >
-          <div className={classes.navDrawerHeader} />
-           
-          <RouteDisplay />
 
-        </main>
-      </div>
+          <nav className={classes.navDrawer}>
+
+            <Hidden mdUp implementation="css">
+              <Drawer
+                container={this.props.container}
+                variant="temporary"
+                anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+                open={mobileOpen}
+                onClose={this.handleMobileDrawerClose}
+                classes={{
+                  paper: classes.navDrawerPaper,
+                }}
+              >
+                <DrawerMarkup
+                  handleDrawerClose={this.handleMobileDrawerClose}
+                  handleToggleSubsList={this.handleToggleSubsList}
+                  subsOpen={this.state.subsOpen}
+                  classes={classes}
+                />
+              </Drawer>
+            </Hidden>
+
+            <Hidden smDown implementation="css">
+              <Drawer
+                classes={{
+                  paper: classes.navDrawerPaper,
+                }}
+                variant="persistent"
+                open={open}
+                onClose={this.handleDrawerClose}
+              >
+                <DrawerMarkup 
+                  handleDrawerClose={this.handleDrawerClose}
+                  handleToggleSubsList={this.handleToggleSubsList}
+                  subsOpen={this.state.subsOpen}
+                  classes={classes}
+                />
+              </Drawer>
+            </Hidden>
+          </nav>
+          
+          <main
+            className={classNames(classes.navContent, {
+              [classes.navContentShift]: open,
+            })}
+          >
+            <div className={classes.navDrawerHeader} />
+            
+            <RouteDisplay />
+
+          </main>
+        </div>
+      </Router>
     );
   }
 }

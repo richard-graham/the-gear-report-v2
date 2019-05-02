@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { BrowserRouter as Router, Route, Switch  } from 'react-router-dom'
+import { Route, Switch  } from 'react-router-dom'
 import home from '../pages/home'
 import NewUserForm from '../components/pages/signup/NewUserForm'
 import Login from '../components/pages/login/Login'
@@ -14,7 +14,6 @@ export class RouteDisplay extends Component {
       <Fragment>
         <div className={classes.root}>
           <div className={classes.content}>
-            <Router>
               
               <Switch>
                 
@@ -24,7 +23,6 @@ export class RouteDisplay extends Component {
 
               </Switch>
               
-            </Router>
           </div>
         </div>
       </Fragment>
@@ -42,6 +40,7 @@ const styles = theme => ({
     width: '95%',
     maxWidth: 1400,
     [theme.breakpoints.down('sm')]: {
+      minWidth: 240,
       width: '100%'
     },
   }
