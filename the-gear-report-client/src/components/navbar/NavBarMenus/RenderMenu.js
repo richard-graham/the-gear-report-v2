@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { logoutUser } from '../../../redux/actions/userActions'
 import { Link } from 'react-router-dom'
@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
+import MenuList from '@material-ui/core/MenuList'
 import Divider from '@material-ui/core/Divider'
 
 class RenderMenu extends Component {
@@ -18,7 +19,6 @@ class RenderMenu extends Component {
       anchorEl, 
       isMenuOpen, 
       handleMenuClose, 
-      classes, 
       user: { authenticated }
     } = this.props
     return (
@@ -30,20 +30,18 @@ class RenderMenu extends Component {
         open={isMenuOpen}
         onClose={handleMenuClose}
       >
-        <div className={classes.menuMenu}>
-          <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-          <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-          <Divider variant="middle" />
-          { authenticated ?
-          <MenuItem 
-            onClick={this.handleLogout}
-          >Logout</MenuItem> :
-          <Fragment>
-            <MenuItem onClick={handleMenuClose} component={Link} to='/login'>Sign In</MenuItem>
-            <MenuItem onClick={handleMenuClose} component={Link} to='/signup'>Register</MenuItem>
-          </Fragment>
-          }
-        </div>  
+        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+        <Divider variant="middle" />
+        { authenticated ?
+        <MenuItem 
+          onClick={this.handleLogout}
+        >Logout</MenuItem> :
+        <MenuList>
+          <MenuItem onClick={handleMenuClose} component={Link} to='/login'>Sign In</MenuItem>
+          <MenuItem onClick={handleMenuClose} component={Link} to='/signup'>Register</MenuItem>
+        </MenuList>
+        }
       </Menu>
     )
   }
