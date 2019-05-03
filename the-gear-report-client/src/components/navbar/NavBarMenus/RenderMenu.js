@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux'
-import { logoutUser, updateUserLocation, updateUserCountry } from '../../../redux/actions/userActions'
+import { logoutUser } from '../../../redux/actions/userActions'
 import { Link } from 'react-router-dom'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
@@ -10,9 +10,7 @@ import Divider from '@material-ui/core/Divider'
 
 class RenderMenu extends Component {
   handleLogout = () => {
-    this.props.logoutTheUser()
-    this.props.updateTheUserLocation()
-    this.props.updateUserCountry()
+    this.props.logoutUser()
     this.props.handleMenuClose()
   }
   render() {
@@ -61,9 +59,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    logoutTheUser: () => dispatch(logoutUser()),
-    updateTheUserLocation: () => dispatch(updateUserLocation()),
-    updateUserCountry: () => dispatch(updateUserCountry())
+    logoutUser: () => dispatch(logoutUser())
   }
 }
 

@@ -23,6 +23,14 @@ const initialState = {
   countryName: ''
 }
 
+const logoutState = {
+  authenticated: false,
+  loading:false,
+  credentials: {},
+  likes: [],
+  notifications: []
+}
+
 export default function(state = initialState, action){
   switch(action.type){
     case SET_USER_LOCATION:
@@ -41,7 +49,10 @@ export default function(state = initialState, action){
         authenticated: true
       }
     case SET_UNAUTHENTICATED:
-      return initialState
+      return {
+        ...state,
+        ...logoutState
+      }
     case SET_USER:
       return {
         ...state,
