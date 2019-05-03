@@ -28,6 +28,8 @@ export class FormUserDetails extends Component {
             label='First Name' 
             onChange={handleChange('firstName')}
             defaultValue={values.firstName}
+            error={errors.handle ? true : false}
+            helperText={errors.handle}
           />
           <br />
           <TextField 
@@ -36,6 +38,8 @@ export class FormUserDetails extends Component {
             label='Last Name' 
             onChange={handleChange('lastName')}
             defaultValue={values.lastName}
+            error={errors.handle ? true : false}
+            helperText={errors.handle}
           />
           <br />
           <TextField 

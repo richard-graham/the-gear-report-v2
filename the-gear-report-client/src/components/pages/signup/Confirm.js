@@ -83,7 +83,7 @@ export class FormPersonalDetails extends Component {
           </List>
           <br />
           {errors && (
-              Object.values(errors).map(error => <Typography variant='h2' className={classes.formError}>{error}</Typography>)
+              Object.values(errors).map((error, i) => <Typography key={i} variant='h2' className={classes.formError}>{error}</Typography>)
               )}
           <Button 
             color='secondary'

@@ -6,9 +6,6 @@ import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
 import Warning from '@material-ui/icons/WarningTwoTone';
 import EditOutlined from '@material-ui/icons/EditOutlined';
-import PrintIcon from '@material-ui/icons/Print';
-import ShareIcon from '@material-ui/icons/Share';
-import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import EventIcon from '@material-ui/icons/EventAvailable'
 
