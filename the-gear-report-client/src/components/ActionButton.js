@@ -1,5 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import CreateAlert from './dialogs/CreateAlert'
+import EditAlert from './dialogs/EditAlert'
+import CreateEvent from './dialogs/CreateEvent'
+//Mui
 import { withStyles } from '@material-ui/core/styles';
 import SpeedDial from '@material-ui/lab/SpeedDial';
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
@@ -19,12 +23,18 @@ const styles = theme => ({
     bottom: theme.spacing.unit * 4,
     right: theme.spacing.unit * 4,
   },
+  fab: {
+    color: 'secondary'
+  }
 });
 
 class ActionButton extends React.Component {
   state = {
     open: false,
     hidden: false,
+    createAlertOpen: false,
+    editAlertOpen: false,
+    createEventOpen: false
   };
 
   handleClick = () => {
@@ -47,26 +57,40 @@ class ActionButton extends React.Component {
     });
   };
 
-   createAlert = () => {
-     console.log('createAlert');
+   toggleCreateAlert = () => {
+    this.setState(state => ({
+      createAlertOpen: true,
+    }))
    }
 
-   editAlert = () => {
-    console.log('editAlert');
-  }
+   toggleEditAlert = () => {
+    this.setState(state => ({
+      editAlertOpen: true,
+    }))
+   }
 
-  createEvent = () => {
-    console.log('createEvent');
-  }
+   toggleCreateEvent = () => {
+    this.setState(state => ({
+      createEventOpen: true,
+    }))
+   }
+
+   closeAllDialogs = () => {
+     this.setState(state => ({
+      createAlertOpen: false,
+      editAlertOpen: false,
+      createEventOpen: false
+     }))
+   }
 
   render() {
     const { classes } = this.props;
     const { hidden, open } = this.state;
 
     const actions = [
-      { icon: <Warning />, name: 'Create Alert', handleClick: this.createAlert },
-      { icon: <EditOutlined />, name: 'Edit Alert', handleClick: this.editAlert },
-      { icon: <EventIcon />, name: 'Create Event', handleClick: this.createEvent },
+      { icon: <Warning />, name: 'Create Alert', handleClick: this.toggleCreateAlert },
+      { icon: <EditOutlined />, name: 'Edit Alert', handleClick: this.toggleEditAlert },
+      { icon: <EventIcon />, name: 'Create Event', handleClick: this.toggleCreateEvent },
     ];
 
     return (
@@ -80,7 +104,6 @@ class ActionButton extends React.Component {
             onBlur={this.handleClose}
             onClick={this.handleClick}
             onClose={this.handleClose}
-            onFocus={this.handleOpen}
             onMouseEnter={this.handleOpen}
             onMouseLeave={this.handleClose}
             open={open}
@@ -95,6 +118,21 @@ class ActionButton extends React.Component {
             ))}
           </SpeedDial>
         </span>
+        <CreateAlert 
+          open={this.state.createAlertOpen} 
+          toggleCreateAlert={this.toggleCreateAlert}
+          closeAllDialogs={this.closeAllDialogs}
+        />
+        <EditAlert
+          open={this.state.editAlertOpen} 
+          toggleEditAlert={this.toggleEditAlert}
+          closeAllDialogs={this.closeAllDialogs}
+        />
+        <CreateEvent
+          open={this.state.createEventOpen} 
+          toggleCreateEvent={this.toggleCreateEvent}
+          closeAllDialogs={this.closeAllDialogs}
+        />
       </div>
     );
   }
