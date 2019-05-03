@@ -86,7 +86,7 @@ export default {
     fontSize: '1rem',
   },
   //Nav
-  avatar: {
+  navAvatar: {
     width: 30,
     height: 30,
     margin: 0,
@@ -200,5 +200,6 @@ export default {
   navAccountCircle: {
     maxWidth: 30,
     borderRadius: '50%'
-  }
+  },
+  
 }

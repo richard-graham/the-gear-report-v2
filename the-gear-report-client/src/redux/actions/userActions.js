@@ -11,12 +11,41 @@ import {
 } from '../types'
 import axios from 'axios'
 
-export const updateUserLocation = (position) => (dispatch) => {
-    dispatch({ 
-      type: SET_USER_LOCATION,
-      payload: {
-        ...position
-      }
+export const updateUserLocation = () => (dispatch) => {
+  fetch('https://ipapi.co/json') // grab country name
+      .then(res => res.json())
+      .then(position => {
+        updateUserCountry({
+          countryName: position.country_name,
+          regionName: position.region 
+        })
+      navigator.geolocation.getCurrentPosition((userPosition) => { 
+        dispatch({ // user agrees to sharing location
+          type: SET_USER_LOCATION,
+          payload: {
+            lat: userPosition.coords.latitude,
+            lng: userPosition.coords.longitude,
+            zoom: 11,
+            haveUsersLocation: true
+          }
+        })
+    }, () => { // if user says no to tracking location use api
+      fetch('https://ipapi.co/json')
+        .then(res => res.json())
+        .then(position => {
+          dispatch({ 
+            type: SET_USER_LOCATION,
+            payload: {
+              lat: position.latitude,
+              lng: position.longitude,
+              zoom: 5,
+              haveUsersLocation: false,
+              countryName: position.country_name,
+              regionName: position.region 
+            }
+          })
+        })
+      });
     })
 }
 
@@ -69,6 +98,7 @@ export const signupUser = (newUserData, history) => (dispatch) => { //where is h
 }
 
 export const logoutUser = () => (dispatch) => {
+  console.log('pinged');
   localStorage.removeItem('FBIdToken')
   delete axios.defaults.headers.common['Authorization']
   dispatch({ type: SET_UNAUTHENTICATED })

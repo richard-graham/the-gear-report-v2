@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { RenderMenu } from './NavBarMenus/RenderMenu'
+import RenderMenu from './NavBarMenus/RenderMenu'
 import { RenderMobileMenu } from './NavBarMenus/RenderMobileMenu'
 //Mui
 import IconButton from '@material-ui/core/IconButton';

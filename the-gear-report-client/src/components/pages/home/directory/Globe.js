@@ -30,37 +30,7 @@ class Globe extends Component {
   }
 
   componentDidMount = () => {
-    fetch('https://ipapi.co/json') // grab country name
-      .then(res => res.json())
-      .then(position => {
-        this.props.updateUserCountry({
-          countryName: position.country_name,
-          regionName: position.region 
-        })
-      
-      navigator.geolocation.getCurrentPosition((userPosition) => { 
-        this.props.updateUserLocation({ //user agrees to providing location
-          lat: userPosition.coords.latitude,
-          lng: userPosition.coords.longitude,
-          zoom: 11,
-          haveUsersLocation: true
-        })
-    
-    }, () => { // if user says no to tracking location use api
-      fetch('https://ipapi.co/json')
-        .then(res => res.json())
-        .then(position => {
-          this.props.updateUserLocation({
-            lat: position.latitude,
-            lng: position.longitude,
-            zoom: 5,
-            haveUsersLocation: false,
-            countryName: position.country_name,
-            regionName: position.region 
-          })
-        })
-      });
-    })
+    this.props.updateUserLocation()
   }
 
   
