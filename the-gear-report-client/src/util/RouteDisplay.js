@@ -3,6 +3,8 @@ import { Route, Switch  } from 'react-router-dom'
 import home from '../pages/home'
 import NewUserForm from '../components/pages/signup/NewUserForm'
 import Login from '../components/pages/login/Login'
+import ActionButton from '../components/ActionButton'
+
 
 //mui
 import { withStyles } from '@material-ui/core/styles';
@@ -22,7 +24,7 @@ export class RouteDisplay extends Component {
                 <Route exact path='/login' component={Login} />
 
               </Switch>
-              
+              <ActionButton />
           </div>
         </div>
       </Fragment>
