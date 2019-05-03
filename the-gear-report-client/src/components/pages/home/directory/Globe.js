@@ -31,6 +31,7 @@ class Globe extends Component {
 
   componentDidMount = () => {
     this.props.updateUserLocation()
+    this.props.updateUserCountry()
   }
 
   
