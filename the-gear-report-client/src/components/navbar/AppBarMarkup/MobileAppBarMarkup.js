@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import NavBarMarkup from './NavBarMarkup'
+import NavBarMarkup from '../NavBarMarkup'
 import classNames from 'classnames';
 //Mui
 import { withStyles } from '@material-ui/core/styles'

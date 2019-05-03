@@ -91,9 +91,6 @@ export default {
     height: 30,
     margin: 0,
   },
-  navRoot: {
-    display: 'flex',
-  },
   navDrawer: {
     [defaultTheme.breakpoints.up('md')]: {
       width: navDrawerWidth,

@@ -21,7 +21,6 @@ export const updateUserLocation = (position) => (dispatch) => {
 }
 
 export const updateUserCountry = (location) => (dispatch) => {
-  console.log(location);
   dispatch({
     type: SET_USER_COUNTRY,
     payload: {
@@ -80,7 +79,6 @@ export const getUserData = () => (dispatch) => {
   dispatch({ type: LOADING_USER })
   axios.get('/user')
     .then(res => {
-      console.log(res.data.credentials);
       dispatch({ 
         type: SET_USER,
         payload: res.data

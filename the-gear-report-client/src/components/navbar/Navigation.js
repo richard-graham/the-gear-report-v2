@@ -10,8 +10,8 @@ import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Hidden from '@material-ui/core/Hidden'
 
-import AppBarMarkup from './AppBarMarkup'
-import MobileAppBarMarkup from './MobileAppBarMarkup'
+import AppBarMarkup from './AppBarMarkup/AppBarMarkup'
+import MobileAppBarMarkup from './AppBarMarkup/MobileAppBarMarkup'
 
 const styles = theme => ({
   ...theme

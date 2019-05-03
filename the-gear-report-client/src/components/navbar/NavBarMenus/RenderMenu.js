@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
+import Paper from '@material-ui/core/Paper'
 
 
 export class RenderMenu extends Component {
@@ -9,7 +10,7 @@ export class RenderMenu extends Component {
     return (
       <Menu
         anchorEl={anchorEl}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={isMenuOpen}
         onClose={handleMenuClose}
@@ -19,10 +20,6 @@ export class RenderMenu extends Component {
       </Menu>
     )
   }
-}
-
-const styles = {
-
 }
 
 export default RenderMenu

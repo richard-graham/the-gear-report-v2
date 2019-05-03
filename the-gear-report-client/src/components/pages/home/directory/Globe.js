@@ -33,7 +33,6 @@ class Globe extends Component {
     fetch('https://ipapi.co/json') // grab country name
       .then(res => res.json())
       .then(position => {
-        console.log(position);
         this.props.updateUserCountry({
           countryName: position.country_name,
           regionName: position.region 

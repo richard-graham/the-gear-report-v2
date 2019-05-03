@@ -58,6 +58,7 @@ export class DrawerMarkup extends Component {
             )
           })}
         </List>
+        <Divider />
         <List>
           {['Events', 'Route Finder'].map((text) => (      
               <ListItem button key={text} component={Link} to={`/${text.toLowerCase()}`}>
