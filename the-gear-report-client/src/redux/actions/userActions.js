@@ -52,7 +52,12 @@ export const updateUserLocation = () => (dispatch) => {
         }
       })
     })
-  });
+  }, {
+    enableHighAccuracy: false,
+    timeout: 5000,
+    maximumAge: Infinity
+  }
+  );
 }
 
 export const loginUser = (userData, history) => (dispatch) => { //where is history coming from?
