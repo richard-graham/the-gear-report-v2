@@ -1,4 +1,6 @@
 import React from 'react';
+import { uploadImage } from '../../redux/actions/userActions'
+import { connect } from 'react-redux'
 //Mui
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -10,7 +12,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import MyButton from '../../util/MyButton'
 import EditIcon from '@material-ui/icons/Edit'
 
-export default class CreateAlert extends React.Component {
+class CreateAlert extends React.Component {
   handleImageChange = (event) => {
     const image = event.target.files[0]
     const formData = new FormData()
@@ -65,3 +67,5 @@ export default class CreateAlert extends React.Component {
     );
   }
 }
+
+export default connect(null, { uploadImage })(CreateAlert)
