@@ -12,6 +12,7 @@ const {
   postOneAlert, 
   getAlert, 
   commentOnAlert, 
+  uploadAlertImage,
   likeAlert, 
   unlikeAlert,
   deleteAlert
@@ -27,10 +28,11 @@ const {
   markNotificationsRead
  } = require('./handlers/users')
 
-// Scream routes
+// Alert routes
 app.get('/alerts', getAllAlerts)
 app.get('/alert/:alertId', getAlert)
 app.post('/alert', FBAuth, postOneAlert)
+app.post('/alert/add/image', FBAuth, uploadAlertImage)
 app.post('/alert/:alertId/comment', FBAuth, commentOnAlert)
 app.get('/alert/:alertId/like', FBAuth, likeAlert)
 app.get('/alert/:alertId/unlike', FBAuth, unlikeAlert)
