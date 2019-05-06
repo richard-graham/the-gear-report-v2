@@ -57,9 +57,8 @@ exports.postOneAlert = (req, res) => {
       resAlert.alertId = doc.id
       res.json(resAlert)
     })
-    .catch(err => {
+    .catch(() => {
       res.status(500).json({ error: 'something went wrong '}) // note: changes status code from 200
-      console.error(err)
     })
 }
 

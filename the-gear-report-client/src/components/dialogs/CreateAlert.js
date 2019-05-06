@@ -56,7 +56,7 @@ class CreateAlert extends React.Component {
 
 
   render() {
-    const { open, closeAllDialogs, classes, images, errors } = this.props
+    const { open, closeAllDialogs } = this.props
     return (
       <div>
         <Dialog
@@ -118,14 +118,9 @@ const styles = theme => ({
   },
 });
 
-const mapStateToProps = state => ({
-  images: state.data.newAlert.images,
-  errors: state.UI.errors
-})
-
 const mapActionsToProps = {
   uploadAlertImage,
   postAlert
 }
 
-export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(CreateAlert))
+export default connect(null, mapActionsToProps)(withStyles(styles)(CreateAlert))

@@ -26,9 +26,8 @@ export class RouteDisplay extends Component {
                 <Route exact path='/login' component={Login} />
 
               </Switch>
-              {authenticated && <ActionButton />}
-              {error && <MySnackBar variant='error' message={error} />}
-              {message && <MySnackBar variant='success' message={message} />}
+              {authenticated === true && <ActionButton />}
+              {error ?  <MySnackBar variant='error' message={error} /> : message ? <MySnackBar variant='success' message={message} /> : ''}
           </div>
         </div>
       </Fragment>
