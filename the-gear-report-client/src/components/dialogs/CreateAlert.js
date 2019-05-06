@@ -43,14 +43,14 @@ class CreateAlert extends React.Component {
     event.preventDefault()
 
     var imageObj = {}
-    this.props.images.map((image, i) => {
+    this.props.images.forEach((image, i) => {
       imageObj[i] = image
-    })
+    });
 
     this.props.postAlert({ 
       body: this.state.body,
       title: this.state.title,
-      images: imageObj
+      images: this.props.images
      })
      this.setState({
        title: '',
