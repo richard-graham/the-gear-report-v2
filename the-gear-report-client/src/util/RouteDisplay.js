@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Route, Switch  } from 'react-router-dom'
+import { connect } from 'react-redux'
 import home from '../pages/home'
 import NewUserForm from '../components/pages/signup/NewUserForm'
 import Login from '../components/pages/login/Login'
@@ -8,10 +9,11 @@ import ActionButton from '../components/ActionButton'
 
 //mui
 import { withStyles } from '@material-ui/core/styles';
+import { userInfo } from 'os';
 
 export class RouteDisplay extends Component {
   render() {
-    const { classes } = this.props
+    const { classes, authenticated } = this.props
     return (
       <Fragment>
         <div className={classes.root}>
@@ -24,7 +26,7 @@ export class RouteDisplay extends Component {
                 <Route exact path='/login' component={Login} />
 
               </Switch>
-              <ActionButton />
+              {authenticated && <ActionButton />}
           </div>
         </div>
       </Fragment>
@@ -48,4 +50,8 @@ const styles = theme => ({
   }
 })
 
-export default withStyles(styles)(RouteDisplay)
+const mapStateToProps = state => ({
+  authenticated: state.user.authenticated
+})
+
+export default connect(mapStateToProps)(withStyles(styles)(RouteDisplay))
