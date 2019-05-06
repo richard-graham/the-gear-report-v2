@@ -9,7 +9,6 @@ import ActionButton from '../components/ActionButton'
 
 //mui
 import { withStyles } from '@material-ui/core/styles';
-import { userInfo } from 'os';
 
 export class RouteDisplay extends Component {
   render() {

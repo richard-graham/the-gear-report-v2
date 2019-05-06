@@ -58,6 +58,7 @@ export const postAlert = (newAlert) => dispatch => {
       dispatch(clearErrors())
     })
     .catch(err => {
+      console.log(err.response);
       dispatch({ 
         type: SET_ERRORS, 
         payload: err.response.data 
@@ -78,6 +79,10 @@ export const uploadAlertImage = (formData) => (dispatch) => {
     })
     .catch(err => {
       console.log(err);
+      dispatch({
+        type: SET_ERRORS,
+        payload: err
+      })
     })
 }
 

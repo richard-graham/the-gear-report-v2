@@ -31,9 +31,9 @@ exports.getAllAlerts = (req, res) => {
 
 exports.postOneAlert = (req, res) => {
   if (req.body.body.trim() === '') {
-    return res.status(400).json({ body: 'Body must not be empty' })
+    return res.status(400).json({ error: 'Body must not be empty' })
   } else if (req.body.title.trim() === '') {
-    return res.status(400).json({ title: 'Title must not be empty' })
+    return res.status(400).json({ error: 'Title must not be empty' })
   }
 
 
