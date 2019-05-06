@@ -8,6 +8,7 @@ import {
   SET_UNAUTHENTICATED, 
   LOADING_USER, 
   MARK_NOTIFICATIONS_READ,
+  SET_MESSAGE,
 } from '../types'
 import axios from 'axios'
 
@@ -84,6 +85,10 @@ export const signupUser = (newUserData, history) => (dispatch) => { //where is h
         setAuthorizationHeader(res.data.token)
         dispatch(getUserData())
         dispatch({ type: CLEAR_ERRORS })
+        dispatch({
+          type: SET_MESSAGE,
+          payload: 'Sign up successful'
+        })
         history.push('/')
       })
       .catch(err => {

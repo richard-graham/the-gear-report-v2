@@ -42,14 +42,7 @@ export class NewUserForm extends Component {
     })
   }
 
-  // componentWillReceiveProps(nextProps){
-  //   if(nextProps.UI.errors){
-  //     this.setState({ errors: nextProps.UI.errors })
-  //   }
-  // }
-
   handleSubmit = (event) => {
-    console.log(this.state);
     event.preventDefault()
     this.setState({
       loading: true
