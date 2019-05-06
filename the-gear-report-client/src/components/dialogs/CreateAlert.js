@@ -1,7 +1,6 @@
 import React from 'react';
 import { uploadAlertImage, postAlert } from '../../redux/actions/dataActions'
 import { connect } from 'react-redux'
-import MySnackBar from '../../util/MySnackBar'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button';
@@ -20,7 +19,6 @@ class CreateAlert extends React.Component {
   state = {
     title: '',
     body: '',
-
   }
 
   handleImageChange = (event) => {
@@ -39,7 +37,6 @@ class CreateAlert extends React.Component {
     this.setState({
       [event.target.id]: event.target.value
     })
-    console.log(this.state);
   }
 
   handleSubmit = (event) => {
@@ -48,6 +45,11 @@ class CreateAlert extends React.Component {
       body: this.state.body,
       title: this.state.title,
       images: this.props.images
+     })
+     this.setState({
+       title: '',
+       body: '',
+       images: null
      })
      this.props.closeAllDialogs()
   }

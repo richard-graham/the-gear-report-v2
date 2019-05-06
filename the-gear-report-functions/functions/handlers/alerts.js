@@ -31,9 +31,9 @@ exports.getAllAlerts = (req, res) => {
 
 exports.postOneAlert = (req, res) => {
   if (req.body.body.trim() === '') {
-    return res.status(400).json({ error: 'Body must not be empty' })
+    return res.status(400).json({ general: 'Body must not be empty' })
   } else if (req.body.title.trim() === '') {
-    return res.status(400).json({ error: 'Title must not be empty' })
+    return res.status(400).json({ general: 'Title must not be empty' })
   }
 
 
@@ -43,7 +43,7 @@ exports.postOneAlert = (req, res) => {
     title: req.body.title,
     images: req.body.images,
     userHandle: req.user.handle,
-    createdAt: new Date().toISOString(), // recognised time type
+    createdAt: new Date().toISOString(), // recognized time type
     userImage: req.user.imageUrl,
     likeCount: 0,
     commentCount: 0,

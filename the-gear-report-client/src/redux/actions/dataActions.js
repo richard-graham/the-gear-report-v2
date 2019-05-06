@@ -11,7 +11,9 @@ import {
   SET_ALERT,
   STOP_LOADING_UI,
   SUBMIT_COMMENT,
-  SET_ALERT_IMAGE
+  SET_ALERT_IMAGE,
+  SET_MESSAGE,
+  CLEAR_MESSAGE
 } from '../types'
 import axios from 'axios'
 
@@ -49,6 +51,7 @@ export const getAlert = (alertId) => dispatch => {
 //Post an alert
 export const postAlert = (newAlert) => dispatch => {
   dispatch({ type: LOADING_UI })
+  dispatch({ type: CLEAR_ERRORS })
   axios.post('/alert', newAlert)
     .then(res => {
       dispatch({ 
@@ -58,7 +61,6 @@ export const postAlert = (newAlert) => dispatch => {
       dispatch(clearErrors())
     })
     .catch(err => {
-      console.log(err.response);
       dispatch({ 
         type: SET_ERRORS, 
         payload: err.response.data 
@@ -67,6 +69,7 @@ export const postAlert = (newAlert) => dispatch => {
 }
 
 export const uploadAlertImage = (formData) => (dispatch) => {  
+  dispatch({ type: CLEAR_MESSAGE })
   axios.post('/alert/add/image', formData)
     .then((res) => {
       dispatch({ 
@@ -74,11 +77,13 @@ export const uploadAlertImage = (formData) => (dispatch) => {
         payload: res.data.url
       })
     })
-    .then(res => {
-      return res
+    .then(() => {
+      dispatch({
+        type: SET_MESSAGE,
+        payload: 'Image uploaded successfully'
+      })
     })
     .catch(err => {
-      console.log(err);
       dispatch({
         type: SET_ERRORS,
         payload: err

@@ -5,6 +5,7 @@ import home from '../pages/home'
 import NewUserForm from '../components/pages/signup/NewUserForm'
 import Login from '../components/pages/login/Login'
 import ActionButton from '../components/ActionButton'
+import MySnackBar from './MySnackBar'
 
 
 //mui
@@ -12,7 +13,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 export class RouteDisplay extends Component {
   render() {
-    const { classes, authenticated } = this.props
+    const { classes, authenticated, error, message } = this.props
     return (
       <Fragment>
         <div className={classes.root}>
@@ -26,6 +27,8 @@ export class RouteDisplay extends Component {
 
               </Switch>
               {authenticated && <ActionButton />}
+              {error && <MySnackBar variant='error' message={error} />}
+              {message && <MySnackBar variant='success' message={message} />}
           </div>
         </div>
       </Fragment>
@@ -50,7 +53,9 @@ const styles = theme => ({
 })
 
 const mapStateToProps = state => ({
-  authenticated: state.user.authenticated
+  authenticated: state.user.authenticated,
+  error: state.UI.errors.general,
+  message: state.UI.message
 })
 
 export default connect(mapStateToProps)(withStyles(styles)(RouteDisplay))
