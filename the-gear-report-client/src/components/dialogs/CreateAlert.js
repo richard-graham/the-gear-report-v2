@@ -10,20 +10,15 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import MyButton from '../../util/MyButton'
 //Icons
 import EditIcon from '@material-ui/icons/Edit'
-import Warning from '@material-ui/icons/Warning';
 
 class CreateAlert extends React.Component {
 
   state = {
     title: '',
     body: '',
-
   }
 
   handleImageChange = (event) => {
@@ -47,11 +42,19 @@ class CreateAlert extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
-    this.props.postAlert({ body: this.state.body })
+    this.props.postAlert({ 
+      body: this.state.body,
+      title: this.state.title,
+      images: this.props.images
+     })
+     .then(res => {
+       console.log(res);
+     })
+     this.props.closeAllDialogs()
   }
 
   render() {
-    const { open, closeAllDialogs, classes } = this.props
+    const { open, closeAllDialogs, classes, images } = this.props
     return (
       <div>
         <Dialog
@@ -113,9 +116,13 @@ const styles = theme => ({
   },
 });
 
+const mapStateToProps = state => ({
+  images: state.data.newAlert.images
+})
+
 const mapActionsToProps = {
   uploadAlertImage,
   postAlert
 }
 
-export default connect(null, mapActionsToProps)(withStyles(styles)(CreateAlert))
+export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(CreateAlert))

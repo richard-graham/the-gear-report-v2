@@ -32,15 +32,21 @@ exports.getAllAlerts = (req, res) => {
 exports.postOneAlert = (req, res) => {
   if (req.body.body.trim() === '') {
     return res.status(400).json({ body: 'Body must not be empty' })
+  } else if (req.body.title.trim() === '') {
+    return res.status(400).json({ title: 'Title must not be empty' })
   }
+
+
 
   const newAlert = {
     body: req.body.body,
+    title: req.body.title,
+    images: req.body.images,
     userHandle: req.user.handle,
     createdAt: new Date().toISOString(), // recognised time type
     userImage: req.user.imageUrl,
     likeCount: 0,
-    commentCount: 0
+    commentCount: 0,
   } 
 
   db

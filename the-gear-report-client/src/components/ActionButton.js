@@ -57,10 +57,10 @@ class ActionButton extends React.Component {
     });
   };
 
-   toggleCreateAlert = () => {
-    this.setState(state => ({
+   openCreateAlert = () => {
+    this.setState({
       createAlertOpen: true,
-    }))
+    })
    }
 
    toggleEditAlert = () => {
@@ -88,7 +88,7 @@ class ActionButton extends React.Component {
     const { hidden, open } = this.state;
 
     const actions = [
-      { icon: <Warning />, name: 'Create Alert', handleClick: this.toggleCreateAlert },
+      { icon: <Warning />, name: 'Create Alert', handleClick: this.openCreateAlert },
       { icon: <EditOutlined />, name: 'Edit Alert', handleClick: this.toggleEditAlert },
       { icon: <EventIcon />, name: 'Create Event', handleClick: this.toggleCreateEvent },
     ];
@@ -120,7 +120,7 @@ class ActionButton extends React.Component {
         </span>
         <CreateAlert 
           open={this.state.createAlertOpen} 
-          toggleCreateAlert={this.toggleCreateAlert}
+          openCreateAlert={this.openCreateAlert}
           closeAllDialogs={this.closeAllDialogs}
         />
         <EditAlert
