@@ -68,11 +68,13 @@ export const postAlert = (newAlert) => dispatch => {
 export const uploadAlertImage = (formData) => (dispatch) => {  
   axios.post('/alert/add/image', formData)
     .then((res) => {
-      console.log(res.data.url);
       dispatch({ 
         type: SET_ALERT_IMAGE,
         payload: res.data.url
       })
+    })
+    .then(res => {
+      return res
     })
     .catch(err => {
       console.log(err);

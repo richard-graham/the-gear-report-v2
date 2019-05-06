@@ -1,7 +1,8 @@
 import React from 'react';
-import { uploadAlertImage } from '../../redux/actions/dataActions'
+import { uploadAlertImage, postAlert } from '../../redux/actions/dataActions'
 import { connect } from 'react-redux'
 //Mui
+import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -9,10 +10,22 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import MyButton from '../../util/MyButton'
+//Icons
 import EditIcon from '@material-ui/icons/Edit'
+import Warning from '@material-ui/icons/Warning';
 
 class CreateAlert extends React.Component {
+
+  state = {
+    title: '',
+    body: '',
+
+  }
+
   handleImageChange = (event) => {
     const image = event.target.files[0]
     const formData = new FormData()
@@ -25,8 +38,20 @@ class CreateAlert extends React.Component {
     fileInput.click()
   }
 
+  handleChange = (event) => {
+    this.setState({
+      [event.target.id]: event.target.value
+    })
+    console.log(this.state);
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault()
+    this.props.postAlert({ body: this.state.body })
+  }
+
   render() {
-    const { open, closeAllDialogs } = this.props
+    const { open, closeAllDialogs, classes } = this.props
     return (
       <div>
         <Dialog
@@ -43,13 +68,27 @@ class CreateAlert extends React.Component {
             <TextField
               autoFocus
               margin="dense"
-              id="name"
-              label="Email Address"
-              type="email"
+              id="title"
+              label="Title"
+              type='text'
               fullWidth
+              placeholder='A short alert description'
+              onChange={this.handleChange}
             />
+            <TextField
+              margin="dense"
+              id="body"
+              label="Description"
+              placeholder='An in-depth alert description'
+              type='text'
+              fullWidth
+              multiline
+              rows={3}
+              onChange={this.handleChange}
+            />
+            <br />
             <input type='file' id='imageInput' onChange={this.handleImageChange} hidden='hidden' />
-            <MyButton tip='Edit profile picture' onClick={this.handleEditPicture} btnClassName='button'>
+            <MyButton tip='Add image to alert' onClick={this.handleEditPicture} btnClassName='button'>
               <EditIcon color='primary' />
             </MyButton>
 
@@ -58,8 +97,8 @@ class CreateAlert extends React.Component {
             <Button onClick={closeAllDialogs} color="primary">
               Cancel
             </Button>
-            <Button onClick={closeAllDialogs} color="primary">
-              Subscribe
+            <Button onClick={this.handleSubmit} color="primary">
+              Submit
             </Button>
           </DialogActions>
         </Dialog>
@@ -68,4 +107,15 @@ class CreateAlert extends React.Component {
   }
 }
 
-export default connect(null, { uploadAlertImage })(CreateAlert)
+const styles = theme => ({
+  margin: {
+    margin: theme.spacing.unit,
+  },
+});
+
+const mapActionsToProps = {
+  uploadAlertImage,
+  postAlert
+}
+
+export default connect(null, mapActionsToProps)(withStyles(styles)(CreateAlert))
