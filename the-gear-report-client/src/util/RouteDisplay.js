@@ -27,7 +27,11 @@ export class RouteDisplay extends Component {
 
               </Switch>
               {authenticated === true && <ActionButton />}
-              {error ?  <MySnackBar variant='error' message={error} /> : message ? <MySnackBar variant='success' message={message} /> : ''}
+              {error ?  
+                <MySnackBar variant='error' message={error} /> : 
+                message ? 
+                <MySnackBar variant='success' message={message} /> : 
+                ''}
           </div>
         </div>
       </Fragment>

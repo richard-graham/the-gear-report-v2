@@ -59,6 +59,10 @@ export const postAlert = (newAlert) => dispatch => {
         payload: res.data 
       })
       dispatch(clearErrors())
+      dispatch({
+        type: SET_MESSAGE,
+        payload: 'Alert created successfully'
+      })
     })
     .catch(err => {
       dispatch({ 
