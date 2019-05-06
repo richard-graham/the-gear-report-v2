@@ -10,7 +10,8 @@ import {
   CLEAR_ERRORS,
   SET_ALERT,
   STOP_LOADING_UI,
-  SUBMIT_COMMENT
+  SUBMIT_COMMENT,
+  SET_ALERT_IMAGE
 } from '../types'
 import axios from 'axios'
 
@@ -61,6 +62,20 @@ export const postAlert = (newAlert) => dispatch => {
         type: SET_ERRORS, 
         payload: err.response.data 
       })
+    })
+}
+
+export const uploadAlertImage = (formData) => (dispatch) => {  
+  axios.post('/alert/add/image', formData)
+    .then((res) => {
+      console.log(res.data.url);
+      dispatch({ 
+        type: SET_ALERT_IMAGE,
+        payload: res.data.url
+      })
+    })
+    .catch(err => {
+      console.log(err);
     })
 }
 

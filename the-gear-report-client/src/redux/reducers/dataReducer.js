@@ -6,14 +6,18 @@ import {
   DELETE_ALERT,
   POST_ALERT,
   SET_ALERT,
-  SUBMIT_COMMENT
+  SUBMIT_COMMENT,
+  SET_ALERT_IMAGE
 } from '../types'
 
 const initialState = {
   alerts: [],
   alert: {},
   location: {},
-  loading: false
+  loading: false,
+  newAlert: {
+    images: []
+  }
 }
 
 export default function(state = initialState, action){
@@ -64,6 +68,14 @@ export default function(state = initialState, action){
         alert: {
           ...state.alert,
           comments: [action.payload, ...state.alert.comments] // put new comment to the top of the list in alertDialog
+        }
+      }
+    case SET_ALERT_IMAGE:
+      return {
+        ...state,
+        newAlert: {
+          ...state.newAlert,
+          images: [...state.newAlert.images, action.payload]
         }
       }
     default:

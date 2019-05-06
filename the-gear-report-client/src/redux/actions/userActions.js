@@ -7,7 +7,7 @@ import {
   LOADING_UI, 
   SET_UNAUTHENTICATED, 
   LOADING_USER, 
-  MARK_NOTIFICATIONS_READ 
+  MARK_NOTIFICATIONS_READ,
 } from '../types'
 import axios from 'axios'
 
@@ -116,12 +116,11 @@ export const getUserData = () => (dispatch) => {
     })
 }
 
-export const uploadImage = (formData) => (dispatch) => {
+export const uploadUserImage = (formData) => (dispatch) => {  
   dispatch({ type: LOADING_USER })
   console.log(formData);
   axios.post('/user/image', formData)
-    .then((res) => {
-      console.log(res);
+    .then(() => {
       dispatch(getUserData())
     })
     .catch(err => {
@@ -132,7 +131,8 @@ export const uploadImage = (formData) => (dispatch) => {
 export const editUserDetails = (userDetails) => (dispatch) => {
   dispatch({ type: LOADING_USER })
   axios.post('/user', userDetails)
-    .then(() => {
+    .then((res) => {
+      console.log(res);
       dispatch(getUserData()) 
     })
     .catch(err => {

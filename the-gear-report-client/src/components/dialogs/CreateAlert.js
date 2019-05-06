@@ -1,5 +1,5 @@
 import React from 'react';
-import { uploadImage } from '../../redux/actions/userActions'
+import { uploadAlertImage } from '../../redux/actions/dataActions'
 import { connect } from 'react-redux'
 //Mui
 import Button from '@material-ui/core/Button';
@@ -17,7 +17,7 @@ class CreateAlert extends React.Component {
     const image = event.target.files[0]
     const formData = new FormData()
     formData.append('image', image, image.name)
-    this.props.uploadImage(formData)
+    this.props.uploadAlertImage(formData)
   }
 
   handleEditPicture = () => {
@@ -68,4 +68,4 @@ class CreateAlert extends React.Component {
   }
 }
 
-export default connect(null, { uploadImage })(CreateAlert)
+export default connect(null, { uploadAlertImage })(CreateAlert)
