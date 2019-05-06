@@ -41,10 +41,16 @@ class CreateAlert extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
+
+    var imageObj = {}
+    this.props.images.map((image, i) => {
+      imageObj[i] = image
+    })
+
     this.props.postAlert({ 
       body: this.state.body,
       title: this.state.title,
-      images: this.props.images
+      images: imageObj
      })
      this.setState({
        title: '',
@@ -123,4 +129,8 @@ const mapActionsToProps = {
   postAlert
 }
 
-export default connect(null, mapActionsToProps)(withStyles(styles)(CreateAlert))
+const mapStateToProps = state => ({
+  images: state.data.newAlert.images
+})
+
+export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(CreateAlert))

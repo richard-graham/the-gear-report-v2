@@ -36,8 +36,6 @@ exports.postOneAlert = (req, res) => {
     return res.status(400).json({ general: 'Title must not be empty' })
   }
 
-
-
   const newAlert = {
     body: req.body.body,
     title: req.body.title,
