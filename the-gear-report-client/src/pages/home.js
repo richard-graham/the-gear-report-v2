@@ -43,7 +43,7 @@ export class home extends Component {
             <DirectoryContainer />
           </Grid>
           <Grid item md={6} xs={12}>
-            <RecentAlerts />
+            <RecentAlerts history={this.props.history} />
           </Grid>
         </Grid>
       </div>
