@@ -27,7 +27,7 @@ const styles = {
   },
   navContainer: {
     width: '100%',
-    height: 500,
+    height: 350,
   }
 }
 
@@ -58,7 +58,7 @@ export class DirectoryContainer extends Component {
                 <Tab label="Directory" />
                 <Tab label="Map" />
               </Tabs>
-              <Grid className={classes.tabContainer} item cs={12}>
+              <Grid className={classes.tabContainer} item xs={12}>
                 {value === 0 && <GlobeNav />}
                 {value === 1 && <Globe />}
               </Grid>

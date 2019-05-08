@@ -46,11 +46,11 @@ const styles = theme => ({
     justifyContent: 'center'
   },
   content: {
-    width: '95%',
+    width: '85%',
     maxWidth: 1400,
     [theme.breakpoints.down('sm')]: {
       minWidth: 240,
-      width: '100%'
+      width: '95%'
     },
   }
 })

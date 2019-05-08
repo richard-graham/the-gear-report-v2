@@ -22,6 +22,10 @@ const styles = theme => ({
     position: 'fixed',
     bottom: theme.spacing.unit * 4,
     right: theme.spacing.unit * 4,
+    [theme.breakpoints.down('sm')]: {
+      bottom: theme.spacing.unit * 2,
+      right: theme.spacing.unit * 2,
+    }
   },
   fab: {
     color: 'secondary'

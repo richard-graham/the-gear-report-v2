@@ -30,7 +30,7 @@ export default function(state = initialState, action){
     case SET_ALERTS:
       return {
         ...state,
-        screams: action.payload,
+        alerts: action.payload,
         loading: false
       }
     case SET_ALERT:

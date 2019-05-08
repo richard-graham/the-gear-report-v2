@@ -19,6 +19,7 @@ exports.getAllAlerts = (req, res) => {
           userImage: doc.data().userImage,
           likeCount: doc.data().likeCount,
           commentCount: doc.data().commentCount,
+          title: doc.data().title
         }) // data() is a function that returns the data within the document
       })
       return res.json(alerts)
