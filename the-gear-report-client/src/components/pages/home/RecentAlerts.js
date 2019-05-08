@@ -4,6 +4,7 @@ import { getAlerts } from '../../../redux/actions/dataActions'
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { AutoSizer, Column, SortDirection, Table } from 'react-virtualized';
+import { Link } from 'react-router-dom'
 //Mui
 import { withStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
@@ -42,8 +43,6 @@ const styles = theme => ({
 class ReactVirtualizedTable extends React.PureComponent {
   getRowClassName = ({ index }) => {
     const { classes, rowClassName, onRowClick } = this.props;
-    console.log(index);
-
     return classNames(classes.tableRow, classes.flexContainer, rowClassName, {
       [classes.tableRowHover]: index !== -1 && onRowClick != null,
     },
@@ -172,15 +171,20 @@ class RecentAlerts extends Component {
     this.props.getAlerts()
   }
 
+  handleClick = event => {
+    console.log(event);
+    // push to alert page by event.rowData.alertId
+  }
+
   render() {
     const { alerts } = this.props
     return (
       <Paper style={{ height: 300, width: '100%' }}>
       <Typography variant='subtitle1'>Recent Tickets</Typography>
         <WrappedVirtualizedTable
-          rowCount={alerts.length > 0 ? alerts.length : ''}
+          rowCount={alerts.length > 0 ? alerts.length : 0}
           rowGetter={({ index }) => alerts[index]}
-          onRowClick={event => console.log(event)}
+          onRowClick={event => this.handleClick(event)}
           columns={[
             {
               width: 200,
