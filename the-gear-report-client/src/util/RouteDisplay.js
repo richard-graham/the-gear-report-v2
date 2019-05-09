@@ -7,6 +7,7 @@ import Login from '../components/pages/login/Login'
 import ActionButton from '../components/ActionButton'
 import MySnackBar from './MySnackBar'
 import Profile from '../components/pages/profile/Profile'
+import AuthRoute from './AuthRoute'
 
 
 //mui
@@ -25,7 +26,7 @@ export class RouteDisplay extends Component {
                 <Route exact path='/' component={home} />
                 <Route exact path='/signup' component={NewUserForm} />
                 <Route exact path='/login' component={Login} />
-                <Route exact path='/profile' component={Profile} />
+                <AuthRoute exact path='/profile' component={Profile} />
 
               </Switch>
               {authenticated === true && <ActionButton />}
