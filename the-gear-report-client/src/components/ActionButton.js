@@ -27,9 +27,6 @@ const styles = theme => ({
       right: theme.spacing.unit * 2,
     }
   },
-  fab: {
-    color: 'secondary'
-  }
 });
 
 class ActionButton extends React.Component {
@@ -39,12 +36,6 @@ class ActionButton extends React.Component {
     createAlertOpen: false,
     editAlertOpen: false,
     createEventOpen: false
-  };
-
-  handleClick = () => {
-    this.setState(state => ({
-      open: !state.open,
-    }));
   };
 
   handleOpen = () => {
@@ -67,24 +58,24 @@ class ActionButton extends React.Component {
     })
    }
 
-   toggleEditAlert = () => {
-    this.setState(state => ({
+   openEditAlert = () => {
+    this.setState({
       editAlertOpen: true,
-    }))
+    })
    }
 
-   toggleCreateEvent = () => {
-    this.setState(state => ({
+   openCreateEvent = () => {
+    this.setState({
       createEventOpen: true,
-    }))
+    })
    }
 
    closeAllDialogs = () => {
-     this.setState(state => ({
+     this.setState({
       createAlertOpen: false,
       editAlertOpen: false,
       createEventOpen: false
-     }))
+     })
    }
 
   render() {
@@ -93,13 +84,13 @@ class ActionButton extends React.Component {
 
     const actions = [
       { icon: <Warning />, name: 'Create Alert', handleClick: this.openCreateAlert },
-      { icon: <EditOutlined />, name: 'Edit Alert', handleClick: this.toggleEditAlert },
-      { icon: <EventIcon />, name: 'Create Event', handleClick: this.toggleCreateEvent },
+      { icon: <EditOutlined />, name: 'Edit Alert', handleClick: this.openEditAlert },
+      { icon: <EventIcon />, name: 'Create Event', handleClick: this.openCreateEvent },
     ];
 
     return (
       <div className={classes.root}>
-        <span style={{ color: 'red' }}>
+        <span>
           <SpeedDial
             ariaLabel="SpeedDial openIcon example"
             className={classes.speedDial}
@@ -122,19 +113,16 @@ class ActionButton extends React.Component {
             ))}
           </SpeedDial>
         </span>
-        <CreateAlert 
+        <CreateAlert
           open={this.state.createAlertOpen} 
-          openCreateAlert={this.openCreateAlert}
           closeAllDialogs={this.closeAllDialogs}
         />
         <EditAlert
           open={this.state.editAlertOpen} 
-          toggleEditAlert={this.toggleEditAlert}
           closeAllDialogs={this.closeAllDialogs}
         />
         <CreateEvent
           open={this.state.createEventOpen} 
-          toggleCreateEvent={this.toggleCreateEvent}
           closeAllDialogs={this.closeAllDialogs}
         />
       </div>
