@@ -12,6 +12,7 @@ import {
 
 const initialState = {
   alerts: [],
+  recentAlerts: [],
   alert: {},
   location: {},
   loading: false,

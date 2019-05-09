@@ -1,5 +1,5 @@
 import { 
-  SET_ALERTS, 
+  SET_ALERTS,
   LOADING_DATA, 
   LIKE_ALERT, 
   UNLIKE_ALERT, 
@@ -21,6 +21,23 @@ import axios from 'axios'
 export const getAlerts = () => (dispatch) => {
   dispatch({ type: LOADING_DATA })
   axios.get('/alerts')
+    .then(res => {
+      dispatch({ 
+        type: SET_ALERTS, 
+        payload: res.data
+      })
+    })
+    .catch(err => {
+      dispatch({
+        type: SET_ALERTS,
+        payload: []
+      })
+    })
+}
+
+export const getRecentAlerts = () => (dispatch) => {
+  dispatch({ type: LOADING_DATA })
+  axios.get('/alerts/recent')
     .then(res => {
       dispatch({ 
         type: SET_ALERTS, 
@@ -64,9 +81,10 @@ export const postAlert = (newAlert) => dispatch => {
       })
     })
     .catch(err => {
+      console.log(err.response);
       dispatch({ 
         type: SET_ERRORS, 
-        payload: err.response.data 
+        payload: { general: `Error post failed`}
       })
     })
 }

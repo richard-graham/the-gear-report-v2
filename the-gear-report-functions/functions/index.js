@@ -9,6 +9,7 @@ const { db } = require('./util/admin')
 
 const { 
   getAllAlerts, 
+  getRecentAlerts,
   postOneAlert, 
   getAlert, 
   commentOnAlert, 
@@ -30,6 +31,7 @@ const {
 
 // Alert routes
 app.get('/alerts', getAllAlerts)
+app.get('/alerts/recent', getRecentAlerts)
 app.get('/alert/:alertId', getAlert)
 app.post('/alert', FBAuth, postOneAlert)
 app.post('/alert/add/image', FBAuth, uploadAlertImage)

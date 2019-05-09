@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { getAlerts } from '../../../redux/actions/dataActions'
+import { getRecentAlerts } from '../../../redux/actions/dataActions'
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { AutoSizer, Column, SortDirection, Table } from 'react-virtualized';
@@ -167,7 +167,7 @@ const WrappedVirtualizedTable = withStyles(styles)(ReactVirtualizedTable);
 class RecentAlerts extends Component {
 
   componentDidMount = () => {
-    this.props.getAlerts()
+    this.props.getRecentAlerts()
   }
 
   handleClick = (event) => {
@@ -185,20 +185,20 @@ class RecentAlerts extends Component {
           onRowClick={event => this.handleClick(event)}
           columns={[
             {
-              width: 200,
+              width: 170,
               flexGrow: 1.0,
               label: 'Title',
               dataKey: 'title',
             },
             {
-              width: 120,
+              width: 100,
               label: 'Location',
               dataKey: 'location',
             },
             {
-              width: 120,
-              label: 'Severity',
-              dataKey: 'severity',
+              width: 170,
+              label: 'Posted By',
+              dataKey: 'userHandle',
               numeric: true,
             }
           ]}
@@ -212,4 +212,4 @@ const mapStateToProps = state => ({
   alerts: state.data.alerts
 })
 
-export default connect(mapStateToProps, { getAlerts })(RecentAlerts)
+export default connect(mapStateToProps, { getRecentAlerts })(RecentAlerts)

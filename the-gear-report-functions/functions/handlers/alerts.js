@@ -30,6 +30,34 @@ exports.getAllAlerts = (req, res) => {
     })
 }
 
+exports.getRecentAlerts = (req, res) => {
+  db
+    .collection('alerts')
+    .orderBy('createdAt', 'desc')
+    .limit(15)
+    .get()
+    .then(data => {
+      let alerts = []
+      data.forEach(doc => { // doc = a document reference
+        alerts.push({
+          alertId: doc.id,
+          body: doc.data().body,
+          userHandle: doc.data().userHandle,
+          createdAt: doc.data().createdAt,
+          userImage: doc.data().userImage,
+          likeCount: doc.data().likeCount,
+          commentCount: doc.data().commentCount,
+          title: doc.data().title
+        }) // data() is a function that returns the data within the document
+      })
+      return res.json(alerts)
+    })
+    .catch(err => {
+      res.status(500).json({ error: 'something went wrong '}) // note: changes status code from 200
+      console.error(err)
+    })
+}
+
 exports.postOneAlert = (req, res) => {
   if (req.body.body.trim() === '') {
     return res.status(400).json({ general: 'Body must not be empty' })
@@ -57,7 +85,7 @@ exports.postOneAlert = (req, res) => {
       res.json(resAlert)
     })
     .catch(() => {
-      res.status(500).json({ error: 'something went wrong '}) // note: changes status code from 200
+      res.status(500).json({ general: 'something went wrong 500'}) // note: changes status code from 200
     })
 }
 
