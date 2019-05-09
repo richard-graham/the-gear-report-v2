@@ -4,7 +4,6 @@ import { getAlerts } from '../../../redux/actions/dataActions'
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { AutoSizer, Column, SortDirection, Table } from 'react-virtualized';
-import { Link } from 'react-router-dom'
 //Mui
 import { withStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
@@ -102,7 +101,7 @@ class ReactVirtualizedTable extends React.PureComponent {
         {({ height, width }) => (
           <Table
             className={classes.table}
-            height={height}
+            height={height - 38} // needs to be adjusted to allow for header height
             width={width}
             {...tableProps}
             rowClassName={this.getRowClassName}
@@ -178,8 +177,8 @@ class RecentAlerts extends Component {
   render() {
     const { alerts } = this.props
     return (
-      <Paper style={{ height: 300, width: '100%' }}>
-      <Typography variant='subtitle1'>Recent Tickets</Typography>
+      <Paper style={{ height: 372, width: '100%' }}>
+      <Typography variant='subtitle1' style={{ paddingTop: 10 }}>Recent Tickets</Typography>
         <WrappedVirtualizedTable
           rowCount={alerts.length > 0 ? alerts.length : 0}
           rowGetter={({ index }) => alerts[index]}

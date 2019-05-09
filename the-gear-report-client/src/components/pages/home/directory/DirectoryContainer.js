@@ -22,12 +22,19 @@ const styles = {
   },
   tabContainer: {
     padding: 10,
-    height: 350,
+    height: 340,
     overflowY: 'scroll'
   },
-  navContainer: {
+  navContainerSmall: {
     width: '100%',
     height: 350,
+  },
+  navCountainerLarge: {
+    width: '100%',
+    height: '100%',
+  },
+  paper: {
+    height: '100%'
   }
 }
 
@@ -44,7 +51,7 @@ export class DirectoryContainer extends Component {
     const { classes } = this.props
     const { value } = this.state
     return (
-      <Paper square>
+      <Paper square className={classes.paper}>
         <Grid container spacing={0}>
           <Grid item xs={12}>
             <Hidden smUp implementation="css">
@@ -64,7 +71,7 @@ export class DirectoryContainer extends Component {
               </Grid>
             </Hidden> 
             <Hidden xsDown implementation='css'>
-              <Grid container spacing={0} className={classes.navContainer} >
+              <Grid container spacing={0} className={classes.navContainerSmall} >
                 <Grid item align='center' xs={3}>
                   <GlobeNav />
                 </Grid>

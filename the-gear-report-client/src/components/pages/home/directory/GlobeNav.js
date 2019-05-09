@@ -24,7 +24,7 @@ const styles = theme => ({
     paddingLeft: theme.spacing.unit * 12,
   },
   nav: {
-    height: 500,
+    height: '100%',
     overflowY: 'scroll'
   }
 });

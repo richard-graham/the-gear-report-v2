@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import DirectoryContainer from '../components/pages/home/directory/DirectoryContainer'
 import RecentAlerts from '../components/pages/home/RecentAlerts'
-import { withStyles, MuiThemeProvider } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 //Mui
 import Typography from '@material-ui/core/Typography'

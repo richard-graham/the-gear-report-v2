@@ -51,7 +51,6 @@ export const getAlert = (alertId) => dispatch => {
 //Post an alert
 export const postAlert = (newAlert) => dispatch => {
   dispatch({ type: LOADING_UI })
-  console.log(newAlert);
   axios.post('/alert', newAlert)
     .then(res => {
       dispatch({ 
