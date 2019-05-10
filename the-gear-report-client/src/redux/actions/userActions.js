@@ -123,7 +123,6 @@ export const getUserData = () => (dispatch) => {
 
 export const uploadUserImage = (formData) => (dispatch) => {  
   dispatch({ type: LOADING_USER })
-  console.log(formData);
   axios.post('/user/image', formData)
     .then(() => {
       dispatch(getUserData())
@@ -134,11 +133,11 @@ export const uploadUserImage = (formData) => (dispatch) => {
 }
 
 export const editUserDetails = (userDetails) => (dispatch) => {
-  dispatch({ type: LOADING_USER })
   axios.post('/user', userDetails)
     .then((res) => {
       console.log(res);
       dispatch(getUserData()) 
+      dispatch({ type: SET_MESSAGE, payload: res.data.message })
     })
     .catch(err => {
       console.log(err);

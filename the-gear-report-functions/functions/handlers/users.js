@@ -24,6 +24,7 @@ exports.signup = (req, res) => {
     handle: req.body.handle,
     city: req.body.city ? req.body.city : '',
     bio: req.body.bio ? req.body.bio : '',
+    occupation: req.body.occupation ? req.body.occupation : '',
     avatarLetters: avatarLetters,
   }
 
@@ -115,16 +116,14 @@ exports.login = (req, res) => {
     })
 }
 
-// ADD USER
+// EDIT USER
 
 exports.addUserDetails = (req,res) => {
-  console.log(req.body);
   let userDetails = reduceUserDetails(req.body)
-
   db.doc(`/users/${req.user.handle}`)
     .update(userDetails)
     .then(() => {
-      return res.json({ messgae: 'Details added successfully'} )
+      return res.json({ message: 'Details added successfully'} )
     })
     .catch(err => {
       console.error(err)

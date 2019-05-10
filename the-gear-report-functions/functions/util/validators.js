@@ -50,14 +50,16 @@ exports.reduceUserDetails = (data) => {
 
   // makes sure we don't submit empty strings overwriting prev user data
 
-  if(!isEmpty(data.bio.trim())) userDetails.bio = data.bio
-  if(!isEmpty(data.city.trim())) userDetails.city = data.city
-  if(!isEmpty(data.website.trim())){
+  if(data.bio && !isEmpty(data.bio.trim())) userDetails.bio = data.bio
+  if(data.city && !isEmpty(data.city.trim())) userDetails.city = data.city
+  if(data.occupation && !isEmpty(data.occupation.trim())) userDetails.occupation = data.occupation
+  if(data.experience && !isEmpty(data.experience.trim())) userDetails.experience = data.experience
+  if(data.email && !isEmpty(data.email.trim())) userDetails.email = data.email
+  if(data.website && !isEmpty(data.website.trim())){
     // validate if user enters www.test.com as opposed to http://www.test.com
     if(data.website.trim().substring(0, 4) !== 'http'){
       userDetails.website = `http://${data.website.trim()}`
     } else userDetails.website = data.website
   }
-
   return userDetails
 }
