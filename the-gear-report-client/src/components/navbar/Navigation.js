@@ -107,7 +107,7 @@ class Navigation extends Component {
           >
             <div className={classes.navDrawerHeader} />
             
-            <RouteDisplay />
+            <RouteDisplay handleDrawerClose={this.handleDrawerClose} />
 
           </main>
         </div>

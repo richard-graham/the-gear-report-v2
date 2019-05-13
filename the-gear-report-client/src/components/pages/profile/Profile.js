@@ -48,7 +48,6 @@ export class Profile extends Component {
           createdAt,
           occupation,
           bio,
-          experience
         }
       }
     } = this.props

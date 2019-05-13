@@ -7,7 +7,8 @@ import {
   POST_ALERT,
   SET_ALERT,
   SUBMIT_COMMENT,
-  SET_ALERT_IMAGE
+  SET_ALERT_IMAGE,
+  RESET_ALERT_IMAGE
 } from '../types'
 
 const initialState = {
@@ -74,9 +75,17 @@ export default function(state = initialState, action){
     case SET_ALERT_IMAGE:
       return {
         ...state,
+        loading: false,
         newAlert: {
           ...state.newAlert,
           images: [...state.newAlert.images, action.payload]
+        }
+      }
+    case RESET_ALERT_IMAGE:
+      return {
+        ...state,
+        newAlert: {
+          images: []
         }
       }
     default:

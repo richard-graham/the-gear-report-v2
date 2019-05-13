@@ -13,7 +13,8 @@ import {
   SUBMIT_COMMENT,
   SET_ALERT_IMAGE,
   SET_MESSAGE,
-  CLEAR_MESSAGE
+  CLEAR_MESSAGE,
+  RESET_ALERT_IMAGE
 } from '../types'
 import axios from 'axios'
 
@@ -90,7 +91,7 @@ export const postAlert = (newAlert) => dispatch => {
 }
 
 export const uploadAlertImage = (formData) => (dispatch) => {  
-  dispatch({ type: CLEAR_MESSAGE })
+  dispatch({ type: LOADING_DATA })
   axios.post('/alert/add/image', formData)
     .then((res) => {
       dispatch({ 
@@ -110,6 +111,10 @@ export const uploadAlertImage = (formData) => (dispatch) => {
         payload: err
       })
     })
+}
+
+export const resetAlertImages = () => (dispatch) => {
+  dispatch({ type: RESET_ALERT_IMAGE })
 }
 
 //Like an alert

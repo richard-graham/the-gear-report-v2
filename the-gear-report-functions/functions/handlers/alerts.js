@@ -19,7 +19,9 @@ exports.getAllAlerts = (req, res) => {
           userImage: doc.data().userImage,
           likeCount: doc.data().likeCount,
           commentCount: doc.data().commentCount,
-          title: doc.data().title
+          title: doc.data().title,
+          sponsored: doc.data().sponsored,
+          resolved: doc.data().resolved
         }) // data() is a function that returns the data within the document
       })
       return res.json(alerts)
@@ -47,7 +49,9 @@ exports.getRecentAlerts = (req, res) => {
           userImage: doc.data().userImage,
           likeCount: doc.data().likeCount,
           commentCount: doc.data().commentCount,
-          title: doc.data().title
+          title: doc.data().title,
+          sponsored: doc.data().sponsored,
+          resolved: doc.data().resolved
         }) // data() is a function that returns the data within the document
       })
       return res.json(alerts)
@@ -74,6 +78,8 @@ exports.postOneAlert = (req, res) => {
     userImage: req.user.imageUrl,
     likeCount: 0,
     commentCount: 0,
+    sponsored: false,
+    resolved: false
   } 
 
   db

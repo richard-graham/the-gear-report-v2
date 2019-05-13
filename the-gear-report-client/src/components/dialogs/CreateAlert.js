@@ -1,5 +1,5 @@
 import React from 'react';
-import { uploadAlertImage, postAlert } from '../../redux/actions/dataActions'
+import { uploadAlertImage, postAlert, resetAlertImages } from '../../redux/actions/dataActions'
 import { connect } from 'react-redux'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
@@ -11,6 +11,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import MyButton from '../../util/MyButton'
+import CircularProgress from '@material-ui/core/CircularProgress';
 //Icons
 import EditIcon from '@material-ui/icons/Edit'
 
@@ -41,12 +42,10 @@ class CreateAlert extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
-
     var imageObj = {}
     this.props.images.forEach((image, i) => {
       imageObj[i] = image
     });
-
     this.props.postAlert({ 
       body: this.state.body,
       title: this.state.title,
@@ -55,14 +54,18 @@ class CreateAlert extends React.Component {
      this.setState({
        title: '',
        body: '',
-       images: null
      })
+     this.props.resetAlertImages()
      this.props.closeAllDialogs()
+  }
+
+  test = () => {
+    console.log('tested');
   }
 
 
   render() {
-    const { open, closeAllDialogs } = this.props
+    const { open, closeAllDialogs, data: { loading } } = this.props
     return (
       <div>
         <Dialog
@@ -100,7 +103,7 @@ class CreateAlert extends React.Component {
             <br />
             <input type='file' id='imageInput' onChange={this.handleImageChange} hidden='hidden' />
             <MyButton tip='Add image to alert' onClick={this.handleEditPicture} btnClassName='button'>
-              <EditIcon color='primary' />
+              {loading ? <CircularProgress size={25}/> : <EditIcon color='primary' />}
             </MyButton>
 
           </DialogContent>
@@ -126,11 +129,13 @@ const styles = theme => ({
 
 const mapActionsToProps = {
   uploadAlertImage,
-  postAlert
+  postAlert,
+  resetAlertImages
 }
 
 const mapStateToProps = state => ({
-  images: state.data.newAlert.images
+  images: state.data.newAlert.images,
+  data: state.data
 })
 
 export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(CreateAlert))

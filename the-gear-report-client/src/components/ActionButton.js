@@ -13,7 +13,6 @@ import EditOutlined from '@material-ui/icons/EditOutlined';
 import EditIcon from '@material-ui/icons/Edit';
 import EventIcon from '@material-ui/icons/EventAvailable'
 
-
 const styles = theme => ({
   root: {
     height: 380
@@ -52,7 +51,7 @@ class ActionButton extends React.Component {
     });
   };
 
-   openCreateAlert = () => {
+  openCreateAlert = () => {
     this.setState({
       createAlertOpen: true,
     })

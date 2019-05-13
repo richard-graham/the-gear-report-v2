@@ -7,6 +7,7 @@ import Login from '../components/pages/login/Login'
 import ActionButton from '../components/ActionButton'
 import MySnackBar from './MySnackBar'
 import Profile from '../components/pages/profile/Profile'
+import AllAlerts from '../components/pages/alerts/AllAlerts'
 import AuthRoute from './AuthRoute'
 
 
@@ -20,15 +21,14 @@ export class RouteDisplay extends Component {
       <Fragment>
         <div className={classes.root}>
           <div className={classes.content}>
-              
               <Switch>
-                
                 <Route exact path='/' component={home} />
                 <Route exact path='/signup' component={NewUserForm} />
                 <Route exact path='/login' component={Login} />
                 <AuthRoute exact path='/profile' component={Profile} />
-
+                <Route exact path='/alerts' render={(props) => <AllAlerts {...props} handleDrawerClose={this.props.handleDrawerClose}/>} />
               </Switch>
+
               {authenticated === true && <ActionButton />}
               {error ?  
                 <MySnackBar variant='error' message={error} /> : 
