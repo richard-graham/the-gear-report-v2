@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Route, Switch  } from 'react-router-dom'
+import { Route  } from 'react-router-dom'
 import { connect } from 'react-redux'
 import home from '../components/pages/home/home'
 import NewUserForm from '../components/pages/signup/NewUserForm'
@@ -21,15 +21,16 @@ export class RouteDisplay extends Component {
       <Fragment>
         <div className={classes.root}>
           <div className={classes.content}>
-              <Switch>
+              {/* <Switch> */}
                 <Route exact path='/' component={home} />
                 <Route exact path='/signup' component={NewUserForm} />
                 <Route exact path='/login' component={Login} />
                 <AuthRoute exact path='/profile' component={Profile} />
                 <Route exact path='/alerts' render={(props) => <AllAlerts {...props} handleDrawerClose={this.props.handleDrawerClose}/>} />
-              </Switch>
+                {authenticated === true && <Route path='/' component={ActionButton} />}
+              {/* </Switch> */}
 
-              {authenticated === true && <ActionButton />}
+              {/* {authenticated === true && <ActionButton />} */}
               {error ?  
                 <MySnackBar variant='error' message={error} /> : 
                 message ? 
@@ -49,12 +50,12 @@ const styles = theme => ({
     justifyContent: 'center'
   },
   content: {
-    width: '85%',
-    maxWidth: 1400,
-    [theme.breakpoints.down('sm')]: {
-      minWidth: 240,
-      width: '95%'
-    },
+      // width: '85%',
+    // maxWidth: 1400,
+    // [theme.breakpoints.down('sm')]: {
+    //   minWidth: 240,
+    //   width: '95%'
+    // },
   }
 })
 

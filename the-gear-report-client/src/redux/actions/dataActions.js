@@ -13,7 +13,6 @@ import {
   SUBMIT_COMMENT,
   SET_ALERT_IMAGE,
   SET_MESSAGE,
-  CLEAR_MESSAGE,
   RESET_ALERT_IMAGE
 } from '../types'
 import axios from 'axios'

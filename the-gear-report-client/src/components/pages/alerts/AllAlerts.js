@@ -2,6 +2,7 @@ import React from 'react'
 import { getAlerts } from '../../../redux/actions/dataActions'
 import { connect } from 'react-redux'
 import MaterialTable from 'material-table'
+import { withStyles } from '@material-ui/core/styles'
 import CreateAlert from '../../dialogs/CreateAlert'
 //Mui
 import {
@@ -25,9 +26,9 @@ export class AllTickets extends React.Component {
   }
 
   render() {
-    const { alerts } = this.props
+    const { alerts, classes } = this.props
     return (
-      <div className='tickets-container'>
+      <div className={classes.container}>
         <MaterialTable 
           className='tickets-table' 
           columns={[
@@ -47,7 +48,7 @@ export class AllTickets extends React.Component {
           options={{
             filtering: true,
             pageSize: 10,
-            pageSizeOptions: [10, 20, 50]
+            pageSizeOptions: [10, 20, 50],
           }}
           actions={[
             {
@@ -65,12 +66,19 @@ export class AllTickets extends React.Component {
             }
           ]}
         />
-      <CreateAlert
-        open={this.state.createAlertOpen} 
-        closeAllDialogs={this.closeCreateAlert}
-      />
+        <CreateAlert
+          open={this.state.createAlertOpen} 
+          closeAllDialogs={this.closeCreateAlert}
+        />
       </div>
     )
+  }
+}
+
+const styles = {
+  paper: {
+    minHeight: '100vh',
+    width: '100vw'
   }
 }
 
@@ -82,4 +90,4 @@ const mapDispatchToProps = {
   getAlerts
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AllTickets)
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AllTickets))
