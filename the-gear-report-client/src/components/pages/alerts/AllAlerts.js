@@ -28,9 +28,9 @@ export class AllTickets extends React.Component {
   render() {
     const { alerts, classes } = this.props
     return (
-      <div className={classes.container}>
+      <div className={classes.allTicketsContainer}>
         <MaterialTable 
-          className='tickets-table' 
+          className={classes.allAlertsTable} 
           columns={[
             { title: 'Title', field: 'title', filtering: false, },
             { title: 'Severity', field: 'severity', type: 'numeric'},
@@ -47,7 +47,7 @@ export class AllTickets extends React.Component {
           title="Alert Directory"
           options={{
             filtering: true,
-            pageSize: 10,
+            pageSize: 11,
             pageSizeOptions: [10, 20, 50],
           }}
           actions={[
@@ -75,12 +75,9 @@ export class AllTickets extends React.Component {
   }
 }
 
-const styles = {
-  paper: {
-    minHeight: '100vh',
-    width: '100vw'
-  }
-}
+const styles = theme => ({
+  ...theme
+})
 
 const mapStateToProps = state => ({
   alerts: state.data.alerts

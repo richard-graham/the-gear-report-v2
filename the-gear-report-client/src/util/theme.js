@@ -3,6 +3,7 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 
 const defaultTheme = createMuiTheme({ typography: { useNextVariants: true } })
 const navDrawerWidth = 240;
+const navHeight = '64px'
 
 
 export default {
@@ -203,5 +204,12 @@ export default {
     maxWidth: 30,
     borderRadius: '50%'
   },
-  
+  // AllTickets
+  allTicketsContainer: {
+    minHeight: '100vh' - navHeight,
+    width: '100%'
+  },
+  allAlertsTable: {
+    marginTop: 100,
+  }
 }
