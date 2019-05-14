@@ -9,7 +9,9 @@ import {
 
 const initialState = {
   loading: false,
-  errors: {},
+  errors: {
+    general: ''
+  },
   message: ''
 }
 
@@ -19,7 +21,9 @@ export default function(state = initialState, action){
       return {
         ...state,
         loading: false,
-        errors: action.payload
+        errors: {
+          general: action.payload
+        }
       }
     case SET_MESSAGE:
       return {

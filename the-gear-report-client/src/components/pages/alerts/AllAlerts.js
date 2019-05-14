@@ -1,5 +1,6 @@
 import React from 'react'
 import { getAlerts } from '../../../redux/actions/dataActions'
+import { setError } from '../../../redux/actions/userActions'
 import { connect } from 'react-redux'
 import MaterialTable from 'material-table'
 import { withStyles } from '@material-ui/core/styles'
@@ -25,6 +26,14 @@ export class AllTickets extends React.Component {
     })
   }
 
+  handleCreateAlert = () => {
+    this.props.authenticated ? (
+      this.setState({ createAlertOpen: true })
+    ) : (
+      this.props.setError('You must be signed in to add an Alert')
+    )
+  }
+
   render() {
     const { alerts, classes } = this.props
     return (
@@ -47,7 +56,7 @@ export class AllTickets extends React.Component {
           title="Alert Directory"
           options={{
             filtering: true,
-            pageSize: 11,
+            pageSize: 10,
             pageSizeOptions: [10, 20, 50],
           }}
           actions={[
@@ -62,7 +71,7 @@ export class AllTickets extends React.Component {
               icon: 'add',
               tooltip: 'Add Alert',
               isFreeAction: true,
-              onClick: () => this.setState({ createAlertOpen: true })
+              onClick: () => this.handleCreateAlert()
             }
           ]}
         />
@@ -80,11 +89,13 @@ const styles = theme => ({
 })
 
 const mapStateToProps = state => ({
-  alerts: state.data.alerts
+  alerts: state.data.alerts,
+  authenticated: state.user.authenticated
 })
 
 const mapDispatchToProps = {
-  getAlerts
+  getAlerts,
+  setError
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AllTickets))

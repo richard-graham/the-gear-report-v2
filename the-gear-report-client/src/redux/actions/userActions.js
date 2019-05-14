@@ -152,6 +152,13 @@ export const markNotificationsRead = (notificationIds) => (dispatch) => {
     .catch(err => console.log(err))
 }
 
+export const setError = (error) => (dispatch) => {
+  dispatch({
+    type: SET_ERRORS,
+    payload: error
+  })
+}
+
 const setAuthorizationHeader = (token) => {
   const FBIdToken = `Bearer ${token}`
         localStorage.setItem('FBIdToken', FBIdToken) // saves token to local storage in case of page refresh etc

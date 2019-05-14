@@ -206,8 +206,7 @@ export default {
   },
   // AllTickets
   allTicketsContainer: {
-    minHeight: '100vh' - navHeight,
-    width: '100%'
+    padding: 15
   },
   allAlertsTable: {
     marginTop: 100,
