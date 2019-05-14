@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { Route  } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Navigation from './components/navbar & drawer/Navigation'
@@ -19,7 +19,7 @@ export class App extends Component {
   render() {
     const { classes, authenticated, error, message } = this.props
 
-    
+
 
     const content = (
       <div className={classes.root}>
