@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import CreateAlert from './dialogs/CreateAlert'
 import EditAlert from './dialogs/EditAlert'
@@ -14,9 +14,6 @@ import EditIcon from '@material-ui/icons/Edit';
 import EventIcon from '@material-ui/icons/EventAvailable'
 
 const styles = theme => ({
-  root: {
-    height: 380
-  },
   speedDial: {
     position: 'fixed',
     bottom: theme.spacing.unit * 4,
@@ -35,15 +32,15 @@ class ActionButton extends React.Component {
     createAlertOpen: false,
     editAlertOpen: false,
     createEventOpen: false
-  };
+  }
 
   handleOpen = () => {
     if (!this.state.hidden) {
       this.setState({
         open: true,
-      });
+      })
     }
-  };
+  }
 
   handleClose = () => {
     this.setState({
@@ -89,7 +86,7 @@ class ActionButton extends React.Component {
     const shouldRender = this.props.location.pathname !== '/alerts' ? true : false
 
     return shouldRender ? (
-      <div className={classes.root}>
+      <Fragment>
         <span>
           <SpeedDial
             ariaLabel="SpeedDial openIcon example"
@@ -125,7 +122,7 @@ class ActionButton extends React.Component {
           open={this.state.createEventOpen} 
           closeAllDialogs={this.closeAllDialogs}
         />
-      </div>
+      </Fragment>
     ) : ''
   }
 }
