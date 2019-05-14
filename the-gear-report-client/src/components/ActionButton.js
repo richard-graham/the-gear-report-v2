@@ -75,7 +75,7 @@ class ActionButton extends React.Component {
    }
 
   render() {
-    const { classes } = this.props;
+    const { classes, location: { pathname } } = this.props;
     const { hidden, open } = this.state;
 
     const actions = [
@@ -83,7 +83,7 @@ class ActionButton extends React.Component {
       { icon: <EditOutlined />, name: 'Edit Alert', handleClick: this.openEditAlert },
       { icon: <EventIcon />, name: 'Create Event', handleClick: this.openCreateEvent },
     ];
-    const shouldRender = this.props.location.pathname !== '/alerts' ? true : false
+    const shouldRender = pathname !== '/alerts' ? true : false
 
     return shouldRender ? (
       <Fragment>

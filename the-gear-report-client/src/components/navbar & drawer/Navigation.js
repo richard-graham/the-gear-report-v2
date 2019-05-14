@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { DrawerMarkup } from './DrawerMarkup'
 import RouteDisplay from '../../util/RouteDisplay'
-import { BrowserRouter as Router } from 'react-router-dom'
 
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -49,7 +48,6 @@ class Navigation extends Component {
   const { open, mobileOpen } = this.state
 
     return (
-      <Router>
         <div className={classes.navRoot}>
           <CssBaseline />
           <Hidden mdUp implementation="css">
@@ -107,11 +105,10 @@ class Navigation extends Component {
           >
             <div className={classes.navDrawerHeader} />
             
-            <RouteDisplay handleDrawerClose={this.handleDrawerClose} />
+            {this.props.content}
 
           </main>
         </div>
-      </Router>
     );
   }
 }

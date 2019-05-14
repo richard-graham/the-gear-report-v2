@@ -16,7 +16,6 @@ export class AllTickets extends React.Component {
   }
 
   componentDidMount = () => {
-    this.props.handleDrawerClose()
     this.props.getAlerts()
   }
 

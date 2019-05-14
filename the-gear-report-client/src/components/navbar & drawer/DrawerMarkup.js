@@ -36,9 +36,9 @@ export class DrawerMarkup extends Component {
       subsOpen,
       classes,
       handleDrawerClose,
-      handleToggleSubsList
+      handleToggleSubsList,
+     
     } = this.props
-
     return (
       <Fragment>
         <div className={classes.navDrawerHeader}>
