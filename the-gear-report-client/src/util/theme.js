@@ -3,7 +3,7 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 
 const defaultTheme = createMuiTheme({ typography: { useNextVariants: true } })
 const navDrawerWidth = 240;
-const navHeight = '64px'
+// const navHeight = '64px'
 
 
 export default {

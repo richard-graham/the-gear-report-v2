@@ -28,7 +28,7 @@ const {
   getUserDetails,
   markNotificationsRead
  } = require('./handlers/users')
-
+ 
 // Alert routes
 app.get('/alerts', getAllAlerts)
 app.get('/alerts/recent', getRecentAlerts)

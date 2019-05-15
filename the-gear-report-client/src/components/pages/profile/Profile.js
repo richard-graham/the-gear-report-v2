@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import { uploadUserImage } from '../../../redux/actions/userActions'
@@ -52,8 +52,8 @@ export class Profile extends Component {
       }
     } = this.props
     return (
-      <Fragment>
-        <Paper className={classes.paper}>
+      <div className={classes.profileContainer}>
+        <Paper className={classes.profilePaper}>
           <br />
           <Tooltip title='Change Photo' placement='right'>
             <img src={imageUrl} className={classes.profilePic} onClick={this.handleEditPicture} alt='User Profile' />
@@ -91,16 +91,25 @@ export class Profile extends Component {
           occupation={occupation}
           bio={bio}
         />
-      </Fragment>
+      </div>
     )
   }
 }
 
 const styles = theme => ({
   ...theme,
-  paper: {
-    width: '100%',
-    height: '100%'
+  profilePaper: {
+    width: '40%',
+    [theme.breakpoints.down('xs')]: {
+      minWidth: 320,
+    },
+    [theme.breakpoints.down('lg')]: {
+      marginTop: 50
+    },
+    marginTop: 150,
+    alignSelf: 'center',
+    minWidth: 520,
+    paddingBottom: 40
   },
   profilePic: {
     height: 100,
@@ -108,6 +117,12 @@ const styles = theme => ({
     marginTop: 40,
     marginBottom: 10,
     borderRadius: '50%'
+  },
+  profileContainer: {
+    width: '100%',
+    heigh: '100%',
+    display: 'flex',
+    flexDirection: 'column'
   }
 })
 
