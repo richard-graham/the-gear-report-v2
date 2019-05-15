@@ -49,10 +49,10 @@ class NavBar extends React.Component {
 
   render() {
     const { anchorEl, mobileMoreAnchorEl } = this.state;
-    const { classes, user: { credentials: { avatarLetters }}, } = this.props;
+    const { classes, user: { credentials: { avatarLetters, imageUrl }}, } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
+    const defaultPic = 'https://firebasestorage.googleapis.com/v0/b/the-gear-report-a2ce8.appspot.com/o/no-image.png?alt=media&token=fbf326f1-0c4b-4ab5-8430-9eebac279efa'
     return (
       <Fragment>
           <Typography component={Link} to='/' className={classes.navTitle} variant="h6" color="inherit" noWrap>
@@ -89,7 +89,14 @@ class NavBar extends React.Component {
             onClick={this.handleProfileMenuOpen}
             color="inherit"
           >
-            {avatarLetters ? <Avatar className={classes.navAvatar}>{avatarLetters.charAt(0)}</Avatar> : <AccountCircle />}
+            {imageUrl === defaultPic ? (
+              <Avatar className={classes.navAvatar}>{avatarLetters.charAt(0)}</Avatar>
+            ) : avatarLetters == "" ? (
+              <AccountCircle />
+              ) : (
+              // <img src={imageUrl} />
+              <AccountCircle />
+            )}
           </IconButton>
         </div>
         <div className={classes.navSectionMobile}>

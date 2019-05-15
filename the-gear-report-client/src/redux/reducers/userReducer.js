@@ -13,7 +13,16 @@ import {
 const initialState = {
   authenticated: false,
   loading:false,
-  credentials: {},
+  credentials: {
+    city: '',
+    handle: '',
+    email: '',
+    userId: '',
+    bio: '',
+    imageUrl: '',
+    createdAt: '',
+    avatarLetters: ''
+  },
   likes: [],
   notifications: [],
   lat: -30.209985,

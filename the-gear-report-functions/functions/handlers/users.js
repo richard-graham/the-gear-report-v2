@@ -28,8 +28,6 @@ exports.signup = (req, res) => {
     avatarLetters: avatarLetters,
   }
 
-  console.log(newUser);
-
   const { valid, errors } = validateSignUpData(newUser)
 
   if (!valid) return res.status(400).json(errors)
@@ -242,6 +240,13 @@ exports.uploadImage = (req, res) => {
     file.pipe(fs.createWriteStream(filepath))
   })
   busboy.on('finish', () => {
+    // convert to low res image
+    const im = require('imagemagick')
+    im.resize({
+      srcPath: imageToBeUploaded.filepath,
+      dstPath: imageToBeUploaded.filepath,
+      width: 180
+    })
     admin.storage().bucket().upload(imageToBeUploaded.filepath, {
       resumable: false,
       metadata: {

@@ -110,9 +110,6 @@ export default {
   },
   navContent: {
     flexGrow: 1,
-    // padding: defaultTheme.spacing.unit * 3,
-    // paddingLeft: defaultTheme.spacing.unit * 6,
-    // paddingRight: defaultTheme.spacing.unit * 6,
     transition: defaultTheme.transitions.create('margin', {
       easing: defaultTheme.transitions.easing.sharp,
       duration: defaultTheme.transitions.duration.leavingScreen,
