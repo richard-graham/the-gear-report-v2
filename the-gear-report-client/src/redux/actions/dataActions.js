@@ -67,10 +67,8 @@ export const getAlert = (alertId) => dispatch => {
 }
 
 export const getAlertsByUser = (userHandle) => (dispatch) => {
-  console.log('hit');
   axios.get(`/alerts/${userHandle}`)
   .then(res => {
-    console.log(res.data);
     dispatch({
       type: SET_USER_ALERTS,
       payload: res.data

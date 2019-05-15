@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ProfilePic from '../../../util/ProfilePic'
 //Mui
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -39,7 +40,7 @@ export class RenderMobileMenu extends Component {
         </MenuItem>
         <MenuItem onClick={handleProfileMenuOpen}>
           <IconButton color="inherit">
-            <AccountCircle />
+            <ProfilePic />
           </IconButton>
           <p>Profile</p>
         </MenuItem>

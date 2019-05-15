@@ -135,7 +135,6 @@ export const uploadUserImage = (formData) => (dispatch) => {
 export const editUserDetails = (userDetails) => (dispatch) => {
   axios.post('/user', userDetails)
     .then((res) => {
-      console.log(res);
       dispatch(getUserData()) 
       dispatch({ type: SET_MESSAGE, payload: res.data.message })
     })

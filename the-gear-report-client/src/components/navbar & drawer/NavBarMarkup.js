@@ -4,16 +4,15 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import RenderMenu from './NavBarMenus/RenderMenu'
 import { RenderMobileMenu } from './NavBarMenus/RenderMobileMenu'
+import ProfilePic from '../../util/ProfilePic'
 //Mui
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import { withStyles } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar';
 //icons
 import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
@@ -21,11 +20,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 
 
 const styles = theme => ({
-  ...theme,
-  profilePic: {
-    width: 30,
-    borderRadius: '50%'
-  }
+  ...theme
 });
 
 class NavBar extends React.Component {
@@ -53,10 +48,9 @@ class NavBar extends React.Component {
 
   render() {
     const { anchorEl, mobileMoreAnchorEl } = this.state;
-    const { classes, user: { credentials: { avatarLetters, imageUrl }}, } = this.props;
+    const { classes } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-    const defaultPic = 'https://firebasestorage.googleapis.com/v0/b/the-gear-report-a2ce8.appspot.com/o/no-image.png?alt=media&token=fbf326f1-0c4b-4ab5-8430-9eebac279efa'
     return (
       <Fragment>
           <Typography component={Link} to='/' className={classes.navTitle} variant="h6" color="inherit" noWrap>
@@ -93,13 +87,7 @@ class NavBar extends React.Component {
             onClick={this.handleProfileMenuOpen}
             color="inherit"
           >
-            {imageUrl === defaultPic ? (
-              <Avatar className={classes.navAvatar}>{avatarLetters.charAt(0)}</Avatar>
-            ) : avatarLetters === "" ? (
-              <AccountCircle />
-              ) : (
-              <img src={imageUrl} className={classes.profilePic} />
-            )}
+            <ProfilePic />
           </IconButton>
         </div>
         <div className={classes.navSectionMobile}>
@@ -129,7 +117,7 @@ NavBar.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  user: state.user
+  
 })
 
 export default connect(mapStateToProps)(withStyles(styles)(NavBar))

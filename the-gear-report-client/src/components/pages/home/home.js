@@ -27,9 +27,12 @@ const styles = theme => ({
     height: '100%',
     width: '100%',
     padding: theme.spacing.unit * 3,
-    paddingLeft: theme.spacing.unit * 6,
-    paddingRight: theme.spacing.unit * 6,
-
+    paddingLeft: theme.spacing.unit * 12,
+    paddingRight: theme.spacing.unit * 12,
+    [theme.breakpoints.down('md')]: {
+      paddingLeft: theme.spacing.unit * 6,
+      paddingRight: theme.spacing.unit * 12,
+    }
   },
 })
 
