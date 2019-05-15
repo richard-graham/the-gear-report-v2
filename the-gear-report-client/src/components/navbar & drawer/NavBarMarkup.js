@@ -21,7 +21,11 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 
 
 const styles = theme => ({
-  ...theme
+  ...theme,
+  profilePic: {
+    width: 30,
+    borderRadius: '50%'
+  }
 });
 
 class NavBar extends React.Component {
@@ -94,8 +98,7 @@ class NavBar extends React.Component {
             ) : avatarLetters == "" ? (
               <AccountCircle />
               ) : (
-              // <img src={imageUrl} />
-              <AccountCircle />
+              <img src={imageUrl} className={classes.profilePic} />
             )}
           </IconButton>
         </div>
