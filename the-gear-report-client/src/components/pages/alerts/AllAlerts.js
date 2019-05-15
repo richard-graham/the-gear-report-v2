@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles'
 import CreateAlert from '../../dialogs/CreateAlert'
 //Mui
 import {
-  Search
+  AccountCircle
 } from '@material-ui/icons'
 
 export class AllTickets extends React.Component {
@@ -25,6 +25,10 @@ export class AllTickets extends React.Component {
     })
   }
 
+  handleRowClick = (e, rowData) => {
+    this.props.history.push(`/alerts/${rowData.alertId}`)
+  }
+
   handleCreateAlert = () => {
     this.props.authenticated ? (
       this.setState({ createAlertOpen: true })
@@ -39,6 +43,7 @@ export class AllTickets extends React.Component {
       <div className={classes.allTicketsContainer}>
         <MaterialTable 
           className={classes.allAlertsTable} 
+          onRowClick= {(e, rowData) => this.handleRowClick(e, rowData)}
           columns={[
             { title: 'Title', field: 'title', filtering: false, },
             { title: 'Severity', field: 'severity', type: 'numeric'},
@@ -60,10 +65,10 @@ export class AllTickets extends React.Component {
           }}
           actions={[
             {
-              icon: Search,
-              tooltip: 'More Info',
+              icon: AccountCircle,
+              tooltip: 'View Profile',
               onClick: (e, rowData) => {
-                this.props.history.push(`/alerts/${rowData.alertId}`)
+                this.props.history.push(`/profile/${rowData.userHandle}`)
               },
             },
             {
