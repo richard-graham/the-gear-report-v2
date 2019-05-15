@@ -124,6 +124,24 @@ exports.getAlert = (req, res) => {
   })
 }
 
+exports.getAlertsByUser = (req, res) => {
+  console.log(req.params.userHandle);
+  db.collection(`/alerts`).where('userHandle', '==', req.params.userHandle)
+    .get()
+    .then(docs => {
+      let alerts = []
+      if(docs.length < 1){
+        return res.status(404).json({ error: 'No alerts found for this user' })
+      }
+      docs.forEach(doc => alerts.push(doc.data()))
+      return res.json(alerts)
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500).json({ error: err.code })
+    })
+}
+
 exports.commentOnAlert = (req, res) => {
   if(req.body.body.trim() === '') return res.status(400).json({ comment: 'Must not be empty' })
   // build comment
@@ -317,3 +335,4 @@ exports.deleteAlert = (req, res) => {
       return res.status(500).json({ error: err.code })
     })
 }
+

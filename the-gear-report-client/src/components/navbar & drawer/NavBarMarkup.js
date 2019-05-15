@@ -95,7 +95,7 @@ class NavBar extends React.Component {
           >
             {imageUrl === defaultPic ? (
               <Avatar className={classes.navAvatar}>{avatarLetters.charAt(0)}</Avatar>
-            ) : avatarLetters == "" ? (
+            ) : avatarLetters === "" ? (
               <AccountCircle />
               ) : (
               <img src={imageUrl} className={classes.profilePic} />

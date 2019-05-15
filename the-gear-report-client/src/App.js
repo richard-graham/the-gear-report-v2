@@ -28,7 +28,7 @@ export class App extends Component {
           <Route exact path='/' component={home} />
           <Route exact path='/signup' component={NewUserForm} />
           <Route exact path='/login' component={Login} />
-          <AuthRoute exact path='/profile' component={Profile} />
+          <AuthRoute path='/profile/:userHandle' component={Profile} />
           <Route exact path='/alerts' render={(props) => <AllAlerts {...props} handleDrawerClose={this.props.handleDrawerClose}/>} />
           {authenticated === true && <Route path='/' component={ActionButton} />}
     

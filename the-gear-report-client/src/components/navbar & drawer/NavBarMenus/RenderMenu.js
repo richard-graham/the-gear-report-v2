@@ -19,7 +19,12 @@ class RenderMenu extends Component {
       anchorEl, 
       isMenuOpen, 
       handleMenuClose, 
-      user: { authenticated }
+      user: { 
+        authenticated,
+        credentials: {
+          handle
+        }
+       }
     } = this.props
     return (
       <Menu
@@ -30,7 +35,7 @@ class RenderMenu extends Component {
         open={isMenuOpen}
         onClose={handleMenuClose}
       >
-        {authenticated ? <MenuItem onClick={handleMenuClose} component={Link} to={'/profile'}>Profile</MenuItem> : ''}
+        {authenticated ? <MenuItem onClick={handleMenuClose} component={Link} to={`/profile/${handle}`}>Profile</MenuItem> : ''}
         <MenuItem onClick={handleMenuClose}>My account</MenuItem>
         <Divider variant="middle" />
         { authenticated ?

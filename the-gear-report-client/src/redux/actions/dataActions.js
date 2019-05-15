@@ -13,7 +13,8 @@ import {
   SUBMIT_COMMENT,
   SET_ALERT_IMAGE,
   SET_MESSAGE,
-  RESET_ALERT_IMAGE
+  RESET_ALERT_IMAGE,
+  SET_USER_ALERTS
 } from '../types'
 import axios from 'axios'
 
@@ -63,6 +64,19 @@ export const getAlert = (alertId) => dispatch => {
       dispatch({ type: STOP_LOADING_UI })
     })
     .catch(err => console.log(err))
+}
+
+export const getAlertsByUser = (userHandle) => (dispatch) => {
+  console.log('hit');
+  axios.get(`/alerts/${userHandle}`)
+  .then(res => {
+    console.log(res.data);
+    dispatch({
+      type: SET_USER_ALERTS,
+      payload: res.data
+    })
+  })
+  .catch(err => console.log(err))
 }
 
 //Post an alert

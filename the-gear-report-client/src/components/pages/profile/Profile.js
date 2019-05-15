@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import { uploadUserImage } from '../../../redux/actions/userActions'
+import { getAlertsByUser } from '../../../redux/actions/dataActions'
 import dayjs from 'dayjs'
 import UpdateDetails from '../../dialogs/UpdateDetails'
 //Mui
@@ -12,8 +13,13 @@ import Tooltip from '@material-ui/core/Tooltip'
 
 
 export class Profile extends Component {
+
   state = {
     updateOpen: false
+  }
+  
+  componentDidMount = () => {
+    this.props.getAlertsByUser(this.props.match.params.userHandle)
   }
 
   handleImageChange = (event) => {
@@ -131,7 +137,8 @@ const mapStateToProps = state => ({
 })
 
 const mapActionsToProps = {
-  uploadUserImage
+  uploadUserImage,
+  getAlertsByUser
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(Profile))
