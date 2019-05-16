@@ -8,8 +8,6 @@ import Badge from '@material-ui/core/Badge';
 //Icons
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-
 
 export class RenderMobileMenu extends Component {
   render() {

@@ -14,7 +14,8 @@ import {
   SET_ALERT_IMAGE,
   SET_MESSAGE,
   RESET_ALERT_IMAGE,
-  SET_USER_ALERTS
+  SET_USER_ALERTS,
+  SET_USER_PROFILE
 } from '../types'
 import axios from 'axios'
 
@@ -181,8 +182,8 @@ export const getUserData = (userHandle) => dispatch => {
   axios.get(`/user/${userHandle}`)
     .then(res => {
       dispatch({ 
-        type: SET_ALERTS,
-        payload: res.data.alerts 
+        type: SET_USER_PROFILE,
+        payload: res.data
       })
     })
     .catch(() => {

@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import MaterialTable from 'material-table'
 import { withStyles } from '@material-ui/core/styles'
 import CreateAlert from '../../dialogs/CreateAlert'
+import { Redirect } from 'react-router-dom'
 //Mui
 import {
   AccountCircle
@@ -12,7 +13,9 @@ import {
 
 export class AllTickets extends React.Component {
   state = {
-    createAlertOpen: false
+    createAlertOpen: false,
+    redirect: false,
+    user: ''
   }
 
   componentDidMount = () => {
@@ -39,6 +42,11 @@ export class AllTickets extends React.Component {
 
   render() {
     const { alerts, classes } = this.props
+    if(this.state.redirect){
+      console.log(this.state.user);
+      return <Redirect push to={`/profile/${this.state.user}`} />
+    }
+
     return (
       <div className={classes.allTicketsContainer}>
         <MaterialTable 
@@ -68,7 +76,8 @@ export class AllTickets extends React.Component {
               icon: AccountCircle,
               tooltip: 'View Profile',
               onClick: (e, rowData) => {
-                this.props.history.push(`/profile/${rowData.userHandle}`)
+                this.setState({ redirect: true, user: rowData.userHandle})
+                // this.props.history.push(`/profile/${rowData.userHandle}`)
               },
             },
             {

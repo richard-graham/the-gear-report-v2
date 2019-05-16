@@ -10,6 +10,7 @@ export class ProfilePic extends Component {
   render() {
     const { 
       user: { 
+        authenticated,
         credentials: { 
           avatarLetters, 
           imageUrl 
@@ -17,17 +18,16 @@ export class ProfilePic extends Component {
       },
       classes
     } = this.props
-    const defaultPic = 'https://firebasestorage.googleapis.com/v0/b/the-gear-report-a2ce8.appspot.com/o/no-image.png?alt=media&token=fbf326f1-0c4b-4ab5-8430-9eebac279efa'
-
+    const defaultPic = "https://firebasestorage.googleapis.com/v0/b/the-gear-report-a2ce8.appspot.com/o/no-image.png?alt=media"
 
     return (
-      imageUrl === defaultPic ? (
-        <Avatar className={classes.navAvatar}>{avatarLetters.charAt(0)}</Avatar>
-      ) : avatarLetters === "" ? (
-        <AccountCircle />
-        ) : (
-        <img alt='userPic' src={imageUrl} className={classes.profilePic} />
-      )
+      authenticated === true ?
+        imageUrl !== defaultPic ?
+          <img alt='userPic' src={imageUrl} className={classes.profilePic} /> :
+        avatarLetters !== "" ?
+          <Avatar className={classes.navAvatar}>{avatarLetters.charAt(0)}</Avatar> :
+          <AccountCircle /> :
+          <AccountCircle />
     )
   }
 }
@@ -36,6 +36,10 @@ const styles = {
   profilePic: {
     width: 30,
     borderRadius: '50%'
+  },
+  navAvatar: {
+    width: 30,
+    height: 30,
   }
 }
 
@@ -44,3 +48,4 @@ const mapStateToProps = (state) => ({
 })
 
 export default connect(mapStateToProps)(withStyles(styles)(ProfilePic))
+

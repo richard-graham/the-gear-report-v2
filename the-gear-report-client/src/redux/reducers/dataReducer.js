@@ -9,7 +9,7 @@ import {
   SUBMIT_COMMENT,
   SET_ALERT_IMAGE,
   RESET_ALERT_IMAGE,
-  SET_USER_ALERTS
+  SET_USER_PROFILE
 } from '../types'
 
 const initialState = {
@@ -21,6 +21,11 @@ const initialState = {
   loading: false,
   newAlert: {
     images: []
+  },
+  userProfile: {
+    user: {
+      handle: ''
+    }
   }
 }
 
@@ -90,10 +95,11 @@ export default function(state = initialState, action){
           images: []
         }
       }
-    case SET_USER_ALERTS:
+    case SET_USER_PROFILE:
       return {
         ...state,
-        userAlerts: action.payload
+        userProfile: action.payload,
+        loading: false
       }
     default:
      return state

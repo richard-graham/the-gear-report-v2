@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import { uploadUserImage } from '../../../redux/actions/userActions'
-import { getAlertsByUser } from '../../../redux/actions/dataActions'
+import { getAlertsByUser, getUserData } from '../../../redux/actions/dataActions'
 import dayjs from 'dayjs'
 import UpdateDetails from '../../dialogs/UpdateDetails'
 //Mui
@@ -17,9 +17,22 @@ export class Profile extends Component {
   state = {
     updateOpen: false
   }
-  
+
+
+  componentWillReceiveProps = (nextProps) => {
+    if (!this.props.loading &&
+      this.props.userProfile.user.handle !== 
+      nextProps.match.params.userHandle){
+      this.props.getUserData(nextProps.match.params.userHandle) 
+    }
+  }
+
+
+
   componentDidMount = () => {
-    this.props.getAlertsByUser(this.props.match.params.userHandle)
+    if(!this.props.loading){
+      this.props.getUserData(this.props.match.params.userHandle)
+    }
   }
 
   handleImageChange = (event) => {
@@ -54,9 +67,10 @@ export class Profile extends Component {
           createdAt,
           occupation,
           bio,
-        }
+        },
       }
     } = this.props
+    console.log(this.state.isCurrentUser);
     return (
       <div className={classes.profileContainer}>
         <Paper className={classes.profilePaper}>
@@ -133,12 +147,15 @@ const styles = theme => ({
 })
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  userProfile: state.data.userProfile,
+  loading: state.data.loading
 })
 
 const mapActionsToProps = {
   uploadUserImage,
-  getAlertsByUser
+  getAlertsByUser,
+  getUserData
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(Profile))
