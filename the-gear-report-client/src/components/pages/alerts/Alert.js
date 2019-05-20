@@ -45,8 +45,8 @@ export class Alert extends Component {
         </Typography>}
         <Typography>{resolved ? 'Resolved' : 'Not Resolved'}</Typography>
         <Typography>{sponsored ? 'Sponsored' : 'Not Sponsored'}</Typography>
-        <Typography variant='title'>{body}</Typography>
-        <Typography variant='title'>{title}</Typography>
+        <Typography >{body}</Typography>
+        <Typography >{title}</Typography>
       </Fragment>
     )
   }

@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 export class Profile extends Component {
@@ -18,16 +19,13 @@ export class Profile extends Component {
     updateOpen: false
   }
 
-
   componentWillReceiveProps = (nextProps) => {
-    if (!this.props.loading &&
+    if (!this.props.user.loading &&
       this.props.userProfile.handle !== 
       nextProps.match.params.userHandle){
       this.props.getUserData(nextProps.match.params.userHandle) 
     }
   }
-
-
 
   componentDidMount = () => {
     if(!this.props.loading){
@@ -66,44 +64,54 @@ export class Profile extends Component {
           createdAt,
           occupation,
           bio
-      }
+      },
+      loading
     } = this.props
+
     const isMyProfile = handle === this.props.user.credentials.handle ? true : false
+    const profileMarkup = (
+      <Fragment>
+        <br />
+        {isMyProfile ? (
+          <Fragment>
+            <Tooltip title='Change Photo' placement='right'>
+              <img src={imageUrl} className={classes.profilePic} onClick={this.handleEditPicture} alt='User Profile' />
+            </Tooltip>
+            <input type='file' id='imageInput' onChange={this.handleImageChange} hidden='hidden'/>
+          </Fragment>
+        ) : (
+          <img src={imageUrl} className={classes.profilePic} onClick={this.handleEditPicture} alt='User Profile' />
+        )}
+        <Typography variant='h6'>{handle}</Typography>
+        <br />
+        <Typography variant='subtitle1'>Email</Typography>
+        <Typography variant='subtitle2'>{email}</Typography>
+        <br />
+        <Typography variant='subtitle1'>Occupation</Typography>
+        <Typography variant='subtitle2'>{occupation}</Typography>
+        <br />
+        <Typography variant='subtitle1'>City</Typography>
+        <Typography variant='subtitle2'>{city}</Typography>
+        <br />
+        <Typography variant='subtitle1'>Bio</Typography>
+        <Typography variant='subtitle2'>{bio}</Typography>
+        <br />
+        <Typography variant='subtitle1'>Member Since</Typography>
+        <Typography variant='subtitle2'>{dayjs(createdAt).format('MMM YYYY')}</Typography>
+        <br />
+        {isMyProfile && 
+        <Button color='primary' variant='contained' onClick={this.handleChangeDetails}>
+          Update Details 
+        </Button>}
+      </Fragment>
+    )
+
     return (
       <div className={classes.profileContainer}>
         <Paper className={classes.profilePaper}>
-          <br />
-          {isMyProfile ? (
-            <Fragment>
-              <Tooltip title='Change Photo' placement='right'>
-                <img src={imageUrl} className={classes.profilePic} onClick={this.handleEditPicture} alt='User Profile' />
-              </Tooltip>
-              <input type='file' id='imageInput' onChange={this.handleImageChange} hidden='hidden'/>
-            </Fragment>
-          ) : (
-            <img src={imageUrl} className={classes.profilePic} onClick={this.handleEditPicture} alt='User Profile' />
-          )}
-          <Typography variant='h6'>{handle}</Typography>
-          <br />
-          <Typography variant='subtitle1'>Email</Typography>
-          <Typography variant='subtitle2'>{email}</Typography>
-          <br />
-          <Typography variant='subtitle1'>Occupation</Typography>
-          <Typography variant='subtitle2'>{occupation}</Typography>
-          <br />
-          <Typography variant='subtitle1'>City</Typography>
-          <Typography variant='subtitle2'>{city}</Typography>
-          <br />
-          <Typography variant='subtitle1'>Bio</Typography>
-          <Typography variant='subtitle2'>{bio}</Typography>
-          <br />
-          <Typography variant='subtitle1'>Member Since</Typography>
-          <Typography variant='subtitle2'>{dayjs(createdAt).format('MMM YYYY')}</Typography>
-          <br />
-          {isMyProfile && 
-          <Button color='primary' variant='contained' onClick={this.handleChangeDetails}>
-            Update Details 
-          </Button>}
+          {loading ? 
+            <CircularProgress className={classes.progress} size={70} /> :
+            profileMarkup}
         </Paper>
         <UpdateDetails 
           open={this.state.updateOpen} 
@@ -134,6 +142,7 @@ const styles = theme => ({
     marginTop: 150,
     alignSelf: 'center',
     minWidth: 520,
+    minHeight: 593,
     paddingBottom: 40
   },
   profilePic: {
@@ -148,6 +157,9 @@ const styles = theme => ({
     heigh: '100%',
     display: 'flex',
     flexDirection: 'column'
+  },
+  progress: {
+    marginTop: '50%'
   }
 })
 

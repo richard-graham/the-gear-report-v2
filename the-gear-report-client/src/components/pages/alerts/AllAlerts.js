@@ -19,7 +19,9 @@ export class AllTickets extends React.Component {
   }
 
   componentDidMount = () => {
-    this.props.getAlerts()
+    if(this.props.alerts.length < 1){
+      this.props.getAlerts()
+    }
   }
 
   closeCreateAlert = () => {
