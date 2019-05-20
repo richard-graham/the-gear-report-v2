@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import { uploadUserImage } from '../../../redux/actions/userActions'
@@ -21,7 +21,7 @@ export class Profile extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     if (!this.props.loading &&
-      this.props.userProfile.user.handle !== 
+      this.props.userProfile.handle !== 
       nextProps.match.params.userHandle){
       this.props.getUserData(nextProps.match.params.userHandle) 
     }
@@ -58,27 +58,31 @@ export class Profile extends Component {
   render() {
     const { 
       classes,
-      user : {
-        credentials: {
+      userProfile : {
           imageUrl,
           handle,
           email,
           city,
           createdAt,
           occupation,
-          bio,
-        },
+          bio
       }
     } = this.props
-    console.log(this.state.isCurrentUser);
+    const isMyProfile = handle === this.props.user.credentials.handle ? true : false
     return (
       <div className={classes.profileContainer}>
         <Paper className={classes.profilePaper}>
           <br />
-          <Tooltip title='Change Photo' placement='right'>
+          {isMyProfile ? (
+            <Fragment>
+              <Tooltip title='Change Photo' placement='right'>
+                <img src={imageUrl} className={classes.profilePic} onClick={this.handleEditPicture} alt='User Profile' />
+              </Tooltip>
+              <input type='file' id='imageInput' onChange={this.handleImageChange} hidden='hidden'/>
+            </Fragment>
+          ) : (
             <img src={imageUrl} className={classes.profilePic} onClick={this.handleEditPicture} alt='User Profile' />
-          </Tooltip>
-          <input type='file' id='imageInput' onChange={this.handleImageChange} hidden='hidden'/>
+          )}
           <Typography variant='h6'>{handle}</Typography>
           <br />
           <Typography variant='subtitle1'>Email</Typography>
@@ -96,9 +100,10 @@ export class Profile extends Component {
           <Typography variant='subtitle1'>Member Since</Typography>
           <Typography variant='subtitle2'>{dayjs(createdAt).format('MMM YYYY')}</Typography>
           <br />
+          {isMyProfile && 
           <Button color='primary' variant='contained' onClick={this.handleChangeDetails}>
             Update Details 
-          </Button>
+          </Button>}
         </Paper>
         <UpdateDetails 
           open={this.state.updateOpen} 
@@ -148,7 +153,7 @@ const styles = theme => ({
 
 const mapStateToProps = state => ({
   user: state.user,
-  userProfile: state.data.userProfile,
+  userProfile: state.data.userProfile.user,
   loading: state.data.loading
 })
 

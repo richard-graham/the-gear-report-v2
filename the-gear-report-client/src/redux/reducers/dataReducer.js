@@ -24,7 +24,13 @@ const initialState = {
   },
   userProfile: {
     user: {
-      handle: ''
+      imageUrl: '',
+      handle: '',
+      email: '',
+      city: '',
+      createdAt: '',
+      occupation: '',
+      bio: '',
     }
   }
 }
