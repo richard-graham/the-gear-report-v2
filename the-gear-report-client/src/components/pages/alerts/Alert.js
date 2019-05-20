@@ -1,74 +1,71 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
+import { connect } from 'react-redux'
+import { getAlert } from '../../../redux/actions/dataActions'
+import dayjs from 'dayjs'
 //Mui
 import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
 import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import red from '@material-ui/core/colors/red';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+//Icons
+import { Cancel, Check } from '@material-ui/icons'
 
 export class Alert extends Component {
+
+  componentDidMount = () => {
+    this.props.getAlert(this.props.match.params.alertId)
+  }
+
   render() {
-    const { classes } = this.props
+    const { 
+      classes, 
+      alert: {
+        title,
+        createdAt,
+        body,
+        sponsored,
+        images,
+        likeCount,
+        commentCount,
+        userHandle,
+        userImage,
+        comments,
+        resolved
+      }
+    } = this.props
     return (
-      <Card className={classes.card}>
-        <CardHeader
-          avatar={
-            <Avatar aria-label='ProfileAvatar' className={classes.avatar}>
-              R
-            </Avatar>
-          }
-          action={
-            <IconButton>
-              <MoreVertIcon />
-            </IconButton>
-          }
-          title="Shrimp and Chorizo Paella"
-          subheader="September 14, 2016"
-          />
-        <CardMedia 
-          className={classes.media}
-          image='https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.chimneyrockco.org%2Fwp-content%2Fuploads%2F2016%2F06%2F0166_resized-chmrk.jpg&f=1'
-          title='rock'
-        />
-        <CardContent>
-          <Typography component='p'>
-            This is a rock, rad check it out
-          </Typography>
-        </CardContent>
-        <CardActions  className={classes.action} disableActionSpacing>
-          <IconButton aria-label='Add to favourites'>
-            <FavoriteIcon />
-          </IconButton>
-          <IconButton aria-label='Share'>
-            <ShareIcon />
-          </IconButton>
-        </CardActions>
-      </Card>
+      <Fragment>
+        <Typography variant='body1' className={classes.alertHeader}>{title}</Typography>
+        {createdAt && 
+        <Typography variant='body2' className={classes.alertDate}>
+          {`Created At: ${dayjs(createdAt).format('DD-MM-YYYY')}`}
+        </Typography>}
+        <Typography>{resolved ? 'Resolved' : 'Not Resolved'}</Typography>
+        <Typography>{sponsored ? 'Sponsored' : 'Not Sponsored'}</Typography>
+        <Typography variant='title'>{body}</Typography>
+        <Typography variant='title'>{title}</Typography>
+      </Fragment>
     )
   }
 }
 
 const styles = theme => ({
-  card: {
-    width: 400
+  ...theme,
+  alertHeader: {
+    fontSize: 35,
+    margin: 20
   },
-  media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
-  },
-  actions: {
-    display: 'flex',
-  },avatar: {
-    backgroundColor: red[500],
-  },
+  alertDate: {
+    fontSize: 15,
+
+  }
 })
 
-export default withStyles(styles)(Alert)
+const mapStateToProps = (state) => ({
+  alert: state.data.alert
+})
+
+export default connect(mapStateToProps, { getAlert })(withStyles(styles)(Alert))

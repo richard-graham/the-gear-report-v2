@@ -29,7 +29,7 @@ export class AllTickets extends React.Component {
   }
 
   handleRowClick = (e, rowData) => {
-    this.props.history.push(`/alerts/${rowData.alertId}`)
+    this.props.history.push(`/alert/${rowData.alertId}`)
   }
 
   handleCreateAlert = () => {
