@@ -48,7 +48,7 @@ class NavBar extends React.Component {
 
   render() {
     const { anchorEl, mobileMoreAnchorEl } = this.state;
-    const { classes } = this.props;
+    const { classes, user } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     return (
@@ -87,7 +87,7 @@ class NavBar extends React.Component {
             onClick={this.handleProfileMenuOpen}
             color="inherit"
           >
-            <ProfilePic />
+            {user.credentials.imageUrl !== "" ? <ProfilePic user={user} /> : ''}
           </IconButton>
         </div>
         <div className={classes.navSectionMobile}>
@@ -117,7 +117,7 @@ NavBar.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  
+  user: state.user
 })
 
 export default connect(mapStateToProps)(withStyles(styles)(NavBar))

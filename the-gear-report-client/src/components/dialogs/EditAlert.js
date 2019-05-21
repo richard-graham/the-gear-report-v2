@@ -21,8 +21,7 @@ export default class CreateEvent extends React.Component {
           <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              To subscribe to this website, please enter your email address here. We will send
-              updates occasionally.
+             Edit Alert Here
             </DialogContentText>
             <TextField
               autoFocus
@@ -38,7 +37,7 @@ export default class CreateEvent extends React.Component {
               Cancel
             </Button>
             <Button onClick={closeAllDialogs} color="primary">
-              Subscribe
+              Edit 
             </Button>
           </DialogActions>
         </Dialog>

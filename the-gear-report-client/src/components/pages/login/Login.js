@@ -72,7 +72,7 @@ export class Login extends Component {
           Submit
           {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
           </Button>
-          <Typography style={{ margin: 20, marginBottom: 40}}>Don't have an account? Click <Link to={'/signup'}>here</Link></Typography>
+          <Typography style={{ marginBottom: 30}}>Don't have an account? Click <Link to={'/signup'}>here</Link></Typography>
         </Paper>
       </div>
     )

@@ -2,14 +2,18 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { getAlert } from '../../../redux/actions/dataActions'
 import dayjs from 'dayjs'
+import { ProfilePic } from '../../../util/ProfilePic';
+
 //Mui
-import { withStyles } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
-import red from '@material-ui/core/colors/red';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { withStyles } from '@material-ui/core/styles'
+import Avatar from '@material-ui/core/Avatar'
+import Paper from '@material-ui/core/Paper'
+import Typography from '@material-ui/core/Typography'
+import red from '@material-ui/core/colors/red'
+//Icons
+import FavoriteIcon from '@material-ui/icons/Favorite'
+import ShareIcon from '@material-ui/icons/Share'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
 //Icons
 import { Cancel, Check } from '@material-ui/icons'
 
@@ -33,11 +37,24 @@ export class Alert extends Component {
         userHandle,
         userImage,
         comments,
-        resolved
+        resolved,
+        userAvatarLetters
       }
     } = this.props
+
+    const user = {
+      authenticated: true,
+      credentials: {
+        imageUrl: userImage,
+        avatarLetters: userAvatarLetters,
+      }
+    }
+
     return (
-      <Fragment>
+      <Paper className={classes.paper}>
+        <div className={classes.header}>
+          {user.credentials.imageUrl && <ProfilePic user={user} />}
+        </div>
         <Typography variant='body1' className={classes.alertHeader}>{title}</Typography>
         {createdAt && 
         <Typography variant='body2' className={classes.alertDate}>
@@ -47,7 +64,7 @@ export class Alert extends Component {
         <Typography>{sponsored ? 'Sponsored' : 'Not Sponsored'}</Typography>
         <Typography >{body}</Typography>
         <Typography >{title}</Typography>
-      </Fragment>
+      </Paper>
     )
   }
 }
@@ -60,7 +77,14 @@ const styles = theme => ({
   },
   alertDate: {
     fontSize: 15,
-
+  },
+  paper: {
+    margin: 40,
+    marginTop: 60,
+    minWidth: 320,
+    // maxWidth: 1000,
+    width: '80%',
+    minHeight: '80vh'
   }
 })
 

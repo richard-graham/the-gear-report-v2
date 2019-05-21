@@ -68,12 +68,13 @@ exports.postOneAlert = (req, res) => {
   } else if (req.body.title.trim() === '') {
     return res.status(400).json({ general: 'Title must not be empty' })
   }
-
+  console.log(req.user);
   const newAlert = {
     body: req.body.body,
     title: req.body.title,
     images: req.body.images,
     userHandle: req.user.handle,
+    userAvatarLetters: req.user.avatarLetters,
     createdAt: new Date().toISOString(), // recognized time type
     userImage: req.user.imageUrl,
     likeCount: 0,

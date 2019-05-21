@@ -23,7 +23,6 @@ export class App extends Component {
 
     const content = (
       <div className={classes.root}>
-        <div className={classes.content}>
           <Route exact path='/' component={home} />
           <Route exact path='/signup' component={NewUserForm} />
           <Route exact path='/login' component={Login} />
@@ -37,7 +36,6 @@ export class App extends Component {
             message ? 
             <MySnackBar variant='success' message={message} /> : 
             ''}
-      </div>
     </div>
     
     )

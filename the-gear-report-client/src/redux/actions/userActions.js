@@ -61,7 +61,7 @@ export const updateUserLocation = () => (dispatch) => {
   );
 }
 
-export const loginUser = (userData, history) => (dispatch) => { //where is history coming from?
+export const loginUser = (userData, history) => (dispatch) => { 
   dispatch({ type: LOADING_UI })
   axios.post('/login', userData)
       .then(res => {
@@ -78,7 +78,7 @@ export const loginUser = (userData, history) => (dispatch) => { //where is histo
       })
 }
 
-export const signupUser = (newUserData, history) => (dispatch) => { //where is history coming from?
+export const signupUser = (newUserData, history) => (dispatch) => { 
   dispatch({ type: LOADING_UI })
   axios.post('/signup', newUserData)
       .then(res => {

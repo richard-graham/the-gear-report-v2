@@ -171,7 +171,7 @@ class RecentAlerts extends Component {
   }
 
   handleClick = (event) => {
-    this.props.history.push(`/alerts/${event.rowData.alertId}`)
+    this.props.history.push(`/alert/${event.rowData.alertId}`)
   }
 
   render() {
