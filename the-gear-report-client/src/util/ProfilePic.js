@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -6,26 +7,20 @@ import Avatar from '@material-ui/core/Avatar';
 
 
 export class ProfilePic extends Component {
-
-  componentDidMount = () => {
-    console.log(this.props.user);
-  }
-
   render() {
     const { 
-      classes,
       user: { 
         authenticated,
         credentials: { 
           avatarLetters, 
           imageUrl 
         }
-      }
+      },
+      classes
     } = this.props
     const defaultPic = "https://firebasestorage.googleapis.com/v0/b/the-gear-report-a2ce8.appspot.com/o/no-image.png?alt=media"
 
     return (
-      classes && 
       authenticated === true ?
         imageUrl !== defaultPic ?
           <img alt='userPic' src={imageUrl} className={classes.profilePic} /> :
@@ -33,12 +28,11 @@ export class ProfilePic extends Component {
           <Avatar className={classes.navAvatar}>{avatarLetters.charAt(0)}</Avatar> :
           <AccountCircle /> :
           <AccountCircle />
-      
     )
   }
 }
 
-const styles = { 
+const styles = {
   profilePic: {
     width: 30,
     borderRadius: '50%'
@@ -49,5 +43,9 @@ const styles = {
   }
 }
 
-export default withStyles(styles)(ProfilePic)
+const mapStateToProps = (state) => ({
+  user: state.user
+})
+
+export default connect(mapStateToProps)(withStyles(styles)(ProfilePic))
 

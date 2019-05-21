@@ -2,8 +2,6 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { getAlert } from '../../../redux/actions/dataActions'
 import dayjs from 'dayjs'
-import { ProfilePic } from '../../../util/ProfilePic';
-
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
@@ -36,37 +34,27 @@ export class Alert extends Component {
         userHandle,
         userImage,
         comments,
-        resolved,
-        userAvatarLetters
+        resolved
       },
       loading
     } = this.props
-
-    const user = {
-      authenticated: true,
-      credentials: {
-        imageUrl: userImage,
-        avatarLetters: userAvatarLetters,
-      }
-    }
-
     return (
       <Paper className={classes.paper}>
-        {loading ? <CircularProgress className={classes.spinner} size={70} /> : (
-        <Fragment>
-          <div className={classes.header}>
-            {user.credentials.imageUrl && <ProfilePic user={user} />}
-          </div>
-          <Typography variant='body1' className={classes.alertHeader}>{title}</Typography>
-          {createdAt && 
-          <Typography variant='body2' className={classes.alertDate}>
-            {`Created At: ${dayjs(createdAt).format('DD-MM-YYYY')}`}
-          </Typography>}
-          <Typography>{resolved ? 'Resolved' : 'Not Resolved'}</Typography>
-          <Typography>{sponsored ? 'Sponsored' : 'Not Sponsored'}</Typography>
-          <Typography >{body}</Typography>
-          <Typography >{title}</Typography>
-        </Fragment>
+        {loading ? <CircularProgress size={70} className={classes.progress} /> : (
+          <Fragment>
+            <div className={classes.header}>
+              <img src={userImage} className={classes.userImage} />
+            </div>
+            <Typography variant='body1' className={classes.alertHeader}>{title}</Typography>
+            {createdAt && 
+            <Typography variant='body2' className={classes.alertDate}>
+              {`Created At: ${dayjs(createdAt).format('DD-MM-YYYY')}`}
+            </Typography>}
+            <Typography>{resolved ? 'Resolved' : 'Not Resolved'}</Typography>
+            <Typography>{sponsored ? 'Sponsored' : 'Not Sponsored'}</Typography>
+            <Typography >{body}</Typography>
+            <Typography >{title}</Typography>
+          </Fragment>
         )}
       </Paper>
     )
@@ -86,11 +74,14 @@ const styles = theme => ({
     margin: 40,
     marginTop: 60,
     minWidth: 320,
-    // maxWidth: 1000,
     width: '80%',
     minHeight: '80vh'
   },
-  spinner: {
+  userImage: {
+    width: 30,
+    borderRadius: '50%'
+  },
+  progress: {
     marginTop: '30%'
   }
 })
