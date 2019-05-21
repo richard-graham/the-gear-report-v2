@@ -38,7 +38,7 @@ export class ProfilePic extends Component {
   }
 }
 
-const styles = {
+const styles = { 
   profilePic: {
     width: 30,
     borderRadius: '50%'

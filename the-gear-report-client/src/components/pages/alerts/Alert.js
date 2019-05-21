@@ -6,10 +6,9 @@ import { ProfilePic } from '../../../util/ProfilePic';
 
 //Mui
 import { withStyles } from '@material-ui/core/styles'
-import Avatar from '@material-ui/core/Avatar'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
-import red from '@material-ui/core/colors/red'
+import CircularProgress from '@material-ui/core/CircularProgress'
 //Icons
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import ShareIcon from '@material-ui/icons/Share'
@@ -39,7 +38,8 @@ export class Alert extends Component {
         comments,
         resolved,
         userAvatarLetters
-      }
+      },
+      loading
     } = this.props
 
     const user = {
@@ -52,18 +52,22 @@ export class Alert extends Component {
 
     return (
       <Paper className={classes.paper}>
-        <div className={classes.header}>
-          {user.credentials.imageUrl && <ProfilePic user={user} />}
-        </div>
-        <Typography variant='body1' className={classes.alertHeader}>{title}</Typography>
-        {createdAt && 
-        <Typography variant='body2' className={classes.alertDate}>
-          {`Created At: ${dayjs(createdAt).format('DD-MM-YYYY')}`}
-        </Typography>}
-        <Typography>{resolved ? 'Resolved' : 'Not Resolved'}</Typography>
-        <Typography>{sponsored ? 'Sponsored' : 'Not Sponsored'}</Typography>
-        <Typography >{body}</Typography>
-        <Typography >{title}</Typography>
+        {loading ? <CircularProgress className={classes.spinner} size={70} /> : (
+        <Fragment>
+          <div className={classes.header}>
+            {user.credentials.imageUrl && <ProfilePic user={user} />}
+          </div>
+          <Typography variant='body1' className={classes.alertHeader}>{title}</Typography>
+          {createdAt && 
+          <Typography variant='body2' className={classes.alertDate}>
+            {`Created At: ${dayjs(createdAt).format('DD-MM-YYYY')}`}
+          </Typography>}
+          <Typography>{resolved ? 'Resolved' : 'Not Resolved'}</Typography>
+          <Typography>{sponsored ? 'Sponsored' : 'Not Sponsored'}</Typography>
+          <Typography >{body}</Typography>
+          <Typography >{title}</Typography>
+        </Fragment>
+        )}
       </Paper>
     )
   }
@@ -85,11 +89,15 @@ const styles = theme => ({
     // maxWidth: 1000,
     width: '80%',
     minHeight: '80vh'
+  },
+  spinner: {
+    marginTop: '30%'
   }
 })
 
 const mapStateToProps = (state) => ({
-  alert: state.data.alert
+  alert: state.data.alert,
+  loading: state.UI.loading
 })
 
 export default connect(mapStateToProps, { getAlert })(withStyles(styles)(Alert))
