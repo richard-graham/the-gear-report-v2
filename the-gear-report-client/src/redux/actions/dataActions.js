@@ -56,10 +56,8 @@ export const getRecentAlerts = () => (dispatch) => {
 
 export const getAlert = (alertId) => dispatch => {
   dispatch({ type: LOADING_UI })
-  console.log(alertId);
   axios.get(`/alert/${alertId}`)
     .then(res => {
-      console.log(res);
       dispatch({
         type: SET_ALERT,
         payload: res.data

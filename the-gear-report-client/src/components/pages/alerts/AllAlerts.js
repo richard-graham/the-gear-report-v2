@@ -45,7 +45,6 @@ export class AllTickets extends React.Component {
   render() {
     const { alerts, classes } = this.props
     if(this.state.redirect){
-      console.log(this.state.user);
       return <Redirect push to={`/profile/${this.state.user}`} />
     }
 

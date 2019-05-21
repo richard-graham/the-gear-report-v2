@@ -78,9 +78,7 @@ export default {
 
   },
   signupMultiButton: {
-    margin: defaultTheme.spacing.unit * 2,
-    marginTop: defaultTheme.spacing.unit * 4,
-    marginBottom: defaultTheme.spacing.unit * 6
+    margin: defaultTheme.spacing.unit * 2
   },
   formError: {
     color: 'red',

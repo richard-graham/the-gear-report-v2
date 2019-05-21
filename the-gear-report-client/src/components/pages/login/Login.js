@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { loginUser } from '../../../redux/actions/userActions'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 //Mui
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
@@ -71,6 +72,7 @@ export class Login extends Component {
           Submit
           {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
           </Button>
+          <Typography style={{ margin: 20, marginBottom: 40}}>Don't have an account? Click <Link to={'/signup'}>here</Link></Typography>
         </Paper>
       </div>
     )
@@ -78,7 +80,14 @@ export class Login extends Component {
 }
 
 const styles = theme => ({
-  ...theme
+  ...theme,
+  buttonProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  }
 })
 
 const mapStateToProps = state => ({
