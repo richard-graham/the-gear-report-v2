@@ -5,8 +5,6 @@ import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-//redux
-import { connect } from 'react-redux'
 
 const styles = theme => ({
   root: {
@@ -40,16 +38,22 @@ export class GlobeNav extends Component {
   };
 
   render() {
-    const { classes, user } = this.props
+    const { 
+      classes, 
+      user: {
+        country
+      }
+    } = this.props
 
     const navMarkup = (
+      this.props.user ? (
       <List className={classes.nav}>
           <ListItem 
             button
             selected={this.state.selectedIndex === 0}
             onClick={event => this.handleListItemClick(event, 0)}
            >
-            <ListItemText primary={user.country}  />
+            {country && <ListItemText primary={country[0][2]}  />}
           </ListItem>
           <ListItem 
             button
@@ -122,6 +126,7 @@ export class GlobeNav extends Component {
             onClick={event => this.handleListItemClick(event, 9)}
           ></ListItem>
         </List>
+      ) : ''
     )
 
     return (
@@ -136,9 +141,4 @@ GlobeNav.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  user: state.user,
-  UI: state.UI
-})
-
-export default connect(mapStateToProps)(withStyles(styles)(GlobeNav))
+export default withStyles(styles)(GlobeNav)

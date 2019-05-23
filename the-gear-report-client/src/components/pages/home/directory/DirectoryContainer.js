@@ -8,6 +8,10 @@ import Tab from '@material-ui/core/Tab'
 import Paper from '@material-ui/core/Paper'
 import Tabs from '@material-ui/core/Tabs';
 import Grid from '@material-ui/core/Grid';
+//Redux
+import { connect } from 'react-redux'
+import { updateUserLocation, updateUserCountry } from '../../../../redux/actions/userActions'
+
 
 const styles = {
   root: {
@@ -43,12 +47,18 @@ export class DirectoryContainer extends Component {
     value: 0
   }
 
+  componentDidMount = () => {
+    this.props.updateUserLocation()
+    this.props.updateUserCountry()
+
+  }
+
   handleChange = (event, value) => {
     this.setState({ value });
   };
 
   render() {
-    const { classes } = this.props
+    const { classes, user } = this.props
     const { value } = this.state
     return (
       <Paper square className={classes.paper}>
@@ -66,17 +76,17 @@ export class DirectoryContainer extends Component {
                 <Tab label="Map" />
               </Tabs>
               <Grid className={classes.tabContainer} item xs={12}>
-                {value === 0 && <GlobeNav />}
-                {value === 1 && <Globe />}
+                {value === 0 && <GlobeNav user={user}/>}
+                {value === 1 && <Globe user={user}/>}
               </Grid>
             </Hidden> 
             <Hidden xsDown implementation='css'>
               <Grid container spacing={0} className={classes.navContainerSmall} >
                 <Grid item align='center' xs={3}>
-                  <GlobeNav />
+                  <GlobeNav user={user}/>
                 </Grid>
                 <Grid item xs={9}>
-                  <Globe />
+                  <Globe user={user} />
                 </Grid>
               </Grid>
             </Hidden>
@@ -87,5 +97,13 @@ export class DirectoryContainer extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  user: state.user
+})
 
-export default withStyles(styles)(DirectoryContainer)
+const mapDispatchToProps = {
+  updateUserLocation, 
+  updateUserCountry
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DirectoryContainer))

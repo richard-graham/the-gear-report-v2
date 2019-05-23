@@ -1,8 +1,5 @@
 import React, { Component, Fragment } from 'react'
 import { withStyles } from '@material-ui/core/styles';
-//Redux
-import { connect } from 'react-redux'
-import { updateUserLocation, updateUserCountry } from '../../../../redux/actions/userActions'
 // leaflet
 import 'leaflet/dist/leaflet.css'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
@@ -24,16 +21,6 @@ var homeIcon = L.icon({
 });
 
 class Globe extends Component {
-
-  state = {
-    
-  }
-
-  componentDidMount = () => {
-    this.props.updateUserLocation()
-    this.props.updateUserCountry()
-  }
-
   
   render() {
     const { classes, user } = this.props
@@ -63,13 +50,4 @@ class Globe extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  user: state.user
-})
-
-const mapActionsToProps = {
-  updateUserLocation,
-  updateUserCountry
-}
-
-export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(Globe))
+export default withStyles(styles)(Globe)

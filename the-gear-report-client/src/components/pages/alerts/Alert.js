@@ -2,22 +2,22 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { getAlert } from '../../../redux/actions/dataActions'
 import dayjs from 'dayjs'
+import AlertImageGallery from './AlertImageGallery'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import CircularProgress from '@material-ui/core/CircularProgress'
 //Icons
-import FavoriteIcon from '@material-ui/icons/Favorite'
-import ShareIcon from '@material-ui/icons/Share'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
-//Icons
-import { Cancel, Check } from '@material-ui/icons'
 
 export class Alert extends Component {
 
   componentDidMount = () => {
     this.props.getAlert(this.props.match.params.alertId)
+  }
+
+  redirect = () => {
+    console.log(this.props.history);
   }
 
   render() {
@@ -29,12 +29,8 @@ export class Alert extends Component {
         body,
         sponsored,
         images,
-        likeCount,
-        commentCount,
-        userHandle,
         userImage,
-        comments,
-        resolved
+        resolved,
       },
       loading
     } = this.props
@@ -42,18 +38,23 @@ export class Alert extends Component {
       <Paper className={classes.paper}>
         {loading ? <CircularProgress size={70} className={classes.progress} /> : (
           <Fragment>
-            <div className={classes.header}>
-              <img src={userImage} className={classes.userImage} />
-            </div>
-            <Typography variant='body1' className={classes.alertHeader}>{title}</Typography>
+          <Typography variant='body1' className={classes.alertHeader}>{title}</Typography>
+          <div className={classes.content}>
             {createdAt && 
             <Typography variant='body2' className={classes.alertDate}>
-              {`Created At: ${dayjs(createdAt).format('DD-MM-YYYY')}`}
+              {`Date: ${dayjs(createdAt).format('DD-MM-YYYY')}`}
             </Typography>}
-            <Typography>{resolved ? 'Resolved' : 'Not Resolved'}</Typography>
-            <Typography>{sponsored ? 'Sponsored' : 'Not Sponsored'}</Typography>
-            <Typography >{body}</Typography>
+            <Typography>{`Status: ${resolved ? 'Resolved' : 'Not Resolved'}`}</Typography>
+            <Typography>{`Sponsored: ${sponsored ? 'True' : 'False'}`}</Typography>
+            <Typography>{`Created By: `}</Typography>
+            <br />
+            <Typography >{`Description: ${body}`}</Typography>
             <Typography >{title}</Typography>
+            </div>
+            <div className={classes.header}>
+              <img alt='words' src={userImage} className={classes.userImage} />
+            </div>
+            <AlertImageGallery images={images} />
           </Fragment>
         )}
       </Paper>
@@ -64,8 +65,8 @@ export class Alert extends Component {
 const styles = theme => ({
   ...theme,
   alertHeader: {
-    fontSize: 35,
-    margin: 20
+    fontSize: 27,
+    marginBottom: 20
   },
   alertDate: {
     fontSize: 15,
@@ -75,7 +76,8 @@ const styles = theme => ({
     marginTop: 60,
     minWidth: 320,
     width: '80%',
-    minHeight: '80vh'
+    minHeight: '80vh',
+    padding: 50
   },
   userImage: {
     width: 30,
@@ -83,6 +85,10 @@ const styles = theme => ({
   },
   progress: {
     marginTop: '30%'
+  },
+  content: {
+    marginTop: 20,
+    textAlign: 'left'
   }
 })
 
