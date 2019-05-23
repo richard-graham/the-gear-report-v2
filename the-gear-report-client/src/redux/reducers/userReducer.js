@@ -1,6 +1,5 @@
 import { 
   SET_USER_LOCATION,
-  SET_USER_COUNTRY,
   SET_USER, 
   SET_AUTHENTICATED, 
   SET_UNAUTHENTICATED,
@@ -46,11 +45,6 @@ export default function(state = initialState, action){
       return {
         ...state,
         ...action.payload
-      }
-    case SET_USER_COUNTRY:
-      return {
-        ...state,
-        ...action.payload 
       }
       case SET_AUTHENTICATED:
       return {

@@ -1,6 +1,5 @@
  // User reducers
 export const SET_USER_LOCATION = 'SET_USER_LOCATION'
-export const SET_USER_COUNTRY = 'SET_USER_COUNTRY'
 export const SET_USER = 'SET_USER'
 export const SET_UNAUTHENTICATED = 'SET_UNAUTHENTICATED'
 export const LOADING_USER = 'LOADING_USER'
@@ -14,6 +13,7 @@ export const LOADING_UI = 'LOADING_UI'
 export const STOP_LOADING_UI = 'STOP_LOADING_UI'
 export const SET_MESSAGE = 'SET_MESSAGE'
 export const CLEAR_MESSAGE = 'CLEAR_MESSAGE'
+export const SET_COUNTRY = 'SET_COUNTRY'
  // Data reducers
 export const LOADING_DATA = 'LOADING_DATA'
 export const SET_ALERTS = 'SET_ALERTS' 

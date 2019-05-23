@@ -4,7 +4,8 @@ import {
   LOADING_UI,
   STOP_LOADING_UI,
   SET_MESSAGE,
-  CLEAR_MESSAGE
+  CLEAR_MESSAGE,
+  SET_COUNTRY
 } from '../types'
 
 const initialState = {
@@ -12,7 +13,8 @@ const initialState = {
   errors: {
     general: ''
   },
-  message: ''
+  message: '',
+  country: []
 }
 
 export default function(state = initialState, action){
@@ -24,6 +26,11 @@ export default function(state = initialState, action){
         errors: {
           general: action.payload
         }
+      }
+    case SET_COUNTRY:
+      return {
+        ...state,
+        ...action.payload 
       }
     case SET_MESSAGE:
       return {

@@ -11,30 +11,6 @@ import {
   SET_MESSAGE,
 } from '../types'
 import axios from 'axios'
-import { key } from '../../util/keys'
-
-export const updateUserCountry = (location) => (dispatch) => {
-  // fetch('https://ipapi.co/json') // grab country name
-  //   .then(res => res.json())
-  //   .then((position) => {
-      // const country = position.country_name === "New Zealand" ? '11737723' : 'world'
-      const country = '11737723'
-      const proxyUrl = "https://cors-anywhere.herokuapp.com/"
-      const url = `https://brendan.thecrag.com/api/index/detail/${country}?withdata=NodeID,ParentID,Name,Point&to=arealeaf&key=${key}`
-      fetch(proxyUrl + url)
-      .then(countryData => countryData.json())
-      .then(res => {
-        console.log(res.data);
-        dispatch({
-          type: SET_USER_COUNTRY,
-          payload: {
-            country: res.data,
-            region: 'filller'
-          }
-        })
-  
-    })
-}
 
 export const updateUserLocation = () => (dispatch) => {
   navigator.geolocation.getCurrentPosition((userPosition) => { 
