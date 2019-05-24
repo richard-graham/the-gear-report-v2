@@ -11,7 +11,7 @@ import Grid from '@material-ui/core/Grid';
 //Redux
 import { connect } from 'react-redux'
 import { updateUserLocation } from '../../../../redux/actions/userActions'
-import { getLocationData } from '../../../../redux/actions/UIActions'
+import { getLocationData } from '../../../../redux/actions/tcActions'
 
 
 const styles = {
@@ -45,7 +45,8 @@ const styles = {
 
 export class DirectoryContainer extends Component {
   state = {
-    value: 0
+    value: 0,
+    selectedLocation: '7546063'
   }
 
   componentDidMount = () => {
@@ -59,8 +60,8 @@ export class DirectoryContainer extends Component {
   };
 
   render() {
-    const { classes, user } = this.props
-    const { value } = this.state
+    const { classes, user, locationData } = this.props
+    const { value, selectLoc } = this.state
     return (
       <Paper square className={classes.paper}>
         <Grid container spacing={0}>
@@ -77,17 +78,17 @@ export class DirectoryContainer extends Component {
                 <Tab label="Map" />
               </Tabs>
               <Grid className={classes.tabContainer} item xs={12}>
-                {value === 0 && <GlobeNav user={user}/>}
-                {value === 1 && <Globe user={user}/>}
+                {value === 0 && Object.keys(locationData).length > 0 && <GlobeNav selectLoc={selectLoc} locationData={locationData} />}
+                {value === 1 && <Globe locationData={locationData} />}
               </Grid>
             </Hidden> 
             <Hidden xsDown implementation='css'>
               <Grid container spacing={0} className={classes.navContainerSmall} >
                 <Grid item align='center' xs={3}>
-                  <GlobeNav user={user}/>
+                  {Object.keys(locationData).length > 0 && <GlobeNav selectLoc={selectLoc} locationData={locationData} />}
                 </Grid>
                 <Grid item xs={9}>
-                  <Globe user={user} />
+                  <Globe locationData={locationData} user={user} />
                 </Grid>
               </Grid>
             </Hidden>
@@ -99,7 +100,8 @@ export class DirectoryContainer extends Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  locationData: state.UI.country
 })
 
 const mapDispatchToProps = {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
+import { getChildren } from '../../../../util/tcCalls'
 //Mui
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -37,23 +38,28 @@ export class GlobeNav extends Component {
     this.setState({ selectedIndex: index });
   };
 
+  // componentDidMount = () => {
+  //   getChildren('11737723')
+  // }
+
   render() {
     const { 
       classes, 
-      user: {
-        country
-      }
+      locationData,
+      selectLoc
     } = this.props
 
+    console.log(locationData['7546063'][0]);
+
     const navMarkup = (
-      this.props.user ? (
+      
       <List className={classes.nav}>
           <ListItem 
             button
             selected={this.state.selectedIndex === 0}
             onClick={event => this.handleListItemClick(event, 0)}
            >
-            {country && <ListItemText primary={country[0][2]}  />}
+            {locationData && selectLoc && <ListItemText primary={locationData[selectLoc][0].Name} />}
           </ListItem>
           <ListItem 
             button
@@ -126,7 +132,7 @@ export class GlobeNav extends Component {
             onClick={event => this.handleListItemClick(event, 9)}
           ></ListItem>
         </List>
-      ) : ''
+    
     )
 
     return (
