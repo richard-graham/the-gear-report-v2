@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Globe from './Globe'
 import GlobeNav from './GlobeNav'
 //Mui
+import { CircularProgress } from '@material-ui/core';
 import Hidden from '@material-ui/core/Hidden' 
 import Tab from '@material-ui/core/Tab'
 import Paper from '@material-ui/core/Paper'
@@ -40,18 +41,22 @@ const styles = {
   },
   paper: {
     height: '100%'
+  },
+  progress: {
+    marginTop: '70%'
   }
+
 }
 
 export class DirectoryContainer extends Component {
   state = {
     value: 0,
-    selectedLocation: '7546063'
+    selectedLocation: '11737723'
   }
 
   componentDidMount = () => {
     this.props.updateUserLocation()
-    this.props.getLocationData()
+    this.props.getLocationData(this.state.selectedLocation)
 
   }
 
@@ -60,8 +65,15 @@ export class DirectoryContainer extends Component {
   };
 
   render() {
-    const { classes, user, locationData } = this.props
-    const { value, selectLoc } = this.state
+    const { 
+      classes, 
+      user, 
+      UI: {
+        loading,
+        country
+      } 
+    } = this.props
+    const { value, selectedLocation } = this.state
     return (
       <Paper square className={classes.paper}>
         <Grid container spacing={0}>
@@ -78,17 +90,27 @@ export class DirectoryContainer extends Component {
                 <Tab label="Map" />
               </Tabs>
               <Grid className={classes.tabContainer} item xs={12}>
-                {value === 0 && Object.keys(locationData).length > 0 && <GlobeNav selectLoc={selectLoc} locationData={locationData} />}
-                {value === 1 && <Globe locationData={locationData} />}
+                {value === 0 
+                  && loading
+                    ? <CircularProgress className={classes.progress} />
+                    : !Object.keys(country).length > 0
+                    ? <CircularProgress className={classes.progress} />
+                    : <GlobeNav selectLoc={selectedLocation} />}
+                {value === 1 
+                  && <Globe />}
               </Grid>
             </Hidden> 
             <Hidden xsDown implementation='css'>
               <Grid container spacing={0} className={classes.navContainerSmall} >
-                <Grid item align='center' xs={3}>
-                  {Object.keys(locationData).length > 0 && <GlobeNav selectLoc={selectLoc} locationData={locationData} />}
+                <Grid item align='center' xs={4}>
+                  {loading 
+                    ? <CircularProgress className={classes.progress} /> 
+                    : !Object.keys(country).length > 0
+                    ? <CircularProgress className={classes.progress} />
+                    : <GlobeNav selectLoc={selectedLocation} /> }
                 </Grid>
-                <Grid item xs={9}>
-                  <Globe locationData={locationData} user={user} />
+                <Grid item xs={8}>
+                  <Globe user={user} />
                 </Grid>
               </Grid>
             </Hidden>
@@ -101,7 +123,7 @@ export class DirectoryContainer extends Component {
 
 const mapStateToProps = state => ({
   user: state.user,
-  locationData: state.UI.country
+  UI: state.UI
 })
 
 const mapDispatchToProps = {

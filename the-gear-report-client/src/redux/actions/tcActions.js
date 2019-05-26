@@ -1,5 +1,7 @@
 import {
-  SET_COUNTRY
+  SET_COUNTRY,
+  LOADING_UI,
+  SET_ERRORS
 } from '../types'
 
 import { key } from '../../util/keys'
@@ -9,34 +11,47 @@ export const getLocationData = (location) => (dispatch) => {
   //   .then(res => res.json())
   //   .then((position) => {
       // const country = position.country_name === "New Zealand" ? '11737723' : 'world'
-      
-      const country = '11737723'
+      dispatch({ type: LOADING_UI })
       const proxyUrl = "https://cors-anywhere.herokuapp.com/"
-      const url = `https://brendan.thecrag.com/api/index/detail/${country}?withdata=NodeID,NodeType,ParentID,Name,NumberRoutes,Point&to=arealeaf&key=${key}`
+      const url = `https://brendan.thecrag.com/api/index/detail/${location}?withdata=NodeID,ParentID,Name,NumberRoutes,AreaType,Point&to=arealeaf&key=${key}`
       fetch(proxyUrl + url)
       .then(countryData => countryData.json())
       .then(res => {
         const resObj = {}
+
+        resObj.parent = {
+          NodeID: res.data[0][0],
+          ParentID: res.data[0][1],
+          Name: res.data[0][2],
+          NumberRoutes: res.data[0][3],
+          AreaType: res.data[0][4],
+          Geo: res.data[0][5]
+        }
         res.data.map((loc) => {
           const locationObj = {
             NodeID: loc[0],
-            NodeType: loc[1],
-            ParentID: loc[2],
-            Name: loc[3],
-            NumberRoutes: loc[4],
+            ParentID: loc[1],
+            Name: loc[2],
+            NumberRoutes: loc[3],
+            AreaType: loc[4],
             Geo: loc[5]
           }    
-          resObj[locationObj.ParentID]
-          ? resObj[locationObj.ParentID].push(locationObj)
-          : resObj[locationObj.ParentID] = [locationObj]
+          if (resObj[locationObj.ParentID] === undefined) {
+            resObj[locationObj.ParentID] = []
+          }
+          return resObj[locationObj.ParentID].push(locationObj)
         })
-        console.log(resObj);
         dispatch({
           type: SET_COUNTRY,
           payload: {
             country: resObj
           }
         })
-  
+    })
+    .catch(err => {
+      dispatch({ 
+        type: SET_ERRORS, 
+        payload: err.response.data 
+      })
     })
 }

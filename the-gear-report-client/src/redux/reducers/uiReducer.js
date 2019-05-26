@@ -5,7 +5,8 @@ import {
   STOP_LOADING_UI,
   SET_MESSAGE,
   CLEAR_MESSAGE,
-  SET_COUNTRY
+  SET_COUNTRY,
+  SET_LOCATION
 } from '../types'
 
 const initialState = {
@@ -14,7 +15,8 @@ const initialState = {
     general: ''
   },
   message: '',
-  country: []
+  country: [],
+  location: {}
 }
 
 export default function(state = initialState, action){
@@ -30,7 +32,13 @@ export default function(state = initialState, action){
     case SET_COUNTRY:
       return {
         ...state,
-        ...action.payload 
+        ...action.payload,
+        loading: false
+      }
+    case SET_LOCATION:
+      return {
+        ...state,
+        location: action.payload
       }
     case SET_MESSAGE:
       return {

@@ -1,144 +1,161 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types';
-import { getChildren } from '../../../../util/tcCalls'
+import { updateLocation } from '../../../../redux/actions/UIActions'
+import { connect } from 'react-redux'
 //Mui
 import { withStyles } from '@material-ui/core/styles';
+import Collapse from '@material-ui/core/Collapse'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
 const styles = theme => ({
-  root: {
-    // width: '20%',
-    backgroundColor: theme.palette.background.paper,
-    height: '100%'
-  },
   nestedLevel1: {
     paddingLeft: theme.spacing.unit * 4,
   },
   nestedLevel2: {
-    paddingLeft: theme.spacing.unit * 8,
+    paddingLeft: theme.spacing.unit * 6,
   },
   nestedLevel3: {
-    paddingLeft: theme.spacing.unit * 12,
+    paddingLeft: theme.spacing.unit * 8,
+  },
+  nestedLevel4: {
+    paddingLeft: theme.spacing.unit * 10,
   },
   nav: {
-    height: '100%',
-    overflowY: 'scroll'
-  }
+    maxHeight: 484,
+    overflowY: 'auto'
+  },
 });
 
 
 export class GlobeNav extends Component {
   state = {
-    selectedIndex: 0
+    selectedIndex: 999,
+    base: true
   }
 
-  handleListItemClick = (event, index) => {
-    this.setState({ selectedIndex: index });
+  handleListItemClick = (event, index, loc) => {
+    if (loc !== this.props.UI.location) this.props.updateLocation(loc)
+    this.setState({ 
+      selectedIndex: index,
+      [index]: this.state[index] ? !this.state[index] : true
+    })
   };
-
-  // componentDidMount = () => {
-  //   getChildren('11737723')
-  // }
 
   render() {
     const { 
       classes, 
-      locationData,
+      UI: {
+        country
+      },
       selectLoc
     } = this.props
-
-    console.log(locationData['7546063'][0]);
-
-    const navMarkup = (
-      
-      <List className={classes.nav}>
-          <ListItem 
-            button
-            selected={this.state.selectedIndex === 0}
-            onClick={event => this.handleListItemClick(event, 0)}
-           >
-            {locationData && selectLoc && <ListItemText primary={locationData[selectLoc][0].Name} />}
-          </ListItem>
-          <ListItem 
-            button
-            className={classes.nestedLevel1}
-            selected={this.state.selectedIndex === 1}
-            onClick={event => this.handleListItemClick(event, 1)}
-          >
-            <ListItemText primary='North Island' />
-          </ListItem>
-          <ListItem 
-            button
-            className={classes.nestedLevel1}
-            selected={this.state.selectedIndex === 2}
-            onClick={event => this.handleListItemClick(event, 2)}
-          >
-            <ListItemText primary='South Island' />
-          </ListItem>
-          <ListItem 
-            button
-            className={classes.nestedLevel1}
-            selected={this.state.selectedIndex === 3}
-            onClick={event => this.handleListItemClick(event, 3)}
-          >
-            <ListItemText primary='North Island' />
-          </ListItem>
-          <ListItem 
-            button
-            className={classes.nestedLevel1}
-            selected={this.state.selectedIndex === 4}
-            onClick={event => this.handleListItemClick(event, 4)}
-          >
-            <ListItemText primary='South Island' />
-          </ListItem>
-          <ListItem 
-            button
-            className={classes.nestedLevel1}
-            selected={this.state.selectedIndex === 5}
-            onClick={event => this.handleListItemClick(event, 5)}
-          >
-            <ListItemText primary='North Island' />
-          </ListItem>
-          <ListItem 
-            button
-            className={classes.nestedLevel1}
-            selected={this.state.selectedIndex === 6}
-            onClick={event => this.handleListItemClick(event, 6)}
-          >
-            <ListItemText primary='South Island' />
-          </ListItem>
-          <ListItem 
-            button
-            className={classes.nestedLevel1}
-            selected={this.state.selectedIndex === 7}
-            onClick={event => this.handleListItemClick(event, 7)}
-          >
-            <ListItemText primary='South Island' />
-          </ListItem>
-          <ListItem 
-            button
-            className={classes.nestedLevel1}
-            selected={this.state.selectedIndex === 8}
-            onClick={event => this.handleListItemClick(event, 8)}
-          >
-            <ListItemText primary='North Island' />
-          </ListItem>
-          <ListItem 
-            button
-            className={classes.nestedLevel1}
-            selected={this.state.selectedIndex === 9}
-            onClick={event => this.handleListItemClick(event, 9)}
-          ></ListItem>
-        </List>
-    
-    )
-
+    const { selectedIndex } = this.state
     return (
-      <div className={classes.root}>
-        {navMarkup}
-      </div>
+        <List className={classes.nav}>
+          <ListItem
+            key={999}
+            id={'base'}
+            button
+            selected={selectedIndex === 999}
+            onClick={event => this.handleListItemClick(event, 'base')}
+          >
+            <ListItemText primary={country.parent.Name} />
+          </ListItem>
+          <Collapse in={this.state.base} timeout="auto" unmountOnExit>
+            {country[country[selectLoc][0].ParentID].map((loc, i) => {
+              const key = `firstlvl${i}`
+              return (
+                <Fragment key={key} >
+                  <ListItem 
+                    className={classes.nestedLevel1}
+                    key={key}
+                    button
+                    selected={selectedIndex === i}
+                    onClick={event => this.handleListItemClick(event, key, loc)}
+                  >
+                    <ListItemText primary={loc.Name} />
+                  </ListItem>
+                  <Collapse in={this.state[key]} timeout="auto" unmountOnExit>
+                    {country[loc.NodeID] && country[loc.NodeID].map((loc, i) => {
+                      const key = `secondlvl${i}`
+                      return (
+                        <Fragment key={key} >
+                          <ListItem 
+                            className={classes.nestedLevel2}
+                            key={key}
+                            button
+                            selected={selectedIndex === i}
+                            onClick={event => this.handleListItemClick(event, key, loc)}
+                            open={this.state.key}
+                          >
+                            <ListItemText primary={loc.Name} />
+                          </ListItem>
+                          <Collapse in={this.state[key]} timeout="auto" unmountOnExit>
+                            {country[loc.NodeID] && country[loc.NodeID].map((loc, i) => {
+                              const key = `thirdlvl${i}`
+                              return (
+                                <Fragment key={key} >
+                                  <ListItem 
+                                    className={classes.nestedLevel3}
+                                    key={key}
+                                    button
+                                    selected={selectedIndex === i}
+                                    onClick={event => this.handleListItemClick(event, key, loc)}
+                                    open={this.state.key}
+                                  >
+                                    <ListItemText primary={loc.Name} />
+                                  </ListItem>
+                                  <Collapse in={this.state[key]} timeout="auto" unmountOnExit>
+                                  {country[loc.NodeID] && country[loc.NodeID].map((loc, i) => {
+                                    const key = `fourthlvl${i}`
+                                    return (
+                                      <Fragment key={key}>
+                                        <ListItem 
+                                          className={classes.nestedLevel4}
+                                          key={key}
+                                          button
+                                          selected={selectedIndex === i}
+                                          onClick={event => this.handleListItemClick(event, key, loc)}
+                                          open={this.state.key}
+                                        >
+                                          <ListItemText primary={loc.Name} />
+                                        </ListItem>
+                                        <Collapse in={this.state[key]} timeout="auto" unmountOnExit>
+                                        {country[loc.NodeID] && country[loc.NodeID].map((loc, i) => {
+                                          const key = `fifthlvl${i}`
+                                          return (
+                                            <ListItem 
+                                              className={classes.nestedLevel4}
+                                              key={key}
+                                              button
+                                              selected={selectedIndex === i}
+                                              onClick={event => this.handleListItemClick(event, key, loc)}
+                                              open={this.state.key}
+                                            >
+                                              <ListItemText primary={loc.Name} />
+                                            </ListItem>
+                                          )
+                                        })}
+                                        </Collapse>
+                                      </Fragment>
+                                      )
+                                    })}
+                                  </Collapse>
+                                </Fragment>
+                              )
+                            })}
+                          </Collapse>
+                        </Fragment>
+                      )
+                    })}
+                  </Collapse>
+                </Fragment>
+              )
+            })}
+          </Collapse>
+        </List>
     )
   }
 }
@@ -147,4 +164,8 @@ GlobeNav.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(GlobeNav)
+const mapStateToProps = state => ({
+  UI: state.UI
+})
+
+export default connect(mapStateToProps, { updateLocation })(withStyles(styles)(GlobeNav))
