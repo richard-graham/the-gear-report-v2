@@ -22,7 +22,8 @@ const initialState = {
     Name: "New Zealand",
     NodeID: 11737723,
     NumberRoutes: 12044,
-    ParentID: 7546063
+    ParentID: 7546063,
+    zoom: 5
   }
 }
 

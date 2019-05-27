@@ -22,6 +22,9 @@ const styles = theme => ({
   nestedLevel4: {
     paddingLeft: theme.spacing.unit * 10,
   },
+  nestedLevel5: {
+    paddingLeft: theme.spacing.unit * 12,
+  },
   nav: {
     maxHeight: 484,
     overflowY: 'auto'
@@ -35,8 +38,8 @@ export class GlobeNav extends Component {
     base: true
   }
 
-  handleListItemClick = (event, index, loc) => {
-    if (loc !== this.props.UI.location) this.props.updateLocation(loc)
+  handleListItemClick = (event, index, loc, zoom) => {
+    if (loc !== this.props.UI.location) this.props.updateLocation(loc, zoom)
     this.setState({ 
       selectedIndex: index,
       [index]: this.state[index] ? !this.state[index] : true
@@ -59,7 +62,7 @@ export class GlobeNav extends Component {
             id={'base'}
             button
             selected={selectedIndex === 999}
-            onClick={event => this.handleListItemClick(event, 'base', country.parent)}
+            onClick={event => this.handleListItemClick(event, 'base', country.parent, 5)}
           >
             <ListItemText primary={country.parent.Name} />
           </ListItem>
@@ -74,7 +77,7 @@ export class GlobeNav extends Component {
                     key={key}
                     button
                     selected={selectedIndex === i}
-                    onClick={event => this.handleListItemClick(event, key, loc)}
+                    onClick={event => this.handleListItemClick(event, key, loc, 6)}
                   >
                     <ListItemText primary={loc.Name} />
                   </ListItem>
@@ -89,7 +92,7 @@ export class GlobeNav extends Component {
                             key={key}
                             button
                             selected={selectedIndex === i}
-                            onClick={event => this.handleListItemClick(event, key, loc)}
+                            onClick={event => this.handleListItemClick(event, key, loc, 8)}
                             open={this.state.key}
                           >
                             <ListItemText primary={loc.Name} />
@@ -105,7 +108,7 @@ export class GlobeNav extends Component {
                                     key={key}
                                     button
                                     selected={selectedIndex === i}
-                                    onClick={event => this.handleListItemClick(event, key, loc)}
+                                    onClick={event => this.handleListItemClick(event, key, loc, 9)}
                                     open={this.state.key}
                                   >
                                     <ListItemText primary={loc.Name} />
@@ -121,7 +124,7 @@ export class GlobeNav extends Component {
                                           key={key}
                                           button
                                           selected={selectedIndex === i}
-                                          onClick={event => this.handleListItemClick(event, key, loc)}
+                                          onClick={event => this.handleListItemClick(event, key, loc, 9)}
                                           open={this.state.key}
                                         >
                                           <ListItemText primary={loc.Name} />
@@ -132,11 +135,11 @@ export class GlobeNav extends Component {
                                           const key = `fifthlvl${i}`
                                           return (
                                             <ListItem 
-                                              className={classes.nestedLevel4}
+                                              className={classes.nestedLevel5}
                                               key={key}
                                               button
                                               selected={selectedIndex === i}
-                                              onClick={event => this.handleListItemClick(event, key, loc)}
+                                              onClick={event => this.handleListItemClick(event, key, loc, 9)}
                                               open={this.state.key}
                                             >
                                               <ListItemText primary={loc.Name} />

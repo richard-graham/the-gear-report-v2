@@ -29,7 +29,9 @@ class Globe extends Component {
     const children = []
     const getChildren = (rootObj) => {
       Object.entries(rootObj).forEach(entry => {
-        if(entry[1].AreaType === "Cr"){
+        if(entry[1].AreaType === "Cr" ||
+          entry[1].AreaType === "Cl" ||
+          entry[1].AreaType === "Fi"){
           children.push(entry[1])
         } else if (country[entry[1].NodeID]){
           getChildren(country[entry[1].NodeID])
@@ -38,10 +40,9 @@ class Globe extends Component {
       })
     }
     country && country[location.NodeID] && getChildren(country[location.NodeID])
-    console.log(children);
     return (
       <Fragment>
-      <Map className={classes.map} center={position} zoom={7}>
+      <Map className={classes.map} center={position} zoom={location.zoom}>
         <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
