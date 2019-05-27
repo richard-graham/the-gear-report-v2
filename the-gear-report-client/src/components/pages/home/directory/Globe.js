@@ -29,10 +29,12 @@ class Globe extends Component {
     const children = []
     const getChildren = (rootObj) => {
       Object.entries(rootObj).forEach(entry => {
-        children.push(entry[1])
-        if(country[entry[1].NodeID]){
+        if(entry[1].AreaType === "Cr"){
+          children.push(entry[1])
+        } else if (country[entry[1].NodeID]){
           getChildren(country[entry[1].NodeID])
         }
+
       })
     }
     country && country[location.NodeID] && getChildren(country[location.NodeID])
@@ -44,12 +46,13 @@ class Globe extends Component {
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {children.length > 0 && children.map(child => {
+        {children.length > 0 && children.map((child, i) => {
           if (child.Geo) {
             return (
               <Marker 
                 position={[child.Geo[1], child.Geo[0]]}
                 icon={homeIcon}
+                key={i}
               >
                 <Popup>
                   Your Location

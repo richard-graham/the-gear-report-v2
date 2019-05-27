@@ -13,6 +13,7 @@ export const getLocationData = (location) => (dispatch) => {
       fetch(proxyUrl + url) // Fetch data, proxy removes CORS errors
       .then(countryData => countryData.json())
       .then(res => {
+        console.log(res);
         const resObj = {}
 
         resObj.parent = {
