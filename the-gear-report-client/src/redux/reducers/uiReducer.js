@@ -13,10 +13,17 @@ const initialState = {
   loading: false,
   errors: {
     general: ''
-  },
+  },  
   message: '',
   country: [],
-  location: {}
+  location: {
+    AreaType: "R",
+    Geo: [172.6775, -41.00485],
+    Name: "New Zealand",
+    NodeID: 11737723,
+    NumberRoutes: 12044,
+    ParentID: 7546063
+  }
 }
 
 export default function(state = initialState, action){

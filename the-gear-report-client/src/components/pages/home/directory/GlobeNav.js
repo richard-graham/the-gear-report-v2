@@ -59,12 +59,13 @@ export class GlobeNav extends Component {
             id={'base'}
             button
             selected={selectedIndex === 999}
-            onClick={event => this.handleListItemClick(event, 'base')}
+            onClick={event => this.handleListItemClick(event, 'base', country.parent)}
           >
             <ListItemText primary={country.parent.Name} />
           </ListItem>
           <Collapse in={this.state.base} timeout="auto" unmountOnExit>
-            {country[country[selectLoc][0].ParentID].map((loc, i) => {
+            {Object.entries(country[selectLoc]).map((item, i) => {
+              const loc = item[1]
               const key = `firstlvl${i}`
               return (
                 <Fragment key={key} >
@@ -78,7 +79,8 @@ export class GlobeNav extends Component {
                     <ListItemText primary={loc.Name} />
                   </ListItem>
                   <Collapse in={this.state[key]} timeout="auto" unmountOnExit>
-                    {country[loc.NodeID] && country[loc.NodeID].map((loc, i) => {
+                    {country[loc.NodeID] && Object.entries(country[loc.NodeID]).map((item, i) => {
+                      const loc = item[1]
                       const key = `secondlvl${i}`
                       return (
                         <Fragment key={key} >
@@ -93,7 +95,8 @@ export class GlobeNav extends Component {
                             <ListItemText primary={loc.Name} />
                           </ListItem>
                           <Collapse in={this.state[key]} timeout="auto" unmountOnExit>
-                            {country[loc.NodeID] && country[loc.NodeID].map((loc, i) => {
+                            {country[loc.NodeID] && Object.entries(country[loc.NodeID]).map((item, i) => {
+                              const loc = item[1]
                               const key = `thirdlvl${i}`
                               return (
                                 <Fragment key={key} >
@@ -108,7 +111,8 @@ export class GlobeNav extends Component {
                                     <ListItemText primary={loc.Name} />
                                   </ListItem>
                                   <Collapse in={this.state[key]} timeout="auto" unmountOnExit>
-                                  {country[loc.NodeID] && country[loc.NodeID].map((loc, i) => {
+                                  {country[loc.NodeID] && Object.entries(country[loc.NodeID]).map((item, i) => {
+                                    const loc = item[1]
                                     const key = `fourthlvl${i}`
                                     return (
                                       <Fragment key={key}>
@@ -123,7 +127,8 @@ export class GlobeNav extends Component {
                                           <ListItemText primary={loc.Name} />
                                         </ListItem>
                                         <Collapse in={this.state[key]} timeout="auto" unmountOnExit>
-                                        {country[loc.NodeID] && country[loc.NodeID].map((loc, i) => {
+                                        {country[loc.NodeID] && Object.entries(country[loc.NodeID]).map((item, i) => {
+                                          const loc = item[1]
                                           const key = `fifthlvl${i}`
                                           return (
                                             <ListItem 

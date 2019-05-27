@@ -1,5 +1,4 @@
 import { 
-  SET_USER_LOCATION, 
   SET_USER, 
   SET_ERRORS, 
   CLEAR_ERRORS, 
@@ -11,40 +10,40 @@ import {
 } from '../types'
 import axios from 'axios'
 
-export const updateUserLocation = () => (dispatch) => {
-  navigator.geolocation.getCurrentPosition((userPosition) => { 
-    dispatch({ // user agrees to sharing location
-      type: SET_USER_LOCATION,
-      payload: {
-        lat: userPosition.coords.latitude,
-        lng: userPosition.coords.longitude,
-        zoom: 11,
-        haveUsersLocation: true
-      }
-    })
-}, () => { // if user says no to tracking location use api
-  fetch('https://ipapi.co/json')
-    .then(res => res.json())
-    .then(position => {
-      dispatch({ 
-        type: SET_USER_LOCATION,
-        payload: {
-          lat: -41.00485,
-          lng: 172.6775,
-          zoom: 5,
-          haveUsersLocation: false,
-          countryName: position.country_name,
-          regionName: position.region 
-        }
-      })
-    })
-  }, {
-    enableHighAccuracy: false,
-    timeout: 5000,
-    maximumAge: Infinity
-  }
-  );
-}
+// export const updateUserLocation = () => (dispatch) => {
+//   navigator.geolocation.getCurrentPosition((userPosition) => { 
+//     dispatch({ // user agrees to sharing location
+//       type: SET_USER_LOCATION,
+//       payload: {
+//         lat: userPosition.coords.latitude,
+//         lng: userPosition.coords.longitude,
+//         zoom: 11,
+//         haveUsersLocation: true
+//       }
+//     })
+// }, () => { // if user says no to tracking location use api
+//   fetch('https://ipapi.co/json')
+//     .then(res => res.json())
+//     .then(position => {
+//       dispatch({ 
+//         type: SET_USER_LOCATION,
+//         payload: {
+//           lat: -41.00485,
+//           lng: 172.6775,
+//           zoom: 5,
+//           haveUsersLocation: false,
+//           countryName: position.country_name,
+//           regionName: position.region 
+//         }
+//       })
+//     })
+//   }, {
+//     enableHighAccuracy: false,
+//     timeout: 5000,
+//     maximumAge: Infinity
+//   }
+//   );
+// }
 
 export const loginUser = (userData, history) => (dispatch) => { 
   dispatch({ type: LOADING_UI })

@@ -11,7 +11,6 @@ import Tabs from '@material-ui/core/Tabs';
 import Grid from '@material-ui/core/Grid';
 //Redux
 import { connect } from 'react-redux'
-import { updateUserLocation } from '../../../../redux/actions/userActions'
 import { getLocationData } from '../../../../redux/actions/tcActions'
 
 
@@ -55,7 +54,6 @@ export class DirectoryContainer extends Component {
   }
 
   componentDidMount = () => {
-    this.props.updateUserLocation()
     this.props.getLocationData(this.state.selectedLocation)
 
   }
@@ -127,7 +125,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  updateUserLocation, 
   getLocationData
 }
 

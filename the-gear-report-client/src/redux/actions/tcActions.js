@@ -7,14 +7,10 @@ import {
 import { key } from '../../util/keys'
 
 export const getLocationData = (location) => (dispatch) => {
-  // fetch('https://ipapi.co/json') // grab country name
-  //   .then(res => res.json())
-  //   .then((position) => {
-      // const country = position.country_name === "New Zealand" ? '11737723' : 'world'
       dispatch({ type: LOADING_UI })
       const proxyUrl = "https://cors-anywhere.herokuapp.com/"
       const url = `https://brendan.thecrag.com/api/index/detail/${location}?withdata=NodeID,ParentID,Name,NumberRoutes,AreaType,Point&to=arealeaf&key=${key}`
-      fetch(proxyUrl + url)
+      fetch(proxyUrl + url) // Fetch data, proxy removes CORS errors
       .then(countryData => countryData.json())
       .then(res => {
         const resObj = {}
@@ -28,30 +24,41 @@ export const getLocationData = (location) => (dispatch) => {
           Geo: res.data[0][5]
         }
         res.data.map((loc) => {
-          const locationObj = {
-            NodeID: loc[0],
-            ParentID: loc[1],
-            Name: loc[2],
-            NumberRoutes: loc[3],
-            AreaType: loc[4],
-            Geo: loc[5]
-          }    
-          if (resObj[locationObj.ParentID] === undefined) {
-            resObj[locationObj.ParentID] = []
+          if (loc[4] !== "G" && loc[3] > 0) {
+            const locationObj = {
+              NodeID: loc[0],
+              ParentID: loc[1],
+              Name: loc[2],
+              NumberRoutes: loc[3],
+              AreaType: loc[4],
+              Geo: loc[5]
+            }    
+            if (resObj[locationObj.ParentID] === undefined) {
+              resObj[locationObj.ParentID] = {}
+            }
+            return resObj[locationObj.ParentID][loc[2]] = locationObj
           }
-          return resObj[locationObj.ParentID].push(locationObj)
+        })
+        // Sort alphabetically for UI
+        const resOrdered = {}
+        Object.keys(resObj).forEach(entry => {
+          const sorted = {}
+          Object.keys(resObj[entry]).sort().forEach(key => {
+          sorted[key] = resObj[entry][key]
+          })
+          resOrdered[entry] = sorted
         })
         dispatch({
           type: SET_COUNTRY,
           payload: {
-            country: resObj
+            country: resOrdered
           }
         })
     })
     .catch(err => {
       dispatch({ 
         type: SET_ERRORS, 
-        payload: err.response.data 
+        payload: err
       })
     })
 }

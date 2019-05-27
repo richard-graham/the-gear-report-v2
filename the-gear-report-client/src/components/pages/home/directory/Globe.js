@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux'
 // leaflet
 import 'leaflet/dist/leaflet.css'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
@@ -23,31 +24,49 @@ var homeIcon = L.icon({
 class Globe extends Component {
   
   render() {
-    const { classes, user } = this.props
-    const position = [user.lat, user.lng]
-    
+    const { classes, user, location, country } = this.props
+    const position = [location.Geo[1], location.Geo[0]]   
+    const children = []
+    const getChildren = (rootObj) => {
+      Object.entries(rootObj).forEach(entry => {
+        children.push(entry[1])
+        if(country[entry[1].NodeID]){
+          getChildren(country[entry[1].NodeID])
+        }
+      })
+    }
+    country && country[location.NodeID] && getChildren(country[location.NodeID])
+    console.log(children);
     return (
       <Fragment>
-      { user.lat && <Map className={classes.map} center={position} zoom={user.zoom}>
+      <Map className={classes.map} center={position} zoom={7}>
         <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        { user.haveUsersLocation &&
-        <Marker 
-          position={position}
-          icon={homeIcon}
-        >
-          <Popup>
-            Your Location
-          </Popup>
-        </Marker>
-        }
+        {children.length > 0 && children.map(child => {
+          if (child.Geo) {
+            return (
+              <Marker 
+                position={[child.Geo[1], child.Geo[0]]}
+                icon={homeIcon}
+              >
+                <Popup>
+                  Your Location
+                </Popup>
+              </Marker>
+            )
+        }})}
+        
       </Map>
-      }
     </Fragment>
     )
   }
 }
 
-export default withStyles(styles)(Globe)
+const mapStateToProps = state => ({
+  location: state.UI.location,
+  country: state.UI.country
+})
+
+export default connect(mapStateToProps)(withStyles(styles)(Globe))
