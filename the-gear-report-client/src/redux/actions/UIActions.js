@@ -1,5 +1,6 @@
 import {
-  SET_LOCATION
+  SET_LOCATION,
+  RESET_LOCATION
 } from '../types'
 
 export const updateLocation = (location, zoom) => dispatch => {
@@ -7,5 +8,11 @@ export const updateLocation = (location, zoom) => dispatch => {
   dispatch({
     type: SET_LOCATION,
     payload: location
+  })
+}
+
+export const resetLocation = () => dispatch => {
+  dispatch({
+    type: RESET_LOCATION
   })
 }

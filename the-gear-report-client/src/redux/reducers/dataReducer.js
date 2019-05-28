@@ -1,5 +1,6 @@
 import { 
   SET_ALERTS, 
+  SET_RECENT_ALERTS,
   LIKE_ALERT, 
   UNLIKE_ALERT, 
   LOADING_DATA, 
@@ -47,6 +48,11 @@ export default function(state = initialState, action){
         ...state,
         alerts: action.payload,
         loading: false
+      }
+    case SET_RECENT_ALERTS:
+      return {
+        ...state,
+        recentAlerts: action.payload
       }
     case SET_ALERT:
       return {

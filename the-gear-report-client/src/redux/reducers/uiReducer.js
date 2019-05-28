@@ -7,6 +7,7 @@ import {
   CLEAR_MESSAGE,
   SET_COUNTRY,
   SET_LOCATION,
+  RESET_LOCATION,
   LOADING_LOCATION
 } from '../types'
 
@@ -65,6 +66,11 @@ export default function(state = initialState, action){
             additionalInfo: false
           }
         }
+      }
+    case RESET_LOCATION:
+      return {
+        ...state,
+        location: initialState.location
       }
     case LOADING_LOCATION:
       return {

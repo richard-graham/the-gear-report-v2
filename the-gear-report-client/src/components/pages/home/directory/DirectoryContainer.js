@@ -27,8 +27,12 @@ const styles = {
   },
   tabContainer: {
     padding: 10,
-    height: 340,
+    maxHeight: 340,
     overflowY: 'scroll'
+  },
+  mapContainer: {
+    padding: 10,
+    maxHeight: 340,
   },
   navContainerSmall: {
     width: '100%',
@@ -54,8 +58,9 @@ export class DirectoryContainer extends Component {
   }
 
   componentDidMount = () => {
-    this.props.getLocationData(this.state.selectedLocation)
-
+    if(this.props.UI.country.length === 0){
+      this.props.getLocationData(this.state.selectedLocation)
+    }
   }
 
   handleChange = (event, value) => {
@@ -87,15 +92,14 @@ export class DirectoryContainer extends Component {
                 <Tab label="Directory" />
                 <Tab label="Map" />
               </Tabs>
-              <Grid className={classes.tabContainer} item xs={12}>
-                {value === 0 
-                  && loading
-                    ? <CircularProgress className={classes.progress} />
-                    : !Object.keys(country).length > 0
-                    ? <CircularProgress className={classes.progress} />
-                    : <GlobeNav selectLoc={selectedLocation} />}
+              <Grid className={value === 0 ? classes.tabContainer : classes.mapContainer} item xs={12}>
+                {value === 0 ?
+                  loading || !Object.keys(country).length > 0 ?
+                  <CircularProgress className={classes.progress} />
+                  : <GlobeNav selectLoc={selectedLocation} />
+                  : ''}
                 {value === 1 
-                  && <Globe />}
+                  && <Globe size={'small'} />}
               </Grid>
             </Hidden> 
             <Hidden xsDown implementation='css'>

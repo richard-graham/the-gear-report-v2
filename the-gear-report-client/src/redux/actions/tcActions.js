@@ -15,7 +15,6 @@ export const getLocationData = (location) => (dispatch) => {
       fetch(proxyUrl + url) // Fetch data, proxy removes CORS errors
       .then(countryData => countryData.json())
       .then(res => {
-        console.log(res);
         const resObj = {}
 
         resObj.parent = {
@@ -41,6 +40,7 @@ export const getLocationData = (location) => (dispatch) => {
             }
             return resObj[locationObj.ParentID][loc[2]] = locationObj
           }
+          return null
         })
         // Sort alphabetically for UI
         const resOrdered = {}

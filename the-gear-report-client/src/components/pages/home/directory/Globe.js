@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { withStyles } from '@material-ui/core/styles';
-import { updateLocation } from '../../../../redux/actions/UIActions'
+import { updateLocation, resetLocation } from '../../../../redux/actions/UIActions'
 import { connect } from 'react-redux'
 import { checkIfCrag } from '../../../../util/functions'
 // leaflet
@@ -9,9 +9,13 @@ import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
 
 
-const styles = {
+const styles = { 
   map: {
     height: 484,
+    width: '100%'
+  },
+  smallMap: {
+    height: 315,
     width: '100%'
   },
   popupButton: {
@@ -31,10 +35,16 @@ class Globe extends Component {
   handleClick = (child) => {
     this.props.updateLocation(child)
   }
+
+  componentWillUnmount = () => {
+    if(!this.props.location.loading){
+      this.props.resetLocation()
+    }
+  }
   
   render() {
-    const { classes, location, country } = this.props
-    const position = [location.Geo[1], location.Geo[0]]   
+    const { classes, location, country, loading } = this.props
+    const position = location.Geo ? [location.Geo[1], location.Geo[0]] : '' //some locations don't have coords
     const children = []
     const getChildren = (rootObj) => {
       Object.entries(rootObj).forEach(entry => {
@@ -49,7 +59,10 @@ class Globe extends Component {
     country && country[location.NodeID] && getChildren(country[location.NodeID])
     return (
       <Fragment>
-      <Map className={classes.map} center={position} zoom={checkIfCrag(location.AreaType) ? 14 : location.zoom}>
+      <Map 
+        className={this.props.size === 'small' ? classes.smallMap : classes.map} 
+        center={position} 
+        zoom={checkIfCrag(location.AreaType) ? 14 : location.zoom}>
         <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -74,8 +87,10 @@ class Globe extends Component {
                 </Popup>
               </Marker>
             )
-        }})}
-        {children.length === 0 ? (
+          }
+          return null
+        })}
+        {children.length === 0 && !loading && location.Geo ? (
           <Marker 
             position={[location.Geo[1], location.Geo[0]]}
             icon={homeIcon}
@@ -83,13 +98,6 @@ class Globe extends Component {
           >
               <Popup>
               {location.Name}
-              {/* <br />
-              <button 
-                className={classes.popupButton}
-                onClick={() => this.handleClick(location)}
-              >
-                View
-              </button> */}
             </Popup>
           </Marker>
         ) : ''}
@@ -101,7 +109,13 @@ class Globe extends Component {
 
 const mapStateToProps = state => ({
   location: state.UI.location,
-  country: state.UI.country
+  country: state.UI.country,
+  loading: state.UI.loading
 })
 
-export default connect(mapStateToProps, { updateLocation })(withStyles(styles)(Globe))
+const mapDispatchToProps = {
+  updateLocation,
+  resetLocation
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Globe))

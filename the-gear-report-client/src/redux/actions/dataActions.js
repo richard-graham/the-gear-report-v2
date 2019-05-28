@@ -1,5 +1,6 @@
 import { 
   SET_ALERTS,
+  SET_RECENT_ALERTS,
   LOADING_DATA, 
   LIKE_ALERT, 
   UNLIKE_ALERT, 
@@ -42,14 +43,14 @@ export const getRecentAlerts = () => (dispatch) => {
   axios.get('/alerts/recent')
     .then(res => {
       dispatch({ 
-        type: SET_ALERTS, 
+        type: SET_RECENT_ALERTS, 
         payload: res.data
       })
     })
     .catch(err => {
       dispatch({
-        type: SET_ALERTS,
-        payload: []
+        type: SET_ERRORS,
+        payload: 'Error: Could not retrieve alerts'
       })
     })
 }

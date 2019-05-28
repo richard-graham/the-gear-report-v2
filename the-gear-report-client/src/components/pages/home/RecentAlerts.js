@@ -95,7 +95,8 @@ class ReactVirtualizedTable extends React.PureComponent {
   };
 
   render() {
-    const { classes, columns, ...tableProps } = this.props;
+    const { classes, columns, ...tableProps } = this.props
+    
     return (
       <AutoSizer>
         {({ height, width }) => (
