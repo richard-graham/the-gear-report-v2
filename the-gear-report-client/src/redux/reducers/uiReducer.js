@@ -6,7 +6,8 @@ import {
   SET_MESSAGE,
   CLEAR_MESSAGE,
   SET_COUNTRY,
-  SET_LOCATION
+  SET_LOCATION,
+  LOADING_LOCATION
 } from '../types'
 
 const initialState = {
@@ -23,7 +24,9 @@ const initialState = {
     NodeID: 11737723,
     NumberRoutes: 12044,
     ParentID: 7546063,
-    zoom: 5
+    zoom: 5,
+    additionalInfo: false,
+    loading: false
   }
 }
 
@@ -44,9 +47,32 @@ export default function(state = initialState, action){
         loading: false
       }
     case SET_LOCATION:
+      if(action.duplicate){
+        return {
+          ...state,
+          location: {
+            ...state.location,
+            ...action.payload,
+            loading: false
+          }
+        }
+      } else {
+        return {
+          ...state,
+          location: {
+            ...action.payload,
+            loading: false,
+            additionalInfo: false
+          }
+        }
+      }
+    case LOADING_LOCATION:
       return {
         ...state,
-        location: action.payload
+        location: {
+          ...state.location,
+          loading: true
+        }
       }
     case SET_MESSAGE:
       return {

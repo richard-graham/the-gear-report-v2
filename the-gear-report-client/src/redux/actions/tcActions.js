@@ -1,14 +1,16 @@
 import {
   SET_COUNTRY,
   LOADING_UI,
-  SET_ERRORS
+  SET_ERRORS,
+  SET_LOCATION,
+  LOADING_LOCATION
 } from '../types'
 
 import { key } from '../../util/keys'
+const proxyUrl = "https://cors-anywhere.herokuapp.com/"
 
 export const getLocationData = (location) => (dispatch) => {
       dispatch({ type: LOADING_UI })
-      const proxyUrl = "https://cors-anywhere.herokuapp.com/"
       const url = `https://brendan.thecrag.com/api/index/detail/${location}?withdata=NodeID,ParentID,Name,NumberRoutes,AreaType,Point&to=arealeaf&key=${key}`
       fetch(proxyUrl + url) // Fetch data, proxy removes CORS errors
       .then(countryData => countryData.json())
@@ -63,3 +65,25 @@ export const getLocationData = (location) => (dispatch) => {
       })
     })
 }
+
+export const getNode = (NodeID) => (dispatch) => {
+  dispatch({ type: LOADING_LOCATION })
+  const url = `https://brendan.thecrag.com/api/node/id/${NodeID}?key=${key}`
+  fetch(proxyUrl + url)
+    .then(res => res.json())
+    .then(result => (
+      result.data
+    )
+    )
+    .then(res => {
+      res.additionalInfo = true
+      dispatch({
+        type: SET_LOCATION,
+        payload: res,
+        duplicate: true
+      })
+    })
+    .catch(err => {
+      console.log(err);
+    })
+} 

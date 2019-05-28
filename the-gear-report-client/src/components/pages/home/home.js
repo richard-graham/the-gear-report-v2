@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
 import DirectoryContainer from './directory/DirectoryContainer'
 import RecentAlerts from './RecentAlerts'
-import { withStyles } from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
+import { connect } from 'react-redux'
+import { getNode } from '../../../redux/actions/tcActions'
+import { checkIfCrag } from '../../../util/functions'
 //Mui
 import Typography from '@material-ui/core/Typography'
+import { withStyles } from '@material-ui/core/styles'
+import Grid from '@material-ui/core/Grid'
+
 
 const styles = theme => ({
   directory: {
@@ -37,6 +41,16 @@ const styles = theme => ({
 })
 
 export class home extends Component {
+  state = {
+    loadingLocation: false
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    if(checkIfCrag(nextProps.location.AreaType) && !nextProps.location.additionalInfo && !nextProps.location.loading){
+      this.props.getNode(nextProps.location.NodeID)
+    }
+  }
+
   render() {
     const { classes } = this.props
     return (
@@ -58,4 +72,8 @@ export class home extends Component {
   }
 }
 
-export default withStyles(styles)(home)
+const mapStateToProps = state => ({
+  location: state.UI.location
+})
+
+export default connect(mapStateToProps, { getNode })(withStyles(styles)(home))

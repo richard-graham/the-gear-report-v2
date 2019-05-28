@@ -55,9 +55,7 @@ class Globe extends Component {
                 icon={homeIcon}
                 key={i}
               >
-                <Popup>
-                  Your Location
-                </Popup>
+              
               </Marker>
             )
         }})}

@@ -44,7 +44,7 @@ export class GlobeNav extends Component {
       selectedIndex: index,
       [index]: this.state[index] ? !this.state[index] : true
     })
-  };
+  }
 
   render() {
     const { 
@@ -55,6 +55,7 @@ export class GlobeNav extends Component {
       selectLoc
     } = this.props
     const { selectedIndex } = this.state
+    
     return (
         <List className={classes.nav}>
           <ListItem
