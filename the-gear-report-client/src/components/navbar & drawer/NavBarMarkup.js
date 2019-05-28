@@ -87,7 +87,7 @@ class NavBar extends React.Component {
             onClick={this.handleProfileMenuOpen}
             color="inherit"
           >
-            {user.credentials.imageUrl !== "" ? <ProfilePic user={user} /> : ''}
+            {user ? <ProfilePic user={user} /> : ''}
           </IconButton>
         </div>
         <div className={classes.navSectionMobile}>
