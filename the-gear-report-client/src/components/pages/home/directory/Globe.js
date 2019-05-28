@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { withStyles } from '@material-ui/core/styles';
+import { updateLocation } from '../../../../redux/actions/UIActions'
 import { connect } from 'react-redux'
 // leaflet
 import 'leaflet/dist/leaflet.css'
@@ -22,9 +23,13 @@ var homeIcon = L.icon({
 });
 
 class Globe extends Component {
+
+  handleClick = (child) => {
+    this.props.updateLocation(child)
+  }
   
   render() {
-    const { classes, user, location, country } = this.props
+    const { classes, location, country } = this.props
     const position = [location.Geo[1], location.Geo[0]]   
     const children = []
     const getChildren = (rootObj) => {
@@ -54,8 +59,8 @@ class Globe extends Component {
                 position={[child.Geo[1], child.Geo[0]]}
                 icon={homeIcon}
                 key={i}
+                onClick={() => this.handleClick(child)}
               >
-              
               </Marker>
             )
         }})}
@@ -71,4 +76,4 @@ const mapStateToProps = state => ({
   country: state.UI.country
 })
 
-export default connect(mapStateToProps)(withStyles(styles)(Globe))
+export default connect(mapStateToProps, { updateLocation })(withStyles(styles)(Globe))
