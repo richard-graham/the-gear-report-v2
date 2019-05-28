@@ -52,7 +52,8 @@ export default function(state = initialState, action){
     case SET_RECENT_ALERTS:
       return {
         ...state,
-        recentAlerts: action.payload
+        recentAlerts: action.payload,
+        loading: false
       }
     case SET_ALERT:
       return {

@@ -8,7 +8,7 @@ import {
   SET_COUNTRY,
   SET_LOCATION,
   RESET_LOCATION,
-  LOADING_LOCATION
+  LOADING_LOCATION,
 } from '../types'
 
 const initialState = {
@@ -27,7 +27,8 @@ const initialState = {
     ParentID: 7546063,
     zoom: 5,
     additionalInfo: false,
-    loading: false
+    loading: false,
+    childIds: []
   }
 }
 

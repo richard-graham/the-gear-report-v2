@@ -33,7 +33,7 @@ var homeIcon = L.icon({
 class Globe extends Component {
 
   handleClick = (child) => {
-    this.props.updateLocation(child)
+    this.props.updateLocation(child, this.props.country)
   }
 
   componentWillUnmount = () => {

@@ -96,7 +96,7 @@ class ReactVirtualizedTable extends React.PureComponent {
 
   render() {
     const { classes, columns, ...tableProps } = this.props
-    
+ 
     return (
       <AutoSizer>
         {({ height, width }) => (
@@ -167,7 +167,14 @@ const WrappedVirtualizedTable = withStyles(styles)(ReactVirtualizedTable);
 
 class RecentAlerts extends Component {
 
+  componentWillReceiveProps = (nextProps) => {
+    // if(nextProps.location.NodeID !== this.props.location.NodeID){
+    //   this.props.getRecentAlerts()
+    // }
+  }
+
   componentDidMount = () => {
+    console.log(this.childIds);
     this.props.getRecentAlerts()
   }
 
@@ -176,7 +183,8 @@ class RecentAlerts extends Component {
   }
 
   render() {
-    const { alerts } = this.props
+    const { alerts, location, country } = this.props
+   
     return (
       <Paper style={{ height: 372, width: '100%' }}>
       <Typography variant='subtitle1' style={{ paddingTop: 10 }}>Recent Tickets</Typography>
@@ -210,7 +218,9 @@ class RecentAlerts extends Component {
 }
 
 const mapStateToProps = state => ({
-  alerts: state.data.alerts
+  alerts: state.data.alerts,
+  location: state.UI.location,
+  country: state.UI.country
 })
 
 export default connect(mapStateToProps, { getRecentAlerts })(RecentAlerts)

@@ -39,7 +39,7 @@ export class GlobeNav extends Component {
   }
 
   handleListItemClick = (event, index, loc, zoom) => {
-    if (loc !== this.props.UI.location) this.props.updateLocation(loc, zoom)
+    if (loc !== this.props.UI.location) this.props.updateLocation(loc, this.props.UI.country, zoom)
     this.setState({ 
       selectedIndex: index,
       [index]: this.state[index] ? !this.state[index] : true

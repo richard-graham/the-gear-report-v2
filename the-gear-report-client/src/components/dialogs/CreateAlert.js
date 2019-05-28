@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { uploadAlertImage, postAlert, resetAlertImages } from '../../redux/actions/dataActions'
 import { connect } from 'react-redux'
+import { checkIfCrag } from '../../util/functions'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button';
@@ -12,6 +13,14 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import MyButton from '../../util/MyButton'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 //Icons
 import EditIcon from '@material-ui/icons/Edit'
 
@@ -20,6 +29,11 @@ class CreateAlert extends React.Component {
   state = {
     title: '',
     body: '',
+    use: true,
+    pick: false,
+    locs: { 
+      0: ''
+    }
   }
 
   handleImageChange = (event) => {
@@ -38,6 +52,20 @@ class CreateAlert extends React.Component {
     this.setState({
       [event.target.id]: event.target.value
     })
+  }
+
+  handleFormControl = (arg) => {
+    if (arg === 'use'){
+      this.setState({
+        use: true,
+        pick: false
+      })
+    } else {
+      this.setState({
+        use: false,
+        pick: true
+      })
+    }
   }
 
   handleSubmit = (event) => {
@@ -59,13 +87,39 @@ class CreateAlert extends React.Component {
      this.props.closeAllDialogs()
   }
 
+  handleSelectChange = (e, i) => {
+    const state = this.state
+    state.locs[e.target.name] = e.target.value
+    if (Object.keys(this.state.locs).length == Number(e.target.name) + 1){ // if the last input is being modded add a key in state
+      state.locs[Object.keys(this.state.locs).length.toString()] = '' 
+    }
+    this.setState({ state })
+  }
+
   test = () => {
     console.log('tested');
   }
 
+  createMenu = () => {
+    return (
+      null
+    )
+  }
+
 
   render() {
-    const { open, closeAllDialogs, data: { loading } } = this.props
+    const { 
+      classes,
+      open, 
+      closeAllDialogs, 
+      loading,
+      country,
+      location
+    } = this.props
+    const {
+      use, 
+      pick
+    } = this.state
     return (
       <div>
         <Dialog
@@ -102,10 +156,48 @@ class CreateAlert extends React.Component {
             />
             <br />
             <input type='file' id='imageInput' onChange={this.handleImageChange} hidden='hidden' />
-            <MyButton tip='Add image to alert' onClick={this.handleEditPicture} btnClassName='button'>
+            <MyButton styles={{marginTop: 5, marginBottom: 5}} tip='Add image to alert' onClick={this.handleEditPicture} btnClassName='button'>
               {loading ? <CircularProgress size={25}/> : <EditIcon color='primary' />}
             </MyButton>
-
+            <br />
+            {location && checkIfCrag(location.AreaType) && 
+            <FormControl component="fieldset" className={classes.formControl}>
+              <FormLabel component="legend">Use this location</FormLabel>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={use} onChange={() => this.handleFormControl('use')} value="gilad" />}
+                  label={location.Name}
+                />
+              </FormGroup>
+              <FormLabel component="legend">Pick other location</FormLabel>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={pick} onChange={() => this.handleFormControl('pick')} value="gilad" />}
+                />
+              </FormGroup>
+              {location && (!checkIfCrag(location.AreaType) || pick) &&
+                
+                <Fragment>
+                  <InputLabel htmlFor="input0">Pick Location</InputLabel>
+                  <Select
+                    value={this.state.locs[0]}
+                    onChange={(e) => this.handleSelectChange(e)}
+                    inputProps={{
+                      name: '0',
+                      id: "input0"
+                    }}
+                  >
+                    {Object.keys(country[11737723]).map((loc, i) => {
+                      return <MenuItem 
+                                value={country[11737723][loc].NodeID}
+                                key={i}
+                                >{loc}
+                              </MenuItem>
+                    })}
+                  </Select>
+                </Fragment>
+              }
+            </FormControl>}
           </DialogContent>
           <DialogActions>
             <Button onClick={closeAllDialogs} color="primary">
@@ -125,6 +217,9 @@ const styles = theme => ({
   margin: {
     margin: theme.spacing.unit,
   },
+  formControl: {
+    marginTop: 5
+  }
 });
 
 const mapActionsToProps = {
@@ -135,7 +230,9 @@ const mapActionsToProps = {
 
 const mapStateToProps = state => ({
   images: state.data.newAlert.images,
-  data: state.data
+  loading: state.data.loading,
+  country: state.UI.country,
+  location: state.UI.location
 })
 
 export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(CreateAlert))

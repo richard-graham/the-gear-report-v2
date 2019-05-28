@@ -17,7 +17,8 @@ const {
   likeAlert, 
   unlikeAlert,
   deleteAlert,
-  getAlertsByUser
+  getAlertsByUser,
+  getAlertsByLocations
 } = require('./handlers/alerts')
 
 const { 
@@ -35,6 +36,7 @@ app.get('/alerts', getAllAlerts)
 app.get('/alerts/recent', getRecentAlerts)
 app.get('/alert/:alertId', getAlert)
 app.get('/alerts/:userHandle', getAlertsByUser)
+// app.get('/alerts/location/:locations', getAlertsByLocations)
 app.post('/alert', FBAuth, postOneAlert)
 app.post('/alert/add/image', FBAuth, uploadAlertImage)
 app.post('/alert/:alertId/comment', FBAuth, commentOnAlert)
