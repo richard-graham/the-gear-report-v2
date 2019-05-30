@@ -32,7 +32,7 @@ class CreateAlert extends React.Component {
     use: true,
     pick: false,
     locs: { 
-      0: ''
+      0: 11737723
     }
   }
 
@@ -89,7 +89,7 @@ class CreateAlert extends React.Component {
 
   handleSelectChange = (e, i) => {
     const state = this.state
-    state.locs[e.target.name] = e.target.value
+    state.locs[e.target.name + 1] = e.target.value
     if (Object.keys(this.state.locs).length == Number(e.target.name) + 1){ // if the last input is being modded add a key in state
       state.locs[Object.keys(this.state.locs).length.toString()] = '' 
     }
@@ -118,7 +118,8 @@ class CreateAlert extends React.Component {
     } = this.props
     const {
       use, 
-      pick
+      pick,
+      locs
     } = this.state
     return (
       <div>
@@ -178,28 +179,30 @@ class CreateAlert extends React.Component {
               {location && (!checkIfCrag(location.AreaType) || pick) &&
                 
                 <Fragment>
-                  {/* {locs.map(loc => {
+                //Make locs key have a value of the NodeID and the parents NodeID
+                  {Object.keys(locs).map((key, i) => {
+                    console.log(locs[key], 'ping');
                     return (
-                      null
+                      <Select
+                        value={locs[key]}
+                        onChange={(e) => this.handleSelectChange(e)}
+                        inputProps={{
+                          name: key,
+                          id: `input${key}`
+                        }}
+                      >
+                        {Object.keys(country[locs[key]]).map((loc, i) => {
+                          return <MenuItem 
+                                    value={country[locs[key]][loc].NodeID}
+                                    key={i}
+                                    >{loc}
+                                  </MenuItem>
+                        })}
+                      </Select>
                     )
-                  }} */}
+                  })}
                   {/* <InputLabel htmlFor="input0">Pick Location</InputLabel> */}
-                  <Select
-                    value={this.state.locs[0]}
-                    onChange={(e) => this.handleSelectChange(e)}
-                    inputProps={{
-                      name: '0',
-                      id: "input0"
-                    }}
-                  >
-                    {Object.keys(country[11737723]).map((loc, i) => {
-                      return <MenuItem 
-                                value={country[11737723][loc].NodeID}
-                                key={i}
-                                >{loc}
-                              </MenuItem>
-                    })}
-                  </Select>
+                  
 
                 </Fragment>
               }

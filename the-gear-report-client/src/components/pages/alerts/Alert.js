@@ -71,6 +71,8 @@ export class Alert extends Component {
                 <Typography>Comments</Typography>
                 <Divider variant='middle' />
                 <div>
+
+                
                 {comments && comments.map((comment, index) => {
                   const { body, createdAt, userImage, userHandle } = comment
                   return (
@@ -145,7 +147,7 @@ const styles = theme => ({
     textAlign: 'left'
   },
   commentContainer: {
-    margin: 10
+    padding: 30
   },
   commentData: {
     marginLeft: 20

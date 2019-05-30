@@ -31,12 +31,12 @@ const styles = {
   pics: {
     width: '100%',
     height: 'auto',
-    minHeight: 480,
+    // minHeight: 480,
     paddingLeft: '30%',
     paddingRight: '30%',
   },
   container: {
-    minHeight: 620
+    // minHeight: 620
   }
 }
 

@@ -36,8 +36,6 @@ class RenderMenu extends Component {
         onClose={handleMenuClose}
       >
         {authenticated ? <MenuItem onClick={handleMenuClose} component={Link} to={`/profile/${handle}`}>Profile</MenuItem> : ''}
-        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-        <Divider variant="middle" />
         { authenticated ?
         <MenuItem 
           onClick={this.handleLogout}
