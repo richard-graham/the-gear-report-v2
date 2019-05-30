@@ -95,7 +95,7 @@ class CustomizedSnackbars extends React.Component {
       return;
     }
     this.setState({ open: false });
-    this.variant === 'error' ? 
+    this.props.variant === 'error' ? 
     this.props.clearErrors() :
     this.props.clearMessage()
     

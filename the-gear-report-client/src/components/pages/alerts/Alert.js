@@ -8,6 +8,8 @@ import { withStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import Grid from '@material-ui/core/Grid';
+import Divider from '@material-ui/core/Divider';
 //Icons
 
 export class Alert extends Component {
@@ -37,27 +39,44 @@ export class Alert extends Component {
     } = this.props
     return (
       <Paper className={classes.paper}>
-        {loading ? <CircularProgress size={70} className={classes.progress} /> : (
-          <Fragment>
-          <Typography variant='body1' className={classes.alertHeader}>{title}</Typography>
-          <div className={classes.content}>
-            {createdAt && 
-            <Typography variant='body2' className={classes.alertDate}>
-              {`Date: ${dayjs(createdAt).format('DD-MM-YYYY')}`}
-            </Typography>}
-            <Typography>{`Status: ${resolved ? 'Resolved' : 'Not Resolved'}`}</Typography>
-            <Typography>{`Sponsored: ${sponsored ? 'True' : 'False'}`}</Typography>
-            <Typography>{`Created By: ${userHandle}`}</Typography>
-            <br />
-            <Typography >{`Description: ${body}`}</Typography>
-            <Typography >{title}</Typography>
-            </div>
-            <div className={classes.header}>
-              <img alt='words' src={userImage} className={classes.userImage} />
-            </div>
-            <AlertImageGallery images={images} />
-          </Fragment>
-        )}
+          {loading ? <CircularProgress size={70} className={classes.progress} /> : (
+            <Grid container spacing={4}>
+              <Grid item xs={12}>
+                <Typography variant='body1' className={classes.alertHeader}>{title}</Typography>
+              </Grid>
+              <Grid item md={8} xs ={12} >
+                <Paper>
+                  <AlertImageGallery images={images} />
+                </Paper>
+              </Grid>
+              <Grid item sm={4} xs={12} >
+                <Paper>
+                  <Typography>Actions</Typography>
+                  <Divider variant='center' />
+                  <Typography>Stuff</Typography>
+                </Paper>
+              </Grid>
+              <Grid item md={9} xs={12} styles={{ textAlign: 'left'}}>
+                <Typography>Details</Typography>
+                <Divider variant='middle' />
+                {createdAt && 
+                <Typography variant='body2' className={classes.alertDate}>
+                  {`Date: ${dayjs(createdAt).format('DD-MM-YYYY')}`}
+                </Typography>}
+                <Typography>{`Status: ${resolved ? 'Resolved' : 'Not Resolved'}`}</Typography>
+                <Typography>{`Sponsored: ${sponsored ? 'True' : 'False'}`}</Typography>
+                <Typography>{`Created By: ${userHandle}`}</Typography>
+                <br />
+                <Typography >{`Description: ${body}`}</Typography>
+                <Typography >{title}</Typography>
+
+              </Grid>
+              <div className={classes.header}>
+                <img alt='words' src={userImage} className={classes.userImage} />
+              </div>
+              
+            </Grid>
+          )}
       </Paper>
     )
   }
@@ -66,6 +85,7 @@ export class Alert extends Component {
 const styles = theme => ({
   ...theme,
   alertHeader: {
+    float: 'left',
     fontSize: 27,
     marginBottom: 20
   },
@@ -73,12 +93,10 @@ const styles = theme => ({
     fontSize: 15,
   },
   paper: {
-    margin: 40,
-    marginTop: 60,
-    minWidth: 320,
-    width: '80%',
-    minHeight: '80vh',
-    padding: 50
+    width: '100%',
+    minHeight: '100vh',
+    padding: 50,
+    flexGrow: 1,
   },
   userImage: {
     width: 30,
