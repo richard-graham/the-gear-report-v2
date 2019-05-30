@@ -16,6 +16,7 @@
     "react-image-gallery": "^0.8.16",
     "react-leaflet": "^2.2.1",
     "react-redux": "^7.0.2",
+    "react-resize-image": "^1.0.4",
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",

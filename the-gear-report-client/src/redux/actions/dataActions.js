@@ -123,7 +123,7 @@ export const uploadAlertImage = (formData) => (dispatch) => {
     .catch(err => {
       dispatch({
         type: SET_ERRORS,
-        payload: err
+        payload: 'Upload failed'
       })
     })
 }

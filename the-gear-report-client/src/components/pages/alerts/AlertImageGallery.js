@@ -4,11 +4,13 @@ import "react-image-gallery/styles/css/image-gallery.css";
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 
+const minimumHeight = 600
+
 export class AlertImageGallery extends Component {
   render() {
     const { images, classes } = this.props
     const items = []
-    images && images.map(image => {
+    images && images.map((image, i) => {
       return items.push({
         original: image,
         thumbnail: image,
@@ -27,10 +29,13 @@ export class AlertImageGallery extends Component {
 
 const styles = {
   pics: {
-    height: '50%'
+    width: '100%',
+    height: 'auto',
+    paddingLeft: '20%',
+    paddingRight: '20%',
   },
   container: {
-    height: 300
+    
   }
 }
 

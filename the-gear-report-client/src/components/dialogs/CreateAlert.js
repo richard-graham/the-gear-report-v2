@@ -178,7 +178,12 @@ class CreateAlert extends React.Component {
               {location && (!checkIfCrag(location.AreaType) || pick) &&
                 
                 <Fragment>
-                  <InputLabel htmlFor="input0">Pick Location</InputLabel>
+                  {/* {locs.map(loc => {
+                    return (
+                      null
+                    )
+                  }} */}
+                  {/* <InputLabel htmlFor="input0">Pick Location</InputLabel> */}
                   <Select
                     value={this.state.locs[0]}
                     onChange={(e) => this.handleSelectChange(e)}
@@ -195,6 +200,7 @@ class CreateAlert extends React.Component {
                               </MenuItem>
                     })}
                   </Select>
+
                 </Fragment>
               }
             </FormControl>}

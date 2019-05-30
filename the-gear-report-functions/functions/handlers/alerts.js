@@ -218,7 +218,7 @@ exports.uploadAlertImage = (req, res) => {
     // validation
 
     if(mimetype !== 'image/jpeg' && mimetype !== 'image/png'){
-      return res.status(400).json({ error: 'Wrong file type submitted' })
+      return res.status(400).json({ error: 'Wrong file type submitted, use .jpg or .png' })
     }
 
     // img.png or my.img.png -> split string by dots -> select last value
@@ -230,6 +230,7 @@ exports.uploadAlertImage = (req, res) => {
     file.pipe(fs.createWriteStream(filepath))
   })
   busboy.on('finish', () => {
+    //resize image
     admin.storage().bucket().upload(imageToBeUploaded.filepath, {
       resumable: false,
       metadata: {

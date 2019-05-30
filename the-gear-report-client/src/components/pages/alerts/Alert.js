@@ -31,6 +31,7 @@ export class Alert extends Component {
         images,
         userImage,
         resolved,
+        userHandle
       },
       loading
     } = this.props
@@ -46,7 +47,7 @@ export class Alert extends Component {
             </Typography>}
             <Typography>{`Status: ${resolved ? 'Resolved' : 'Not Resolved'}`}</Typography>
             <Typography>{`Sponsored: ${sponsored ? 'True' : 'False'}`}</Typography>
-            <Typography>{`Created By: `}</Typography>
+            <Typography>{`Created By: ${userHandle}`}</Typography>
             <br />
             <Typography >{`Description: ${body}`}</Typography>
             <Typography >{title}</Typography>
