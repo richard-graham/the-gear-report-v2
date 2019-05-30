@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { getAlert } from '../../../redux/actions/dataActions'
 import dayjs from 'dayjs'
 import AlertImageGallery from './AlertImageGallery'
+import { Link } from 'react-router-dom'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
@@ -33,7 +34,8 @@ export class Alert extends Component {
         images,
         userImage,
         resolved,
-        userHandle
+        userHandle,
+        comments
       },
       loading
     } = this.props
@@ -49,32 +51,61 @@ export class Alert extends Component {
                   <AlertImageGallery images={images} />
                 </Paper>
               </Grid>
-              <Grid item sm={4} xs={12} >
-                <Paper>
-                  <Typography>Actions</Typography>
-                  <Divider variant='center' />
-                  <Typography>Stuff</Typography>
-                </Paper>
+              <Grid item sm={4} xs={12}>
+                <div className={classes.action}>
+                  <Typography>Details</Typography>
+                  <Divider/>
+                  {createdAt && 
+                  <Typography variant='body2' className={classes.alertDate}>
+                    {`Date: ${dayjs(createdAt).format('DD-MM-YYYY')}`}
+                  </Typography>}
+                  <Typography>{`Status: ${resolved ? 'Resolved' : 'Not Resolved'}`}</Typography>
+                  <Typography>{`Sponsored: ${sponsored ? 'True' : 'False'}`}</Typography>
+                  <Typography>{`Created By: ${userHandle}`}</Typography>
+                  <br />
+                  <Typography >{`Description: ${body}`}</Typography>
+                  <Typography >{title}</Typography>
+                </div>
               </Grid>
               <Grid item md={9} xs={12} styles={{ textAlign: 'left'}}>
-                <Typography>Details</Typography>
+                <Typography>Comments</Typography>
                 <Divider variant='middle' />
-                {createdAt && 
-                <Typography variant='body2' className={classes.alertDate}>
-                  {`Date: ${dayjs(createdAt).format('DD-MM-YYYY')}`}
-                </Typography>}
-                <Typography>{`Status: ${resolved ? 'Resolved' : 'Not Resolved'}`}</Typography>
-                <Typography>{`Sponsored: ${sponsored ? 'True' : 'False'}`}</Typography>
-                <Typography>{`Created By: ${userHandle}`}</Typography>
-                <br />
-                <Typography >{`Description: ${body}`}</Typography>
-                <Typography >{title}</Typography>
+                <div>
+                {comments && comments.map((comment, index) => {
+                  const { body, createdAt, userImage, userHandle } = comment
+                  return (
+                      <Grid item sm={12}>
+                        <Grid container className={classes.commentContainer}>
+                          <Grid item sm={1}>
+                            <img alt='words' src={userImage} className={classes.userImage} />
+                          </Grid>
+                          <Grid item sm={11}>
+                            <div className={classes.commentData}>
+                              <div className={classes.userData}>
+                                <Typography 
+                                  variant='h5' 
+                                  component={Link} 
+                                  to={`/users/${userHandle}`} 
+                                  color='primary'
+                                >
+                                  {userHandle}
+                                </Typography>
+                                <Typography variant='body2' color='textSecondary'>
+                                  {dayjs(createdAt).format('h:mm a, MMMM DD YYYY')}
+                                </Typography>
+                              </div>
+                              <Typography variant='body1'>
+                                {body}
+                              </Typography>
+                            </div>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                  )
+                })}
+                </div>
 
-              </Grid>
-              <div className={classes.header}>
-                <img alt='words' src={userImage} className={classes.userImage} />
-              </div>
-              
+              </Grid>              
             </Grid>
           )}
       </Paper>
@@ -84,6 +115,10 @@ export class Alert extends Component {
 
 const styles = theme => ({
   ...theme,
+  action: {
+    margin: 20,
+    textAlign: 'left'
+  },
   alertHeader: {
     float: 'left',
     fontSize: 27,
@@ -99,7 +134,7 @@ const styles = theme => ({
     flexGrow: 1,
   },
   userImage: {
-    width: 30,
+    width: 50,
     borderRadius: '50%'
   },
   progress: {
@@ -108,6 +143,16 @@ const styles = theme => ({
   content: {
     marginTop: 20,
     textAlign: 'left'
+  },
+  commentContainer: {
+    margin: 10
+  },
+  commentData: {
+    marginLeft: 20
+  },
+  userData: {
+    float: 'left',
+    marginRight: 10
   }
 })
 
