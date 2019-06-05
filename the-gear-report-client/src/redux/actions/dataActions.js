@@ -16,9 +16,13 @@ import {
   SET_MESSAGE,
   RESET_ALERT_IMAGE,
   SET_USER_ALERTS,
-  SET_USER_PROFILE
+  SET_USER_PROFILE,
+  SET_SEARCH
 } from '../types'
 import axios from 'axios'
+import { key } from '../../util/keys'
+
+const proxyUrl = "https://cors-anywhere.herokuapp.com/"
 
 // Get all alerts
 export const getAlerts = () => (dispatch) => {
@@ -198,4 +202,22 @@ export const getUserData = (userHandle) => dispatch => {
 
 export const clearErrors = () => dispatch => {
   dispatch({ type: CLEAR_ERRORS })
+}
+
+export const textCompletion = (input) => dispatch => {
+  const url = `https://brendan.thecrag.com/api/lookup/crag?search=${input}&key=${key}`
+  fetch(proxyUrl + url)
+    .then(res => res.json())
+    .then(list => {
+      var res = list.data.map(item => {
+        return {
+          label: item.name,
+          id: item.id
+        }
+      })
+      dispatch({ 
+        type: SET_SEARCH,
+        payload: res
+      })
+    })
 }

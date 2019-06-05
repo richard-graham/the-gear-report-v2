@@ -10,7 +10,8 @@ import {
   SUBMIT_COMMENT,
   SET_ALERT_IMAGE,
   RESET_ALERT_IMAGE,
-  SET_USER_PROFILE
+  SET_USER_PROFILE,
+  SET_SEARCH
 } from '../types'
 
 const initialState = {
@@ -23,6 +24,7 @@ const initialState = {
   newAlert: {
     images: []
   },
+  searchResults: [{label: 'test'}],
   userProfile: {
     user: {
       imageUrl: '',
@@ -113,6 +115,11 @@ export default function(state = initialState, action){
         ...state,
         userProfile: action.payload,
         loading: false
+      }
+    case SET_SEARCH:
+      return {
+        ...state,
+        searchResults: action.payload
       }
     default:
      return state
