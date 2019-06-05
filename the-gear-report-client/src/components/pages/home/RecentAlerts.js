@@ -167,14 +167,7 @@ const WrappedVirtualizedTable = withStyles(styles)(ReactVirtualizedTable);
 
 class RecentAlerts extends Component {
 
-  componentWillReceiveProps = (nextProps) => {
-    // if(nextProps.location.NodeID !== this.props.location.NodeID){
-    //   this.props.getRecentAlerts()
-    // }
-  }
-
   componentDidMount = () => {
-    console.log(this.childIds);
     this.props.getRecentAlerts()
   }
 
@@ -218,7 +211,7 @@ class RecentAlerts extends Component {
 }
 
 const mapStateToProps = state => ({
-  alerts: state.data.alerts,
+  alerts: state.data.recentAlerts,
   location: state.UI.location,
   country: state.UI.country
 })

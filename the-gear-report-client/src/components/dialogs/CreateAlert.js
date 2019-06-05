@@ -19,7 +19,6 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 //Icons
 import EditIcon from '@material-ui/icons/Edit'
@@ -68,24 +67,6 @@ class CreateAlert extends React.Component {
     }
   }
 
-  handleSubmit = (event) => {
-    event.preventDefault()
-    var imageObj = {}
-    this.props.images.forEach((image, i) => {
-      imageObj[i] = image
-    });
-    this.props.postAlert({ 
-      body: this.state.body,
-      title: this.state.title,
-      images: this.props.images
-     })
-     this.setState({
-       title: '',
-       body: '',
-     })
-     this.props.resetAlertImages()
-     this.props.closeAllDialogs()
-  }
 
   handleSelectChange = (e, i) => {
     const state = this.state
@@ -176,36 +157,8 @@ class CreateAlert extends React.Component {
                   control={<Checkbox checked={pick} onChange={() => this.handleFormControl('pick')} value="gilad" />}
                 />
               </FormGroup>
-              {location && (!checkIfCrag(location.AreaType) || pick) &&
-                
-                <Fragment>
-                //Make locs key have a value of the NodeID and the parents NodeID
-                  {Object.keys(locs).map((key, i) => {
-                    console.log(locs[key], 'ping');
-                    return (
-                      <Select
-                        value={locs[key]}
-                        onChange={(e) => this.handleSelectChange(e)}
-                        inputProps={{
-                          name: key,
-                          id: `input${key}`
-                        }}
-                      >
-                        {Object.keys(country[locs[key]]).map((loc, i) => {
-                          return <MenuItem 
-                                    value={country[locs[key]][loc].NodeID}
-                                    key={i}
-                                    >{loc}
-                                  </MenuItem>
-                        })}
-                      </Select>
-                    )
-                  })}
-                  {/* <InputLabel htmlFor="input0">Pick Location</InputLabel> */}
-                  
+              {pick && <h1>test</h1>}
 
-                </Fragment>
-              }
             </FormControl>}
           </DialogContent>
           <DialogActions>
@@ -245,3 +198,55 @@ const mapStateToProps = state => ({
 })
 
 export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(CreateAlert))
+
+// manually selecting location
+
+  // handleSubmit = (event) => {
+  //   event.preventDefault()
+  //   var imageObj = {}
+  //   this.props.images.forEach((image, i) => {
+  //     imageObj[i] = image
+  //   });
+  //   this.props.postAlert({ 
+  //     body: this.state.body,
+  //     title: this.state.title,
+  //     images: this.props.images
+  //    })
+  //    this.setState({
+  //      title: '',
+  //      body: '',
+  //    })
+  //    this.props.resetAlertImages()
+  //    this.props.closeAllDialogs()
+  // }
+
+              //   {/* {location && (!checkIfCrag(location.AreaType) || pick) &&
+                
+              //   <Fragment>
+              //   //Make locs key have a value of the NodeID and the parents NodeID
+              //     {Object.keys(locs).map((key, i) => {
+              //       console.log(locs[key], 'ping');
+              //       return (
+              //         <Select
+              //           value={locs[key]}
+              //           onChange={(e) => this.handleSelectChange(e)}
+              //           inputProps={{
+              //             name: key,
+              //             id: `input${key}`
+              //           }}
+              //         >
+              //           {Object.keys(country[locs[key]]).map((loc, i) => {
+              //             return <MenuItem 
+              //                       value={country[locs[key]][loc].NodeID}
+              //                       key={i}
+              //                       >{loc}
+              //                     </MenuItem>
+              //           })}
+              //         </Select>
+              //       )
+              //     })}
+                
+                  
+
+              //   </Fragment>
+              // }

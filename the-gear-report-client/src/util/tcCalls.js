@@ -9,3 +9,11 @@ export const getChildren = (parent) => {
       console.log(res.json());
     })
 }
+
+export const textCompletion = (input) => {
+  const url = `https://brendan.thecrag.com/api/lookup/crag?search=${input}&key=${key}`
+  fetch(proxyUrl + url)
+    .then(res => {
+      console.log(res.json());
+    })
+}
