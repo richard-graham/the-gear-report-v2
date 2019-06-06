@@ -10,3 +10,11 @@ export const getChildren = (parent) => {
     })
 }
 
+export const getNode = (id) => {
+  const url = `https://brendan.thecrag.com/api/node/id/${id}?key=${key}`
+  return fetch(proxyUrl + url)
+    .then(res => res.json())
+    .then(data => {
+      return data.data
+    })
+}

@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import deburr from 'lodash/deburr';
 import Downshift from 'downshift';
 import { textCompletion } from '../../redux/actions/dataActions'
+import { updateSearchLocation } from '../../redux/actions/UIActions'
 import { connect } from 'react-redux'
 //Mui
 import { withStyles } from '@material-ui/core/styles';
@@ -60,7 +61,10 @@ const styles = theme => ({
 
 export class Search extends Component {
   state = {
-
+    input: '',
+    typing: false,
+    loading: false,
+    typingTimeout: 0
   }
 
   renderInput = (inputProps) => {
@@ -88,8 +92,9 @@ export class Search extends Component {
     return (
       <MenuItem
         {...itemProps}
-        key={suggestion.label}
+        key={suggestion.id}
         selected={isHighlighted}
+        onClick={() => this.handleSuggestionClick(suggestion.id, this.props.updateSearchLocation)}
         component="div"
         style={{
           fontWeight: isSelected ? 500 : 400,
@@ -98,6 +103,10 @@ export class Search extends Component {
         {suggestion.label}
       </MenuItem>
     );
+  }
+
+  handleSuggestionClick = (id, updateSearchLocation) => {
+    updateSearchLocation(id, null, 9)
   }
 
   getSuggestions = (value) => {
@@ -119,8 +128,22 @@ export class Search extends Component {
         });
   }
 
-  handleChange = (e) => {
-    this.props.textCompletion(e.target.value)
+
+  handleInputChange = (e, textCompletion) => {
+    e.persist()
+
+    if (this.state.typingTimeout) {
+      clearTimeout(this.state.typingTimeout);
+    }
+    this.setState({ typing: true })
+    this.setState({
+      input: e.target.value,
+      typing: false,
+      typingTimeout: setTimeout(() => {
+        textCompletion(e.target.value)
+      }, 350)
+    })
+
   }
 
   render() {
@@ -143,7 +166,7 @@ export class Search extends Component {
                 fullWidth: true,
                 classes,
                 InputProps: getInputProps({
-                  onChange: (e) => this.handleChange(e),
+                  onChange: (e) => this.handleInputChange(e, this.props.textCompletion),
                   placeholder: 'Search a country (start with a)',
                 }),
               })}
@@ -179,7 +202,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  textCompletion
+  textCompletion,
+  updateSearchLocation
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Search))
