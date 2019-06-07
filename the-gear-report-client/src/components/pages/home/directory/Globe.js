@@ -44,34 +44,34 @@ class Globe extends Component {
   
   render() {
     const { classes, location, country, loading } = this.props
-    const position = location.Geo ? [location.Geo[1], location.Geo[0]] : '' //some locations don't have coords
+    const position = location.geo ? [location.geo[1], location.geo[0]] : '' //some locations don't have coords
     const children = []
     const getChildren = (rootObj) => {
       Object.entries(rootObj).forEach(entry => {
-        if(checkIfCrag(entry[1].AreaType)){
+        if(checkIfCrag(entry[1].type)){
           children.push(entry[1])
-        } else if (country[entry[1].NodeID]){
-          getChildren(country[entry[1].NodeID])
+        } else if (country[entry[1].id]){
+          getChildren(country[entry[1].id])
         }
 
       })
     }
-    country && country[location.NodeID] && getChildren(country[location.NodeID])
+    country && country[location.id] && getChildren(country[location.id])
     return (
       <Fragment>
       <Map 
         className={this.props.size === 'small' ? classes.smallMap : classes.map} 
         center={position} 
-        zoom={checkIfCrag(location.AreaType) ? 14 : location.zoom}>
+        zoom={checkIfCrag(location.type) ? 14 : location.zoom}>
         <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {children.length > 0 && children.map((child, i) => {
-          if (child.Geo) {
+          if (child.geo) {
             return (
               <Marker 
-                position={[child.Geo[1], child.Geo[0]]}
+                position={[child.geo[1], child.geo[0]]}
                 icon={homeIcon}
                 key={i}
               >
@@ -90,9 +90,9 @@ class Globe extends Component {
           }
           return null
         })}
-        {children.length === 0 && !loading && location.Geo ? (
+        {children.length === 0 && !loading && location.geo ? (
           <Marker 
-            position={[location.Geo[1], location.Geo[0]]}
+            position={[location.geo[1], location.geo[0]]}
             icon={homeIcon}
             key={'location'}
           >

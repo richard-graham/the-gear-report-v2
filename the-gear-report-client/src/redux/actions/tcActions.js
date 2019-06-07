@@ -19,27 +19,27 @@ export const getLocationData = (location) => (dispatch) => {
         const resObj = {}
 
         resObj.parent = {
-          NodeID: res.data[0][0],
-          ParentID: res.data[0][1],
-          Name: res.data[0][2],
-          NumberRoutes: res.data[0][3],
-          AreaType: res.data[0][4],
-          Geo: res.data[0][5]
+          id: res.data[0][0],
+          parentID: res.data[0][1],
+          name: res.data[0][2],
+          numberRoutes: res.data[0][3],
+          type: res.data[0][4],
+          geo: res.data[0][5]
         }
         res.data.map((loc) => {
           if (loc[4] !== "G" && loc[3] > 0) {
             const locationObj = {
-              NodeID: loc[0],
-              ParentID: loc[1],
-              Name: loc[2],
-              NumberRoutes: loc[3],
-              AreaType: loc[4],
-              Geo: loc[5]
+              id: loc[0],
+              parentID: loc[1],
+              name: loc[2],
+              numberRoutes: loc[3],
+              type: loc[4],
+              geo: loc[5]
             }    
-            if (resObj[locationObj.ParentID] === undefined) {
-              resObj[locationObj.ParentID] = {}
+            if (resObj[locationObj.parentID] === undefined) {
+              resObj[locationObj.parentID] = {}
             }
-            return resObj[locationObj.ParentID][loc[2]] = locationObj
+            return resObj[locationObj.parentID][loc[2]] = locationObj
           }
           return null
         })
@@ -52,6 +52,7 @@ export const getLocationData = (location) => (dispatch) => {
           })
           resOrdered[entry] = sorted
         })
+        console.log(resOrdered);
         dispatch({
           type: SET_COUNTRY,
           payload: {

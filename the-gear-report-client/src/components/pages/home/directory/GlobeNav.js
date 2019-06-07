@@ -38,8 +38,11 @@ export class GlobeNav extends Component {
     base: true
   }
 
-  handleListItemClick = (event, index, loc, zoom) => {
-    if (loc !== this.props.UI.location) this.props.updateLocation(loc, this.props.UI.country, zoom)
+  handleListItemClick = (index, loc, zoom) => {
+    console.log(loc.id);
+    console.log(this.props.UI.location.id); 
+    console.log(index);
+    if (loc.id !== this.props.UI.location.id) this.props.updateLocation(loc, zoom)
     this.setState({ 
       selectedIndex: index,
       [index]: this.state[index] ? !this.state[index] : true
@@ -63,9 +66,9 @@ export class GlobeNav extends Component {
             id={'base'}
             button
             selected={selectedIndex === 999}
-            onClick={event => this.handleListItemClick(event, 'base', country.parent, 5)}
+            onClick={() => this.handleListItemClick('base', country.parent, 5)}
           >
-            <ListItemText primary={country.parent.Name} />
+            <ListItemText primary={country.parent.name} />
           </ListItem>
           <Collapse in={this.state.base} timeout="auto" unmountOnExit>
             {Object.entries(country[selectLoc]).map((item, i) => {
@@ -78,12 +81,12 @@ export class GlobeNav extends Component {
                     key={key}
                     button
                     selected={selectedIndex === i}
-                    onClick={event => this.handleListItemClick(event, key, loc, 6)}
+                    onClick={() => this.handleListItemClick(key, loc, 6)}
                   >
-                    <ListItemText primary={loc.Name} />
+                    <ListItemText primary={loc.name} />
                   </ListItem>
                   <Collapse in={this.state[key]} timeout="auto" unmountOnExit>
-                    {country[loc.NodeID] && Object.entries(country[loc.NodeID]).map((item, i) => {
+                    {country[loc.id] && Object.entries(country[loc.id]).map((item, i) => {
                       const loc = item[1]
                       const key = `secondlvl${i}`
                       return (
@@ -93,13 +96,13 @@ export class GlobeNav extends Component {
                             key={key}
                             button
                             selected={selectedIndex === i}
-                            onClick={event => this.handleListItemClick(event, key, loc, 8)}
+                            onClick={() => this.handleListItemClick(key, loc, 8)}
                             open={this.state.key}
                           >
-                            <ListItemText primary={loc.Name} />
+                            <ListItemText primary={loc.name} />
                           </ListItem>
                           <Collapse in={this.state[key]} timeout="auto" unmountOnExit>
-                            {country[loc.NodeID] && Object.entries(country[loc.NodeID]).map((item, i) => {
+                            {country[loc.id] && Object.entries(country[loc.id]).map((item, i) => {
                               const loc = item[1]
                               const key = `thirdlvl${i}`
                               return (
@@ -109,13 +112,13 @@ export class GlobeNav extends Component {
                                     key={key}
                                     button
                                     selected={selectedIndex === i}
-                                    onClick={event => this.handleListItemClick(event, key, loc, 9)}
+                                    onClick={() => this.handleListItemClick(key, loc, 9)}
                                     open={this.state.key}
                                   >
-                                    <ListItemText primary={loc.Name} />
+                                    <ListItemText primary={loc.name} />
                                   </ListItem>
                                   <Collapse in={this.state[key]} timeout="auto" unmountOnExit>
-                                  {country[loc.NodeID] && Object.entries(country[loc.NodeID]).map((item, i) => {
+                                  {country[loc.id] && Object.entries(country[loc.id]).map((item, i) => {
                                     const loc = item[1]
                                     const key = `fourthlvl${i}`
                                     return (
@@ -125,13 +128,13 @@ export class GlobeNav extends Component {
                                           key={key}
                                           button
                                           selected={selectedIndex === i}
-                                          onClick={event => this.handleListItemClick(event, key, loc, 9)}
+                                          onClick={() => this.handleListItemClick(key, loc, 9)}
                                           open={this.state.key}
                                         >
-                                          <ListItemText primary={loc.Name} />
+                                          <ListItemText primary={loc.name} />
                                         </ListItem>
                                         <Collapse in={this.state[key]} timeout="auto" unmountOnExit>
-                                        {country[loc.NodeID] && Object.entries(country[loc.NodeID]).map((item, i) => {
+                                        {country[loc.id] && Object.entries(country[loc.id]).map((item, i) => {
                                           const loc = item[1]
                                           const key = `fifthlvl${i}`
                                           return (
@@ -140,10 +143,10 @@ export class GlobeNav extends Component {
                                               key={key}
                                               button
                                               selected={selectedIndex === i}
-                                              onClick={event => this.handleListItemClick(event, key, loc, 9)}
+                                              onClick={() => this.handleListItemClick(key, loc, 9)}
                                               open={this.state.key}
                                             >
-                                              <ListItemText primary={loc.Name} />
+                                              <ListItemText primary={loc.name} />
                                             </ListItem>
                                           )
                                         })}
