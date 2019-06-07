@@ -19,6 +19,7 @@ const initialState = {
   message: '',
   country: [],
   location: {
+    searched: false,
     type: "R",
     geo: [172.6775, -41.00485],
     name: "New Zealand",
@@ -49,7 +50,7 @@ export default function(state = initialState, action){
         loading: false
       }
     case SET_LOCATION:
-      if(action.duplicate){
+      if(action.searched){
         return {
           ...state,
           location: {
@@ -63,6 +64,7 @@ export default function(state = initialState, action){
           ...state,
           location: {
             ...action.payload,
+            searched: false,
             loading: false
           }
         }

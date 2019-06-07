@@ -46,6 +46,60 @@ export class GlobeNav extends Component {
     })
   }
 
+  findIndex = (i, noOfIndex, newState, location) => {
+    console.log(location);
+    var result = null
+    var indent = ''
+    // console.log(newState);
+    switch(noOfIndex - i){
+      case 1:
+        indent = 'base'
+        break
+      case 2:
+        indent = 'firstlvl'
+        break
+      case 3:
+        indent = 'secondlvl'
+        break
+      case 4:
+        indent = 'thirdlvl'
+        break
+      case 5:
+        indent = 'fourthlvl'
+        break
+      case 6: 
+        indent = 'fifthlvl'
+        break
+      case 7:
+        indent = 'sixthlvl'
+        break
+      default:
+        indent = ''
+    }
+    var position = null
+    Object.keys(newState).length === 1
+      ? position = Object.keys(this.props.country[location.parentID]).indexOf(location.name)
+      : position = ''
+
+    return [`${indent}${position}`, location.parentID]
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    var location = nextProps.location
+    if(nextProps.location.searched){
+      var noOfIndex = Number(location.depth)
+      var parent = null
+      var newState = {}
+      for (var i = 0; i < noOfIndex; i++){
+        console.log(parent);
+        var arr = this.findIndex(i, noOfIndex, newState, !parent ? location : this.props.country[parent])
+        newState[arr[0]] = true
+        parent = arr[1]
+      }
+      console.log(newState);
+    }
+  }
+
   render() {
     const { 
       classes, 

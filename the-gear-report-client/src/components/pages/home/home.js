@@ -46,7 +46,7 @@ export class home extends Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    if(!nextProps.location.additionalInfo && !nextProps.location.loading){
+    if(this.props.country.length > 0 && !nextProps.location.additionalInfo && !nextProps.location.loading){
       this.props.getNode(nextProps.location.id, this.props.country)
     }
   }
