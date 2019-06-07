@@ -38,11 +38,16 @@ export class GlobeNav extends Component {
     base: true
   }
 
+  componentWillReceiveProps = (nextProps) => {
+    console.log(this.props);
+    console.log(nextProps)
+  }
+
   handleListItemClick = (index, loc, zoom) => {
     console.log(loc.id);
-    console.log(this.props.UI.location.id); 
+    console.log(this.props.location.id); 
     console.log(index);
-    if (loc.id !== this.props.UI.location.id) this.props.updateLocation(loc, zoom)
+    if (loc.id !== this.props.location.id) this.props.updateLocation(loc, zoom)
     this.setState({ 
       selectedIndex: index,
       [index]: this.state[index] ? !this.state[index] : true
@@ -52,9 +57,7 @@ export class GlobeNav extends Component {
   render() {
     const { 
       classes, 
-      UI: {
-        country
-      },
+      country,
       selectLoc
     } = this.props
     const { selectedIndex } = this.state
@@ -177,7 +180,8 @@ GlobeNav.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  UI: state.UI
+  country: state.UI.country,
+  location: state.UI.location
 })
 
 export default connect(mapStateToProps, { updateLocation })(withStyles(styles)(GlobeNav))

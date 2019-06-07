@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getAlert } from '../../../redux/actions/dataActions'
 import dayjs from 'dayjs'
@@ -32,7 +32,6 @@ export class Alert extends Component {
         body,
         sponsored,
         images,
-        userImage,
         resolved,
         userHandle,
         comments

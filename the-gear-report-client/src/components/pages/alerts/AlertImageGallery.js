@@ -4,8 +4,6 @@ import "react-image-gallery/styles/css/image-gallery.css";
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 
-const minimumHeight = 600
-
 export class AlertImageGallery extends Component {
   render() {
     const { images, classes } = this.props

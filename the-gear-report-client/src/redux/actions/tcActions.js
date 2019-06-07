@@ -95,6 +95,7 @@ export const updateSearchLocation = (id, country) => dispatch => {
     .then(res => {
       var data = res.data
       data.children = res.children
+      data.additionalInfo = true
       data.zoom = 12
       data.geo = country[data.parentID][data.name].geo // tc data doesn't include geo coords so grab them from country obj
       dispatch({

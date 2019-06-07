@@ -176,7 +176,7 @@ class RecentAlerts extends Component {
   }
 
   render() {
-    const { alerts, location, country } = this.props
+    const { alerts } = this.props
    
     return (
       <Paper style={{ height: 372, width: '100%' }}>

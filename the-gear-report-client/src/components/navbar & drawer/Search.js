@@ -1,10 +1,3 @@
-
-//Mui
-import InputBase from '@material-ui/core/InputBase'
-//Icons
-import SearchIcon from '@material-ui/icons/Search';
-
-
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import deburr from 'lodash/deburr';
@@ -17,46 +10,6 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
-
-
-
-
-
-
-
-
-
-const styles = theme => ({
-  ...theme,
-  root: {
-    flexGrow: 1,
-  },
-  container: {
-    flexGrow: 1,
-    position: 'relative',
-  },
-  paper: {
-    position: 'absolute',
-    zIndex: 1,
-    marginTop: theme.spacing.unit,
-    left: 0,
-    right: 0,
-  },
-  inputRoot: {
-    flexWrap: 'wrap',
-  },
-  inputInput: {
-    width: 'auto',
-    flexGrow: 1,
-    color: 'white',
-    padding: '7px'
-  },
-  divider: {
-    height: theme.spacing.unit * 2,
-  },
-});
-
-
 
 
 export class Search extends Component {
@@ -192,6 +145,37 @@ export class Search extends Component {
     );
   }
 }
+
+const styles = theme => ({
+  ...theme,
+  root: {
+    flexGrow: 1,
+  },
+  container: {
+    flexGrow: 1,
+    position: 'relative',
+  },
+  paper: {
+    position: 'absolute',
+    zIndex: 1,
+    marginTop: theme.spacing.unit,
+    left: 0,
+    right: 0,
+  },
+  inputRoot: {
+    flexWrap: 'wrap',
+  },
+  inputInput: {
+    width: 'auto',
+    flexGrow: 1,
+    color: 'white',
+    padding: '7px'
+  },
+  divider: {
+    height: theme.spacing.unit * 2,
+  },
+});
+
 
 Search.propTypes = {
   classes: PropTypes.object.isRequired,

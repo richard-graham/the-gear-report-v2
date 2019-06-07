@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { uploadAlertImage, postAlert, resetAlertImages } from '../../redux/actions/dataActions'
 import { connect } from 'react-redux'
 import { checkIfCrag } from '../../util/functions'
@@ -18,8 +18,6 @@ import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 //Icons
 import EditIcon from '@material-ui/icons/Edit'
 
@@ -71,7 +69,7 @@ class CreateAlert extends React.Component {
   handleSelectChange = (e, i) => {
     const state = this.state
     state.locs[e.target.name + 1] = e.target.value
-    if (Object.keys(this.state.locs).length == Number(e.target.name) + 1){ // if the last input is being modded add a key in state
+    if (Object.keys(this.state.locs).length === Number(e.target.name) + 1){ // if the last input is being modded add a key in state
       state.locs[Object.keys(this.state.locs).length.toString()] = '' 
     }
     this.setState({ state })
@@ -94,13 +92,11 @@ class CreateAlert extends React.Component {
       open, 
       closeAllDialogs, 
       loading,
-      country,
       location
     } = this.props
     const {
       use, 
       pick,
-      locs
     } = this.state
     return (
       <div>

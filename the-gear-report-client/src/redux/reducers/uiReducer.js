@@ -63,8 +63,7 @@ export default function(state = initialState, action){
           ...state,
           location: {
             ...action.payload,
-            loading: false,
-            additionalInfo: false
+            loading: false
           }
         }
       }
