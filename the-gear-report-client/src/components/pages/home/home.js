@@ -3,7 +3,6 @@ import DirectoryContainer from './directory/DirectoryContainer'
 import RecentAlerts from './RecentAlerts'
 import { connect } from 'react-redux'
 import { getNode } from '../../../redux/actions/tcActions'
-import { checkIfCrag } from '../../../util/functions'
 //Mui
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'

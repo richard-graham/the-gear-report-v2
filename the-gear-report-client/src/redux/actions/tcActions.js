@@ -87,7 +87,7 @@ export const getNode = (NodeID, country) => (dispatch) => {
 } 
 
 export const updateSearchLocation = (id, country) => dispatch => {
-  const url = `https://brendan.thecrag.com/api/node/id/${id}?show=info,children&key=${key}`
+  const url = `https://brendan.thecrag.com/api/node/id/${id}?show=info,children,ancestors&key=${key}`
   dispatch({ type: LOADING_LOCATION })
   fetch(proxyUrl + url)
     .then(res => res.json())
@@ -101,10 +101,10 @@ export const updateSearchLocation = (id, country) => dispatch => {
       dispatch({
         type: SET_LOCATION,
         payload: data,
-        searched: true
+        searched: true 
       })
-    }).
-    catch(err =>{
+    })
+    .catch(err =>{
       console.log(err)
     })
 }

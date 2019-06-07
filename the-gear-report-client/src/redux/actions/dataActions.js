@@ -89,7 +89,6 @@ export const postAlert = (newAlert) => dispatch => {
   axios.post('/alert', newAlert)
 
     .then(res => {
-      console.log(res);
       dispatch({ 
         type: POST_ALERT, 
         payload: res.data

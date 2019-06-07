@@ -75,17 +75,6 @@ class CreateAlert extends React.Component {
     this.setState({ state })
   }
 
-  test = () => {
-    console.log('tested');
-  }
-
-  createMenu = () => {
-    return (
-      null
-    )
-  }
-
-
   render() {
     const { 
       classes,

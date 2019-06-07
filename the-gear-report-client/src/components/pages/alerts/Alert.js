@@ -18,11 +18,6 @@ export class Alert extends Component {
   componentDidMount = () => {
     this.props.getAlert(this.props.match.params.alertId)
   }
-
-  redirect = () => {
-    console.log(this.props.history);
-  }
-
   render() {
     const { 
       classes, 

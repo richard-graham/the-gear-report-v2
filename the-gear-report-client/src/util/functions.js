@@ -5,13 +5,14 @@ export const checkIfCrag = (type, subType) => {
     type === "Fi" 
     ){
       return true
-    } else if (
-      subType &&
-      subType === "Crag" ||
-      subType === "Cliff" ||
-      subType === "Field" 
-    ){
-      return true
+    } else if (subType){
+      if(
+        subType === "Crag" ||
+        subType === "Cliff" ||
+        subType === "Field" 
+      ){
+        return true
+      }
     } else {
       return false
     }
