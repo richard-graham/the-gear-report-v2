@@ -204,16 +204,19 @@ export const clearErrors = () => dispatch => {
   dispatch({ type: CLEAR_ERRORS })
 }
 
-export const textCompletion = (input) => dispatch => {
+export const textCompletion = (input, localArea) => dispatch => {
   const url = `https://brendan.thecrag.com/api/lookup/crag?search=${input}&key=${key}`
   fetch(proxyUrl + url)
     .then(res => res.json())
     .then(list => {
-      var res = list.data.map(item => {
-        return {
+      var res = []
+      list.data.map(item => {
+        return localArea.indexOf(item.id) > -1
+        ? res.push({
           label: item.name,
           id: item.id
-        }
+        })
+        : null
       })
       dispatch({ 
         type: SET_SEARCH,

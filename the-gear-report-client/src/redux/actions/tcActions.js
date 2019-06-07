@@ -15,7 +15,6 @@ export const getLocationData = (location) => (dispatch) => {
       fetch(proxyUrl + url) // Fetch data, proxy removes CORS errors
       .then(countryData => countryData.json())
       .then(res => {
-        console.log(res);
         const resObj = {}
 
         resObj.parent = {
@@ -52,7 +51,6 @@ export const getLocationData = (location) => (dispatch) => {
           })
           resOrdered[entry] = sorted
         })
-        console.log(resOrdered);
         dispatch({
           type: SET_COUNTRY,
           payload: {
@@ -89,3 +87,19 @@ export const getNode = (NodeID) => (dispatch) => {
       console.log(err);
     })
 } 
+
+export const updateSearchLocation = (id, country) => dispatch => {
+  const url = `https://brendan.thecrag.com/api/node/id/${id}?show=info,children&key=${key}`
+  fetch(proxyUrl + url)
+    .then(res => res.json())
+    .then(res => {
+      var data = res.data
+      data.children = res.children
+      data.zoom = 12
+      data.geo = country[data.parentID][data.name].geo // tc data doesn't include geo coords so grab them from country obj
+      dispatch({
+        type: SET_LOCATION,
+        payload: data
+      })
+    })
+}

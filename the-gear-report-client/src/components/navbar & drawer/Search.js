@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import deburr from 'lodash/deburr';
 import Downshift from 'downshift';
 import { textCompletion } from '../../redux/actions/dataActions'
-import { updateSearchLocation } from '../../redux/actions/UIActions'
+import { updateSearchLocation } from '../../redux/actions/tcActions'
 import { connect } from 'react-redux'
 //Mui
 import { withStyles } from '@material-ui/core/styles';
@@ -106,7 +106,8 @@ export class Search extends Component {
   }
 
   handleSuggestionClick = (id, updateSearchLocation) => {
-    updateSearchLocation(id, null, 9)
+
+    updateSearchLocation(id, this.props.country)
   }
 
   getSuggestions = (value) => {
@@ -129,9 +130,9 @@ export class Search extends Component {
   }
 
 
-  handleInputChange = (e, textCompletion) => {
+  handleInputChange = (e, textCompletion, country) => {
     e.persist()
-
+    var localArea = Object.keys(country)
     if (this.state.typingTimeout) {
       clearTimeout(this.state.typingTimeout);
     }
@@ -140,15 +141,14 @@ export class Search extends Component {
       input: e.target.value,
       typing: false,
       typingTimeout: setTimeout(() => {
-        textCompletion(e.target.value)
+        textCompletion(e.target.value, localArea)
       }, 350)
     })
 
   }
 
   render() {
-    const { classes, suggestions } = this.props;
-    console.log(suggestions)
+    const { classes } = this.props;
     return (
       <div className={classes.navSearch}>
         <Downshift id="downshift-simple">
@@ -166,7 +166,7 @@ export class Search extends Component {
                 fullWidth: true,
                 classes,
                 InputProps: getInputProps({
-                  onChange: (e) => this.handleInputChange(e, this.props.textCompletion),
+                  onChange: (e) => this.handleInputChange(e, this.props.textCompletion, this.props.country),
                   placeholder: 'Search a country (start with a)',
                 }),
               })}
@@ -198,7 +198,8 @@ Search.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  suggestions: state.data.searchResults
+  suggestions: state.data.searchResults,
+  country: state.UI.country
 })
 
 const mapDispatchToProps = {

@@ -3,27 +3,12 @@ import {
   RESET_LOCATION,
 } from '../types'
 
-import { getNode } from '../../util/tcCalls'
-
 export const updateLocation = (location, zoom) => dispatch => {
   location.zoom = zoom
   // location.childIds = dispatch(updateChildIds(location.NodeID, country))
   dispatch({
     type: SET_LOCATION,
     payload: location
-  })
-}
-
-export const updateSearchLocation = (id) => dispatch => {
-  getNode(id)
-  .then(res => {
-    res.zoom = 9
-    res.ParentID = res.parentID
-    res.NodeID = res.id
-    dispatch({
-      type: SET_LOCATION,
-      payload: res
-    })
   })
 }
 
