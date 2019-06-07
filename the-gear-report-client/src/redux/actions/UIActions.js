@@ -5,7 +5,7 @@ import {
 
 export const updateLocation = (location, zoom) => dispatch => {
   location.zoom = zoom
-  // location.childIds = dispatch(updateChildIds(location.NodeID, country))
+  location.additionalInfo = false
   dispatch({
     type: SET_LOCATION,
     payload: location

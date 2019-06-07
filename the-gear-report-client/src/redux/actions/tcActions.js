@@ -66,21 +66,19 @@ export const getLocationData = (location) => (dispatch) => {
     })
 }
 
-export const getNode = (NodeID) => (dispatch) => {
+export const getNode = (NodeID, country) => (dispatch) => {
   dispatch({ type: LOADING_LOCATION })
-  const url = `https://brendan.thecrag.com/api/node/id/${NodeID}?key=${key}`
+  const url = `https://brendan.thecrag.com/api/node/id/${NodeID}?show=info,children&key=${key}`
   fetch(proxyUrl + url)
     .then(res => res.json())
-    .then(result => (
-      result.data
-    )
-    )
     .then(res => {
-      res.additionalInfo = true
+      var data = res.data
+      data.children = res.children
+      data.additionalInfo = true
+      data.geo = country[data.parentID][data.name].geo // tc data doesn't include geo coords so grab them from country obj
       dispatch({
         type: SET_LOCATION,
-        payload: res,
-        duplicate: true
+        payload: data
       })
     })
     .catch(err => {
@@ -90,6 +88,7 @@ export const getNode = (NodeID) => (dispatch) => {
 
 export const updateSearchLocation = (id, country) => dispatch => {
   const url = `https://brendan.thecrag.com/api/node/id/${id}?show=info,children&key=${key}`
+  dispatch({ type: LOADING_LOCATION })
   fetch(proxyUrl + url)
     .then(res => res.json())
     .then(res => {
@@ -102,5 +101,8 @@ export const updateSearchLocation = (id, country) => dispatch => {
         type: SET_LOCATION,
         payload: data
       })
+    }).
+    catch(err =>{
+      console.log(err)
     })
 }

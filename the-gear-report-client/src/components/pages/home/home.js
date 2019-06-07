@@ -46,8 +46,9 @@ export class home extends Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    if(checkIfCrag(nextProps.location.AreaType) && !nextProps.location.additionalInfo && !nextProps.location.loading){
-      this.props.getNode(nextProps.location.NodeID)
+    console.log(nextProps);
+    if(!nextProps.location.additionalInfo && !nextProps.location.loading){
+      this.props.getNode(nextProps.location.id, this.props.country)
     }
   }
 
@@ -73,7 +74,8 @@ export class home extends Component {
 }
 
 const mapStateToProps = state => ({
-  location: state.UI.location
+  location: state.UI.location,
+  country: state.UI.country
 })
 
 export default connect(mapStateToProps, { getNode })(withStyles(styles)(home))

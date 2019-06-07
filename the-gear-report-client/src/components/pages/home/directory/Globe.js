@@ -62,7 +62,7 @@ class Globe extends Component {
       <Map 
         className={this.props.size === 'small' ? classes.smallMap : classes.map} 
         center={position} 
-        zoom={checkIfCrag(location.type) ? 14 : location.zoom}>
+        zoom={checkIfCrag(location.type, location.additionalInfo ? location.subType : null) ? 14 : location.zoom}>
         <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
