@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { uploadAlertImage, postAlert, resetAlertImages } from '../../redux/actions/dataActions'
 import { connect } from 'react-redux'
 import { checkIfCrag } from '../../util/functions'
+import Search from '../../util/Search'
 //Mui
 import Grid from '@material-ui/core/Grid'
 import { withStyles } from '@material-ui/core/styles'
@@ -175,15 +176,7 @@ class CreateAlert extends React.Component {
               }
 
             </FormControl>}
-            <TextField 
-              margin="dense"
-              id="location"
-              label="Location"
-              placeholder='An in-depth alert description'
-              type='text'
-              fullWidth              
-              onChange={this.handleChange}
-            />
+            <Search searchType={'Alert'} />
           </DialogContent>
           <DialogActions>
             <Button onClick={closeAllDialogs} color="primary">

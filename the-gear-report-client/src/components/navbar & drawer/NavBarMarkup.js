@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import RenderMenu from './NavBarMenus/RenderMenu'
 import { RenderMobileMenu } from './NavBarMenus/RenderMobileMenu'
 import ProfilePic from '../../util/ProfilePic'
-import Search from './Search'
+import Search from '../../util/Search'
 //Mui
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -56,7 +56,7 @@ class NavBar extends React.Component {
             The Gear Report
           </Typography>
         <div className={classes.navGrow} />
-        <Search />
+        <Search searchType={'Nav'} />
         <div className={classes.navGrow} />
         <div className={classes.navSectionDesktop}>
           <IconButton color="inherit">

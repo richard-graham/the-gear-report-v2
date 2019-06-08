@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import deburr from 'lodash/deburr';
 import Downshift from 'downshift';
-import { textCompletion } from '../../redux/actions/dataActions'
-import { updateSearchLocation } from '../../redux/actions/tcActions'
+import { textCompletion } from '../redux/actions/dataActions'
+import { updateSearchLocation } from '../redux/actions/tcActions'
 import { connect } from 'react-redux'
 //Mui
 import { withStyles } from '@material-ui/core/styles';
@@ -29,7 +29,8 @@ export class Search extends Component {
           inputRef: ref,
           classes: {
             root: classes.inputRoot,
-            input: classes.inputInput,
+            input: classes[this.props.searchType === 'Nav'
+                            ? 'inputNav' : 'inputAlert']
           },
           ...InputProps,
         }}
@@ -58,9 +59,14 @@ export class Search extends Component {
     );
   }
 
-  handleSuggestionClick = (id, updateSearchLocation) => {
+  placeholder = () => {
+    return null
+  }
 
-    updateSearchLocation(id, this.props.country)
+  handleSuggestionClick = (id, updateSearchLocation) => {
+    this.props.searchType === 'Nav' 
+      ? updateSearchLocation(id, this.props.country)
+      : this.placeholder()
   }
 
   getSuggestions = (value) => {
@@ -101,9 +107,10 @@ export class Search extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, searchType } = this.props;
+    const divClass = searchType === 'Nav' ? classes.navSearch : classes.alertSearch
     return (
-      <div className={classes.navSearch}>
+      <div className={divClass}>
         <Downshift id="downshift-simple">
           {({
             getInputProps,
@@ -151,6 +158,9 @@ const styles = theme => ({
   root: {
     flexGrow: 1,
   },
+  alertSearch: {
+    marginBottom: '100px',
+  },
   container: {
     flexGrow: 1,
     position: 'relative',
@@ -165,7 +175,13 @@ const styles = theme => ({
   inputRoot: {
     flexWrap: 'wrap',
   },
-  inputInput: {
+  inputAlert: {
+    width: 'auto',
+    flexGrow: 1,
+    color: 'black',
+    padding: '7px'
+  },
+  inputNav: {
     width: 'auto',
     flexGrow: 1,
     color: 'white',
