@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { uploadAlertImage, postAlert, resetAlertImages } from '../../redux/actions/dataActions'
 import { connect } from 'react-redux'
 import { checkIfCrag } from '../../util/functions'
 //Mui
+import Grid from '@material-ui/core/Grid'
 import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -31,6 +32,25 @@ class CreateAlert extends React.Component {
     locs: { 
       0: 11737723
     }
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault()
+    var imageObj = {}
+    this.props.images.forEach((image, i) => {
+      imageObj[i] = image
+    });
+    this.props.postAlert({ 
+      body: this.state.body,
+      title: this.state.title,
+      images: this.props.images
+     })
+     this.setState({
+       title: '',
+       body: '',
+     })
+     this.props.resetAlertImages()
+     this.props.closeAllDialogs()
   }
 
   handleImageChange = (event) => {
@@ -88,7 +108,7 @@ class CreateAlert extends React.Component {
       pick,
     } = this.state
     return (
-      <div>
+      <Fragment>
         <Dialog
           open={open}
           onClose={closeAllDialogs}
@@ -127,24 +147,43 @@ class CreateAlert extends React.Component {
               {loading ? <CircularProgress size={25}/> : <EditIcon color='primary' />}
             </MyButton>
             <br />
-            {location && checkIfCrag(location.AreaType) && 
+            {location && checkIfCrag(location.type, location.subType) && 
             <FormControl component="fieldset" className={classes.formControl}>
-              <FormLabel component="legend">Use this location</FormLabel>
-              <FormGroup>
-                <FormControlLabel
-                  control={<Checkbox checked={use} onChange={() => this.handleFormControl('use')} value="gilad" />}
-                  label={location.Name}
-                />
-              </FormGroup>
-              <FormLabel component="legend">Pick other location</FormLabel>
-              <FormGroup>
-                <FormControlLabel
-                  control={<Checkbox checked={pick} onChange={() => this.handleFormControl('pick')} value="gilad" />}
-                />
-              </FormGroup>
-              {pick && <h1>test</h1>}
+              <Grid container>
+                <Grid item xs={6} >
+                  <FormLabel component="legend">Use this Crag</FormLabel>
+                  <FormGroup className={classes.formGroup}>
+                    <FormControlLabel
+                      className={classes.formLabel}
+                      control={<Checkbox checked={use} onChange={() => this.handleFormControl('use')} />}
+                      label={location.name}
+                    />
+                  </FormGroup>
+                </Grid>
+                <Grid item xs={6}>
+                  <FormLabel component="legend">Pick other Crag</FormLabel>
+                  <FormGroup className={classes.formGroup}>
+                    <FormControlLabel
+                      className={classes.formLabel}
+                      control={<Checkbox checked={pick} onChange={() => this.handleFormControl('pick')} />}
+                    />
+                  </FormGroup>
+                </Grid>
+              </Grid>
+              {pick && 
+                <input>Stuff</input>
+              }
 
             </FormControl>}
+            <TextField 
+              margin="dense"
+              id="location"
+              label="Location"
+              placeholder='An in-depth alert description'
+              type='text'
+              fullWidth              
+              onChange={this.handleChange}
+            />
           </DialogContent>
           <DialogActions>
             <Button onClick={closeAllDialogs} color="primary">
@@ -155,7 +194,7 @@ class CreateAlert extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
-      </div>
+      </Fragment>
     );
   }
 }
@@ -165,7 +204,15 @@ const styles = theme => ({
     margin: theme.spacing.unit,
   },
   formControl: {
-    marginTop: 5
+    marginTop: 5,
+    minWidth: '100%',
+    textAlign: 'center'
+  },
+  formGroup: {
+    alignContent: 'center'
+  },
+  formLabel: {
+    marginRight: 0
   }
 });
 
@@ -186,24 +233,6 @@ export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(Cr
 
 // manually selecting location
 
-  // handleSubmit = (event) => {
-  //   event.preventDefault()
-  //   var imageObj = {}
-  //   this.props.images.forEach((image, i) => {
-  //     imageObj[i] = image
-  //   });
-  //   this.props.postAlert({ 
-  //     body: this.state.body,
-  //     title: this.state.title,
-  //     images: this.props.images
-  //    })
-  //    this.setState({
-  //      title: '',
-  //      body: '',
-  //    })
-  //    this.props.resetAlertImages()
-  //    this.props.closeAllDialogs()
-  // }
 
               //   {/* {location && (!checkIfCrag(location.AreaType) || pick) &&
                 

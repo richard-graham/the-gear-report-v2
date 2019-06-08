@@ -94,7 +94,7 @@ export class GlobeNav extends Component {
         var noOfIndex = Number(location.depth)
         var newState = {}
         for (var i = 0; i < noOfIndex; i++){
-          if(i === 0) newState.selectedIndex = this.findIndex(i, noOfIndex, newState, location)
+          if(i === 0) newState.selectedIndex = this.findIndex(i, noOfIndex, newState, location) 
           newState[this.findIndex(i, noOfIndex, newState, location)] = true
         }
         this.setState(newState)  
