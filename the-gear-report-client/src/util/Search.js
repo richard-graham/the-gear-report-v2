@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import deburr from 'lodash/deburr';
 import Downshift from 'downshift';
-import { textCompletion } from '../redux/actions/dataActions'
+import { textCompletion, removeSuggestions } from '../redux/actions/dataActions'
 import { updateSearchLocation } from '../redux/actions/tcActions'
 import { connect } from 'react-redux'
 //Mui
@@ -59,14 +59,11 @@ export class Search extends Component {
     );
   }
 
-  placeholder = () => {
-    return null
-  }
-
   handleSuggestionClick = (id, updateSearchLocation) => {
     this.props.searchType === 'Nav' 
       ? updateSearchLocation(id, this.props.country)
-      : this.placeholder()
+      : this.props.returnIdToParent(id)
+      this.props.removeSuggestions()
   }
 
   getSuggestions = (value) => {
@@ -127,7 +124,7 @@ export class Search extends Component {
                 classes,
                 InputProps: getInputProps({
                   onChange: (e) => this.handleInputChange(e, this.props.textCompletion, this.props.country),
-                  placeholder: 'Search a country (start with a)',
+                  placeholder: 'Search Crags...',
                 }),
               })}
               <div {...getMenuProps()}>
@@ -204,7 +201,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   textCompletion,
-  updateSearchLocation
+  updateSearchLocation,
+  removeSuggestions
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Search))

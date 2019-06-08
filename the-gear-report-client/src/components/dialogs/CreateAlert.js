@@ -3,6 +3,7 @@ import { uploadAlertImage, postAlert, resetAlertImages } from '../../redux/actio
 import { connect } from 'react-redux'
 import { checkIfCrag } from '../../util/functions'
 import Search from '../../util/Search'
+import { getAlertLocations, getChildren } from '../../util/tcCalls'
 //Mui
 import Grid from '@material-ui/core/Grid'
 import { withStyles } from '@material-ui/core/styles'
@@ -23,16 +24,53 @@ import Checkbox from '@material-ui/core/Checkbox';
 //Icons
 import EditIcon from '@material-ui/icons/Edit'
 
+import { key } from '../../util/keys'
+
+const proxyUrl = "https://cors-anywhere.herokuapp.com/"
+
 class CreateAlert extends React.Component {
 
   state = {
     title: '',
     body: '',
     use: true,
-    pick: false,
-    locs: { 
-      0: 11737723
-    }
+    pick: false
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    if(this.state.open && !nextProps.open) this.setState({ 
+      body: '',
+      use: true,
+      pick: false,
+      alertLocation: {}
+    })
+  }
+
+  getLocations = (id) => {
+    const url = `https://brendan.thecrag.com/api/node/id/${id}?show=children,ancestors&key=${key}`
+    fetch(proxyUrl + url)
+      .then(res => {
+        return res.json()
+      })
+      .then(data => {
+        var result = []
+        data.data.ancestors.forEach(ancestor => {
+          result.push({
+            id: ancestor.id,
+            name: ancestor.name
+          })
+        })
+        this.setState({ 
+          alertLocation: {
+            name: data.data.name,
+            id: data.data.id,
+            ancestors: result,
+            children: []
+          },
+          use: true,
+          pick: false
+        })
+      })
   }
 
   handleSubmit = (event) => {
@@ -44,7 +82,8 @@ class CreateAlert extends React.Component {
     this.props.postAlert({ 
       body: this.state.body,
       title: this.state.title,
-      images: this.props.images
+      images: this.props.images,
+      ancestors: this.state.ancestors
      })
      this.setState({
        title: '',
@@ -86,16 +125,6 @@ class CreateAlert extends React.Component {
     }
   }
 
-
-  handleSelectChange = (e, i) => {
-    const state = this.state
-    state.locs[e.target.name + 1] = e.target.value
-    if (Object.keys(this.state.locs).length === Number(e.target.name) + 1){ // if the last input is being modded add a key in state
-      state.locs[Object.keys(this.state.locs).length.toString()] = '' 
-    }
-    this.setState({ state })
-  }
-
   render() {
     const { 
       classes,
@@ -107,6 +136,7 @@ class CreateAlert extends React.Component {
     const {
       use, 
       pick,
+      alertLocation
     } = this.state
     return (
       <Fragment>
@@ -157,7 +187,7 @@ class CreateAlert extends React.Component {
                     <FormControlLabel
                       className={classes.formLabel}
                       control={<Checkbox checked={use} onChange={() => this.handleFormControl('use')} />}
-                      label={location.name}
+                      label={alertLocation ? alertLocation.name : location.name}
                     />
                   </FormGroup>
                 </Grid>
@@ -171,12 +201,21 @@ class CreateAlert extends React.Component {
                   </FormGroup>
                 </Grid>
               </Grid>
-              {pick && 
-                <input>Stuff</input>
-              }
-
             </FormControl>}
-            <Search searchType={'Alert'} />
+            
+            {location && checkIfCrag(location.type, location.subType) && !use
+               ? <Search 
+                searchType={'Alert'} 
+                returnIdToParent={this.getLocations} 
+              />
+              : !checkIfCrag(location.type, location.subType)
+              ? <Search 
+                searchType={'Alert'} 
+                returnIdToParent={this.getLocations} 
+              />
+              : ''}
+
+              
           </DialogContent>
           <DialogActions>
             <Button onClick={closeAllDialogs} color="primary">
@@ -257,3 +296,13 @@ export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(Cr
 
               //   </Fragment>
               // }
+
+              // handleSelectChange = (e, i) => {
+              //   const state = this.state
+              //   state.locs[e.target.name + 1] = e.target.value
+              //   if (Object.keys(this.state.locs).length === Number(e.target.name) + 1){ // if the last input is being modded add a key in state
+              //     state.locs[Object.keys(this.state.locs).length.toString()] = '' 
+              //   }
+              //   this.setState({ state })
+              // }
+            

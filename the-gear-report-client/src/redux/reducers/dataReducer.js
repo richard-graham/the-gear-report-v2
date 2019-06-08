@@ -11,7 +11,8 @@ import {
   SET_ALERT_IMAGE,
   RESET_ALERT_IMAGE,
   SET_USER_PROFILE,
-  SET_SEARCH
+  SET_SEARCH,
+  REMOVE_SUGGESTIONS
 } from '../types'
 
 const initialState = {
@@ -120,6 +121,11 @@ export default function(state = initialState, action){
       return {
         ...state,
         searchResults: action.payload
+      }
+    case REMOVE_SUGGESTIONS:
+      return {
+        ...state,
+        searchResults: []
       }
     default:
      return state

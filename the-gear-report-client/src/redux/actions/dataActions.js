@@ -17,7 +17,8 @@ import {
   RESET_ALERT_IMAGE,
   SET_USER_ALERTS,
   SET_USER_PROFILE,
-  SET_SEARCH
+  SET_SEARCH,
+  REMOVE_SUGGESTIONS
 } from '../types'
 import axios from 'axios'
 import { key } from '../../util/keys'
@@ -222,4 +223,8 @@ export const textCompletion = (input, localArea) => dispatch => {
         payload: res
       })
     })
+}
+
+export const removeSuggestions = () => dispatch => {
+  dispatch({ type: REMOVE_SUGGESTIONS })
 }
