@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import { updateLocation, resetLocation } from '../../../../redux/actions/UIActions'
 import { connect } from 'react-redux'
-import { checkIfCrag } from '../../../../util/functions'
+import { isCragOrUnder } from '../../../../util/functions'
 // leaflet
 import 'leaflet/dist/leaflet.css'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
@@ -48,7 +48,7 @@ class Globe extends Component {
     const children = []
     const getChildren = (rootObj) => {
       Object.entries(rootObj).forEach(entry => {
-        if(checkIfCrag(entry[1].type)){
+        if(isCragOrUnder(entry[1].type)){
           children.push(entry[1])
         } else if (country[entry[1].id]){
           getChildren(country[entry[1].id])
@@ -62,7 +62,7 @@ class Globe extends Component {
       <Map 
         className={this.props.size === 'small' ? classes.smallMap : classes.map} 
         center={position} 
-        zoom={checkIfCrag(location.type, location.additionalInfo ? location.subType : null) ? 14 : location.zoom}>
+        zoom={isCragOrUnder(location.type, location.additionalInfo ? location.subType : null) ? 14 : location.zoom}>
         <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { uploadAlertImage, postAlert, resetAlertImages } from '../../redux/actions/dataActions'
 import { connect } from 'react-redux'
-import { checkIfCrag } from '../../util/functions'
+import { checkIfCrag, checkIfBelowCrag } from '../../util/functions'
 import Search from '../../util/Search'
 import { getAlertLocations, getChildren } from '../../util/tcCalls'
 //Mui
@@ -21,6 +21,9 @@ import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
+import InputLabel from '@material-ui/core/InputLabel'
 //Icons
 import EditIcon from '@material-ui/icons/Edit'
 
@@ -38,12 +41,24 @@ class CreateAlert extends React.Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    if(this.state.open && !nextProps.open) this.setState({ 
+    var openedWithLoc = !this.props.open && nextProps.open && this.props.location ? true : false
+    var closed = this.props.open && !nextProps.open ? true : false
+    const { type, subType } = this.props.location
+
+    if(closed) this.setState({ 
       body: '',
       use: true,
       pick: false,
       alertLocation: {}
     })
+    if(openedWithLoc &&
+      checkIfCrag(type, subType)){
+        this.getLocations(this.props.location.id)
+      }
+    if(openedWithLoc &&
+      checkIfBelowCrag(type, subType)){
+        this.getLocations(this.props.location.parentID)
+      }
   }
 
   getLocations = (id) => {
@@ -65,7 +80,7 @@ class CreateAlert extends React.Component {
             name: data.data.name,
             id: data.data.id,
             ancestors: result,
-            children: []
+            children: data.children
           },
           use: true,
           pick: false
@@ -138,6 +153,8 @@ class CreateAlert extends React.Component {
       pick,
       alertLocation
     } = this.state
+    const renderLocOptions = location && checkIfCrag(location.type, location.subType) ||
+    checkIfBelowCrag(location.type, location.subType) ? true : false
     return (
       <Fragment>
         <Dialog
@@ -178,7 +195,7 @@ class CreateAlert extends React.Component {
               {loading ? <CircularProgress size={25}/> : <EditIcon color='primary' />}
             </MyButton>
             <br />
-            {location && checkIfCrag(location.type, location.subType) && 
+            {renderLocOptions && 
             <FormControl component="fieldset" className={classes.formControl}>
               <Grid container>
                 <Grid item xs={6} >
@@ -203,18 +220,36 @@ class CreateAlert extends React.Component {
               </Grid>
             </FormControl>}
             
-            {location && checkIfCrag(location.type, location.subType) && !use
+            {renderLocOptions && !use
                ? <Search 
                 searchType={'Alert'} 
                 returnIdToParent={this.getLocations} 
               />
-              : !checkIfCrag(location.type, location.subType)
+              : !renderLocOptions
               ? <Search 
                 searchType={'Alert'} 
                 returnIdToParent={this.getLocations} 
               />
               : ''}
-
+            {alertLocation && alertLocation.children &&
+            <Fragment>
+              <InputLabel htmlFor="cChild1">Refine Location...</InputLabel>
+              <Select
+                fullWidth
+                value={10}
+                onChange={''}
+                id={'cChild1'}
+              >
+                {alertLocation.children.map((child, i) => {
+                  return (
+                    <MenuItem value={child.id} key={i}>
+                      {child.name}
+                    </MenuItem>)
+                    
+                })}
+              </Select>
+            </Fragment>
+            }
               
           </DialogContent>
           <DialogActions>
