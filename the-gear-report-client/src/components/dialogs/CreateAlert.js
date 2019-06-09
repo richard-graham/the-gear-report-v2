@@ -22,8 +22,6 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
-import InputLabel from '@material-ui/core/InputLabel'
 //Icons
 import EditIcon from '@material-ui/icons/Edit'
 
@@ -37,7 +35,8 @@ class CreateAlert extends React.Component {
     title: '',
     body: '',
     use: true,
-    pick: false
+    pick: false,
+    refinements: { refinement1: {} }
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -49,7 +48,8 @@ class CreateAlert extends React.Component {
       body: '',
       use: true,
       pick: false,
-      alertLocation: {}
+      alertLocation: {},
+      refinements: {}
     })
     if(openedWithLoc &&
       checkIfCrag(type, subType)){
@@ -59,6 +59,87 @@ class CreateAlert extends React.Component {
       checkIfBelowCrag(type, subType)){
         this.getLocations(this.props.location.parentID)
       }
+  }
+
+  handleEditPicture = () => {
+    const fileInput = document.getElementById('imageInput')
+    fileInput.click()
+  }
+
+  handleFormControl = (arg) => {
+    if (arg === 'use'){
+      this.setState({
+        use: true,
+        pick: false
+      })
+    } else {
+      this.setState({
+        use: false,
+        pick: true
+      })
+    }
+  }
+
+  handleImageChange = (event) => {
+    const image = event.target.files[0]
+    const formData = new FormData()
+    formData.append('image', image, image.name)
+    this.props.uploadAlertImage(formData)
+  }
+
+  handleInputChange = (event) => {
+    this.setState({
+      [event.target.id]: event.target.value
+    })
+  }
+
+  handleRefinement = (e) => {
+    console.log(e.target.value);
+    e.persist()
+    const url = `https://brendan.thecrag.com/api/node/id/${e.target.value}?show=children&key=${key}`
+    e.target.value ?
+    (fetch(proxyUrl + url)
+      .then(res => {
+        return res.json()
+      })
+      .then(data => {
+        var nameArr = e.target.name.split('')
+        var iteration = Number(nameArr[nameArr.length - 1])
+        this.setState({ 
+          refinements: {
+            ...this.state.refinements,
+            [e.target.name]: {
+              name: data.data.name,
+              id: data.data.id,
+              children: data.children
+            },
+            [`refinement${iteration + 1}`]: {}
+          }
+        })
+      })
+    ) : (
+      this.setState({ refinements: {[e.target.name]: {} }})
+    )
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault()
+    var imageObj = {}
+    this.props.images.forEach((image, i) => {
+      imageObj[i] = image
+    });
+    this.props.postAlert({ 
+      body: this.state.body,
+      title: this.state.title,
+      images: this.props.images,
+      ancestors: this.state.ancestors
+     })
+     this.setState({
+       title: '',
+       body: '',
+     })
+     this.props.resetAlertImages()
+     this.props.closeAllDialogs()
   }
 
   getLocations = (id) => {
@@ -88,58 +169,6 @@ class CreateAlert extends React.Component {
       })
   }
 
-  handleSubmit = (event) => {
-    event.preventDefault()
-    var imageObj = {}
-    this.props.images.forEach((image, i) => {
-      imageObj[i] = image
-    });
-    this.props.postAlert({ 
-      body: this.state.body,
-      title: this.state.title,
-      images: this.props.images,
-      ancestors: this.state.ancestors
-     })
-     this.setState({
-       title: '',
-       body: '',
-     })
-     this.props.resetAlertImages()
-     this.props.closeAllDialogs()
-  }
-
-  handleImageChange = (event) => {
-    const image = event.target.files[0]
-    const formData = new FormData()
-    formData.append('image', image, image.name)
-    this.props.uploadAlertImage(formData)
-  }
-
-  handleEditPicture = () => {
-    const fileInput = document.getElementById('imageInput')
-    fileInput.click()
-  }
-
-  handleChange = (event) => {
-    this.setState({
-      [event.target.id]: event.target.value
-    })
-  }
-
-  handleFormControl = (arg) => {
-    if (arg === 'use'){
-      this.setState({
-        use: true,
-        pick: false
-      })
-    } else {
-      this.setState({
-        use: false,
-        pick: true
-      })
-    }
-  }
-
   render() {
     const { 
       classes,
@@ -151,7 +180,8 @@ class CreateAlert extends React.Component {
     const {
       use, 
       pick,
-      alertLocation
+      alertLocation,
+      refinements
     } = this.state
     const renderLocOptions = location && checkIfCrag(location.type, location.subType) ||
     checkIfBelowCrag(location.type, location.subType) ? true : false
@@ -176,7 +206,7 @@ class CreateAlert extends React.Component {
               type='text'
               fullWidth
               placeholder='A short alert description'
-              onChange={this.handleChange}
+              onChange={this.handleInputChange}
             />
             <TextField
               margin="dense"
@@ -187,7 +217,7 @@ class CreateAlert extends React.Component {
               fullWidth
               multiline
               rows={3}
-              onChange={this.handleChange}
+              onChange={this.handleInputChange}
             />
             <br />
             <input type='file' id='imageInput' onChange={this.handleImageChange} hidden='hidden' />
@@ -195,7 +225,7 @@ class CreateAlert extends React.Component {
               {loading ? <CircularProgress size={25}/> : <EditIcon color='primary' />}
             </MyButton>
             <br />
-            {renderLocOptions && 
+            {(renderLocOptions || (alertLocation && alertLocation.id)) && 
             <FormControl component="fieldset" className={classes.formControl}>
               <Grid container>
                 <Grid item xs={6} >
@@ -225,32 +255,70 @@ class CreateAlert extends React.Component {
                 searchType={'Alert'} 
                 returnIdToParent={this.getLocations} 
               />
+              : use && alertLocation
+              ? ''
               : !renderLocOptions
               ? <Search 
                 searchType={'Alert'} 
                 returnIdToParent={this.getLocations} 
               />
               : ''}
+
+
+
             {alertLocation && alertLocation.children &&
-            <Fragment>
-              <InputLabel htmlFor="cChild1">Refine Location...</InputLabel>
-              <Select
-                fullWidth
-                value={10}
-                onChange={''}
-                id={'cChild1'}
-              >
-                {alertLocation.children.map((child, i) => {
-                  return (
-                    <MenuItem value={child.id} key={i}>
-                      {child.name}
-                    </MenuItem>)
-                    
+            <form className={classes.root} autoComplete="off">
+              <FormControl className={classes.formControl}>
+                <Select
+                  native
+                  fullWidth
+                  className={classes.select}
+                  onChange={this.handleRefinement}
+                  inputProps={{
+                    name: 'refinement1',
+                    id: 'cChild1'
+                  }}
+                >
+                  <option value={''}>None</option>
+                  {alertLocation.children.map((child, i) => {
+                    return (
+                      <option value={child.id} name={child.name} key={i}>
+                        {child.name}
+                      </option>)
+                  })}
+                </Select>
+
+
+                {refinements.refinement2 && Object.keys(refinements).map((refinement, i) => {
+                  var children = refinements[refinement].children
+                 
+                  return children && Object.keys(children).length > 0 ? (
+                    <Select
+                      className={classes.select}
+                      native
+                      fullWidth       
+                      onChange={this.handleRefinement}
+                      inputProps={{
+                        name: `refinement${i + 2}`,
+                        id: `cChild${i + 2}`
+                      }}
+                    >
+                      <option value={''}>None</option>
+                      {refinements[refinement].children.map((child, i) => {
+                        return (
+                          <option value={child.id} name={child.name} key={i}>
+                            {child.name}
+                          </option>)
+                      })}
+                    </Select>
+                  ) : ''
                 })}
-              </Select>
-            </Fragment>
+              </FormControl>
+            </form>
             }
               
+
+
           </DialogContent>
           <DialogActions>
             <Button onClick={closeAllDialogs} color="primary">
@@ -280,6 +348,9 @@ const styles = theme => ({
   },
   formLabel: {
     marginRight: 0
+  },
+  select: {
+    marginBottom: '10px'
   }
 });
 
@@ -298,46 +369,3 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(CreateAlert))
 
-// manually selecting location
-
-
-              //   {/* {location && (!checkIfCrag(location.AreaType) || pick) &&
-                
-              //   <Fragment>
-              //   //Make locs key have a value of the NodeID and the parents NodeID
-              //     {Object.keys(locs).map((key, i) => {
-              //       console.log(locs[key], 'ping');
-              //       return (
-              //         <Select
-              //           value={locs[key]}
-              //           onChange={(e) => this.handleSelectChange(e)}
-              //           inputProps={{
-              //             name: key,
-              //             id: `input${key}`
-              //           }}
-              //         >
-              //           {Object.keys(country[locs[key]]).map((loc, i) => {
-              //             return <MenuItem 
-              //                       value={country[locs[key]][loc].NodeID}
-              //                       key={i}
-              //                       >{loc}
-              //                     </MenuItem>
-              //           })}
-              //         </Select>
-              //       )
-              //     })}
-                
-                  
-
-              //   </Fragment>
-              // }
-
-              // handleSelectChange = (e, i) => {
-              //   const state = this.state
-              //   state.locs[e.target.name + 1] = e.target.value
-              //   if (Object.keys(this.state.locs).length === Number(e.target.name) + 1){ // if the last input is being modded add a key in state
-              //     state.locs[Object.keys(this.state.locs).length.toString()] = '' 
-              //   }
-              //   this.setState({ state })
-              // }
-            

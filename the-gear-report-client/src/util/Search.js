@@ -156,7 +156,7 @@ const styles = theme => ({
     flexGrow: 1,
   },
   alertSearch: {
-    marginBottom: '100px',
+    marginBottom: '50px',
   },
   container: {
     flexGrow: 1,
