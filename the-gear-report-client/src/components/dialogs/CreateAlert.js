@@ -123,16 +123,20 @@ class CreateAlert extends React.Component {
   }
 
   handleSubmit = (event) => {
+    const { alertLocation, refinements } = this.state
     event.preventDefault()
     var imageObj = {}
+    var locations = [alertLocation.id]
     this.props.images.forEach((image, i) => {
       imageObj[i] = image
     });
+    alertLocation.ancestors.forEach(ancestor => locations.push(ancestor.id))
+    Object.keys(refinements).forEach(refinement => locations.push(refinements[refinement].id))
     this.props.postAlert({ 
       body: this.state.body,
       title: this.state.title,
       images: this.props.images,
-      ancestors: this.state.ancestors
+      locations: locations
      })
      this.setState({
        title: '',
@@ -255,7 +259,7 @@ class CreateAlert extends React.Component {
                 searchType={'Alert'} 
                 returnIdToParent={this.getLocations} 
               />
-              : use && alertLocation
+              : use && alertLocation && alertLocation.id
               ? ''
               : !renderLocOptions
               ? <Search 

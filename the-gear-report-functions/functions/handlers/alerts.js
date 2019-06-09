@@ -67,8 +67,10 @@ exports.postOneAlert = (req, res) => {
     return res.status(400).json({ general: 'Body must not be empty' })
   } else if (req.body.title.trim() === '') {
     return res.status(400).json({ general: 'Title must not be empty' })
+  } else if (req.body.locations.length === 0){
+    return res.status(400).json({ general: 'Crag must be assigned to Alert'})
   }
-  console.log(req.user);
+
   const newAlert = {
     body: req.body.body,
     title: req.body.title,
@@ -80,7 +82,8 @@ exports.postOneAlert = (req, res) => {
     likeCount: 0,
     commentCount: 0,
     sponsored: false,
-    resolved: false
+    resolved: false,
+    locations: req.body.locations
   } 
 
   db
