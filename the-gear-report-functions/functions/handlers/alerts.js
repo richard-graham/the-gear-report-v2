@@ -145,31 +145,19 @@ exports.getAlertsByUser = (req, res) => {
     })
 }
 
-// exports.getAlertsByLocations = (req, res) => {
-//   console.log(req.params);
-//   const arr = req.params.locations.split(', ')
-//   console.log(arr);
-//   Promise.all(
-//     arr.map(id => {
-//       console.log(id);
-//       res = []
-//        db.collection('/alerts')
-//               .where('NodeID', '==', id)
-//               .get()
-//               .then((doc) => {
-//                 console.log(doc.docs)
-            
-//                 res.push(doc.docs)
-//               })
-//       console.log(res);
-//       return res
-//     })
-//   ).then(r => {
-//     console.log('est');
-//     console.log(r);
-//     res.json(r)
-//   })
-// }
+exports.getAlertsByLocations = (req, res) => {
+  db.collection('/alerts').where('locations', 'array-contains', req.params.location)
+    .get()
+    .then(docs => {
+      let alerts = []
+      docs.forEach(doc => alerts.push(doc.data()))
+      return res.json(alerts)
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500).json({ error: err.code })
+    })
+}
 
 exports.commentOnAlert = (req, res) => {
   if(req.body.body.trim() === '') return res.status(400).json({ comment: 'Must not be empty' })
