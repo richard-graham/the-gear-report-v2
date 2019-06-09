@@ -222,6 +222,13 @@ exports.uploadAlertImage = (req, res) => {
   })
   busboy.on('finish', () => {
     //resize image
+    const im = require('imagemagick')
+    im.resize({
+      srcPath: imageToBeUploaded.filepath,
+      dstPath: imageToBeUploaded.filepath,
+      width: 300
+    })
+
     admin.storage().bucket().upload(imageToBeUploaded.filepath, {
       resumable: false,
       metadata: {
@@ -231,7 +238,6 @@ exports.uploadAlertImage = (req, res) => {
       }
     })
     .then(() => {
-      // next construct the image url to add it to the user
       const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`
       return res.json({ message: 'Image uploaded successfully', url: imageUrl.toString() })
     })

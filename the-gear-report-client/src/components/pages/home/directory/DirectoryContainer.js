@@ -104,14 +104,14 @@ export class DirectoryContainer extends Component {
             </Hidden> 
             <Hidden xsDown implementation='css'>
               <Grid container spacing={0} className={classes.navContainerSmall} >
-                <Grid item align='center' xs={4}>
+                <Grid item align='center' xs={3}>
                   {loading 
                     ? <CircularProgress className={classes.progress} /> 
                     : !Object.keys(country).length > 0
                     ? <CircularProgress className={classes.progress} />
                     : <GlobeNav selectLoc={selectedLocation} /> }
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={9}>
                   <Globe user={user} />
                 </Grid>
               </Grid>

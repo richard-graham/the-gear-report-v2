@@ -36,16 +36,16 @@ export class Alert extends Component {
     return (
       <Paper className={classes.paper}>
           {loading ? <CircularProgress size={70} className={classes.progress} /> : (
-            <Grid container spacing={4}>
-              <Grid item xs={12}>
+            <Grid container spacing={8}>
+              <Grid item xs={12} className={classes.headerGrid}>
                 <Typography variant='body1' className={classes.alertHeader}>{title}</Typography>
               </Grid>
-              <Grid item md={8} xs ={12} >
+              <Grid item md={6} xs ={12} >
                 <Paper>
                   <AlertImageGallery images={images} />
                 </Paper>
               </Grid>
-              <Grid item sm={4} xs={12}>
+              <Grid item sm={6} xs={12}>
                 <div className={classes.action}>
                   <Typography>Details</Typography>
                   <Divider/>
@@ -118,7 +118,12 @@ const styles = theme => ({
   alertHeader: {
     float: 'left',
     fontSize: 27,
-    marginBottom: 20
+    marginBottom: 20,
+  },
+  headerGrid: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: '10px'
   },
   alertDate: {
     fontSize: 15,

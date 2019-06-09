@@ -3,7 +3,6 @@ import { uploadAlertImage, postAlert, resetAlertImages } from '../../redux/actio
 import { connect } from 'react-redux'
 import { checkIfCrag, checkIfBelowCrag } from '../../util/functions'
 import Search from '../../util/Search'
-import { getAlertLocations, getChildren } from '../../util/tcCalls'
 //Mui
 import Grid from '@material-ui/core/Grid'
 import { withStyles } from '@material-ui/core/styles'
@@ -94,7 +93,6 @@ class CreateAlert extends React.Component {
   }
 
   handleRefinement = (e) => {
-    console.log(e.target.value);
     e.persist()
     const url = `https://brendan.thecrag.com/api/node/id/${e.target.value}?show=children&key=${key}`
     e.target.value ?
@@ -187,8 +185,8 @@ class CreateAlert extends React.Component {
       alertLocation,
       refinements
     } = this.state
-    const renderLocOptions = location && checkIfCrag(location.type, location.subType) ||
-    checkIfBelowCrag(location.type, location.subType) ? true : false
+    const renderLocOptions = location && (checkIfCrag(location.type, location.subType) ||
+    checkIfBelowCrag(location.type, location.subType)) ? true : false
     return (
       <Fragment>
         <Dialog
@@ -306,6 +304,7 @@ class CreateAlert extends React.Component {
                         name: `refinement${i + 2}`,
                         id: `cChild${i + 2}`
                       }}
+                      key={i}
                     >
                       <option value={''}>None</option>
                       {refinements[refinement].children.map((child, i) => {

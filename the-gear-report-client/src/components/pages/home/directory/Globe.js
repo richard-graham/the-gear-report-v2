@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react'
 import { withStyles } from '@material-ui/core/styles';
-import { updateLocation, resetLocation } from '../../../../redux/actions/UIActions'
+import { resetLocation } from '../../../../redux/actions/UIActions'
 import { connect } from 'react-redux'
 import { isCragOrUnder } from '../../../../util/functions'
+import { updateSearchLocation } from '../../../../redux/actions/tcActions'
 // leaflet
 import 'leaflet/dist/leaflet.css'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
@@ -33,7 +34,7 @@ var homeIcon = L.icon({
 class Globe extends Component {
 
   handleClick = (child) => {
-    this.props.updateLocation(child, this.props.country)
+    this.props.updateSearchLocation(child.id, this.props.country)
   }
 
   componentWillUnmount = () => {
@@ -76,7 +77,7 @@ class Globe extends Component {
                 key={i}
               >
                  <Popup>
-                  {child.Name}
+                  {child.name}
                   <br />
                   <button 
                     className={classes.popupButton}
@@ -97,7 +98,7 @@ class Globe extends Component {
             key={'location'}
           >
               <Popup>
-              {location.Name}
+              {location.name}
             </Popup>
           </Marker>
         ) : ''}
@@ -114,8 +115,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  updateLocation,
-  resetLocation
+  resetLocation,
+  updateSearchLocation
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Globe))

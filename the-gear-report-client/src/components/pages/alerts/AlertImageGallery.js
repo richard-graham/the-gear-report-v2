@@ -19,7 +19,8 @@ export class AlertImageGallery extends Component {
       <ImageGallery 
         items={items}  
         showPlayButton={false}
-        additionalClass={classes.container}
+        className={classes.container}
+        onImageLoad={() => console.log('loaded')}
       />
     )
   }
@@ -30,8 +31,8 @@ const styles = {
     width: '100%',
     height: 'auto',
     // minHeight: 480,
-    paddingLeft: '30%',
-    paddingRight: '30%',
+    paddingLeft: '25%',
+    paddingRight: '25%',
   },
   container: {
     // minHeight: 620

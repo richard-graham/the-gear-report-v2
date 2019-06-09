@@ -822,7 +822,7 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.3.1":
+"@babel/runtime@^7.0.0":
   version "7.4.3"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.4.3.tgz#79888e452034223ad9609187a0ad1fe0d2ad4bdc"
   integrity sha512-9lsJwJLxDh/T3Q3SZszfWOTkk3pHbkmH+3KY+zwIDmsNlxsumuhS2TH3NIpktU4kNvfzy+k3eLT7aTJSPTo0OA==
@@ -1435,6 +1435,11 @@ acorn@^6.0.1, acorn@^6.0.7:
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.1.1.tgz#7d25ae05bb8ad1f9b699108e1094ecd7884adc1f"
   integrity sha512-jPTiwtOxaHNaAPg/dmrJ/beuzLRnXtB0kQPQ8JpotKJgTB6rX6c8mlf315941pyjBSaPg8NHXS9fhP4u17DpGA==
+
+add@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/add/-/add-2.0.6.tgz#248f0a9f6e5a528ef2295dbeec30532130ae2235"
+  integrity sha1-JI8Kn25aUo7yKV2+7DBTITCuIjU=
 
 address@1.0.3, address@^1.0.1:
   version "1.0.3"
@@ -6324,10 +6329,10 @@ lcid@^2.0.0:
   dependencies:
     invert-kv "^2.0.0"
 
-leaflet@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.4.0.tgz#d5f56eeb2aa32787c24011e8be4c77e362ae171b"
-  integrity sha512-x9j9tGY1+PDLN9pcWTx9/y6C5nezoTMB8BLK5jTakx+H7bPlnbCHfi9Hjg+Qt36sgDz/cb9lrSpNQXmk45Tvhw==
+leaflet@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.5.1.tgz#9afb9d963d66c870066b1342e7a06f92840f46bf"
+  integrity sha512-ekM9KAeG99tYisNBg0IzEywAlp0hYI5XRipsqRXyRTeuU8jcuntilpp+eFf5gaE0xubc9RuSNIVtByEKwqFV0w==
 
 left-pad@^1.3.0:
   version "1.3.0"
@@ -8621,12 +8626,12 @@ react-is@^16.5.2, react-is@^16.6.0, react-is@^16.6.3, react-is@^16.7.0, react-is
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.6.tgz#5bbc1e2d29141c9fbdfed456343fe2bc430a6a16"
   integrity sha512-aUk3bHfZ2bRSVFFbbeVS4i+lNPZr3/WM5jT2J5omUVV1zzcs1nAaf3l51ctA5FFvCRbhrH0bdAsRRQddFJZPtA==
 
-react-leaflet@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/react-leaflet/-/react-leaflet-2.2.1.tgz#c33974f518ffc8b3b7221f72e00c28963b95314d"
-  integrity sha512-q95486MsoKYmHFRDJyKRY/wdlKbaiTBfq23rfcG9WwsGNxaQuHLcIhxj3m9s4PiG3DImhz3Qfov6UUrsf+yMpw==
+react-leaflet@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/react-leaflet/-/react-leaflet-2.3.0.tgz#a6792f66f05de2121a182190f495f53827f443ee"
+  integrity sha512-LaTkopN3rpMWzg2/ev/Ryn5K528ORrf3BdpnH7Qz2HYj+c9pw331wMOQPp6ILV3PYz0T1G6Foz+B2GDz59C10Q==
   dependencies:
-    "@babel/runtime" "^7.3.1"
+    "@babel/runtime" "^7.4.4"
     fast-deep-equal "^2.0.1"
     hoist-non-react-statics "^3.3.0"
     warning "^4.0.3"
@@ -10979,3 +10984,8 @@ yargs@^11.0.0:
     which-module "^2.0.0"
     y18n "^3.2.1"
     yargs-parser "^9.0.2"
+
+yarn@^1.16.0:
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/yarn/-/yarn-1.16.0.tgz#5701b58ac555ff91f7b889b7d791b3dc86f8f999"
+  integrity sha512-cfemyGlnWKA1zopUUgebTPf8C4WkPIZ+TJmklwcEAJ4u6oWPtJeAzrsamaGGh/+b1XWe8W51yzAImC4AWbWR1g==
