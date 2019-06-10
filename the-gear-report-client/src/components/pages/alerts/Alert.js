@@ -88,6 +88,8 @@ export class Alert extends Component {
                 </Paper>
               </Grid>
               <Grid item md={9} xs={12} styles={{ textAlign: 'left'}}>
+
+              {/* // Comments */}
                 <Divider variant='middle' />
                 <div className={classes.commentHeader}>
                   <Typography>{`${commentCount ? commentCount : 0} Comments`}</Typography>
@@ -129,29 +131,29 @@ export class Alert extends Component {
                   return (
                       <Grid item sm={12}>
                         <Grid container className={classes.commentContainer}>
-                          <Grid item sm={1}>
+
                             <img alt='words' src={userImage} className={classes.userImage} />
-                          </Grid>
-                          <Grid item sm={11}>
-                            <div className={classes.commentData}>
-                              <div className={classes.userData}>
-                                <Typography 
-                                  variant='h5' 
-                                  component={Link} 
-                                  to={`/users/${userHandle}`} 
-                                  color='primary'
-                                  inputProps={{ padding: 0 }}
-                                >
-                                  {userHandle}
-                                </Typography>
-                                <Typography variant='body2' color='textSecondary'>
-                                  {dayjs(createdAt).format('h:mm a, MMMM DD YYYY')}
-                                </Typography>
-                              </div>
-                              <Typography variant='body1'>
-                                {body}
+ 
+                          <Grid item sm={3}>
+                            <div className={classes.userData}>
+                              <Typography 
+                                variant='body1' 
+                                component={Link} 
+                                to={`/profile/${userHandle}`} 
+                                color='primary'
+                                style={{ textDecoration: 'none'}}
+                              >
+                                {userHandle}
+                              </Typography>
+                              <Typography variant='body2' color='textSecondary'>
+                                {dayjs(createdAt).format('h:mm a, MMMM DD YYYY')}
                               </Typography>
                             </div>
+                          </Grid>
+                          <Grid item sm={8}>
+                            <Typography variant='body1' className={classes.commentText}>
+                              {body}
+                            </Typography>
                           </Grid>
                         </Grid>
                       </Grid>
@@ -192,8 +194,10 @@ const styles = theme => ({
     flexGrow: 1,
   },
   userImage: {
-    width: 50,
-    borderRadius: '50%'
+    width: 40,
+    height: 40,
+    borderRadius: '50%',
+    marginRight: 15
   },
   progress: {
     marginTop: '30%'
@@ -207,7 +211,7 @@ const styles = theme => ({
     margin: 20
   },
   commentContainer: {
-    padding: 30
+    paddingTop: 10
   },
   commentData: {
     marginLeft: 20
@@ -219,15 +223,19 @@ const styles = theme => ({
   },
   userComment: {
     display: 'flex',
-
+    marginBottom: 20
   },
   userData: {
     float: 'left',
     marginRight: 10,
-    height: 8
+    height: 8,
+    textAlign: 'center'
   },
   commentButton: {
     marginLeft: 10
+  },
+  commentText: {
+    textAlign: 'left'
   }
 })
 
