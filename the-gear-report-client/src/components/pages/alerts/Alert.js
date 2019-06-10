@@ -25,7 +25,6 @@ export class Alert extends Component {
 
   componentDidMount = () => {
     this.props.getAlert(this.props.match.params.alertId)
-    this.setState({ comment: '' })
   }
 
   handleCancel = () => {
@@ -40,6 +39,7 @@ export class Alert extends Component {
 
   handleCommentSubmit = () => {
     this.props.submitComment(this.props.alert.alertId, {body: this.state.comment})
+    this.setState({ comment: '' })
   }
 
   render() {
