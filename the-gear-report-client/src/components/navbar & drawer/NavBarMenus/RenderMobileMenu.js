@@ -38,7 +38,7 @@ export class RenderMobileMenu extends Component {
         </MenuItem>
         <MenuItem onClick={handleProfileMenuOpen}>
           <IconButton color="inherit">
-            <ProfilePic />
+            <ProfilePic size={30} />
           </IconButton>
           <p>Profile</p>
         </MenuItem>

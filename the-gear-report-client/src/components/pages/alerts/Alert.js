@@ -4,6 +4,8 @@ import { getAlert } from '../../../redux/actions/dataActions'
 import dayjs from 'dayjs'
 import AlertImageGallery from './AlertImageGallery'
 import { Link } from 'react-router-dom'
+import ProfilePic from '../../../util/ProfilePic'
+import { submitComment } from '../../../redux/actions/dataActions'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
@@ -11,13 +13,35 @@ import Typography from '@material-ui/core/Typography'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
 //Icons
 
 export class Alert extends Component {
 
+  state = {
+    comment: ''
+  }
+
   componentDidMount = () => {
     this.props.getAlert(this.props.match.params.alertId)
+    this.setState({ comment: '' })
   }
+
+  handleCancel = () => {
+    this.setState({ comment: '' })
+  }
+
+  handleCommentChange = (e) => {
+    this.setState({ 
+      [e.target.name]: e.target.value
+    })
+  }
+
+  handleCommentSubmit = () => {
+    this.props.submitComment(this.props.alert.alertId, {body: this.state.comment})
+  }
+
   render() {
     const { 
       classes, 
@@ -29,7 +53,8 @@ export class Alert extends Component {
         images,
         resolved,
         userHandle,
-        comments
+        comments,
+        commentCount
       },
       loading
     } = this.props
@@ -40,18 +65,14 @@ export class Alert extends Component {
               <Grid item xs={12} className={classes.headerGrid}>
                 <Typography variant='body1' className={classes.alertHeader}>{title}</Typography>
               </Grid>
-              <Grid item md={6} xs ={12} >
-                <Paper>
-                  <AlertImageGallery images={images} />
-                </Paper>
-              </Grid>
-              <Grid item sm={6} xs={12}>
+              <Grid item sm={7} xs={12}>
                 <div className={classes.action}>
                   <Typography>Details</Typography>
                   <Divider/>
+                  <br />
                   {createdAt && 
-                  <Typography variant='body2' className={classes.alertDate}>
-                    {`Date: ${dayjs(createdAt).format('DD-MM-YYYY')}`}
+                  <Typography className={classes.alertDate}>
+                    {`Created At: ${dayjs(createdAt).format('DD-MM-YYYY')}`}
                   </Typography>}
                   <Typography>{`Status: ${resolved ? 'Resolved' : 'Not Resolved'}`}</Typography>
                   <Typography>{`Sponsored: ${sponsored ? 'True' : 'False'}`}</Typography>
@@ -61,9 +82,45 @@ export class Alert extends Component {
                   <Typography >{title}</Typography>
                 </div>
               </Grid>
+              <Grid item md={5} xs ={12} >
+                <Paper>
+                  <AlertImageGallery images={images} />
+                </Paper>
+              </Grid>
               <Grid item md={9} xs={12} styles={{ textAlign: 'left'}}>
-                <Typography>Comments</Typography>
                 <Divider variant='middle' />
+                <div className={classes.commentHeader}>
+                  <Typography>{`${commentCount ? commentCount : 0} Comments`}</Typography>
+                </div>
+                <div className={classes.userComment}>
+                  <ProfilePic size={40} />
+                  <TextField
+                    className={classes.commentInputRoot}                    
+                    placeholder='Add a comment...'
+                    name='comment'
+                    value={this.state.comment}
+                    onChange={this.handleCommentChange}
+                  />
+                  <Button
+                    color='default'
+                    size='small'
+                    variant='text'
+                    className={classes.commentButton}
+                    onClick={this.handleCancel}
+                  >
+                  Cancel
+                  </Button>
+                  <Button
+                    disabled={!this.state.comment}
+                    color='primary'
+                    size='small'
+                    variant='contained'
+                    className={classes.commentButton}
+                    onClick={this.handleCommentSubmit}
+                  >
+                  Comment
+                  </Button>
+                </div>
                 <div>
 
                 
@@ -83,6 +140,7 @@ export class Alert extends Component {
                                   component={Link} 
                                   to={`/users/${userHandle}`} 
                                   color='primary'
+                                  inputProps={{ padding: 0 }}
                                 >
                                   {userHandle}
                                 </Typography>
@@ -119,10 +177,9 @@ const styles = theme => ({
     float: 'left',
     fontSize: 27,
     marginBottom: 20,
+    marginLeft: 20
   },
   headerGrid: {
-    display: 'flex',
-    justifyContent: 'center',
     marginBottom: '10px'
   },
   alertDate: {
@@ -145,15 +202,32 @@ const styles = theme => ({
     marginTop: 20,
     textAlign: 'left'
   },
+  commentHeader: {
+    display: 'flex',
+    margin: 20
+  },
   commentContainer: {
     padding: 30
   },
   commentData: {
     marginLeft: 20
   },
+  commentInputRoot: {
+    margin: 0,
+    marginLeft: 20,
+    width: '70%'
+  },
+  userComment: {
+    display: 'flex',
+
+  },
   userData: {
     float: 'left',
-    marginRight: 10
+    marginRight: 10,
+    height: 8
+  },
+  commentButton: {
+    marginLeft: 10
   }
 })
 
@@ -162,4 +236,9 @@ const mapStateToProps = (state) => ({
   loading: state.UI.loading
 })
 
-export default connect(mapStateToProps, { getAlert })(withStyles(styles)(Alert))
+const mapDispatchToProps = {
+  submitComment,
+  getAlert
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Alert))

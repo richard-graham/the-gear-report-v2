@@ -226,7 +226,8 @@ exports.uploadAlertImage = (req, res) => {
     im.resize({
       srcPath: imageToBeUploaded.filepath,
       dstPath: imageToBeUploaded.filepath,
-      width: 300
+      width: 300,
+      height: 500
     })
 
     admin.storage().bucket().upload(imageToBeUploaded.filepath, {

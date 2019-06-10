@@ -165,6 +165,7 @@ export const submitComment = (alertId, commentData) => dispatch => {
   axios.post(`/alert/${alertId}/comment`, commentData)
     .then(res => {
       dispatch({ type: SUBMIT_COMMENT, payload: res.data })
+      dispatch({ type: SET_MESSAGE, payload: 'Comment submitted successfully'})
       dispatch(clearErrors())
     })
     .catch(err => {

@@ -16,14 +16,15 @@ export class ProfilePic extends Component {
           imageUrl 
         }
       },
-      classes
+      classes,
+      size
     } = this.props
     const defaultPic = "https://firebasestorage.googleapis.com/v0/b/the-gear-report-a2ce8.appspot.com/o/no-image.png?alt=media"
 
     return (
       authenticated === true ?
         imageUrl !== defaultPic ?
-          <img alt='userPic' src={imageUrl} className={classes.profilePic} /> :
+          <img alt='userPic' src={imageUrl} style={{ height: size, width: size, borderRadius: '50%' }} /> :
         avatarLetters !== "" ?
           <Avatar className={classes.navAvatar}>{avatarLetters.charAt(0)}</Avatar> :
           <AccountCircle /> :
@@ -33,10 +34,6 @@ export class ProfilePic extends Component {
 }
 
 const styles = {
-  profilePic: {
-    width: 30,
-    borderRadius: '50%'
-  },
   navAvatar: {
     width: 30,
     height: 30,
