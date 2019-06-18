@@ -19,7 +19,7 @@ export class AlertImageGallery extends Component {
       <ImageGallery 
         items={items}  
         showPlayButton={false}
-        onImageLoad={() => console.log('loaded')}
+        // onImageLoad={() => console.log('loaded')}
       />
     )
   }
@@ -29,10 +29,8 @@ const styles = {
   pics: {
     width: '100%',
     height: 'auto',
-    // height: 750,
   },
   container: {
-    // minHeight: 620
   }
 }
 

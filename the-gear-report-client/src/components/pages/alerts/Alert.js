@@ -82,14 +82,18 @@ export class Alert extends Component {
                   <Typography >{title}</Typography>
                 </div>
               </Grid>
-              <Grid item md={5} xs ={12} >
+              <Grid item lg={4} md={5} sm={5} xs ={10} >
                 <Paper>
                   <AlertImageGallery images={images} />
                 </Paper>
               </Grid>
-              <Grid item md={9} xs={12} styles={{ textAlign: 'left'}}>
 
-              {/* // Comments */}
+               {/* // Comments */}
+
+              <Grid item md={1} xs={false} />
+              <Grid item md={10} xs={12} styles={{ textAlign: 'left', padding: 10}}>
+
+             
                 <Divider variant='middle' />
                 <div className={classes.commentHeader}>
                   <Typography>{`${commentCount ? commentCount : 0} Comments`}</Typography>
@@ -129,7 +133,7 @@ export class Alert extends Component {
                 {comments && comments.map((comment, index) => {
                   const { body, createdAt, userImage, userHandle } = comment
                   return (
-                      <Grid item sm={12}>
+                      <Grid item sm={12} key={index} >
                         <Grid container className={classes.commentContainer}>
 
                             <img alt='words' src={userImage} className={classes.userImage} />
@@ -150,7 +154,7 @@ export class Alert extends Component {
                               </Typography>
                             </div>
                           </Grid>
-                          <Grid item sm={8}>
+                          <Grid item sm={8} style={{ marginTop: 6 }}>
                             <Typography variant='body1' className={classes.commentText}>
                               {body}
                             </Typography>
@@ -161,7 +165,8 @@ export class Alert extends Component {
                 })}
                 </div>
 
-              </Grid>              
+              </Grid>  
+              <Grid item md={1} xs={false} />            
             </Grid>
           )}
       </Paper>
@@ -208,7 +213,8 @@ const styles = theme => ({
   },
   commentHeader: {
     display: 'flex',
-    margin: 20
+    marginTop: 20,
+    marginBottom: 20
   },
   commentContainer: {
     paddingTop: 10
@@ -229,7 +235,8 @@ const styles = theme => ({
     float: 'left',
     marginRight: 10,
     height: 8,
-    textAlign: 'center'
+    textAlign: 'center',
+    minWidth: 172
   },
   commentButton: {
     marginLeft: 10
