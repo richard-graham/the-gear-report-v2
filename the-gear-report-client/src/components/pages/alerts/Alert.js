@@ -89,84 +89,85 @@ export class Alert extends Component {
               </Grid>
 
                {/* // Comments */}
+              <Grid item container xs={12}>
+                <Grid item lg={1} md={false} />
+                <Grid item sm={10} xs={12} styles={{ textAlign: 'left'}}>
 
-              <Grid item md={1} xs={false} />
-              <Grid item md={10} xs={12} styles={{ textAlign: 'left', padding: 10}}>
+              
+                  <Divider style={{ marginTop: 20 }} variant='middle' />
+                  <div className={classes.commentHeader}>
+                    <Typography>{`${commentCount ? commentCount : 0} Comments`}</Typography>
+                  </div>
+                  <div className={classes.userComment}>
+                    <ProfilePic size={40} />
+                    <TextField
+                      className={classes.commentInputRoot}                    
+                      placeholder='Add a comment...'
+                      name='comment'
+                      value={this.state.comment}
+                      onChange={this.handleCommentChange}
+                    />
+                    <Button
+                      color='default'
+                      size='small'
+                      variant='text'
+                      className={classes.commentButton}
+                      onClick={this.handleCancel}
+                    >
+                    Cancel
+                    </Button>
+                    <Button
+                      disabled={!this.state.comment}
+                      color='primary'
+                      size='small'
+                      variant='contained'
+                      className={classes.commentButton}
+                      onClick={this.handleCommentSubmit}
+                    >
+                    Comment
+                    </Button>
+                  </div>
+                  <div>
 
-             
-                <Divider variant='middle' />
-                <div className={classes.commentHeader}>
-                  <Typography>{`${commentCount ? commentCount : 0} Comments`}</Typography>
-                </div>
-                <div className={classes.userComment}>
-                  <ProfilePic size={40} />
-                  <TextField
-                    className={classes.commentInputRoot}                    
-                    placeholder='Add a comment...'
-                    name='comment'
-                    value={this.state.comment}
-                    onChange={this.handleCommentChange}
-                  />
-                  <Button
-                    color='default'
-                    size='small'
-                    variant='text'
-                    className={classes.commentButton}
-                    onClick={this.handleCancel}
-                  >
-                  Cancel
-                  </Button>
-                  <Button
-                    disabled={!this.state.comment}
-                    color='primary'
-                    size='small'
-                    variant='contained'
-                    className={classes.commentButton}
-                    onClick={this.handleCommentSubmit}
-                  >
-                  Comment
-                  </Button>
-                </div>
-                <div>
+                  
+                  {comments && comments.map((comment, index) => {
+                    const { body, createdAt, userImage, userHandle } = comment
+                    return (
+                        <Grid item sm={12} key={index} >
+                          <Grid container className={classes.commentContainer}>
 
-                
-                {comments && comments.map((comment, index) => {
-                  const { body, createdAt, userImage, userHandle } = comment
-                  return (
-                      <Grid item sm={12} key={index} >
-                        <Grid container className={classes.commentContainer}>
-
-                            <img alt='words' src={userImage} className={classes.userImage} />
- 
-                          <Grid item sm={3}>
-                            <div className={classes.userData}>
-                              <Typography 
-                                variant='body1' 
-                                component={Link} 
-                                to={`/profile/${userHandle}`} 
-                                color='primary'
-                                style={{ textDecoration: 'none'}}
-                              >
-                                {userHandle}
+                              <img alt='words' src={userImage} className={classes.userImage} />
+  
+                            <Grid item sm={3}>
+                              <div className={classes.userData}>
+                                <Typography 
+                                  variant='body1' 
+                                  component={Link} 
+                                  to={`/profile/${userHandle}`} 
+                                  color='primary'
+                                  style={{ textDecoration: 'none'}}
+                                >
+                                  {userHandle}
+                                </Typography>
+                                <Typography variant='body2' color='textSecondary'>
+                                  {dayjs(createdAt).format('h:mm a, MMMM DD YYYY')}
+                                </Typography>
+                              </div>
+                            </Grid>
+                            <Grid item sm={8} style={{ marginTop: 6 }}>
+                              <Typography variant='body1' className={classes.commentText}>
+                                {body}
                               </Typography>
-                              <Typography variant='body2' color='textSecondary'>
-                                {dayjs(createdAt).format('h:mm a, MMMM DD YYYY')}
-                              </Typography>
-                            </div>
-                          </Grid>
-                          <Grid item sm={8} style={{ marginTop: 6 }}>
-                            <Typography variant='body1' className={classes.commentText}>
-                              {body}
-                            </Typography>
+                            </Grid>
                           </Grid>
                         </Grid>
-                      </Grid>
-                  )
-                })}
-                </div>
+                    )
+                  })}
+                  </div>
 
-              </Grid>  
-              <Grid item md={1} xs={false} />            
+                </Grid>  
+                <Grid item md={1} md={false} /> 
+              </Grid>           
             </Grid>
           )}
       </Paper>
@@ -178,12 +179,20 @@ const styles = theme => ({
   ...theme,
   action: {
     margin: 20,
+    [theme.breakpoints.down('sm')]: {
+      margin: 0,
+      marginBottom: 20
+    },
     textAlign: 'left'
   },
   alertHeader: {
     float: 'left',
     fontSize: 27,
     marginBottom: 20,
+    [theme.breakpoints.down('sm')]: {
+      marginBottom: 0,
+      marginLeft: 0
+    },
     marginLeft: 20
   },
   headerGrid: {
