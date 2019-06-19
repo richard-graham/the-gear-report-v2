@@ -40,13 +40,12 @@ export class GlobeNav extends Component {
 
   handleListItemClick = (index, loc, zoom) => {
     if (loc.id !== Number(this.props.location.id)) this.props.updateLocation(loc, zoom)
-    console.log(index, this.state.selectedIndex);
-    console.log();
     if(index.slice(0, -1) === this.state.selectedIndex.slice(0, -1)){ //if user selects location on the same level close any opened locations
       this.setState({
         [this.state.selectedIndex]: false
       })
     }
+    
     this.setState({ 
       selectedIndex: index,
       [index]: this.state[index] ? !this.state[index] : true
