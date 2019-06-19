@@ -34,13 +34,17 @@ export const isCragOrUnder = (type, subType) => {
   if(
     type === "Cr" ||
     type === "Cl" ||
-    type === "Fi"
+    type === "Fi" ||
+    type === "A" ||
+    type === "B"
   ){
     return true
   } else if (
     subType === "Cr" ||
     subType === "Cl" ||
-    subType === "Fi"
+    subType === "Fi" ||
+    type === "A" ||
+    type === "B"
   ){
     return true
   } else {

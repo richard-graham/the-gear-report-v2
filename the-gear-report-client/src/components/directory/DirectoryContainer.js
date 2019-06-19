@@ -11,7 +11,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Grid from '@material-ui/core/Grid';
 //Redux
 import { connect } from 'react-redux'
-import { getLocationData } from '../../../../redux/actions/tcActions'
+import { getLocationData } from '../../redux/actions/tcActions'
 
 
 const styles = {

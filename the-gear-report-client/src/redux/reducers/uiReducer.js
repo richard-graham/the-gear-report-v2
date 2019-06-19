@@ -28,6 +28,7 @@ const initialState = {
     parentID: 7546063,
     zoom: 6,
     additionalInfo: false,
+    cragOrUnder: false,
     loading: false,
     childIds: []
   }

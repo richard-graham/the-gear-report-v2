@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import DirectoryContainer from './directory/DirectoryContainer'
 import RecentAlerts from './RecentAlerts'
 import { connect } from 'react-redux'
 import { getNode } from '../../../redux/actions/tcActions'
@@ -10,14 +9,6 @@ import Grid from '@material-ui/core/Grid'
 
 
 const styles = theme => ({
-  directory: {
-    height: 500,
-    marginBottom: 15,
-    [theme.breakpoints.down('xs')]: {
-      height: 400
-    },
-    
-  },
   header: {
     fontSize: 35,
     padding: 20
@@ -59,12 +50,9 @@ export class home extends Component {
             <Typography variant='h2' className={classes.header}>Welcome to the Gear Report</Typography>
             <Typography variant='h1' className={classes.subtitle1}>An attempt to catalog and share dangerous climbing gear with the community to make our sport safer</Typography>
           </Grid>
-          <Grid item className={classes.directory} xs={12}>
-            <DirectoryContainer />
-          </Grid>
-          <Grid item md={6} xs={12}>
+          {/* <Grid item md={6} xs={12}>
             <RecentAlerts history={this.props.history} />
-          </Grid>
+          </Grid> */}
         </Grid>
       </div>
     )

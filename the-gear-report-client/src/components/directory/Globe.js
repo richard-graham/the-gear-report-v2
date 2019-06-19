@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react'
 import { withStyles } from '@material-ui/core/styles';
-import { resetLocation } from '../../../../redux/actions/UIActions'
+import { resetLocation } from '../../redux/actions/UIActions'
 import { connect } from 'react-redux'
-import { isCragOrUnder } from '../../../../util/functions'
-import { updateSearchLocation } from '../../../../redux/actions/tcActions'
+import { isCragOrUnder } from '../../util/functions'
+import { updateSearchLocation } from '../../redux/actions/tcActions'
 // leaflet
 import 'leaflet/dist/leaflet.css'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'

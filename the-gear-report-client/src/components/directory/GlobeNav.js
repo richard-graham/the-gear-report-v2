@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types';
-import { updateLocation } from '../../../../redux/actions/UIActions'
+import { updateLocation } from '../../redux/actions/UIActions'
 import { connect } from 'react-redux'
+import { isCragOrUnder } from '../../util/functions'
 //Mui
 import { withStyles } from '@material-ui/core/styles';
 import Collapse from '@material-ui/core/Collapse'
@@ -26,30 +27,38 @@ const styles = theme => ({
     paddingLeft: theme.spacing.unit * 12,
   },
   nav: {
+    height: 'calc(100vh - 64px)',
     overflowY: 'auto'
   },
 });
 
-
 export class GlobeNav extends Component {
   state = {
-    selectedIndex: 999,
-    base: true
+    selectedIndex: 'baselvl0',
+    baselvl0: true
   }
 
   handleListItemClick = (index, loc, zoom) => {
     if (loc.id !== Number(this.props.location.id)) this.props.updateLocation(loc, zoom)
+    console.log(index, this.state.selectedIndex);
+    console.log();
+    if(index.slice(0, -1) === this.state.selectedIndex.slice(0, -1)){ //if user selects location on the same level close any opened locations
+      this.setState({
+        [this.state.selectedIndex]: false
+      })
+    }
     this.setState({ 
       selectedIndex: index,
       [index]: this.state[index] ? !this.state[index] : true
     })
+   
   }
 
   findIndex = (i, noOfIndex, newState, location) => {
     var indent = ''
     switch(noOfIndex - i){
       case 1:
-        indent = 'base'
+        indent = 'baselvl'
         break
       case 2:
         indent = 'firstlvl'
@@ -86,7 +95,7 @@ export class GlobeNav extends Component {
   componentWillReceiveProps = (nextProps) => {
     var location = nextProps.location
     if(nextProps.location.searched){
-      //close all current drawers
+      //close all current drawers and rebuild them based on search
       var oldState = {}
       Object.keys(this.state).forEach(key => oldState[key] = false)
       this.setState(oldState, () => { // once old state is overwritten
@@ -112,15 +121,14 @@ export class GlobeNav extends Component {
     return (
         <List className={classes.nav}>
           <ListItem
-            key={999}
-            id={'base'}
+            key={'baselvl0'}
             button
-            selected={selectedIndex === 999}
-            onClick={() => this.handleListItemClick('base', country.parent, 5)}
+            selected={selectedIndex === 'baselvl0'}
+            onClick={() => this.handleListItemClick('baselvl0', country.parent, 5)}
           >
             <ListItemText primary={country.parent.name} />
           </ListItem>
-          <Collapse in={this.state.base} timeout="auto" unmountOnExit>
+          <Collapse in={this.state['baselvl0']} timeout="auto" unmountOnExit>
             {Object.entries(country[selectLoc]).map((item, i) => {
               const loc = item[1]
               const key = `firstlvl${i}`

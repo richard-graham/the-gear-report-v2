@@ -13,7 +13,7 @@ import MySnackBar from './util/MySnackBar'
 import Profile from './components/pages/profile/Profile'
 import AllAlerts from './components/pages/alerts/AllAlerts'
 import Alert from './components/pages/alerts/Alert'
-import DirectoryContainer from './components/pages/home/directory/DirectoryContainer'
+import DirectoryContainer from './components/directory/DirectoryContainer'
 //mui
 import { withStyles } from '@material-ui/core/styles';
 
