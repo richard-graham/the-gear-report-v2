@@ -5,6 +5,7 @@ import Downshift from 'downshift';
 import { textCompletion, removeSuggestions } from '../redux/actions/dataActions'
 import { updateSearchLocation } from '../redux/actions/tcActions'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router'
 //Mui
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -17,7 +18,8 @@ export class Search extends Component {
     input: '',
     typing: false,
     loading: false,
-    typingTimeout: 0
+    typingTimeout: 0,
+    redirect: false
   }
 
   renderInput = (inputProps) => {
@@ -61,8 +63,9 @@ export class Search extends Component {
 
   handleSuggestionClick = (id, updateSearchLocation) => {
     this.props.searchType === 'Nav' 
-      ? updateSearchLocation(id, this.props.country)
-      : this.props.returnIdToParent(id)
+      ? (
+        updateSearchLocation(id, this.props.country) 
+      ) : this.props.returnIdToParent(id)
       this.props.removeSuggestions()
   }
 
@@ -105,8 +108,12 @@ export class Search extends Component {
 
   render() {
     const { classes, searchType } = this.props;
+    const { redirect, id } = this.state
     const divClass = searchType === 'Nav' ? classes.navSearch : classes.alertSearch
-    return (
+
+    if(redirect) return <Redirect push to={`/location/${id}`}/> && this.setState({ redirect: false })
+
+    return !redirect ? (
       <div className={divClass}>
         <Downshift id="downshift-simple">
           {({
@@ -146,7 +153,7 @@ export class Search extends Component {
           )}
         </Downshift>
       </div>
-    );
+    ) : ''
   }
 }
 

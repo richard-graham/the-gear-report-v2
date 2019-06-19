@@ -41,12 +41,6 @@ export class DirectoryContainer extends Component {
     selectedLocation: '11737723'
   }
 
-  componentDidMount = () => {
-    if(this.props.UI.country.length === 0){
-      this.props.getLocationData(this.state.selectedLocation)
-    }
-  }
-
   handleChange = (event, value) => {
     this.setState({ value });
   };

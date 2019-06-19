@@ -14,16 +14,20 @@ import Profile from './components/pages/profile/Profile'
 import AllAlerts from './components/pages/alerts/AllAlerts'
 import Alert from './components/pages/alerts/Alert'
 import DirectoryContainer from './components/directory/DirectoryContainer'
+import SearchRouter from './components/SearchRouter'
 //mui
 import { withStyles } from '@material-ui/core/styles';
 
 
 export class App extends Component {
+
   render() {
     const { classes, authenticated, error, message } = this.props
 
+
     const content = (
       <div className={classes.root}>
+          <Route path='/*' component={SearchRouter} />
           <Route exact path='/' component={home} />
           <Route exact path='/signup' component={NewUserForm} />
           <Route exact path='/login' component={Login} />
@@ -64,7 +68,7 @@ const styles = theme => ({
 const mapStateToProps = state => ({
   authenticated: state.user.authenticated,
   error: state.UI.errors.general,
-  message: state.UI.message
+  message: state.UI.message,
 })
 
 export default connect(mapStateToProps)(withStyles(styles)(App))

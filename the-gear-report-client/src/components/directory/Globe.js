@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react'
 import { withStyles } from '@material-ui/core/styles';
-import { resetLocation } from '../../redux/actions/UIActions'
 import { connect } from 'react-redux'
 import { isCragOrUnder } from '../../util/functions'
 import { updateSearchLocation } from '../../redux/actions/tcActions'
+import { Redirect } from 'react-router'
 // leaflet
 import 'leaflet/dist/leaflet.css'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
@@ -29,18 +29,16 @@ var homeIcon = L.icon({
 
 class Globe extends Component {
 
+   state = {}
+
   handleClick = (child) => {
     this.props.updateSearchLocation(child.id, this.props.country)
-  }
-
-  componentWillUnmount = () => {
-    if(!this.props.location.loading){
-      this.props.resetLocation()
-    }
+    this.setState({ redirect: true, id: child.id })
   }
   
   render() {
     const { classes, location, country, loading } = this.props
+    const { redirect, id } = this.state
     const position = location.geo ? [location.geo[1], location.geo[0]] : '' //some locations don't have coords
     const children = []
     const getChildren = (rootObj) => {
@@ -50,10 +48,12 @@ class Globe extends Component {
         } else if (country[entry[1].id]){
           getChildren(country[entry[1].id])
         }
-
       })
     }
     country && country[location.id] && getChildren(country[location.id])
+
+    if(redirect) return <Redirect push to={`/location/${id}`}/>
+
     return (
       <Fragment>
       <Map 
@@ -111,7 +111,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  resetLocation,
   updateSearchLocation
 }
 

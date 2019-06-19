@@ -1,6 +1,7 @@
 import {
   SET_LOCATION,
   RESET_LOCATION,
+  REMOVE_SEARCHED
 } from '../types'
 import { isCragOrUnder } from '../../util/functions'
 
@@ -21,3 +22,6 @@ export const resetLocation = () => dispatch => {
   })
 }
 
+export const removeSearched = () => dispatch => {
+  dispatch({ type: REMOVE_SEARCHED })
+}

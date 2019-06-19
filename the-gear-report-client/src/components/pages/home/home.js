@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import RecentAlerts from './RecentAlerts'
 import { connect } from 'react-redux'
 import { getNode } from '../../../redux/actions/tcActions'
 //Mui

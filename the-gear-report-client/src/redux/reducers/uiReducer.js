@@ -9,6 +9,7 @@ import {
   SET_LOCATION,
   RESET_LOCATION,
   LOADING_LOCATION,
+  REMOVE_SEARCHED
 } from '../types'
 
 const initialState = {
@@ -110,6 +111,14 @@ export default function(state = initialState, action){
         ...state,
         loading: false
       }
+      case REMOVE_SEARCHED:
+        return {
+          ...state,
+          location: {
+            ...state,
+            searched: false
+          }
+        }
     default:
       return state
   }

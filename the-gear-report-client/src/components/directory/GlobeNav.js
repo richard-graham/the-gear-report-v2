@@ -111,6 +111,8 @@ export class GlobeNav extends Component {
         return ['fourthlvl', 'fifthlvl', 'sixthlvl']
       case 'fifthlvl':
         return ['fifthlvl', 'sixthlvl']
+      default:
+        return []
     }
   }
 
