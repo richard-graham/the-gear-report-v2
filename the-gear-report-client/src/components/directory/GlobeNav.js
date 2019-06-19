@@ -2,13 +2,13 @@ import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types';
 import { updateLocation } from '../../redux/actions/UIActions'
 import { connect } from 'react-redux'
-import { isCragOrUnder } from '../../util/functions'
 //Mui
 import { withStyles } from '@material-ui/core/styles';
 import Collapse from '@material-ui/core/Collapse'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader'
 
 const styles = theme => ({
   nestedLevel1: {
@@ -40,24 +40,31 @@ export class GlobeNav extends Component {
 
   handleListItemClick = (index, loc, zoom) => {
     if (loc.id !== Number(this.props.location.id)) this.props.updateLocation(loc, zoom)
-    if(index.slice(0, -1) === this.state.selectedIndex.slice(0, -1)){ //if user selects location on the same level close any opened locations
-      this.setState({
-        [this.state.selectedIndex]: false
+
+    //if user selects location close any opened locations on the same level
+      var indexAndChildren = this.findIndexAndChildren(index)
+      var newState = {}
+
+      //Set all levels including and below selected row to false
+      Object.keys(this.state).forEach(existingIndex => {
+        indexAndChildren.forEach(level => {
+          if(existingIndex.startsWith(level)) newState[existingIndex] = false
+        })   
       })
-    }
-    
-    this.setState({ 
-      selectedIndex: index,
-      [index]: this.state[index] ? !this.state[index] : true
-    })
-   
+
+      this.setState({
+        ...this.state,
+        ...newState,
+        [index]: this.state[index] ? !this.state[index] : true,
+        selectedIndex: index,
+      })
   }
 
   findIndex = (i, noOfIndex, newState, location) => {
     var indent = ''
     switch(noOfIndex - i){
       case 1:
-        indent = 'baselvl'
+        indent = 'baselvl0'
         break
       case 2:
         indent = 'firstlvl'
@@ -88,7 +95,23 @@ export class GlobeNav extends Component {
     return noOfIndex - i === 1
     ? `${indent}`
     : `${indent}${position}`
-     
+  }
+
+  findIndexAndChildren = (index) => {
+    switch(index.slice(0, -1)){ //remove indexNum on end of index
+      case 'baselvl':
+        return ['firstlvl', 'secondlvl', 'thirdlvl', 'fourthlvl', 'fifthlvl', 'sixthlvl']
+      case 'firstlvl':
+        return ['firstlvl', 'secondlvl', 'thirdlvl', 'fourthlvl', 'fifthlvl', 'sixthlvl']
+      case 'secondlvl':
+        return ['secondlvl', 'thirdlvl', 'fourthlvl', 'fifthlvl', 'sixthlvl']
+      case 'thirdlvl':
+        return ['thirdlvl', 'fourthlvl', 'fifthlvl', 'sixthlvl']
+      case 'fourthlvl':
+        return ['fourthlvl', 'fifthlvl', 'sixthlvl']
+      case 'fifthlvl':
+        return ['fifthlvl', 'sixthlvl']
+    }
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -99,7 +122,9 @@ export class GlobeNav extends Component {
       Object.keys(this.state).forEach(key => oldState[key] = false)
       this.setState(oldState, () => { // once old state is overwritten
         var noOfIndex = Number(location.depth)
-        var newState = {}
+        var newState = {
+
+        }
         for (var i = 0; i < noOfIndex; i++){
           if(i === 0) newState.selectedIndex = this.findIndex(i, noOfIndex, newState, location) 
           newState[this.findIndex(i, noOfIndex, newState, location)] = true
@@ -118,7 +143,14 @@ export class GlobeNav extends Component {
     const { selectedIndex } = this.state
     
     return (
-        <List className={classes.nav}>
+        <List 
+          className={classes.nav}
+          subheader={
+            <ListSubheader component="div" style={{ textAlign: 'left'}} >
+              Navigation
+            </ListSubheader>
+          }
+        >
           <ListItem
             key={'baselvl0'}
             button
