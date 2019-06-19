@@ -11,6 +11,7 @@ import FAQIcon from '@material-ui/icons/NotListedLocation'
 import DonateIcon from '@material-ui/icons/Favorite'
 import FeedbackIcon from '@material-ui/icons/Feedback'
 import MyCragsIcon from '@material-ui/icons/Terrain'
+import Map from '@material-ui/icons/Map'
 
 export const getIcon = (index) => {
   switch(index){
@@ -36,6 +37,8 @@ export const getIcon = (index) => {
       return <FeedbackIcon />
     case 'My Crags':
       return <MyCragsIcon />
+    case 'Map':
+      return <Map />
     default:
       return null
   }

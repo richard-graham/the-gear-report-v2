@@ -26,9 +26,6 @@ const initialState = {
   notifications: [],
   lat: -30.209985,
   lng: 145.095043,
-  haveUsersLocation: false,
-  zoom: 4,
-  countryName: ''
 }
 
 const logoutState = {

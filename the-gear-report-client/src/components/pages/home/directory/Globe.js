@@ -12,11 +12,7 @@ import L from 'leaflet'
 
 const styles = { 
   map: {
-    height: 484,
-    width: '100%'
-  },
-  smallMap: {
-    height: 315,
+    height: '100%',
     width: '100%'
   },
   popupButton: {
@@ -61,7 +57,7 @@ class Globe extends Component {
     return (
       <Fragment>
       <Map 
-        className={this.props.size === 'small' ? classes.smallMap : classes.map} 
+        className={classes.map} 
         center={position} 
         zoom={isCragOrUnder(location.type, location.additionalInfo ? location.subType : null) ? 14 : location.zoom}>
         <TileLayer

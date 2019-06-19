@@ -26,7 +26,7 @@ const initialState = {
     id: 11737723,
     numberRoutes: 12044,
     parentID: 7546063,
-    zoom: 5,
+    zoom: 6,
     additionalInfo: false,
     loading: false,
     childIds: []

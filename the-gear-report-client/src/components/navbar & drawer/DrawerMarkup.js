@@ -48,7 +48,7 @@ export class DrawerMarkup extends Component {
         </div>
         <Divider />
         <List>
-          {['Home', 'Alerts', 'Subscriptions'].map((text) => {
+          {['Home', 'Alerts', 'Map'].map((text) => {
             const link = text === 'Home' ? '' : text.toLowerCase()
             return (
               <ListItem button key={text} component={Link} to={`/${link}`}>

@@ -13,6 +13,7 @@ import MySnackBar from './util/MySnackBar'
 import Profile from './components/pages/profile/Profile'
 import AllAlerts from './components/pages/alerts/AllAlerts'
 import Alert from './components/pages/alerts/Alert'
+import DirectoryContainer from './components/pages/home/directory/DirectoryContainer'
 //mui
 import { withStyles } from '@material-ui/core/styles';
 
@@ -29,6 +30,8 @@ export class App extends Component {
           <AuthRoute path='/profile/:userHandle' component={Profile} />
           <Route exact path='/alerts' render={(props) => <AllAlerts {...props} handleDrawerClose={this.props.handleDrawerClose}/>} />
           <Route exact path='/alert/:alertId' component={Alert} />
+          <Route exact path='/map' component={DirectoryContainer} />
+
           {authenticated === true && <Route path='/' component={ActionButton} />}
     
           {error ?  
@@ -51,6 +54,7 @@ export class App extends Component {
 const styles = theme => ({
   root: {
     width: '100%',
+    minHeight: 'calc(100vh - 64px)',
     display: 'flex',
     justifyContent: 'center',
     textAlign: 'center'

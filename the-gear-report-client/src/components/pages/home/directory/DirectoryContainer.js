@@ -15,40 +15,24 @@ import { getLocationData } from '../../../../redux/actions/tcActions'
 
 
 const styles = {
-  root: {
-    width: '100%',
-  },
-  nav: {
-    display: 'flex',
-
-  },
-  tabs: {
-    width: '100%'
-  },
   tabContainer: {
-    padding: 10,
-    maxHeight: 340,
+    height: 'calc(100vh - 64px)',
     overflowY: 'scroll'
   },
   mapContainer: {
-    padding: 10,
-    maxHeight: 340,
+    height: 'calc(100vh - 64px)'
   },
-  navContainerSmall: {
+  navContainerLarge: {
     width: '100%',
-    height: 350,
-  },
-  navCountainerLarge: {
-    width: '100%',
-    height: '100%',
+    height: 'calc(100vh - 64px)'
   },
   paper: {
-    height: '100%'
+    height: '100%',
+    width: '100%',
   },
   progress: {
     marginTop: '70%'
   }
-
 }
 
 export class DirectoryContainer extends Component {
@@ -81,6 +65,8 @@ export class DirectoryContainer extends Component {
       <Paper square className={classes.paper}>
         <Grid container spacing={0}>
           <Grid item xs={12}>
+
+            {/* small */}
             <Hidden smUp implementation="css">
               <Tabs
                 centered
@@ -102,8 +88,10 @@ export class DirectoryContainer extends Component {
                   && <Globe size={'small'} />}
               </Grid>
             </Hidden> 
+
+            {/* Large */}
             <Hidden xsDown implementation='css'>
-              <Grid container spacing={0} className={classes.navContainerSmall} >
+              <Grid container spacing={0} className={classes.navContainerLarge} >
                 <Grid item align='center' xs={3}>
                   {loading 
                     ? <CircularProgress className={classes.progress} /> 
