@@ -9,6 +9,7 @@ import {
   SET_LOCATION,
   RESET_LOCATION,
   LOADING_LOCATION,
+  REMOVE_SEARCHED
 } from '../types'
 
 const initialState = {
@@ -26,8 +27,9 @@ const initialState = {
     id: 11737723,
     numberRoutes: 12044,
     parentID: 7546063,
-    zoom: 5,
+    zoom: 6,
     additionalInfo: false,
+    cragOrUnder: false,
     loading: false,
     childIds: []
   }
@@ -53,11 +55,8 @@ export default function(state = initialState, action){
       if(action.searched){
         return {
           ...state,
-          location: {
-            ...state.location,
-            ...action.payload,
-            loading: false
-          }
+          location: action.payload,
+          loading: false
         }
       } else {
         return {
@@ -109,6 +108,14 @@ export default function(state = initialState, action){
         ...state,
         loading: false
       }
+      case REMOVE_SEARCHED:
+        return {
+          ...state,
+          location: {
+            ...state.location,
+            searched: false
+          }
+        }
     default:
       return state
   }

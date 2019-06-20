@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import { withStyles } from '@material-ui/core/styles';
-import { resetLocation } from '../../../../redux/actions/UIActions'
 import { connect } from 'react-redux'
-import { isCragOrUnder } from '../../../../util/functions'
-import { updateSearchLocation } from '../../../../redux/actions/tcActions'
+import { isCragOrUnder } from '../../util/functions'
+import { updateSearchLocation } from '../../redux/actions/tcActions'
+import { updateLocation } from '../../redux/actions/UIActions'
+import { Redirect } from 'react-router'
 // leaflet
 import 'leaflet/dist/leaflet.css'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
@@ -12,11 +13,7 @@ import L from 'leaflet'
 
 const styles = { 
   map: {
-    height: 484,
-    width: '100%'
-  },
-  smallMap: {
-    height: 315,
+    height: '100%',
     width: '100%'
   },
   popupButton: {
@@ -33,18 +30,37 @@ var homeIcon = L.icon({
 
 class Globe extends Component {
 
+   state = {
+     updating: false
+   }
+
+   componentDidMount = () => {
+     const baseLocation = {
+      searched: false,
+      type: "R",
+      geo: [172.6775, -41.00485],
+      name: "New Zealand",
+      id: 11737723,
+      numberRoutes: 12044,
+      parentID: 7546063,
+      zoom: 6,
+      additionalInfo: false,
+      cragOrUnder: false,
+      loading: false,
+      childIds: []
+     }
+     this.setState({ updating: true }, () => this.props.updateLocation(baseLocation, 6))
+     
+   }
+
   handleClick = (child) => {
     this.props.updateSearchLocation(child.id, this.props.country)
-  }
-
-  componentWillUnmount = () => {
-    if(!this.props.location.loading){
-      this.props.resetLocation()
-    }
+    this.setState({ redirect: true, id: child.id })
   }
   
   render() {
     const { classes, location, country, loading } = this.props
+    const { redirect, id, updating } = this.state
     const position = location.geo ? [location.geo[1], location.geo[0]] : '' //some locations don't have coords
     const children = []
     const getChildren = (rootObj) => {
@@ -54,14 +70,18 @@ class Globe extends Component {
         } else if (country[entry[1].id]){
           getChildren(country[entry[1].id])
         }
-
       })
     }
     country && country[location.id] && getChildren(country[location.id])
-    return (
+
+    if(redirect) return <Redirect push to={`/location/${id}`}/>
+
+    if(updating) this.setState({ updating: false })
+
+    return !updating ? (
       <Fragment>
       <Map 
-        className={this.props.size === 'small' ? classes.smallMap : classes.map} 
+        className={classes.map} 
         center={position} 
         zoom={isCragOrUnder(location.type, location.additionalInfo ? location.subType : null) ? 14 : location.zoom}>
         <TileLayer
@@ -104,7 +124,7 @@ class Globe extends Component {
         ) : ''}
       </Map>
     </Fragment>
-    )
+    ) : ''
   }
 }
 
@@ -115,8 +135,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  resetLocation,
-  updateSearchLocation
+  updateSearchLocation,
+  updateLocation
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Globe))

@@ -17,6 +17,7 @@ export const SET_COUNTRY = 'SET_COUNTRY'
 export const SET_LOCATION = 'SET_LOCATION'
 export const RESET_LOCATION = 'RESET_LOCATION'
 export const LOADING_LOCATION = 'LOADING_LOCATION'
+export const REMOVE_SEARCHED = 'REMOVE_SEARCHED'
  // Data reducers
 export const LOADING_DATA = 'LOADING_DATA'
 export const SET_ALERTS = 'SET_ALERTS' 
