@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux'
 import { isCragOrUnder } from '../../util/functions'
 import { updateSearchLocation } from '../../redux/actions/tcActions'
+import { updateLocation } from '../../redux/actions/UIActions'
 import { Redirect } from 'react-router'
 // leaflet
 import 'leaflet/dist/leaflet.css'
@@ -29,7 +30,28 @@ var homeIcon = L.icon({
 
 class Globe extends Component {
 
-   state = {}
+   state = {
+     updating: false
+   }
+
+   componentDidMount = () => {
+     const baseLocation = {
+      searched: false,
+      type: "R",
+      geo: [172.6775, -41.00485],
+      name: "New Zealand",
+      id: 11737723,
+      numberRoutes: 12044,
+      parentID: 7546063,
+      zoom: 6,
+      additionalInfo: false,
+      cragOrUnder: false,
+      loading: false,
+      childIds: []
+     }
+     this.setState({ updating: true }, () => this.props.updateLocation(baseLocation, 6))
+     
+   }
 
   handleClick = (child) => {
     this.props.updateSearchLocation(child.id, this.props.country)
@@ -38,7 +60,7 @@ class Globe extends Component {
   
   render() {
     const { classes, location, country, loading } = this.props
-    const { redirect, id } = this.state
+    const { redirect, id, updating } = this.state
     const position = location.geo ? [location.geo[1], location.geo[0]] : '' //some locations don't have coords
     const children = []
     const getChildren = (rootObj) => {
@@ -54,7 +76,9 @@ class Globe extends Component {
 
     if(redirect) return <Redirect push to={`/location/${id}`}/>
 
-    return (
+    if(updating) this.setState({ updating: false })
+
+    return !updating ? (
       <Fragment>
       <Map 
         className={classes.map} 
@@ -100,7 +124,7 @@ class Globe extends Component {
         ) : ''}
       </Map>
     </Fragment>
-    )
+    ) : ''
   }
 }
 
@@ -111,7 +135,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  updateSearchLocation
+  updateSearchLocation,
+  updateLocation
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Globe))

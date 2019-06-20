@@ -15,6 +15,7 @@ import AllAlerts from './components/pages/alerts/AllAlerts'
 import Alert from './components/pages/alerts/Alert'
 import DirectoryContainer from './components/directory/DirectoryContainer'
 import SearchRouter from './components/SearchRouter'
+import DisplayCrag from './components/DisplayCrag'
 //mui
 import { withStyles } from '@material-ui/core/styles';
 
@@ -35,6 +36,7 @@ export class App extends Component {
           <Route exact path='/alerts' render={(props) => <AllAlerts {...props} handleDrawerClose={this.props.handleDrawerClose}/>} />
           <Route exact path='/alert/:alertId' component={Alert} />
           <Route exact path='/map' component={DirectoryContainer} />
+          <Route path='/location/' component={DisplayCrag} />
 
           {authenticated === true && <Route path='/' component={ActionButton} />}
     

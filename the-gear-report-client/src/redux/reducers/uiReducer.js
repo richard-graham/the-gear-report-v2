@@ -55,11 +55,8 @@ export default function(state = initialState, action){
       if(action.searched){
         return {
           ...state,
-          location: {
-            ...state.location,
-            ...action.payload,
-            loading: false
-          }
+          location: action.payload,
+          loading: false
         }
       } else {
         return {
@@ -115,7 +112,7 @@ export default function(state = initialState, action){
         return {
           ...state,
           location: {
-            ...state,
+            ...state.location,
             searched: false
           }
         }
