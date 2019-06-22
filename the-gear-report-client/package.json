@@ -15,6 +15,7 @@
     "leaflet.markercluster": "^1.4.1",
     "lodash": "^4.17.11",
     "material-table": "^1.36.1",
+    "mui-datatables": "^2.5.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-autocomplete": "^1.8.1",

@@ -7,6 +7,20 @@ const navDrawerWidth = 240;
 
 
 export default {
+  overrides: {
+    MuiTable: {
+      root: {
+        padding: 20,
+        borderCollapse: 'inherit'
+      }
+    },
+    MuiTableRow: {
+      root: {
+        height: 36,
+        textDecoration: 'none'
+      }
+    }
+  },
   typography: {
     useNextVariants: true,
   },
