@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { Route  } from 'react-router-dom'
 import { connect } from 'react-redux'
 import AuthRoute from './util/AuthRoute'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 // Components
 import Navigation from './components/navbar & drawer/Navigation'
 import home from './components/pages/home/home'
@@ -15,7 +14,7 @@ import AllAlerts from './components/pages/alerts/AllAlerts'
 import Alert from './components/pages/alerts/Alert'
 import DirectoryContainer from './components/directory/DirectoryContainer'
 import SearchRouter from './components/SearchRouter'
-import DisplayCrag from './components/pages/displayCrag/DisplayCrag'
+import DisplayLocation from './components/pages/displayLocation/DisplayLocation'
 //mui
 import { withStyles } from '@material-ui/core/styles';
 
@@ -36,7 +35,7 @@ export class App extends Component {
           <Route exact path='/alerts' render={(props) => <AllAlerts {...props} handleDrawerClose={this.props.handleDrawerClose}/>} />
           <Route exact path='/alert/:alertId' component={Alert} />
           <Route exact path='/map' component={DirectoryContainer} />
-          <Route path='/location/:locationID' component={DisplayCrag} />
+          <Route path='/location/:locationID' component={DisplayLocation} />
 
           {authenticated === true && <Route path='/' component={ActionButton} />}
     

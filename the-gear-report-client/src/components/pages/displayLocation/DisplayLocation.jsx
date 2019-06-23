@@ -35,10 +35,7 @@ export class DisplayCrag extends Component {
           </Grid>
           <Grid item sm={12} xs={12}>
             {location.children && 
-              <ChildTable 
-                children={location.children} 
-                areaType={location.subType} 
-              />}
+              <ChildTable />}
           </Grid>
         </Grid>
       </div>

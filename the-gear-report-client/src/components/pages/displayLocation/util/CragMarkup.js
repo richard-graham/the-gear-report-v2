@@ -5,15 +5,15 @@ import SignalCellular1Bar from '@material-ui/icons/SignalCellular1Bar'
 import SignalCellular2Bar from '@material-ui/icons/SignalCellular2Bar'
 import SignalCellular3Bar from '@material-ui/icons/SignalCellular3Bar'
 import SignalCellular4Bar from '@material-ui/icons/SignalCellular4Bar'
-
 // Mui 
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
-const cliffChildren = children => {
-  // Sorts routes by highest number of routes
+
+const cragChildren = children => {
+  // Sorts walls by highest number of routes
   children.sort((a, b) => Number(b.numberRoutes) - Number(a.numberRoutes))
   // Make new arr ranked by popularity
   const popArr = children.map(child => child).sort((a, b) => Number(b.ascentCount) - Number(a.ascentCount))
@@ -35,14 +35,10 @@ const getPopularity = (pop) => {
   else return <SignalCellular0Bar />
 }
 
-
-const CliffMarkup = (props) => {
-  const { handleClick } = props
+const CragMarkup = props => {
   let { children } = props
-
-  children = cliffChildren(children)
-  
-
+  const { handleClick } = props
+  children = cragChildren(children)
 
   return (
     <Fragment>
@@ -89,4 +85,4 @@ const CliffMarkup = (props) => {
   )
 }
 
-export default CliffMarkup
+export default CragMarkup

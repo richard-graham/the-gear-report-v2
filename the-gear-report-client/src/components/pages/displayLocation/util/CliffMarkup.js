@@ -1,20 +1,19 @@
 import React, { Fragment } from 'react'
-import { Link } from 'react-router-dom'
 // Mui Icons
 import SignalCellular0Bar from '@material-ui/icons/SignalCellular0Bar'
 import SignalCellular1Bar from '@material-ui/icons/SignalCellular1Bar'
 import SignalCellular2Bar from '@material-ui/icons/SignalCellular2Bar'
 import SignalCellular3Bar from '@material-ui/icons/SignalCellular3Bar'
 import SignalCellular4Bar from '@material-ui/icons/SignalCellular4Bar'
+
 // Mui 
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
-
-const cragChildren = children => {
-  // Sorts walls by highest number of routes
+const cliffChildren = children => {
+  // Sorts routes by highest number of routes
   children.sort((a, b) => Number(b.numberRoutes) - Number(a.numberRoutes))
   // Make new arr ranked by popularity
   const popArr = children.map(child => child).sort((a, b) => Number(b.ascentCount) - Number(a.ascentCount))
@@ -36,18 +35,20 @@ const getPopularity = (pop) => {
   else return <SignalCellular0Bar />
 }
 
-const CragMarkup = props => {
-  let { children } = props
+
+const CliffMarkup = (props) => {
   const { handleClick } = props
-  children = cragChildren(children)
+  let { children } = props
+
+  children = cliffChildren(children)
+  
+
 
   return (
     <Fragment>
       <TableHead>
         <TableRow>
           <TableCell align={'center'}>Name</TableCell>
-          <TableCell align={'center'}>Routes</TableCell>
-          <TableCell align={'center'}>Avg Height</TableCell>
           <TableCell align={'center'}>Style</TableCell>
           <TableCell align={'center'}>Type</TableCell>
           <TableCell align={'center'}>Popularity</TableCell>
@@ -72,8 +73,6 @@ const CragMarkup = props => {
               
               <TableRow key={i} hover onClick={() => handleClick(child)} >
                 <TableCell align={'center'}>{name}</TableCell>
-                <TableCell align={'center'}>{numberRoutes}</TableCell>
-                <TableCell align={'center'}>{averageHeight && `${averageHeight[0]}${averageHeight[1]}`}</TableCell>
                 <TableCell align={'center'}>{styleMarkup}</TableCell>
                 <TableCell align={'center'}>{subType ? subType : type}</TableCell>
                 <TableCell align={'center'}>{getPopularity(popularity)}</TableCell>
@@ -86,4 +85,4 @@ const CragMarkup = props => {
   )
 }
 
-export default CragMarkup
+export default CliffMarkup

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { updateSearchLocation, getNode } from '../../../redux/actions/tcActions'
 import CragMarkup from './util/CragMarkup'
@@ -11,7 +11,6 @@ import Table from '@material-ui/core/Table'
 class ChildTable extends Component {
 
   handleRowClick = (child) => {
-    console.log(child);
     child.type === 'route' ?
     this.props.getNode(child.id) :
     this.props.updateSearchLocation(child.id, this.props.country)
@@ -20,27 +19,34 @@ class ChildTable extends Component {
   }
 
   getMarkup = (areaType, children) => {
+   console.log(areaType);
     if(areaType === 'Crag'){
       return <CragMarkup children={children} handleClick={this.handleRowClick} />
     }
     else if(areaType === 'Cliff'){
+      console.log('Cliff');
       return <CliffMarkup children={children} handleClick={this.handleRowClick} />
     }
   }
 
   render() {
     const { areaType, children } = this.props
-    
+    console.log(children, areaType);
     return (
-      <Table>
-       {children && this.getMarkup(areaType, children)}
-      </Table>
+      <Fragment>
+        {children && areaType &&
+        <Table>
+         {this.getMarkup(areaType, children)}
+        </Table>}
+      </Fragment>
     )
   }
 }
 
 const mapStateToProps = (state) => ({
-  country: state.UI.country
+  country: state.UI.country,
+  areaType: state.UI.subType,
+  children: state.UI.children
 })
 
 const mapDispatchToProps = {

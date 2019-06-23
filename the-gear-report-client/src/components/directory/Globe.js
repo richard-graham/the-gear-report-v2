@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { isCragOrUnder } from '../../util/functions'
 import { updateSearchLocation } from '../../redux/actions/tcActions'
 import { updateLocation } from '../../redux/actions/UIActions'
-import { Redirect } from 'react-router'
+import { withRouter } from 'react-router-dom'
 // leaflet
 import 'leaflet/dist/leaflet.css'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
@@ -30,10 +30,6 @@ var homeIcon = L.icon({
 
 class Globe extends Component {
 
-   state = {
-     updating: false
-   }
-
    componentDidMount = () => {
      const baseLocation = {
       searched: false,
@@ -49,18 +45,16 @@ class Globe extends Component {
       loading: false,
       childIds: []
      }
-     this.setState({ updating: true }, () => this.props.updateLocation(baseLocation, 6))
-     
+     this.props.updateLocation(baseLocation, 6)
    }
 
   handleClick = (child) => {
     this.props.updateSearchLocation(child.id, this.props.country)
-    this.setState({ redirect: true, id: child.id })
+    this.props.history.push(`/location/${child.id}`)
   }
   
   render() {
     const { classes, location, country, loading } = this.props
-    const { redirect, id, updating } = this.state
     const position = location.geo ? [location.geo[1], location.geo[0]] : '' //some locations don't have coords
     const children = []
     const getChildren = (rootObj) => {
@@ -74,11 +68,7 @@ class Globe extends Component {
     }
     country && country[location.id] && getChildren(country[location.id])
 
-    if(redirect) return <Redirect push to={`/location/${id}`}/>
-
-    if(updating) this.setState({ updating: false })
-
-    return !updating ? (
+    return (
       <Fragment>
       <Map 
         className={classes.map} 
@@ -124,7 +114,7 @@ class Globe extends Component {
         ) : ''}
       </Map>
     </Fragment>
-    ) : ''
+    ) 
   }
 }
 
@@ -139,4 +129,4 @@ const mapDispatchToProps = {
   updateLocation
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Globe))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Globe)))
