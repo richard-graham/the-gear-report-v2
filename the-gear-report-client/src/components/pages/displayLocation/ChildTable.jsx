@@ -18,40 +18,34 @@ class ChildTable extends Component {
     this.props.history.push(`/location/${child.id}`)
   }
 
-  getMarkup = (areaType, children) => {
-   console.log(areaType);
-    if(areaType === 'Crag'){
+  getMarkup = (subType, children) => {
+   console.log(subType);
+    if(subType === 'Crag'){
       return <CragMarkup children={children} handleClick={this.handleRowClick} />
     }
-    else if(areaType === 'Cliff'){
+    else if(subType === 'Cliff'){
       console.log('Cliff');
       return <CliffMarkup children={children} handleClick={this.handleRowClick} />
     }
   }
 
   render() {
-    const { areaType, children } = this.props
-    console.log(children, areaType);
+    const { subType, children } = this.props
+    console.log(children, subType);
     return (
       <Fragment>
-        {children && areaType &&
+        {children && subType &&
         <Table>
-         {this.getMarkup(areaType, children)}
+         {this.getMarkup(subType, children)}
         </Table>}
       </Fragment>
     )
   }
 }
 
-const mapStateToProps = (state) => ({
-  country: state.UI.country,
-  areaType: state.UI.subType,
-  children: state.UI.children
-})
-
 const mapDispatchToProps = {
   getNode,
   updateSearchLocation
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ChildTable))
+export default withRouter(connect(null, mapDispatchToProps)(ChildTable))

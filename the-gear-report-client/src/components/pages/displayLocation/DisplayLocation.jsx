@@ -19,23 +19,22 @@ export class DisplayCrag extends Component {
   }
 
   render() {
-    const { location, classes } = this.props
-
-    return location.additionalInfo ? (
+    const { location: { children, subType, beta, name, additionalInfo },country, classes } = this.props
+    return additionalInfo ? (
       <div className={classes.container}>
         <Typography
           gutterBottom
           variant={'h3'}
           className={classes.title}
-        >{location.name}</Typography>
+        >{name}</Typography>
 
         <Grid container spacing={32}>
           <Grid item sm={12} xs={12}>
-            {location.beta && <Beta locationBeta={location.beta} />}
+            {beta && <Beta locationBeta={beta} />}
           </Grid>
           <Grid item sm={12} xs={12}>
-            {location.children && 
-              <ChildTable />}
+            {children && 
+              <ChildTable children={children} subType={subType} country={country} />}
           </Grid>
         </Grid>
       </div>
