@@ -1,44 +1,51 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { updateSearchLocation } from '../../../redux/actions/tcActions'
-import cragMarkup from './util/cragData'
-import cliffMarkup from './util/cliffData'
+import { updateSearchLocation, getNode } from '../../../redux/actions/tcActions'
+import CragMarkup from './util/CragMarkup'
+import CliffMarkup from './util/CliffMarkup'
+import { withRouter } from 'react-router-dom'
 //Mui
-import { withStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 
 
 class ChildTable extends Component {
 
+  handleRowClick = (child) => {
+    console.log(child);
+    child.type === 'route' ?
+    this.props.getNode(child.id) :
+    this.props.updateSearchLocation(child.id, this.props.country)
+
+    this.props.history.push(`/location/${child.id}`)
+  }
+
   getMarkup = (areaType, children) => {
     if(areaType === 'Crag'){
-      return cragMarkup(children)
+      return <CragMarkup children={children} handleClick={this.handleRowClick} />
     }
     else if(areaType === 'Cliff'){
-      return cliffMarkup(children)
+      return <CliffMarkup children={children} handleClick={this.handleRowClick} />
     }
   }
 
   render() {
-    const { areaType, children, classes } = this.props
+    const { areaType, children } = this.props
     
     return (
-      <Table className={classes.table}>
-       {this.getMarkup(areaType, children)}
+      <Table>
+       {children && this.getMarkup(areaType, children)}
       </Table>
     )
   }
 }
 
-const styles = theme => ({
-  // table: {
-  //   width: '100%',
-  //   overflowX: 'auto',
-  // },
-})
-
 const mapStateToProps = (state) => ({
   country: state.UI.country
 })
 
-export default connect(mapStateToProps, { updateSearchLocation })(withStyles(styles)(ChildTable))
+const mapDispatchToProps = {
+  getNode,
+  updateSearchLocation
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ChildTable))

@@ -33,13 +33,7 @@ export class home extends Component {
   state = {
     loadingLocation: false
   }
-
-  componentWillReceiveProps = (nextProps) => {
-    if(this.props.country.length > 0 && !nextProps.location.additionalInfo && !nextProps.location.loading){
-      this.props.getNode(nextProps.location.id, this.props.country)
-    }
-  }
-
+  
   render() {
     const { classes } = this.props
     return (

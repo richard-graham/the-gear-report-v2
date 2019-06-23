@@ -185,8 +185,10 @@ class CreateAlert extends React.Component {
       alertLocation,
       refinements
     } = this.state
+
     const renderLocOptions = location && (checkIfCrag(location.type, location.subType) ||
     checkIfBelowCrag(location.type, location.subType)) ? true : false
+
     return (
       <Fragment>
         <Dialog
@@ -282,7 +284,9 @@ class CreateAlert extends React.Component {
                   }}
                 >
                   <option value={''}>None</option>
-                  {alertLocation.children.map((child, i) => {
+                  {alertLocation.children
+                    .sort((a, b) => (a.name > b.name) ? 1 : -1)
+                    .map((child, i) => {
                     return (
                       <option value={child.id} name={child.name} key={i}>
                         {child.name}
@@ -292,8 +296,11 @@ class CreateAlert extends React.Component {
 
 
                 {refinements.refinement2 && Object.keys(refinements).map((refinement, i) => {
-                  var children = refinements[refinement].children
-                 
+                  // Assigns children and sorts alphabetically
+                  var children = (
+                    refinements[refinement].children ? 
+                      refinements[refinement].children.sort((a, b) => (a.name > b.name) ? 1 : -1) : [])
+
                   return children && Object.keys(children).length > 0 ? (
                     <Select
                       className={classes.select}
@@ -307,7 +314,7 @@ class CreateAlert extends React.Component {
                       key={i}
                     >
                       <option value={''}>None</option>
-                      {refinements[refinement].children.map((child, i) => {
+                      {children.map((child, i) => {
                         return (
                           <option value={child.id} name={child.name} key={i}>
                             {child.name}

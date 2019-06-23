@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { updateSearchLocation } from '../../../redux/actions/tcActions'
 import Beta from './Beta'
@@ -14,17 +14,12 @@ export class DisplayCrag extends Component {
     const { location, match, country, loading } = this.props
     //if the location is the standard result go get the data for 
     if('parent' in country && location.id !== match.params.locationID && !loading) {
-      console.log();
       this.props.updateSearchLocation(match.params.locationID, country)
     }
   }
 
-  handleRowClick = (child) => {
-    this.props.updateSearchLocation(child.id, this.props.country)
-  }
-
   render() {
-    const { location, classes, match, country, loading } = this.props
+    const { location, classes } = this.props
 
     return location.additionalInfo ? (
       <div className={classes.container}>
@@ -39,7 +34,11 @@ export class DisplayCrag extends Component {
             {location.beta && <Beta locationBeta={location.beta} />}
           </Grid>
           <Grid item sm={12} xs={12}>
-            {location.children && <ChildTable children={location.children} areaType={location.subType} handleClick={this.handleRowClick} />}
+            {location.children && 
+              <ChildTable 
+                children={location.children} 
+                areaType={location.subType} 
+              />}
           </Grid>
         </Grid>
       </div>

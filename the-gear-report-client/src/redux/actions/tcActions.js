@@ -75,7 +75,8 @@ export const getNode = (NodeID, country) => (dispatch) => {
       var data = res.data
       data.children = res.children
       data.additionalInfo = true
-      data.geo = country[data.parentID][data.name].geo // tc data doesn't include geo coords so grab them from country obj
+      // data.geo = country[data.parentID][data.name].geo 
+      // tc data doesn't include geo coords so grab them from country obj
       dispatch({
         type: SET_LOCATION,
         payload: data
@@ -86,7 +87,7 @@ export const getNode = (NodeID, country) => (dispatch) => {
     })
 } 
 
-export const updateSearchLocation = (id, country) => dispatch => {
+export const updateSearchLocation = (id, country, type) => dispatch => {
   const url = `https://brendan.thecrag.com/api/node/id/${id}?show=info,children,ancestors&key=${key}`
   dispatch({ type: LOADING_LOCATION })
   fetch(proxyUrl + url)

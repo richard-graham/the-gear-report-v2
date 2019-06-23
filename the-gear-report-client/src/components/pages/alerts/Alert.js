@@ -166,7 +166,7 @@ export class Alert extends Component {
                   </div>
 
                 </Grid>  
-                <Grid item md={1} md={false} /> 
+                <Grid item md={false} /> 
               </Grid>           
             </Grid>
           )}
