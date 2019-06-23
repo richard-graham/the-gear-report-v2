@@ -229,3 +229,7 @@ export const textCompletion = (input, localArea) => dispatch => {
 export const removeSuggestions = () => dispatch => {
   dispatch({ type: REMOVE_SUGGESTIONS })
 }
+
+export const getAlertsByLocation = id => dispatch => {
+  
+}

@@ -10,6 +10,10 @@ import Grid from '@material-ui/core/Grid'
 
 export class DisplayCrag extends Component {
 
+  componentDidMount = () => {
+    
+  }
+
   componentDidUpdate = () => {
     const { location, match, country, loading } = this.props
     //if the location is the standard result go get the data for 
@@ -19,7 +23,18 @@ export class DisplayCrag extends Component {
   }
 
   render() {
-    const { location: { children, subType, beta, name, additionalInfo },country, classes } = this.props
+    const { 
+      location: { 
+        children, 
+        subType, 
+        beta, 
+        name, 
+        additionalInfo 
+      }, 
+      country, 
+      classes 
+    } = this.props
+
     return additionalInfo ? (
       <div className={classes.container}>
         <Typography

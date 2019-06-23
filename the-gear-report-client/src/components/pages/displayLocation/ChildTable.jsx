@@ -19,19 +19,16 @@ class ChildTable extends Component {
   }
 
   getMarkup = (subType, children) => {
-   console.log(subType);
     if(subType === 'Crag'){
       return <CragMarkup children={children} handleClick={this.handleRowClick} />
     }
     else if(subType === 'Cliff'){
-      console.log('Cliff');
       return <CliffMarkup children={children} handleClick={this.handleRowClick} />
     }
   }
 
   render() {
     const { subType, children } = this.props
-    console.log(children, subType);
     return (
       <Fragment>
         {children && subType &&

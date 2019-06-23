@@ -5,6 +5,7 @@ import SignalCellular1Bar from '@material-ui/icons/SignalCellular1Bar'
 import SignalCellular2Bar from '@material-ui/icons/SignalCellular2Bar'
 import SignalCellular3Bar from '@material-ui/icons/SignalCellular3Bar'
 import SignalCellular4Bar from '@material-ui/icons/SignalCellular4Bar'
+import StarRate from '@material-ui/icons/StarRate'
 
 // Mui 
 import TableBody from '@material-ui/core/TableBody';
@@ -35,6 +36,19 @@ const getPopularity = (pop) => {
   else return <SignalCellular0Bar />
 }
 
+const getStars = stars => {
+  switch(Number(stars)){
+    case 1:
+      return <StarRate />
+    case 2:
+      return <Fragment><StarRate /><StarRate /></Fragment>
+    case 3:
+      return <Fragment><StarRate /><StarRate /><StarRate /></Fragment>
+    default:
+      return ''
+  }
+}
+
 
 const CliffMarkup = (props) => {
   const { handleClick } = props
@@ -51,12 +65,14 @@ const CliffMarkup = (props) => {
           <TableCell align={'center'}>Name</TableCell>
           <TableCell align={'center'}>Style</TableCell>
           <TableCell align={'center'}>Type</TableCell>
+          <TableCell align={'center'}>Height</TableCell>
+          <TableCell align={'center'}>Stars</TableCell>
           <TableCell align={'center'}>Popularity</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {children.map((child, i) => {
-          const { name, subType, type, numberRoutes, styles, style, averageHeight, popularity } = child
+          const { name, subType, type, height, styles, style, stars, popularity } = child
           let styleCount = 0
           let mostStyle = ''
 
@@ -67,7 +83,7 @@ const CliffMarkup = (props) => {
               }
             })
 
-          const styleMarkup = style ? `All ${style}` : styles.length > 1 ? mostStyle : `All ${styles[0].style}`
+          const styleMarkup = style ? `${style}` : styles.length > 1 ? mostStyle : `${styles[0].style}`
 
           return (
               
@@ -75,6 +91,8 @@ const CliffMarkup = (props) => {
                 <TableCell align={'center'}>{name}</TableCell>
                 <TableCell align={'center'}>{styleMarkup}</TableCell>
                 <TableCell align={'center'}>{subType ? subType : type}</TableCell>
+                <TableCell align={'center'}>{height && `${height[0]}${height[1]}`}</TableCell>
+                <TableCell align={'center'}>{getStars(stars)}</TableCell>
                 <TableCell align={'center'}>{getPopularity(popularity)}</TableCell>
               </TableRow>
             

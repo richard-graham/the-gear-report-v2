@@ -30,13 +30,19 @@ const {
   getUserDetails,
   markNotificationsRead
  } = require('./handlers/users')
+
+ const {
+   getLocationData,
+   getNode,
+   updateSearchLocation
+ } = require('./handlers/tc')
  
 // Alert routes
 app.get('/alerts', getAllAlerts)
 app.get('/alerts/recent', getRecentAlerts)
 app.get('/alert/:alertId', getAlert)
 app.get('/alerts/:userHandle', getAlertsByUser)
-app.get('/alerts/location/:location', getAlertsByLocations)
+app.get('/alerts/location/:location', getAlertsByLocations) // Check this out
 app.post('/alert', FBAuth, postOneAlert)
 app.post('/alert/add/image', FBAuth, uploadAlertImage)
 app.post('/alert/:alertId/comment', FBAuth, commentOnAlert)
@@ -54,6 +60,10 @@ app.get('/user', FBAuth, getAuthenticatedUser)
 app.get('/user/:handle', getUserDetails)
 app.post('/notifications', FBAuth, markNotificationsRead)
 
+// The Crag routes
+app.get('/tc/location/:location', getLocationData)
+app.get('/tc/node/:nodeID', getNode)
+app.get('/tc/search/location/:id', updateSearchLocation)
 
 exports.api = functions.region('us-central1').https.onRequest(app) 
 // exports.api = functions.region('europe-west1').https.onRequest(app)
