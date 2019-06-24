@@ -53,14 +53,12 @@ export const getNode = (NodeID, country) => (dispatch) => {
 } 
 
 export const updateSearchLocation = (id, country, type) => dispatch => {
-  getAlertsByLocation(id)
-
   dispatch({ type: LOADING_LOCATION })
   axios
     .get(`/tc/search/location/${id}`)
     .then(res => {
       var data = res.data.data
-      data.searched = true
+      type === 'searched' ? data.searched = true : data.searched = false
       data.children = res.data.children
       data.additionalInfo = true
       data.zoom = 12
@@ -68,7 +66,7 @@ export const updateSearchLocation = (id, country, type) => dispatch => {
       dispatch({
         type: SET_LOCATION,
         payload: data,
-        searched: true 
+        searched: type === 'searched' ? true : false
       })
     })
     .catch(err =>{

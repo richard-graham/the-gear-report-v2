@@ -64,7 +64,7 @@ export class Search extends Component {
   handleSuggestionClick = (id, updateSearchLocation) => {
     this.props.searchType === 'Nav' 
       ? (
-        updateSearchLocation(id, this.props.country) 
+        updateSearchLocation(id, this.props.country, 'searched') 
       ) : this.props.returnIdToParent(id)
       this.props.removeSuggestions()
   }

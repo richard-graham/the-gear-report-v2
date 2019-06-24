@@ -11,7 +11,6 @@ import Tabs from '@material-ui/core/Tabs';
 import Grid from '@material-ui/core/Grid';
 //Redux
 import { connect } from 'react-redux'
-import { getLocationData } from '../../redux/actions/tcActions'
 
 
 const styles = {
@@ -110,8 +109,4 @@ const mapStateToProps = state => ({
   UI: state.UI
 })
 
-const mapDispatchToProps = {
-  getLocationData
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DirectoryContainer))
+export default connect(mapStateToProps)(withStyles(styles)(DirectoryContainer))

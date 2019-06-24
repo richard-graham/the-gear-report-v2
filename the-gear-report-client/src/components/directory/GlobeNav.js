@@ -117,23 +117,23 @@ export class GlobeNav extends Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    var location = nextProps.location
-    if(nextProps.location.searched){
-      //close all current drawers and rebuild them based on search
-      var oldState = {}
-      Object.keys(this.state).forEach(key => oldState[key] = false)
-      this.setState(oldState, () => { // once old state is overwritten
-        var noOfIndex = Number(location.depth)
-        var newState = {
+    // var location = nextProps.location
+    // if(nextProps.location.searched){
+    //   //close all current drawers and rebuild them based on search
+    //   var oldState = {}
+    //   Object.keys(this.state).forEach(key => oldState[key] = false)
+    //   this.setState(oldState, () => { // once old state is overwritten
+    //     var noOfIndex = Number(location.depth)
+    //     var newState = {
 
-        }
-        for (var i = 0; i < noOfIndex; i++){
-          if(i === 0) newState.selectedIndex = this.findIndex(i, noOfIndex, newState, location) 
-          newState[this.findIndex(i, noOfIndex, newState, location)] = true
-        }
-        this.setState(newState)  
-      })
-    }
+    //     }
+    //     for (var i = 0; i < noOfIndex; i++){
+    //       if(i === 0) newState.selectedIndex = this.findIndex(i, noOfIndex, newState, location) 
+    //       newState[this.findIndex(i, noOfIndex, newState, location)] = true
+    //     }
+    //     this.setState(newState)  
+    //   })
+    // }
   }
 
   render() {

@@ -68,6 +68,7 @@ const CragMarkup = props => {
           let styleCount = 0
           let mostStyle = ''
           const hasAlerts = checkAlerts(child.id, alerts)
+
           styles && styles.forEach(style => { 
               if(style.total > styleCount){
                 styleCount = style.total
@@ -75,7 +76,7 @@ const CragMarkup = props => {
               }
             })
 
-          const styleMarkup = style ? `All ${style}` : styles.length > 1 ? mostStyle : `All ${styles[0].style}`
+          const styleMarkup = style ? `All ${style}` : styles ? styles.length > 1 ? mostStyle : `All ${styles[0].style}` : ''
 
           return (
               

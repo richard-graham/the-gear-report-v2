@@ -77,7 +77,6 @@ const CliffMarkup = (props) => {
           <TableCell align={'center'}>Grade</TableCell>
           <TableCell align={'center'}>Height</TableCell>
           <TableCell align={'center'}>Style</TableCell>
-          <TableCell align={'center'}>Type</TableCell>
           <TableCell align={'center'} style={{ width: 80 }}>Stars</TableCell>
           <TableCell align={'center'}>Popularity</TableCell>
         </TableRow>
@@ -106,7 +105,6 @@ const CliffMarkup = (props) => {
                 <TableCell align={'center'}>{grade}</TableCell>
                 <TableCell align={'center'}>{height && `${height[0]}${height[1]}`}</TableCell>
                 <TableCell align={'center'}>{styleMarkup}</TableCell>
-                <TableCell align={'center'}>{subType ? subType : type}</TableCell>
                 <TableCell ><div style={{ display: 'flex', flexWrap: 'noWrap', alignItems: 'center', justifyContent: 'center' }}>{getStars(stars)}</div></TableCell>
                 <TableCell align={'center'}>{getPopularity(popularity)}</TableCell>
               </TableRow>

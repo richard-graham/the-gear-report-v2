@@ -55,8 +55,10 @@ export default function(state = initialState, action){
       if(action.searched){
         return {
           ...state,
-          location: action.payload,
-          loading: false
+          location: {
+            ...action.payload,
+            loading: false
+          }
         }
       } else {
         return {

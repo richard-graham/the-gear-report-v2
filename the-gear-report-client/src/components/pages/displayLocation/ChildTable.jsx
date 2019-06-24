@@ -5,6 +5,7 @@ import { getAlertsByLocation } from '../../../redux/actions/dataActions'
 import CragMarkup from './util/CragMarkup'
 import CliffMarkup from './util/CliffMarkup'
 import { withRouter } from 'react-router-dom'
+import { checkIfCrag, checkIfBelowCrag } from '../../../util/functions'
 //Mui
 import Table from '@material-ui/core/Table'
 
@@ -12,7 +13,7 @@ import Table from '@material-ui/core/Table'
 class ChildTable extends Component {
 
   handleRowClick = (child) => {
-    child.type === 'route' ?
+    child.type === 'route' || child.type === 'boulder' ?
     this.props.getNode(child.id) : (
     this.props.updateSearchLocation(child.id, this.props.country) &&
     this.props.getAlertsByLocation(child.id) )
@@ -20,14 +21,14 @@ class ChildTable extends Component {
   }
 
   getMarkup = (subType, children, alerts) => {
-    if(subType === 'Crag'){
+    if(checkIfCrag(null, subType)){
       return <CragMarkup 
               children={children} 
               handleClick={this.handleRowClick} 
               alerts={alerts} 
             />
     }
-    else if(subType === 'Cliff'){
+    else if(checkIfBelowCrag(null, subType)){
       return <CliffMarkup 
               children={children} 
               handleClick={this.handleRowClick} 

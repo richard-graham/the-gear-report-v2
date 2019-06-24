@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { updateSearchLocation } from '../../../redux/actions/tcActions'
 import { getAlertsByLocation } from '../../../redux/actions/dataActions'
-
+import CardList from './CardList'
 import Beta from './Beta'
 import ChildTable from './ChildTable'
 //Mui
@@ -16,12 +16,16 @@ export class DisplayCrag extends Component {
     // this.props.getAlertsByLocation(this.props.match.params.locationID)
   }
 
-  componentDidUpdate = () => {
+  
+
+  componentDidUpdate = (prevProps) => {
     const { location, match, country, loading } = this.props
-    //if the location is the standard result go get the data for 
-    if('parent' in country && location.id !== match.params.locationID && !loading) {
+    //if the location is not the standard result go get the data for new location
+    if(!loading && location.id === 11737723 && match.params.locationID !== '11737723') {
       this.props.updateSearchLocation(match.params.locationID, country)
       this.props.getAlertsByLocation(match.params.locationID)
+    } else if(!loading && match.params.locationID !== prevProps.match.params.locationID){
+      this.props.updateSearchLocation(match.params.locationID, country)
     }
   }
 
@@ -45,8 +49,7 @@ export class DisplayCrag extends Component {
         <Typography
           gutterBottom
           variant={'h3'}
-          className={classes.title}
-        >{name}</Typography>
+          >{name}</Typography>
 
         <Grid container spacing={32}>
           <Grid item sm={12} xs={12}>
@@ -58,6 +61,9 @@ export class DisplayCrag extends Component {
                 <ChildTable children={children} subType={subType} country={country} alerts={alerts} />
               </div>}
           </Grid>
+          <Grid item xs={12}>
+            {/* <CardList /> */}
+          </Grid>
         </Grid>
       </div>
     ) : (''
@@ -66,19 +72,26 @@ export class DisplayCrag extends Component {
   }
 }
 
-const styles = {
+const styles = theme => ({
+  ...theme,
   container: {
-    padding: 10
-  },
-  title: {
-    padding: 10
+    marginLeft: 80,
+    marginRight: 80,
+    marginTop: 20,
+    [theme.breakpoints.down('md')]: {
+      marginLeft: 40,
+      marginRight: 40,
+    },
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: 20,
+      marginRight: 20,
+    },
   },
   tableDiv: {
-    margin: 40,
     borderRadius: 5,
     backgroundColor: '#f4f4f4'
-  }
-}
+  },
+})
 
 const mapStateToProps = (state) => ({
   location: state.UI.location,

@@ -5,7 +5,9 @@ export const checkIfCrag = (type, subType) => {
       return true
     } else if (subType){
       if(
-        subType === "Crag"
+        subType === "Crag" ||
+        subType === "Sector" ||
+        subType === "Area"
       ){
         return true
       }
@@ -21,8 +23,9 @@ export const checkIfBelowCrag = (type, subType) => {
   ){
     return true
   } else if (
-    subType === "Cl" ||
-    subType === "Fi"
+    subType === "Cliff" ||
+    subType === "Field" ||
+    subType === "Boulder"
   ){
     return true
   } else {
