@@ -19,6 +19,14 @@ export default {
         height: 36,
         textDecoration: 'none'
       }
+    },
+    MuiTableCell: {
+      root: {
+        paddingTop: 4,
+        paddingBottom: 4,
+        paddingLeft: 10,
+        paddingRight: 10
+      }
     }
   },
   typography: {

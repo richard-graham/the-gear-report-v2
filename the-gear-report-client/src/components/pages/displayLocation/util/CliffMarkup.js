@@ -72,13 +72,13 @@ const CliffMarkup = (props) => {
     <Fragment>
       <TableHead>
         <TableRow>
-          <TableCell align={'center'}>Name</TableCell>
+          <TableCell align={'left'} style={{ width: 220 }}>Name</TableCell>
           <TableCell align={'center'}>Alerts</TableCell>
           <TableCell align={'center'}>Grade</TableCell>
           <TableCell align={'center'}>Height</TableCell>
           <TableCell align={'center'}>Style</TableCell>
           <TableCell align={'center'}>Type</TableCell>
-          <TableCell align={'center'}>Stars</TableCell>
+          <TableCell align={'center'} style={{ width: 80 }}>Stars</TableCell>
           <TableCell align={'center'}>Popularity</TableCell>
         </TableRow>
       </TableHead>
@@ -101,13 +101,13 @@ const CliffMarkup = (props) => {
           return (
               
               <TableRow key={i} hover onClick={() => handleClick(child)} >
-                <TableCell align={'center'}>{name}</TableCell>
+                <TableCell align={'left'}>{name}</TableCell>
                 <TableCell align={'center'}>{hasAlerts ? <Warning /> : ''}</TableCell>
                 <TableCell align={'center'}>{grade}</TableCell>
                 <TableCell align={'center'}>{height && `${height[0]}${height[1]}`}</TableCell>
                 <TableCell align={'center'}>{styleMarkup}</TableCell>
                 <TableCell align={'center'}>{subType ? subType : type}</TableCell>
-                <TableCell align={'center'}><div>{getStars(stars)}</div></TableCell>
+                <TableCell ><div style={{ display: 'flex', flexWrap: 'noWrap', alignItems: 'center', justifyContent: 'center' }}>{getStars(stars)}</div></TableCell>
                 <TableCell align={'center'}>{getPopularity(popularity)}</TableCell>
               </TableRow>
             

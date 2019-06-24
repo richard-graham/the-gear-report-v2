@@ -54,7 +54,9 @@ export class DisplayCrag extends Component {
           </Grid>
           <Grid item sm={12} xs={12}>
             {children && !loadingAlerts && 
-              <ChildTable children={children} subType={subType} country={country} alerts={alerts} />}
+              <div className={classes.tableDiv}>
+                <ChildTable children={children} subType={subType} country={country} alerts={alerts} />
+              </div>}
           </Grid>
         </Grid>
       </div>
@@ -70,6 +72,11 @@ const styles = {
   },
   title: {
     padding: 10
+  },
+  tableDiv: {
+    margin: 40,
+    borderRadius: 5,
+    backgroundColor: '#f4f4f4'
   }
 }
 
