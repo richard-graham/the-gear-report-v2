@@ -107,7 +107,7 @@ const CliffMarkup = (props) => {
                 <TableCell align={'center'}>{height && `${height[0]}${height[1]}`}</TableCell>
                 <TableCell align={'center'}>{styleMarkup}</TableCell>
                 <TableCell align={'center'}>{subType ? subType : type}</TableCell>
-                <TableCell align={'center'}>{getStars(stars)}</TableCell>
+                <TableCell align={'center'}><div>{getStars(stars)}</div></TableCell>
                 <TableCell align={'center'}>{getPopularity(popularity)}</TableCell>
               </TableRow>
             

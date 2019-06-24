@@ -13,7 +13,7 @@ import Grid from '@material-ui/core/Grid'
 export class DisplayCrag extends Component {
 
   componentDidMount = () => {
-    
+    // this.props.getAlertsByLocation(this.props.match.params.locationID)
   }
 
   componentDidUpdate = () => {
@@ -34,6 +34,7 @@ export class DisplayCrag extends Component {
         name, 
         additionalInfo 
       }, 
+      loadingAlerts,
       country, 
       alerts,
       classes 
@@ -52,7 +53,7 @@ export class DisplayCrag extends Component {
             {beta && <Beta locationBeta={beta} />}
           </Grid>
           <Grid item sm={12} xs={12}>
-            {children && alerts && 
+            {children && !loadingAlerts && 
               <ChildTable children={children} subType={subType} country={country} alerts={alerts} />}
           </Grid>
         </Grid>
@@ -76,6 +77,7 @@ const mapStateToProps = (state) => ({
   location: state.UI.location,
   country: state.UI.country,
   loading: state.UI.location.loading,
+  loadingAlerts: state.UI.location.loadingAlerts,
   alerts: state.data.alerts
 })
 

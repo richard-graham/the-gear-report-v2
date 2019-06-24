@@ -12,7 +12,8 @@ import {
   RESET_ALERT_IMAGE,
   SET_USER_PROFILE,
   SET_SEARCH,
-  REMOVE_SUGGESTIONS
+  REMOVE_SUGGESTIONS,
+  LOADING_ALERTS
 } from '../types'
 
 const initialState = {
@@ -22,6 +23,7 @@ const initialState = {
   alert: {},
   location: {},
   loading: false,
+  loadingAlerts: false,
   newAlert: {
     images: []
   },
@@ -50,7 +52,7 @@ export default function(state = initialState, action){
       return {
         ...state,
         alerts: action.payload,
-        loading: false
+        loadingAlerts: false
       }
     case SET_RECENT_ALERTS:
       return {
@@ -126,6 +128,11 @@ export default function(state = initialState, action){
       return {
         ...state,
         searchResults: []
+      }
+    case LOADING_ALERTS:
+      return {
+        ...state,
+        loadingAlerts: true
       }
     default:
      return state
