@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { updateSearchLocation } from '../../../redux/actions/tcActions'
+import { getAlertsByLocation } from '../../../redux/actions/dataActions'
+
 import Beta from './Beta'
 import ChildTable from './ChildTable'
 //Mui
@@ -19,6 +21,7 @@ export class DisplayCrag extends Component {
     //if the location is the standard result go get the data for 
     if('parent' in country && location.id !== match.params.locationID && !loading) {
       this.props.updateSearchLocation(match.params.locationID, country)
+      this.props.getAlertsByLocation(match.params.locationID)
     }
   }
 
@@ -32,6 +35,7 @@ export class DisplayCrag extends Component {
         additionalInfo 
       }, 
       country, 
+      alerts,
       classes 
     } = this.props
 
@@ -48,8 +52,8 @@ export class DisplayCrag extends Component {
             {beta && <Beta locationBeta={beta} />}
           </Grid>
           <Grid item sm={12} xs={12}>
-            {children && 
-              <ChildTable children={children} subType={subType} country={country} />}
+            {children && alerts && 
+              <ChildTable children={children} subType={subType} country={country} alerts={alerts} />}
           </Grid>
         </Grid>
       </div>
@@ -71,11 +75,13 @@ const styles = {
 const mapStateToProps = (state) => ({
   location: state.UI.location,
   country: state.UI.country,
-  loading: state.UI.location.loading
+  loading: state.UI.location.loading,
+  alerts: state.data.alerts
 })
 
 const mapDispatchToProps = {
-  updateSearchLocation
+  updateSearchLocation,
+  getAlertsByLocation
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DisplayCrag))

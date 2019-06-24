@@ -2,6 +2,7 @@ import {
   SET_ALERTS,
   SET_RECENT_ALERTS,
   LOADING_DATA, 
+  LOADING_ALERTS,
   LIKE_ALERT, 
   UNLIKE_ALERT, 
   DELETE_ALERT, 
@@ -18,7 +19,7 @@ import {
   SET_USER_ALERTS,
   SET_USER_PROFILE,
   SET_SEARCH,
-  REMOVE_SUGGESTIONS
+  REMOVE_SUGGESTIONS,
 } from '../types'
 import axios from 'axios'
 import { key } from '../../util/keys'
@@ -231,5 +232,16 @@ export const removeSuggestions = () => dispatch => {
 }
 
 export const getAlertsByLocation = id => dispatch => {
-  
+  dispatch({ type: LOADING_ALERTS })
+  axios
+    .get(`/alerts/location/${id}`)
+    .then(res => {
+      dispatch({ 
+        type: SET_ALERTS,
+        payload: res.data
+      })
+    })
+    .catch(err => {
+      console.log(err);
+    })
 }

@@ -7,6 +7,7 @@ import {
 } from '../types'
 import axios from 'axios'
 import { key } from '../../util/keys'
+import { getAlertsByLocation } from './dataActions'
 const proxyUrl = "https://cors-anywhere.herokuapp.com/"
 
 
@@ -52,6 +53,8 @@ export const getNode = (NodeID, country) => (dispatch) => {
 } 
 
 export const updateSearchLocation = (id, country, type) => dispatch => {
+  getAlertsByLocation(id)
+
   dispatch({ type: LOADING_LOCATION })
   axios
     .get(`/tc/search/location/${id}`)

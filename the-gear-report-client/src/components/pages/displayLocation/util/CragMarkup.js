@@ -5,6 +5,7 @@ import SignalCellular1Bar from '@material-ui/icons/SignalCellular1Bar'
 import SignalCellular2Bar from '@material-ui/icons/SignalCellular2Bar'
 import SignalCellular3Bar from '@material-ui/icons/SignalCellular3Bar'
 import SignalCellular4Bar from '@material-ui/icons/SignalCellular4Bar'
+import Warning from '@material-ui/icons/Warning'
 // Mui 
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -35,9 +36,17 @@ const getPopularity = (pop) => {
   else return <SignalCellular0Bar />
 }
 
+const checkAlerts = (id, alerts) => {
+  let confirmed = false
+  alerts.forEach(alert => {
+    if(alert.locations.includes(id) && alert.resolved === false) confirmed = true
+  })
+  return confirmed
+}
+
 const CragMarkup = props => {
   let { children } = props
-  const { handleClick } = props
+  const { handleClick, alerts } = props
   children = cragChildren(children)
 
   return (
@@ -45,6 +54,7 @@ const CragMarkup = props => {
       <TableHead>
         <TableRow>
           <TableCell align={'center'}>Name</TableCell>
+          <TableCell align={'center'}>Alerts</TableCell>
           <TableCell align={'center'}>Routes</TableCell>
           <TableCell align={'center'}>Avg Height</TableCell>
           <TableCell align={'center'}>Style</TableCell>
@@ -57,7 +67,7 @@ const CragMarkup = props => {
           const { name, subType, type, numberRoutes, styles, style, averageHeight, popularity } = child
           let styleCount = 0
           let mostStyle = ''
-
+          const hasAlerts = checkAlerts(child.id, alerts)
           styles && styles.forEach(style => { 
               if(style.total > styleCount){
                 styleCount = style.total
@@ -71,6 +81,7 @@ const CragMarkup = props => {
               
               <TableRow key={i} hover onClick={() => handleClick(child)} >
                 <TableCell align={'center'}>{name}</TableCell>
+                <TableCell align={'center'}>{hasAlerts ? <Warning /> : ''}</TableCell>
                 <TableCell align={'center'}>{numberRoutes}</TableCell>
                 <TableCell align={'center'}>{averageHeight && `${averageHeight[0]}${averageHeight[1]}`}</TableCell>
                 <TableCell align={'center'}>{styleMarkup}</TableCell>

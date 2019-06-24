@@ -151,7 +151,7 @@ exports.getAlertsByLocations = (req, res) => {
     .then(docs => {
       let alerts = []
       docs.forEach(doc => alerts.push(doc.data()))
-      return res.json(alerts)
+      res.send(alerts)
     })
     .catch(err => {
       console.error(err)

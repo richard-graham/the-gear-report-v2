@@ -6,6 +6,7 @@ import SignalCellular2Bar from '@material-ui/icons/SignalCellular2Bar'
 import SignalCellular3Bar from '@material-ui/icons/SignalCellular3Bar'
 import SignalCellular4Bar from '@material-ui/icons/SignalCellular4Bar'
 import StarRate from '@material-ui/icons/StarRate'
+import Warning from '@material-ui/icons/Warning'
 
 // Mui 
 import TableBody from '@material-ui/core/TableBody';
@@ -26,6 +27,15 @@ const cliffChildren = children => {
   })
   return children
 }
+
+const checkAlerts = (id, alerts) => {
+  let confirmed = false
+  alerts.forEach(alert => {
+    if(alert.locations.includes(id) && alert.resolved === false) confirmed = true
+  })
+  return confirmed
+}
+
 
 const getPopularity = (pop) => {
   if(pop >= 80) return <SignalCellular4Bar />
@@ -51,7 +61,7 @@ const getStars = stars => {
 
 
 const CliffMarkup = (props) => {
-  const { handleClick } = props
+  const { handleClick, alerts } = props
   let { children } = props
 
   children = cliffChildren(children)
@@ -63,18 +73,21 @@ const CliffMarkup = (props) => {
       <TableHead>
         <TableRow>
           <TableCell align={'center'}>Name</TableCell>
+          <TableCell align={'center'}>Alerts</TableCell>
+          <TableCell align={'center'}>Grade</TableCell>
+          <TableCell align={'center'}>Height</TableCell>
           <TableCell align={'center'}>Style</TableCell>
           <TableCell align={'center'}>Type</TableCell>
-          <TableCell align={'center'}>Height</TableCell>
           <TableCell align={'center'}>Stars</TableCell>
           <TableCell align={'center'}>Popularity</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {children.map((child, i) => {
-          const { name, subType, type, height, styles, style, stars, popularity } = child
+          const { name, subType, type, height, styles, style, stars, popularity, grade } = child
           let styleCount = 0
           let mostStyle = ''
+          const hasAlerts = checkAlerts(child.id, alerts)
 
           styles && styles.forEach(style => { 
               if(style.total > styleCount){
@@ -89,9 +102,11 @@ const CliffMarkup = (props) => {
               
               <TableRow key={i} hover onClick={() => handleClick(child)} >
                 <TableCell align={'center'}>{name}</TableCell>
+                <TableCell align={'center'}>{hasAlerts ? <Warning /> : ''}</TableCell>
+                <TableCell align={'center'}>{grade}</TableCell>
+                <TableCell align={'center'}>{height && `${height[0]}${height[1]}`}</TableCell>
                 <TableCell align={'center'}>{styleMarkup}</TableCell>
                 <TableCell align={'center'}>{subType ? subType : type}</TableCell>
-                <TableCell align={'center'}>{height && `${height[0]}${height[1]}`}</TableCell>
                 <TableCell align={'center'}>{getStars(stars)}</TableCell>
                 <TableCell align={'center'}>{getPopularity(popularity)}</TableCell>
               </TableRow>
