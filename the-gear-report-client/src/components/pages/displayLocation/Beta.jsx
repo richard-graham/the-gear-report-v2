@@ -10,7 +10,7 @@ const Beta = (props) => {
     locationBeta.map((beta, i) => {
       const { name, markdown} = beta
       return (
-        <Grid container item xs={12} key={i} spacing={2}>
+        <Grid container item xs={12} key={i} spacing={16}>
           <Grid item xs={3} md={2}>
             <Typography  
               variant={'h6'}

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { updateSearchLocation } from '../../../redux/actions/tcActions'
 import { getAlertsByLocation } from '../../../redux/actions/dataActions'
-import CardList from './CardList'
+import DisplayAlerts from './DisplayAlerts'
 import Beta from './Beta'
 import ChildTable from './ChildTable'
 //Mui
@@ -20,12 +20,14 @@ export class DisplayCrag extends Component {
 
   componentDidUpdate = (prevProps) => {
     const { location, match, country, loading } = this.props
-    //if the location is not the standard result go get the data for new location
+    //initial load case
     if(!loading && location.id === 11737723 && match.params.locationID !== '11737723') {
       this.props.updateSearchLocation(match.params.locationID, country)
       this.props.getAlertsByLocation(match.params.locationID)
+      //new location case
     } else if(!loading && match.params.locationID !== prevProps.match.params.locationID){
       this.props.updateSearchLocation(match.params.locationID, country)
+      this.props.getAlertsByLocation(match.params.locationID)
     }
   }
 
@@ -55,14 +57,14 @@ export class DisplayCrag extends Component {
           <Grid item sm={12} xs={12}>
             {beta && <Beta locationBeta={beta} />}
           </Grid>
+          <Grid item xs={12}>
+            <DisplayAlerts alerts={alerts} />
+          </Grid>
           <Grid item sm={12} xs={12}>
             {children && !loadingAlerts && 
               <div className={classes.tableDiv}>
                 <ChildTable children={children} subType={subType} country={country} alerts={alerts} />
               </div>}
-          </Grid>
-          <Grid item xs={12}>
-            {/* <CardList /> */}
           </Grid>
         </Grid>
       </div>

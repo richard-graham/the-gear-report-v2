@@ -27,6 +27,13 @@ export default {
         paddingLeft: 10,
         paddingRight: 10
       }
+    },
+    MuiCardMedia: {
+      media: {
+        width: '100%',
+        height: 'auto',
+        overflow: 'hidden'
+      }
     }
   },
   typography: {
