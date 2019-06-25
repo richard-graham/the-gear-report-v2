@@ -232,6 +232,7 @@ export const removeSuggestions = () => dispatch => {
 }
 
 export const getAlertsByLocation = id => dispatch => {
+  console.log('pong');
   dispatch({ type: LOADING_ALERTS })
   axios
     .get(`/alerts/location/${id}`)

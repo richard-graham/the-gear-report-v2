@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { updateSearchLocation } from '../../../redux/actions/tcActions'
+import { updateSearchLocation, getNode } from '../../../redux/actions/tcActions'
 import { getAlertsByLocation } from '../../../redux/actions/dataActions'
 import DisplayAlerts from './DisplayAlerts'
 import Beta from './Beta'
@@ -13,7 +13,9 @@ import Grid from '@material-ui/core/Grid'
 export class DisplayCrag extends Component {
 
   componentDidMount = () => {
-    // this.props.getAlertsByLocation(this.props.match.params.locationID)
+    const { match} = this.props
+    this.props.getNode(match.params.locationID)
+    this.props.getAlertsByLocation(match.params.locationID)
   }
 
   
@@ -58,7 +60,8 @@ export class DisplayCrag extends Component {
             {beta && <Beta locationBeta={beta} />}
           </Grid>
           <Grid item xs={12}>
-            <DisplayAlerts alerts={alerts} />
+            {alerts && !loadingAlerts &&
+            <DisplayAlerts alerts={alerts} />}
           </Grid>
           <Grid item sm={12} xs={12}>
             {children && !loadingAlerts && 
@@ -105,7 +108,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   updateSearchLocation,
-  getAlertsByLocation
+  getAlertsByLocation,
+  getNode
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DisplayCrag))

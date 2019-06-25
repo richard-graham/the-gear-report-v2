@@ -13,10 +13,15 @@ import Table from '@material-ui/core/Table'
 class ChildTable extends Component {
 
   handleRowClick = (child) => {
-    child.type === 'route' || child.type === 'boulder' ?
-    this.props.getNode(child.id) : (
-    this.props.updateSearchLocation(child.id, this.props.country) &&
-    this.props.getAlertsByLocation(child.id) )
+    if(child.type === 'route' || child.type === 'boulder'){
+      console.log('yass');
+      this.props.getNode(child.id)
+      this.props.getAlertsByLocation(child.id)
+    } else {
+      console.log('hit');
+      this.props.updateSearchLocation(child.id, this.props.country)
+      this.props.getAlertsByLocation(child.id)
+    }
     this.props.history.push(`/location/${child.id}`)
   }
 
