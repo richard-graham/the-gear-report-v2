@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import red from '@material-ui/core/colors/red';
 import Collapse from '@material-ui/core/Collapse'
+import GridList from '@material-ui/core/GridList'
 //Icons
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
@@ -31,60 +32,63 @@ export class CardList extends Component {
     return (
       <Fragment>
         <Typography variant='h6' >Alerts</Typography>
-          
-          {alerts.map((alert, i) => {
-            const { userAvatarLetters, title, createdAt, images, body } = alert
-            return (
-              <div className={classes.myCard} key={`a${i}`}>
-                <div className={classes.header}>
-                  <div className={classes.myAvatarContainer}>
-                    <Avatar aria-label='User' className={classes.myAvatar}>
-                      {userAvatarLetters}
-                    </Avatar>
+        <br />
+        <div className={classes.gridRoot}>
+          <GridList className={classes.gridList}>
+            {alerts.map((alert, i) => {
+              const { userAvatarLetters, title, createdAt, images, body } = alert
+              return (
+                <div className={classes.myCard} key={`a${i}`}>
+                  <div className={classes.header}>
+                    <div className={classes.myAvatarContainer}>
+                      <Avatar aria-label='User' className={classes.myAvatar}>
+                        {userAvatarLetters}
+                      </Avatar>
+                    </div>
+                    <div className={classes.myCardHeaderContent}>
+                      <span className={classes.myCardTitle}>
+                        {title}
+                      </span>
+                      <Typography variant='body2' className={classes.myCardDate} >
+                        {dayjs(createdAt).format('DD-MM-YYYY')}
+                      </Typography>
+                    </div>
                   </div>
-                  <div className={classes.myCardHeaderContent}>
-                    <span className={classes.myCardTitle}>
-                      {title}
-                    </span>
-                    <Typography variant='body2' className={classes.myCardDate} >
-                      {dayjs(createdAt).format('DD-MM-YYYY')}
-                    </Typography>
+                  <div className={classes.myCardImageContainer}>
+                    <img 
+                      src={images[0]}
+                      className={classes.myCardImage}
+                    />
                   </div>
+                  <div className={classes.myCardActionBar}>
+                    <IconButton aria-label="Like Alert">
+                      <FavoriteIcon />
+                    </IconButton>
+                    <IconButton aria-label="Share">
+                      <ShareIcon />
+                    </IconButton>
+                    <IconButton
+                      className={classnames(classes.expand, {
+                        [classes.expandOpen]: this.state[`a${i}`],
+                      })}
+                      onClick={() => {this.handleExpandClick(`a${i}`)}}
+                      aria-expanded={this.state.expanded}
+                      aria-label="Show more"
+                    >
+                      <ExpandMoreIcon />
+                    </IconButton>
+                  </div>
+                  <Collapse in={this.state[[`a${i}`]]} timeout="auto" unmountOnExit>
+                    <CardContent>
+                      <Typography paragraph style={{ textAlign: 'left' }}>Description:</Typography>
+                      <Typography paragraph style={{ textAlign: 'left' }}>{body}</Typography>
+                    </CardContent>
+                  </Collapse>
                 </div>
-                <div className={classes.myCardImageContainer}>
-                  <img 
-                    src={images[0]}
-                    className={classes.myCardImage}
-                  />
-                </div>
-                <div className={classes.myCardActionBar}>
-                  <IconButton aria-label="Like Alert">
-                    <FavoriteIcon />
-                  </IconButton>
-                  <IconButton aria-label="Share">
-                    <ShareIcon />
-                  </IconButton>
-                  <IconButton
-                    className={classnames(classes.expand, {
-                      [classes.expandOpen]: this.state[`a${i}`],
-                    })}
-                    onClick={() => {this.handleExpandClick(`a${i}`)}}
-                    aria-expanded={this.state.expanded}
-                    aria-label="Show more"
-                  >
-                    <ExpandMoreIcon />
-                  </IconButton>
-                </div>
-                <Collapse in={this.state[[`a${i}`]]} timeout="auto" unmountOnExit>
-                  <CardContent>
-                    <Typography paragraph style={{ textAlign: 'left' }}>Description:</Typography>
-                    <Typography paragraph style={{ textAlign: 'left' }}>{body}</Typography>
-                  </CardContent>
-                </Collapse>
-              </div>
-            )
-          })}
-          
+              )
+            })}
+          </GridList>
+          </div>
       </Fragment>
     )
   }
@@ -92,20 +96,14 @@ export class CardList extends Component {
 
 const styles = theme => ({
   ...theme,
-  card: {
-    maxWidth: 400,
-  },
-  media: {
-    maxHeight: 300
-  },
-  actions: {
-    display: 'flex',
-  },
   avatar: {
     backgroundColor: red[500],
   },
   myCard: {
-    maxWidth: 400,
+    maxWidth: 392,
+    minWidth: 392,
+    minHeight: 428,
+    margin: 0.5,
     overflow: 'hidden',
     borderRadius: 4,
     backgroundColor: '#fff',
@@ -163,6 +161,25 @@ const styles = theme => ({
   },
   expandOpen: {
     transform: 'rotate(180deg)',
+  },
+  gridRoot: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    width: '73vw',
+    [theme.breakpoints.down('md')]: {
+      width: '65vw'
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '90vw'
+    }
+  },
+  gridList: {
+    flexWrap: 'nowrap',
+    // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+    transform: 'translateZ(0)',
+    width: 1300
   },
 })
 
