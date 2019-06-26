@@ -25,6 +25,7 @@ import Select from '@material-ui/core/Select'
 import EditIcon from '@material-ui/icons/Edit'
 
 import { key } from '../../util/keys'
+import { Typography } from '@material-ui/core';
 
 const proxyUrl = "https://cors-anywhere.herokuapp.com/"
 
@@ -35,7 +36,8 @@ class CreateAlert extends React.Component {
     body: '',
     use: true,
     pick: false,
-    refinements: { refinement1: {} }
+    refinements: { refinement1: {} },
+    error: ''
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -122,6 +124,10 @@ class CreateAlert extends React.Component {
 
   handleSubmit = (event) => {
     const { alertLocation, refinements } = this.state
+    if(!alertLocation){
+      this.setState({ error: 'Please select a crag' })
+      return
+    }
     event.preventDefault()
     var imageObj = {}
     var locations = [alertLocation.id]
@@ -183,7 +189,8 @@ class CreateAlert extends React.Component {
       use, 
       pick,
       alertLocation,
-      refinements
+      refinements,
+      error
     } = this.state
 
     const renderLocOptions = location && (checkIfCrag(location.type, location.subType) ||
@@ -326,9 +333,7 @@ class CreateAlert extends React.Component {
               </FormControl>
             </form>
             }
-              
-
-
+            {error ? <Typography align='center' color='secondary' >Please select a Crag before submitting</Typography> : ''}
           </DialogContent>
           <DialogActions>
             <Button onClick={closeAllDialogs} color="primary">
