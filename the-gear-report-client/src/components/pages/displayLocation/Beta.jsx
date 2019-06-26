@@ -7,36 +7,59 @@ import Grid from '@material-ui/core/Grid'
 const Beta = (props) => {
   const { locationBeta, classes } = props
   return (
-    locationBeta.map((beta, i) => {
+    <div className={classes.container}>
+    {locationBeta.map((beta, i) => {
       const { name, markdown} = beta
       return beta.inheritedFrom ? '' : (
-        <Grid container item xs={12} key={i} spacing={16}>
-          <Grid item xs={3} md={2}>
+        <div className={classes.row}>
+          <div className={classes.headerContainer}>
             <Typography  
               variant={'h6'}
               className={classes.header}
               >{!name.startsWith('Unique') ? name : 'Unique Features'}</Typography>
-            </Grid>
-            <Grid item xs={9} md={10}>
+            </div>
+          <div className={classes.contentContainer}>
             <Typography  
               gutterBottom variant={'body1'}
               className={classes.content}
               >{markdown}</Typography>
-            </Grid>
-        </Grid>
+          </div>
+        </div>
       )
-    })
+    })}
+    </div>
   )
 }
 
 const styles = theme => ({
   ...theme,
   header: {
-    textAlign: 'left'
+    textAlign: 'left',
+    overFlowWrap: 'break-word'
   },
   content: {
     textAlign: 'left',
     marginTop: 5
+  },
+  container: {
+    padding: 16,
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  row: {
+    display: 'flex',
+    flexDirection: 'row',
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column'
+    },
+  },
+  headerContainer: {
+    padding: 4,
+    minWidth: 170,
+    maxWidth: 170
+  },
+  contentContainer: {
+    padding: 4
   }
 })
 

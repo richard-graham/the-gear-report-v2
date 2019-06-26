@@ -6,6 +6,7 @@ import DisplayAlerts from './DisplayAlerts'
 import Beta from './Beta'
 import ChildTable from './ChildTable'
 import LocationInfo from './locationInfo/LocationInfo'
+import RouteDetails from './locationInfo/RouteDetails'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
@@ -32,6 +33,12 @@ export class DisplayCrag extends Component {
     }
   }
 
+  hasUniqueBeta = beta => {
+    let res = false
+    beta.forEach(data => {if(!data.inheritedFrom) res = true })
+    return res
+  }
+
   render() {
     const { 
       location: { 
@@ -39,7 +46,8 @@ export class DisplayCrag extends Component {
         subType, 
         beta, 
         name, 
-        additionalInfo 
+        additionalInfo,
+        type
       }, 
       loadingAlerts,
       country, 
@@ -59,18 +67,23 @@ export class DisplayCrag extends Component {
           <Grid item xs={12} >
             <LocationInfo location={location} />
           </Grid>
-          <Grid item sm={12} xs={12}>
-            {beta && <Beta locationBeta={beta} />}
-          </Grid>
+          {this.hasUniqueBeta(beta) && 
+          
+            <Beta locationBeta={beta} />}
+
+          {alerts && !loadingAlerts &&
           <Grid item xs={12}>
-            {alerts && !loadingAlerts &&
-            <DisplayAlerts alerts={alerts} />}
-          </Grid>
+            <DisplayAlerts alerts={alerts} />
+          </Grid>}
+          {children &&
           <Grid item sm={12} xs={12}>
-            {children && !loadingAlerts && 
               <div className={classes.tableDiv}>
                 <ChildTable children={children} subType={subType} country={country} alerts={alerts} />
-              </div>}
+              </div>
+          </Grid>}
+          <Grid item xs={12} >
+            {type === 'route' &&
+            <RouteDetails location={location} />}
           </Grid>
         </Grid>
       </div>

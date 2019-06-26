@@ -23,30 +23,30 @@ class ChildTable extends Component {
     this.props.history.push(`/location/${child.id}`)
   }
 
-  getMarkup = (subType, children, alerts) => {
+  getMarkup = (subType, type, children, alerts) => {
     if(checkIfCrag(null, subType)){
       return <CragMarkup 
-              children={children} 
-              handleClick={this.handleRowClick} 
-              alerts={alerts} 
-            />
+                children={children} 
+                handleClick={this.handleRowClick} 
+                alerts={alerts} 
+              />
     }
     else if(checkIfBelowCrag(null, subType)){
       return <CliffMarkup 
-              children={children} 
-              handleClick={this.handleRowClick} 
-              alerts={alerts} 
-            />
-    }
+                children={children} 
+                handleClick={this.handleRowClick} 
+                alerts={alerts} 
+              />
+    } 
   }
 
   render() {
-    const { subType, children, alerts } = this.props
+    const { subType, children, alerts, type } = this.props
     return (
       <Fragment>
         {children && subType &&
         <Table>
-         {this.getMarkup(subType, children, alerts)}
+         {this.getMarkup(subType, type, children, alerts)}
         </Table>}
       </Fragment>
     )

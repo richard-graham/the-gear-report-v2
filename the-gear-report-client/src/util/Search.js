@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import deburr from 'lodash/deburr';
 import Downshift from 'downshift';
-import { textCompletion, removeSuggestions } from '../redux/actions/dataActions'
+import { textCompletion, removeSuggestions, getAlertsByLocation } from '../redux/actions/dataActions'
 import { updateSearchLocation } from '../redux/actions/tcActions'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router'
@@ -64,7 +64,8 @@ export class Search extends Component {
   handleSuggestionClick = (id, updateSearchLocation) => {
     this.props.searchType === 'Nav' 
       ? (
-        updateSearchLocation(id, this.props.country, 'searched') 
+        updateSearchLocation(id, this.props.country, 'searched')  &&
+        getAlertsByLocation(id)
       ) : this.props.returnIdToParent(id)
       this.props.removeSuggestions()
   }
@@ -209,7 +210,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   textCompletion,
   updateSearchLocation,
-  removeSuggestions
+  removeSuggestions,
+  getAlertsByLocation
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Search))
