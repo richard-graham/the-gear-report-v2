@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import dayjs from 'dayjs'
 import { withRouter } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 //Mui
 import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
@@ -21,10 +22,6 @@ export class CardList extends Component {
 
   state = {}
 
-  handleClick = (id) => {
-    this.props.history.push(`/alert/${id}`)
-  }
-
   handleExpandClick = (key) => {
     this.state[key] ? 
     this.setState({ [key]: !this.state[key] }) :
@@ -33,6 +30,7 @@ export class CardList extends Component {
 
   render(){
     const { alerts, classes } = this.props
+    const defaultPic = "https://firebasestorage.googleapis.com/v0/b/the-gear-report-a2ce8.appspot.com/o/no-image.png?alt=media"
   
     return (
       <Fragment>
@@ -48,26 +46,35 @@ export class CardList extends Component {
                 <div className={classes.myCard} style={{ padding: 0}} key={`a${i}`}>
                   <div className={classes.header}>
                     <div className={classes.myAvatarContainer}>
-                      <Avatar aria-label='User' className={classes.myAvatar}>
-                        {userAvatarLetters}
-                      </Avatar>
+                      <Link to={`/user/${alert.userHandle}`} style={{ textDecoration: 'none' }}>
+                        {alert.userImage === defaultPic ? (
+                        <Avatar aria-label='User' className={classes.myAvatar}>
+                          {userAvatarLetters}
+                        </Avatar>
+                        ) : (
+                          <img src={alert.userImage} className={classes.userImage} alt='user' />
+                        )}
+                      </Link>
                     </div>
                     <div className={classes.myCardHeaderContent}>
-                      <span className={classes.myCardTitle} onClick={() => this.handleClick(alert.alertId)}>
-                        {title}
-                      </span>
+                      <Link to={`/alert/${alert.alertId}`} style={{ textDecoration: 'none' }} >
+                        <span className={classes.myCardTitle} >
+                          {title}
+                        </span>
+                      </Link>
                       <Typography variant='body2' className={classes.myCardDate} >
                         {dayjs(createdAt).format('DD-MM-YYYY')}
                       </Typography>
                     </div>
                   </div>
                   <div className={classes.myCardImageContainer}>
-                    <img 
-                      onClick={() => this.handleClick(alert.alertId)}
-                      src={images[0]}
-                      className={classes.myCardImage}
-                      alt='alert'
-                    />
+                    <Link to={`/alert/${alert.alertId}`} >
+                      <img 
+                        src={images[0]}
+                        className={classes.myCardImage}
+                        alt='alert'
+                      />
+                    </Link>
                   </div>
                   <div className={classes.myCardActionBar}>
                     <IconButton aria-label="Like Alert">
@@ -113,6 +120,7 @@ const styles = theme => ({
     minWidth: 392,
     minHeight: 428,
     margin: 0.5,
+    marginBottom: 2,
     overflow: 'hidden',
     borderRadius: 4,
     backgroundColor: '#fff',
@@ -123,7 +131,7 @@ const styles = theme => ({
   },
   header: {
     display: 'flex',
-    padding: 16,
+    padding: 13,
     alignItems: 'center'
   },
   myAvatar: {
@@ -194,6 +202,11 @@ const styles = theme => ({
     width: 1300,
 
   },
+  userImage: {
+    height: 37,
+    width: 37,
+    borderRadius: '50%'
+  }
 })
 
 export default withRouter(withStyles(styles)(CardList))

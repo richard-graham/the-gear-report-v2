@@ -55,7 +55,6 @@ export class DisplayCrag extends Component {
           variant={'h3'}
           className={classes.locationName}
           >{name}</Typography>
-        <br />
         <Grid container spacing={32}>
           <Grid item xs={12} >
             <LocationInfo location={location} />
@@ -101,7 +100,8 @@ const styles = theme => ({
     backgroundColor: '#f4f4f4'
   },
   locationName: {
-    marginTop: 20
+    marginTop: 20,
+    marginBottom: 15
   }
 })
 

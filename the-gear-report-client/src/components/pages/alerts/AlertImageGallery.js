@@ -19,7 +19,6 @@ export class AlertImageGallery extends Component {
       <ImageGallery 
         items={items}  
         showPlayButton={false}
-        // onImageLoad={() => console.log('loaded')}
       />
     )
   }
