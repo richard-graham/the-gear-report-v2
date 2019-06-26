@@ -36,6 +36,16 @@ const checkAlerts = (id, alerts) => {
   return confirmed
 }
 
+const getHeaderInfo = (children) => {
+  let hasPitches = false
+  let hasBolts = false
+  children.forEach(child => {
+    if(Number(child.pitches) > 1) hasPitches = true
+    if(child.bolts) hasBolts = true
+  })
+  return { hasPitches: hasPitches, hasBolts: hasBolts }
+}
+
 
 const getPopularity = (pop) => {
   if(pop >= 80) return <SignalCellular4Bar />
@@ -63,10 +73,8 @@ const getStars = stars => {
 const CliffMarkup = (props) => {
   const { handleClick, alerts } = props
   let { children } = props
-
+  const headerInfo = getHeaderInfo(children)
   children = cliffChildren(children)
-  
-
 
   return (
     <Fragment>
@@ -76,14 +84,16 @@ const CliffMarkup = (props) => {
           <TableCell align={'center'}>Alerts</TableCell>
           <TableCell align={'center'}>Grade</TableCell>
           <TableCell align={'center'}>Height</TableCell>
+          {headerInfo.hasPitches && <TableCell align={'center'}>Pitches</TableCell>}
           <TableCell align={'center'}>Style</TableCell>
+          {headerInfo.hasBolts && <TableCell align={'center'}>Bolts</TableCell>}
           <TableCell align={'center'} style={{ width: 80 }}>Stars</TableCell>
           <TableCell align={'center'}>Popularity</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {children.map((child, i) => {
-          const { name, subType, type, height, styles, style, stars, popularity, grade } = child
+          const { name, subType, type, height, styles, style, stars, popularity, grade, flags } = child
           let styleCount = 0
           let mostStyle = ''
           const hasAlerts = checkAlerts(child.id, alerts)
@@ -98,13 +108,14 @@ const CliffMarkup = (props) => {
           const styleMarkup = style ? `${style}` : styles.length > 1 ? mostStyle : `${styles[0].style}`
 
           return (
-              
               <TableRow key={i} hover onClick={() => handleClick(child)} >
                 <TableCell align={'left'}>{name}</TableCell>
                 <TableCell align={'center'}>{hasAlerts ? <Warning /> : ''}</TableCell>
                 <TableCell align={'center'}>{grade}</TableCell>
                 <TableCell align={'center'}>{height && `${height[0]}${height[1]}`}</TableCell>
+                {headerInfo.hasPitches && <TableCell align={'center'}>{child.pitches ? child.pitches : ''}</TableCell>}
                 <TableCell align={'center'}>{styleMarkup}</TableCell>
+                {headerInfo.hasBolts && <TableCell align={'center'}>{child.bolts ? child.bolts : ''}</TableCell>}
                 <TableCell ><div style={{ display: 'flex', flexWrap: 'noWrap', alignItems: 'center', justifyContent: 'center' }}>{getStars(stars)}</div></TableCell>
                 <TableCell align={'center'}>{getPopularity(popularity)}</TableCell>
               </TableRow>
