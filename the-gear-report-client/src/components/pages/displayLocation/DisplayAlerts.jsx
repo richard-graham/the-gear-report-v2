@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import dayjs from 'dayjs'
+import { withRouter } from 'react-router-dom'
 //Mui
 import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
@@ -19,6 +20,10 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 export class CardList extends Component {
 
   state = {}
+
+  handleClick = (id) => {
+    this.props.history.push(`/alert/${id}`)
+  }
 
   handleExpandClick = (key) => {
     this.state[key] ? 
@@ -48,7 +53,7 @@ export class CardList extends Component {
                       </Avatar>
                     </div>
                     <div className={classes.myCardHeaderContent}>
-                      <span className={classes.myCardTitle}>
+                      <span className={classes.myCardTitle} onClick={() => this.handleClick(alert.alertId)}>
                         {title}
                       </span>
                       <Typography variant='body2' className={classes.myCardDate} >
@@ -58,8 +63,7 @@ export class CardList extends Component {
                   </div>
                   <div className={classes.myCardImageContainer}>
                     <img 
-                      // name={alert.}
-                      onClick={this.handleClick}
+                      onClick={() => this.handleClick(alert.alertId)}
                       src={images[0]}
                       className={classes.myCardImage}
                       alt='alert'
@@ -192,4 +196,4 @@ const styles = theme => ({
   },
 })
 
-export default withStyles(styles)(CardList)
+export default withRouter(withStyles(styles)(CardList))

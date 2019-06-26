@@ -39,7 +39,7 @@ const LocationInfo = (props) => {
   const markup = getMarkup(props.location)
   return (
     <div>
-      {markup.map(data => <Typography variant='body1'>{data}</Typography>)}
+      {markup.map((data, i) => <Typography variant='body1' key={i}>{data}</Typography>)}
     </div>
   )
 }
