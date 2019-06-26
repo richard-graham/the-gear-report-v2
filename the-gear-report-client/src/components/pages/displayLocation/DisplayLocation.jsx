@@ -5,6 +5,7 @@ import { getAlertsByLocation } from '../../../redux/actions/dataActions'
 import DisplayAlerts from './DisplayAlerts'
 import Beta from './Beta'
 import ChildTable from './ChildTable'
+import LocationInfo from './locationInfo/LocationInfo'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
@@ -17,8 +18,6 @@ export class DisplayCrag extends Component {
     this.props.getNode(match.params.locationID)
     this.props.getAlertsByLocation(match.params.locationID)
   }
-
-  
 
   componentDidUpdate = (prevProps) => {
     const { location, match, country, loading } = this.props
@@ -45,7 +44,8 @@ export class DisplayCrag extends Component {
       loadingAlerts,
       country, 
       alerts,
-      classes 
+      classes,
+      location
     } = this.props
 
     return additionalInfo ? (
@@ -53,9 +53,13 @@ export class DisplayCrag extends Component {
         <Typography
           gutterBottom
           variant={'h3'}
+          className={classes.locationName}
           >{name}</Typography>
-
+        <br />
         <Grid container spacing={32}>
+          <Grid item xs={12} >
+            <LocationInfo location={location} />
+          </Grid>
           <Grid item sm={12} xs={12}>
             {beta && <Beta locationBeta={beta} />}
           </Grid>
@@ -96,6 +100,9 @@ const styles = theme => ({
     borderRadius: 5,
     backgroundColor: '#f4f4f4'
   },
+  locationName: {
+    marginTop: 20
+  }
 })
 
 const mapStateToProps = (state) => ({

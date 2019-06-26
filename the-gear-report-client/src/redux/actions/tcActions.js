@@ -7,7 +7,6 @@ import {
 } from '../types'
 import axios from 'axios'
 import { key } from '../../util/keys'
-import { getAlertsByLocation } from './dataActions'
 const proxyUrl = "https://cors-anywhere.herokuapp.com/"
 
 

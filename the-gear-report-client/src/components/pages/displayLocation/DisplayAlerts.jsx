@@ -31,14 +31,16 @@ export class CardList extends Component {
   
     return (
       <Fragment>
-        <Typography variant='h6' >Alerts</Typography>
+        {alerts.length > 0 ? 
+        <Typography variant='h6' >Alerts</Typography> : 
+        <Typography variant='h6' >No active alerts for this area</Typography> }
         <br />
         <div className={classes.gridRoot}>
-          <GridList className={classes.gridList}>
+          <GridList className={classes.gridList} style={{ margin: 0 }}>
             {alerts.map((alert, i) => {
               const { userAvatarLetters, title, createdAt, images, body } = alert
               return (
-                <div className={classes.myCard} key={`a${i}`}>
+                <div className={classes.myCard} style={{ padding: 0}} key={`a${i}`}>
                   <div className={classes.header}>
                     <div className={classes.myAvatarContainer}>
                       <Avatar aria-label='User' className={classes.myAvatar}>
@@ -58,6 +60,7 @@ export class CardList extends Component {
                     <img 
                       src={images[0]}
                       className={classes.myCardImage}
+                      alt='alert'
                     />
                   </div>
                   <div className={classes.myCardActionBar}>
@@ -108,7 +111,9 @@ const styles = theme => ({
     borderRadius: 4,
     backgroundColor: '#fff',
     display: 'block',
-    boxShadow: '0px 1px 3px 0px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 2px 1px -1px rgba(0,0,0,0.12)'
+    boxShadow: '0px 1px 3px 0px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 2px 1px -1px rgba(0,0,0,0.12)',
+    padding: 0,
+    marginRight: 1.5
   },
   header: {
     display: 'flex',
@@ -168,6 +173,7 @@ const styles = theme => ({
     justifyContent: 'space-around',
     overflow: 'hidden',
     width: '73vw',
+    // margin: 0,
     [theme.breakpoints.down('md')]: {
       width: '65vw'
     },
@@ -179,7 +185,8 @@ const styles = theme => ({
     flexWrap: 'nowrap',
     // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
     transform: 'translateZ(0)',
-    width: 1300
+    width: 1300,
+
   },
 })
 
