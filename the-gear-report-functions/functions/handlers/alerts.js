@@ -136,7 +136,11 @@ exports.getAlertsByUser = (req, res) => {
       if(docs.length < 1){
         return res.status(404).json({ error: 'No alerts found for this user' })
       }
-      docs.forEach(doc => alerts.push(doc.data()))
+      docs.forEach(doc => {
+        let newAlert = doc.data()
+        newAlert.alertId = doc.id
+        alerts.push(newAlert)
+      })
       return res.json(alerts)
     })
     .catch(err => {
@@ -150,8 +154,12 @@ exports.getAlertsByLocations = (req, res) => {
     .get()
     .then(docs => {
       let alerts = []
-      docs.forEach(doc => alerts.push(doc.data()))
-      res.send(alerts)
+      docs.forEach(doc => {
+        let newAlert = doc.data()
+        newAlert.alertId = doc.id
+        alerts.push(newAlert)
+      })
+      return res.json(alerts)
     })
     .catch(err => {
       console.error(err)

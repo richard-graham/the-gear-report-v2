@@ -58,6 +58,8 @@ export class CardList extends Component {
                   </div>
                   <div className={classes.myCardImageContainer}>
                     <img 
+                      // name={alert.}
+                      onClick={this.handleClick}
                       src={images[0]}
                       className={classes.myCardImage}
                       alt='alert'
