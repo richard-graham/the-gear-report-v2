@@ -4,13 +4,10 @@ import { withRouter } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 //Mui
 import { withStyles } from '@material-ui/core/styles';
-import classnames from 'classnames';
-import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import red from '@material-ui/core/colors/red';
-import Collapse from '@material-ui/core/Collapse'
 import GridList from '@material-ui/core/GridList'
 //Icons
 import FavoriteIcon from '@material-ui/icons/Favorite';

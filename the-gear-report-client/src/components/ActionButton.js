@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import CreateAlert from './dialogs/CreateAlert'
-import EditAlert from './dialogs/EditAlert'
 import CreateEvent from './dialogs/CreateEvent'
 //Mui
 import { withStyles } from '@material-ui/core/styles';
@@ -9,7 +8,6 @@ import SpeedDial from '@material-ui/lab/SpeedDial';
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
 import Warning from '@material-ui/icons/WarningTwoTone';
-import EditOutlined from '@material-ui/icons/EditOutlined';
 import EditIcon from '@material-ui/icons/Edit';
 import EventIcon from '@material-ui/icons/EventAvailable'
 
@@ -30,7 +28,6 @@ class ActionButton extends React.Component {
     open: false,
     hidden: false,
     createAlertOpen: false,
-    editAlertOpen: false,
     createEventOpen: false
   }
 
@@ -54,12 +51,6 @@ class ActionButton extends React.Component {
     })
    }
 
-   openEditAlert = () => {
-    this.setState({
-      editAlertOpen: true,
-    })
-   }
-
    openCreateEvent = () => {
     this.setState({
       createEventOpen: true,
@@ -69,7 +60,6 @@ class ActionButton extends React.Component {
    closeAllDialogs = () => {
      this.setState({
       createAlertOpen: false,
-      editAlertOpen: false,
       createEventOpen: false
      })
    }
@@ -80,21 +70,18 @@ class ActionButton extends React.Component {
 
     const actions = [
       { icon: <Warning />, name: 'Create Alert', handleClick: this.openCreateAlert },
-      { icon: <EditOutlined />, name: 'Edit Alert', handleClick: this.openEditAlert },
       { icon: <EventIcon />, name: 'Create Event', handleClick: this.openCreateEvent },
     ];
     const shouldRender = pathname !== '/alerts' ? true : false
 
     return shouldRender ? (
       <Fragment>
-        <span>
           <SpeedDial
             ariaLabel="SpeedDial openIcon example"
             className={classes.speedDial}
             hidden={hidden}
             icon={<SpeedDialIcon openIcon={<EditIcon />} />}
-            onBlur={this.handleClose}
-            onClick={this.handleClick}
+            onClick={this.handleOpen}
             onClose={this.handleClose}
             onMouseEnter={this.handleOpen}
             onMouseLeave={this.handleClose}
@@ -109,13 +96,8 @@ class ActionButton extends React.Component {
               />
             ))}
           </SpeedDial>
-        </span>
         <CreateAlert
           open={this.state.createAlertOpen} 
-          closeAllDialogs={this.closeAllDialogs}
-        />
-        <EditAlert
-          open={this.state.editAlertOpen} 
           closeAllDialogs={this.closeAllDialogs}
         />
         <CreateEvent
