@@ -16,6 +16,7 @@ import GridList from '@material-ui/core/GridList'
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Search from '@material-ui/icons/Search'
 
 
 export class CardList extends Component {
@@ -83,23 +84,19 @@ export class CardList extends Component {
                     <IconButton aria-label="Share">
                       <ShareIcon />
                     </IconButton>
-                    <IconButton
-                      className={classnames(classes.expand, {
-                        [classes.expandOpen]: this.state[`a${i}`],
-                      })}
-                      onClick={() => {this.handleExpandClick(`a${i}`)}}
-                      aria-expanded={this.state.expanded}
-                      aria-label="Show more"
-                    >
-                      <ExpandMoreIcon />
-                    </IconButton>
+                    <Link 
+                      to={`/profile/${alert.userHandle}`} 
+                      style={{ 
+                        textDecoration: 'none', 
+                        marginLeft: 'auto' 
+                      }}>
+                      <IconButton 
+                        aria-label="Show more" 
+                        >
+                        <Search />
+                      </IconButton>
+                    </Link>
                   </div>
-                  <Collapse in={this.state[[`a${i}`]]} timeout="auto" unmountOnExit>
-                    <CardContent>
-                      <Typography paragraph style={{ textAlign: 'left' }}>Description:</Typography>
-                      <Typography paragraph style={{ textAlign: 'left' }}>{body}</Typography>
-                    </CardContent>
-                  </Collapse>
                 </div>
               )
             })}
@@ -170,16 +167,6 @@ const styles = theme => ({
   myCardActionBar: {
     display: 'flex',
     padding: 8
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
   },
   gridRoot: {
     display: 'flex',
