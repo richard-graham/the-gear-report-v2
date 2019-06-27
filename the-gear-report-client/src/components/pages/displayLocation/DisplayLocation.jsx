@@ -6,7 +6,6 @@ import DisplayAlerts from './DisplayAlerts'
 import Beta from './Beta'
 import ChildTable from './ChildTable'
 import LocationInfo from './locationInfo/LocationInfo'
-import RouteDetails from './locationInfo/RouteDetails'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
@@ -67,7 +66,7 @@ export class DisplayCrag extends Component {
           <Grid item xs={12} >
             <LocationInfo location={location} />
           </Grid>
-          {this.hasUniqueBeta(beta) && 
+          {beta && this.hasUniqueBeta(beta) && 
           
             <Beta locationBeta={beta} />}
 
@@ -81,10 +80,6 @@ export class DisplayCrag extends Component {
                 <ChildTable children={children} subType={subType} country={country} alerts={alerts} />
               </div>
           </Grid>}
-          <Grid item xs={12} >
-            {type === 'route' &&
-            <RouteDetails location={location} />}
-          </Grid>
         </Grid>
       </div>
     ) : (''

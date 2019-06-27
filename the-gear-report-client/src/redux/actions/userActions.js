@@ -142,6 +142,13 @@ export const setError = (error) => (dispatch) => {
   })
 }
 
+export const subscribeToCrag = (cragId) => {
+  axios.post('/subscribe/:${cragId')
+    .then(res => {
+      console.log(res);
+    })
+}
+
 const setAuthorizationHeader = (token) => {
   const FBIdToken = `Bearer ${token}`
         localStorage.setItem('FBIdToken', FBIdToken) // saves token to local storage in case of page refresh etc

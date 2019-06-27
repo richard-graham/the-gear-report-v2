@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { subscribeToCrag } from '../../../../redux/actions/userActions.js'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
 
 
 const getMarkup = location => {
@@ -35,17 +38,46 @@ const getMarkup = location => {
 
 }
 
-const LocationInfo = (props) => {
-  const markup = getMarkup(props.location)
-  return (
-    <div>
-      {markup.map((data, i) => <Typography variant='body1' key={i}>{data}</Typography>)}
-    </div>
-  )
+class LocationInfo extends Component {
+
+  handleSubscribe = () => {
+    subscribeToCrag(this.props.location)
+  }
+
+  render(){
+    const { location, user } = this.props
+    const markup = getMarkup(location)
+
+    return (
+      <div>
+        {markup.map((data, i) => <Typography variant='body1' key={i}>{data}</Typography>)}
+        <br />
+        {user.authenticated && 
+          location.subType === 'Crag' && 
+          <Button 
+            variant='outlined' 
+            color='primary' 
+            size='medium'
+            onClick={this.handleSubscribe}
+          >
+          Add to mycrags
+          </Button>}
+      </div>
+    )
+  }
 }
 
 const styles = {
 
 }
 
-export default withStyles(styles)(LocationInfo)
+const mapStateToProps = state => ({
+  user: state.user,
+  location: state.UI.location
+})
+
+const mapDispatchToProps = {
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(LocationInfo))

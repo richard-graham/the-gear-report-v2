@@ -28,7 +28,8 @@ const {
   addUserDetails, 
   getAuthenticatedUser,
   getUserDetails,
-  markNotificationsRead
+  markNotificationsRead,
+  subscribeToCrag
  } = require('./handlers/users')
 
  const {
@@ -59,6 +60,7 @@ app.post('/user', FBAuth, addUserDetails)
 app.get('/user', FBAuth, getAuthenticatedUser)
 app.get('/user/:handle', getUserDetails)
 app.post('/notifications', FBAuth, markNotificationsRead)
+app.post('/subscribe/crag', FBAuth, subscribeToCrag)
 
 // The Crag routes
 app.get('/tc/location/:location', getLocationData)

@@ -55,8 +55,7 @@ const styles = theme => ({
   },
   headerContainer: {
     padding: 4,
-    minWidth: 170,
-    maxWidth: 170
+    minWidth: 130
   },
   contentContainer: {
     padding: 4

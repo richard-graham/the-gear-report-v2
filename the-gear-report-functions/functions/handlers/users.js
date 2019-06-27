@@ -26,6 +26,12 @@ exports.signup = (req, res) => {
     bio: req.body.bio ? req.body.bio : '',
     occupation: req.body.occupation ? req.body.occupation : '',
     avatarLetters: avatarLetters,
+    subAreas: {
+      '879850311': {
+        name: 'Maungarei Springs',
+        id: '879850311'
+      }
+    }
   }
 
   const { valid, errors } = validateSignUpData(newUser)
@@ -64,6 +70,7 @@ exports.signup = (req, res) => {
         city: newUser.city,
         avatarLetters: newUser.avatarLetters,
         bio: newUser.bio,
+        subAreas: newUser.subAreas
       }
       return db.doc(`/users/${newUser.handle}`).set(userCredentials)
     })
@@ -289,4 +296,32 @@ exports.markNotificationsRead = (req, res) => {
     console.error(err)
     return res.status(500).json({ error: err.code })
   })
+}
+
+// SUBSCRIBE TO CRAG
+exports.subscribeToCrag = (req, res) => {
+  db
+    .doc(`/users/${req.user.handle}`)
+    .get()
+    .then(doc => {
+      if(doc.exists){
+        return doc.data()
+      } else {
+        return res.status(404).json({ error: 'User not found' })
+      }
+    })
+    .then(data => {
+      var subAreas = data.subAreas
+      if(subAreas[req.body.id]) return res.json({ error: `${req.body.name} already subscribed to`})
+      subAreas[req.body.id] = { name: req.body.name, id: req.body.id }
+      db
+        .doc(`/users/${req.user.handle}`)
+        .update({ subAreas: subAreas })
+    })
+    .then(() => {
+      return res.json({ message: `${req.body.name} added successfully` })
+    })
+    .catch(err => {
+      console.log(err);
+    })
 }

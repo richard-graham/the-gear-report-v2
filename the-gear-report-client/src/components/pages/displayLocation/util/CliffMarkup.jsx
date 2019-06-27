@@ -93,10 +93,11 @@ const CliffMarkup = (props) => {
       </TableHead>
       <TableBody>
         {children.map((child, i) => {
-          const { name, height, styles, style, stars, popularity, grade } = child
+          const { name, height, styles, style, stars, popularity, grade, gradeInContext } = child
           let styleCount = 0
           let mostStyle = ''
           const hasAlerts = checkAlerts(child.id, alerts)
+          const displayGrade = grade ? grade : gradeInContext ? gradeInContext : ''
 
           styles && styles.forEach(style => { 
               if(style.total > styleCount){
