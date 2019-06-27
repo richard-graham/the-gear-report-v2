@@ -6,6 +6,7 @@ import DisplayAlerts from './DisplayAlerts'
 import Beta from './Beta'
 import ChildTable from './ChildTable'
 import LocationInfo from './locationInfo/LocationInfo'
+import SubButton from './util/SubButton'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
@@ -47,11 +48,11 @@ export class DisplayCrag extends Component {
         name, 
         additionalInfo,
       }, 
+      location,
       loadingAlerts,
       country, 
       alerts,
       classes,
-      location
     } = this.props
 
     return additionalInfo ? (
@@ -64,11 +65,10 @@ export class DisplayCrag extends Component {
         <Grid container spacing={32}>
           <Grid item xs={12} >
             <LocationInfo location={location} />
+            <SubButton />
           </Grid>
           {beta && this.hasUniqueBeta(beta) && 
-          
             <Beta locationBeta={beta} />}
-
           {alerts && !loadingAlerts &&
           <Grid item xs={12}>
             <DisplayAlerts alerts={alerts} />

@@ -116,7 +116,7 @@ export class Search extends Component {
 
     return !redirect ? (
       <div className={divClass}>
-        <Downshift id="downshift-simple">
+        <Downshift>
           {({
             getInputProps,
             getItemProps,

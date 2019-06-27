@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { subscribeToCrag, unsubscribeFromCrag } from '../../../../redux/actions/userActions.js'
 //Mui
 import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
 
 class LocationInfo extends Component {
 
@@ -36,60 +33,16 @@ class LocationInfo extends Component {
     return areaMarkup
   }
 
-  handleSubscribe = () => {
-    this.props.subscribeToCrag(this.props.location)
-  }
-
-  handleUnsubscribe = () => {
-    this.props.unsubscribeFromCrag(this.props.location)
-  }
-
   render(){
-    const { location, user, subAreas } = this.props
+    const { location } = this.props
     const markup = this.getInfoMarkup(location)
-    console.log(location);
-    console.log(user);
 
     return (
       <div>
         {markup.map((data, i) => <Typography variant='body1' key={i}>{data}</Typography>)}
-        <br />
-        {location.subType === 'Crag' && 
-          user.authenticated && 
-          subAreas[location.id] ? (
-            <Button
-              variant='outlined' 
-              color='secondary' 
-              size='medium'
-              onClick={this.handleUnsubscribe}
-            >
-              Remove from my crags
-            </Button>
-          ) : (
-            <Button 
-              variant='outlined' 
-              color='primary' 
-              size='medium'
-              onClick={this.handleSubscribe}
-            >
-              Add to my crags
-            </Button>
-          )
-        }
       </div>
-    )
+    ) 
   }
 }
 
-const mapStateToProps = state => ({
-  user: state.user,
-  location: state.UI.location,
-  subAreas: state.user.credentials.subAreas
-})
-
-const mapDispatchToProps = {
-  subscribeToCrag,
-  unsubscribeFromCrag
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(LocationInfo)
+export default LocationInfo

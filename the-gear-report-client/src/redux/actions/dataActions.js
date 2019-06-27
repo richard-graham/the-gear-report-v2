@@ -212,7 +212,7 @@ export const textCompletion = (input, localArea) => dispatch => {
     .then(res => res.json())
     .then(list => {
       var res = []
-      list.data.map(item => {
+      list.data.forEach(item => {
         var newObj = {
           label: item.name,
           id: item.id
