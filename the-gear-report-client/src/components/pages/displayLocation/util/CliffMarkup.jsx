@@ -112,7 +112,7 @@ const CliffMarkup = (props) => {
               <TableRow key={i} hover onClick={() => handleClick(child)} >
                 <TableCell align={'left'}>{name}</TableCell>
                 <TableCell align={'center'}>{hasAlerts ? <Warning /> : ''}</TableCell>
-                <TableCell align={'center'}>{grade}</TableCell>
+                <TableCell align={'center'}>{displayGrade}</TableCell>
                 <TableCell align={'center'}>{height && `${height[0]}${height[1]}`}</TableCell>
                 {headerInfo.hasPitches && <TableCell align={'center'}>{child.pitches ? child.pitches : ''}</TableCell>}
                 <TableCell align={'center'}>{styleMarkup}</TableCell>

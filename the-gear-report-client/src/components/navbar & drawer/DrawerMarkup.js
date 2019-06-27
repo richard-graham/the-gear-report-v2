@@ -3,6 +3,7 @@ import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { getIcon } from '../../util/getIcon'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import {withStyles} from '@material-ui/core/styles'
 import List from '@material-ui/core/List';
@@ -37,8 +38,10 @@ export class DrawerMarkup extends Component {
       classes,
       handleDrawerClose,
       handleToggleSubsList,
-     
+      subAreas,
+      authenticated
     } = this.props
+
     return (
       <Fragment>
         <div className={classes.navDrawerHeader}>
@@ -66,22 +69,25 @@ export class DrawerMarkup extends Component {
                 <ListItemText primary={text} />
               </ListItem> 
           ))}
-      
-          <ListItem button onClick={handleToggleSubsList}>
-            {getIcon('My Crags')}
-            <ListItemText inset primary="My Crags" />
-              {!subsOpen ? <ExpandMore /> : <ExpandLess />}
-          </ListItem>
-          <Collapse in={subsOpen} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItem button className={classes.nested}>
-                <ListItemText inset primary="Kawakawa Bay" />
-              </ListItem>
-              <ListItem button className={classes.nested}>
-                <ListItemText inset primary="Froggatt Edge" />
-              </ListItem>
-            </List>
-          </Collapse>
+          {authenticated &&
+          <Fragment>
+            <ListItem button onClick={handleToggleSubsList}>
+              {getIcon('My Crags')}
+              <ListItemText inset primary="My Crags" />
+                {!subsOpen ? <ExpandMore /> : <ExpandLess />}
+            </ListItem>
+            <Collapse in={subsOpen} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                {subAreas && Object.keys(subAreas).map((areaId, i) => {
+                  return (
+                    <ListItem button className={classes.nested} key={i} component={Link} to={`/location/${areaId}`}>
+                      <ListItemText inset primary={subAreas[areaId].name} />
+                    </ListItem>
+                  )
+                })}
+              </List>
+            </Collapse>
+          </Fragment>}
 
           <ListItem component={Link} to='/contributors' button key='Contributors'>
             {getIcon('Contributors')}
@@ -112,4 +118,9 @@ const styles = theme => ({
   
 })
 
-export default withStyles(styles)(DrawerMarkup)
+const mapStateToProps = state => ({
+  subAreas: state.user.credentials.subAreas,
+  authenticated: state.user.authenticated
+})
+
+export default connect(mapStateToProps)(withStyles(styles)(DrawerMarkup))

@@ -213,12 +213,19 @@ export const textCompletion = (input, localArea) => dispatch => {
     .then(list => {
       var res = []
       list.data.map(item => {
-        return localArea.indexOf(item.id) > -1
-        ? res.push({
+        var newObj = {
           label: item.name,
           id: item.id
-        })
-        : null
+        }
+        
+        let duplicate = false
+        res.forEach(obj => { if(obj.id === item.id) duplicate = true })
+
+        const isInNZ = localArea.indexOf(item.id) > -1
+        
+        if(!duplicate && isInNZ){
+          return res.push(newObj)
+        }
       })
       dispatch({ 
         type: SET_SEARCH,

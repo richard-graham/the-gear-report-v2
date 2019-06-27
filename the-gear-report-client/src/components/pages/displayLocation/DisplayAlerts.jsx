@@ -12,7 +12,6 @@ import GridList from '@material-ui/core/GridList'
 //Icons
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Search from '@material-ui/icons/Search'
 
 
@@ -39,7 +38,7 @@ export class CardList extends Component {
         <div className={classes.gridRoot}>
           <GridList className={classes.gridList} style={{ margin: 0 }}>
             {alerts.map((alert, i) => {
-              const { userAvatarLetters, title, createdAt, images, body } = alert
+              const { userAvatarLetters, title, createdAt, images } = alert
               return (
                 <div className={classes.myCard} style={{ padding: 0}} key={`a${i}`}>
                   <div className={classes.header}>

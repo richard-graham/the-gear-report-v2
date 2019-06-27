@@ -325,3 +325,31 @@ exports.subscribeToCrag = (req, res) => {
       console.log(err);
     })
 }
+
+// UNSUBSCRIBE FROM CRAG
+exports.unsubscribeFromCrag = (req, res) => {
+  db
+    .doc(`/users/${req.user.handle}`)
+    .get()
+    .then(doc => {
+      if(doc.exists){
+        return doc.data()
+      } else {
+        return res.status(404).json({ error: 'User not found' })
+      }
+    })
+    .then(data => {
+      var subAreas = data.subAreas
+      if(!subAreas[req.body.id]) return res.json({ error: `${req.body.name} not subscribed to`})
+      delete subAreas[req.body.id]
+      db
+        .doc(`/users/${req.user.handle}`)
+        .update({ subAreas: subAreas })
+    })
+    .then(() => {
+      return res.json({ message: `${req.body.name} removed successfully` })
+    })
+    .catch(err => {
+      console.log(err);
+    })
+}

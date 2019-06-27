@@ -29,7 +29,8 @@ const {
   getAuthenticatedUser,
   getUserDetails,
   markNotificationsRead,
-  subscribeToCrag
+  subscribeToCrag,
+  unsubscribeFromCrag
  } = require('./handlers/users')
 
  const {
@@ -43,7 +44,7 @@ app.get('/alerts', getAllAlerts)
 app.get('/alerts/recent', getRecentAlerts)
 app.get('/alert/:alertId', getAlert)
 app.get('/alerts/:userHandle', getAlertsByUser)
-app.get('/alerts/location/:location', getAlertsByLocations) // Check this out
+app.get('/alerts/location/:location', getAlertsByLocations) 
 app.post('/alert', FBAuth, postOneAlert)
 app.post('/alert/add/image', FBAuth, uploadAlertImage)
 app.post('/alert/:alertId/comment', FBAuth, commentOnAlert)
@@ -61,6 +62,7 @@ app.get('/user', FBAuth, getAuthenticatedUser)
 app.get('/user/:handle', getUserDetails)
 app.post('/notifications', FBAuth, markNotificationsRead)
 app.post('/subscribe/crag', FBAuth, subscribeToCrag)
+app.post('/unsubscribe/crag', FBAuth, unsubscribeFromCrag)
 
 // The Crag routes
 app.get('/tc/location/:location', getLocationData)

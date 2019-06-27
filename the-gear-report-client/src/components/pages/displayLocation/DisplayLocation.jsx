@@ -46,7 +46,6 @@ export class DisplayCrag extends Component {
         beta, 
         name, 
         additionalInfo,
-        type
       }, 
       loadingAlerts,
       country, 

@@ -2,7 +2,6 @@ import React from 'react'
 // Mui
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
 
 const Beta = (props) => {
   const { locationBeta, classes } = props
@@ -11,7 +10,7 @@ const Beta = (props) => {
     {locationBeta.map((beta, i) => {
       const { name, markdown} = beta
       return beta.inheritedFrom ? '' : (
-        <div className={classes.row}>
+        <div className={classes.row} key={i}>
           <div className={classes.headerContainer}>
             <Typography  
               variant={'h6'}

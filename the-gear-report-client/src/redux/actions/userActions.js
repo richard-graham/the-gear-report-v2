@@ -142,10 +142,21 @@ export const setError = (error) => (dispatch) => {
   })
 }
 
-export const subscribeToCrag = (cragId) => {
-  axios.post('/subscribe/:${cragId')
+export const subscribeToCrag = (cragDetails) => dispatch => {
+  axios.post('/subscribe/crag', cragDetails)
     .then(res => {
-      console.log(res);
+      if(res.data.error) dispatch({ type: SET_ERRORS, payload: res.data.error })
+      if(res.data.message) dispatch({ type: SET_MESSAGE, payload: res.data.message })
+      dispatch(getUserData())
+    })
+}
+
+export const unsubscribeFromCrag = (cragDetails) => dispatch => {
+  axios.post('/unsubscribe/crag', cragDetails)
+    .then(res => {
+      if(res.data.error) dispatch({ type: SET_ERRORS, payload: res.data.error })
+      if(res.data.message) dispatch({ type: SET_MESSAGE, payload: res.data.message })
+      dispatch(getUserData())
     })
 }
 
