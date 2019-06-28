@@ -94,10 +94,22 @@ const getChildren = (req, res) => {
     })
 }
 
+const textCompletion = (req, res) => {
+  fetch(`https://brendan.thecrag.com/api/lookup/crag?search=${req.params.input}&key=${key.key}`)
+    .then(response => response.json())
+      .then(resData => {
+        res.send(resData)
+      })
+      .catch(err => {
+        console.log(err);
+      })
+}
+
 module.exports = {
   getLocationData,
   getNode,
   updateSearchLocation,
   getChildrenAndAncestors,
-  getChildren
+  getChildren,
+  textCompletion
 }

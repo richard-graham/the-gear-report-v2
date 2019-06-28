@@ -207,10 +207,9 @@ export const clearErrors = () => dispatch => {
 }
 
 export const textCompletion = (input, localArea) => dispatch => {
-  const url = `https://brendan.thecrag.com/api/lookup/crag?search=${input}&key=${key}`
-  fetch(proxyUrl + url)
-    .then(res => res.json())
-    .then(list => {
+  axios.get(`/tc/search/textcompletion/${input}`)
+    .then(response => {
+      const list = response.data
       var res = []
       list.data.forEach(item => {
         var newObj = {

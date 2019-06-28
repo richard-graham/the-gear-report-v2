@@ -38,7 +38,8 @@ const {
    getNode,
    updateSearchLocation,
    getChildrenAndAncestors,
-   getChildren
+   getChildren,
+   textCompletion
  } = require('./handlers/tc')
  
 // Alert routes
@@ -72,6 +73,7 @@ app.get('/tc/node/:nodeID', getNode)
 app.get('/tc/search/location/:id', updateSearchLocation)
 app.get('/tc/node/location/:nodeID/relatives', getChildrenAndAncestors)
 app.get('/tc/node/location/:nodeID/children', getChildren)
+app.get('/tc/search/textcompletion/:input', textCompletion)
 
 exports.api = functions.region('us-central1').https.onRequest(app) 
 // exports.api = functions.region('europe-west1').https.onRequest(app)
