@@ -230,9 +230,6 @@ export default {
   },
   // AllTickets
   allTicketsContainer: {
-    padding: 15
+    width: '100%'
   },
-  allAlertsTable: {
-    marginTop: 100,
-  }
 }

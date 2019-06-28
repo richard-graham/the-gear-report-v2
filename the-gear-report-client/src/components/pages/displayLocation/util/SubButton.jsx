@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { subscribeToCrag, unsubscribeFromCrag } from '../../../../redux/actions/userActions.js'
 //Mui
-import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 
 export class SubButton extends Component {

@@ -53,7 +53,6 @@ export class AllTickets extends React.Component {
     return (
       <div className={classes.allTicketsContainer}>
         <MaterialTable 
-          className={classes.allAlertsTable} 
           onRowClick= {(e, rowData) => this.handleRowClick(e, rowData)}
           isLoading={loading}
           columns={[

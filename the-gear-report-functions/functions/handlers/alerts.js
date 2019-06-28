@@ -118,7 +118,9 @@ exports.getAlert = (req, res) => {
   .then(data => {
     alertData.comments = []
     data.forEach(comment => {
-      alertData.comments.push(comment.data())
+      var newComment = comment.data()
+      newComment.id = comment.id
+      alertData.comments.push(newComment)
     })
     return res.json(alertData)
   })
@@ -175,7 +177,8 @@ exports.commentOnAlert = (req, res) => {
     createdAt: new Date().toISOString(),
     alertId: req.params.alertId,
     userHandle: req.user.handle, // from middleware 
-    userImage: req.user.imageUrl
+    userImage: req.user.imageUrl,
+    likeCount: 0
   }
   // check alert exists
   db.doc(`/alerts/${req.params.alertId}`)
@@ -296,6 +299,51 @@ exports.likeAlert = (req, res) => {
         })
       } else { // user has already liked this alert
         return res.status(400).json({ error: 'Alert already liked' })
+      }
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500).json({ error: err.code })
+    })
+}
+
+exports.likeComment = (req, res) => {
+  // check if comment already liked and that comment exists
+  const likeDocument = db.collection('likes')
+                        .where('userHandle', '==', req.user.handle)
+                        .where('commentId', '==', req.params.commentId)
+                        .limit(1) // will return arr with 1x doc
+  const commentDocument = db.doc(`/comments/${req.params.commentId}`)
+  let commentData
+
+  commentDocument
+    .get()
+    .then(doc => {
+      if(doc.exists){
+        commentData = doc.data()
+        commentData.commentId = doc.id
+        return likeDocument.get()
+      } else {
+        return res.status(404).json({ error: 'Comment not found' })
+      }
+    })
+    .then(data => {
+      if(data.empty){
+        return db.collection('likes').add({
+          commentId: req.params.commentId,
+          userHandle: req.user.handle
+        })
+        // cant do a return then handle the promise in the next .then() because if it's
+        // not empty it may go through so we need nest the then inside the if block
+        .then(() => {
+          commentData.likeCount++
+          return commentDocument.update({ likeCount: commentData.likeCount })
+        })
+        .then(() => {
+          return res.json(commentData) // success!
+        })
+      } else { // user has already liked this alert
+        return res.status(400).json({ error: 'Comment already liked' })
       }
     })
     .catch(err => {
