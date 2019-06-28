@@ -6,9 +6,6 @@ import {
   LOADING_LOCATION
 } from '../types'
 import axios from 'axios'
-import { key } from '../../util/keys'
-const proxyUrl = "https://cors-anywhere.herokuapp.com/"
-
 
 export const getLocationData = (location) => (dispatch) => {
   dispatch({ type: LOADING_UI })
@@ -30,14 +27,13 @@ export const getLocationData = (location) => (dispatch) => {
   })
 }
 
-export const getNode = (NodeID) => (dispatch) => {
+export const getNode = (nodeId) => (dispatch) => {
   dispatch({ type: LOADING_LOCATION })
-  const url = `https://brendan.thecrag.com/api/node/id/${NodeID}?show=info,children&key=${key}`
-  fetch(proxyUrl + url)
-    .then(res => res.json())
+  // const url = `https://brendan.thecrag.com/api/node/id/${NodeID}?show=info,children&key=${key}`
+  axios.get(`tc/node/${nodeId}`)
     .then(res => {
-      var data = res.data
-      data.children = res.children
+      let { data } = res.data
+      data.children = res.data.children
       data.additionalInfo = true
       // data.geo = country[data.parentID][data.name].geo 
       // tc data doesn't include geo coords so grab them from country obj

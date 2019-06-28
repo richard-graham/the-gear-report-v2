@@ -22,9 +22,6 @@ import {
   REMOVE_SUGGESTIONS,
 } from '../types'
 import axios from 'axios'
-import { key } from '../../util/keys'
-
-const proxyUrl = "https://cors-anywhere.herokuapp.com/"
 
 // Get all alerts
 export const getAlerts = () => (dispatch) => {
