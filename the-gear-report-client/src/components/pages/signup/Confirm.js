@@ -98,7 +98,7 @@ export class FormPersonalDetails extends Component {
             variant="contained"
             disabled={loading}
           >Submit
-          {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+          {loading && <CircularProgress size={24} className={classes.submitProgress} />}
           </Button>
         </Paper>
       </div>
@@ -110,6 +110,13 @@ const styles = theme => ({
   ...theme,
   text: {
     margin: theme.spacing.unit * 2
+  },
+  submitProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
   }
 })
 

@@ -57,8 +57,7 @@ export class NewUserForm extends Component {
       city: this.state.city,
       handle: `${this.state.firstName} ${this.state.lastName}`
     }
-    this.props.signupUser(newUserData)
-    this.props.history.goBack()
+    this.props.signupUser(newUserData, this.props.history)
   }
 
   render() {
