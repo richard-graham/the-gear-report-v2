@@ -1,5 +1,6 @@
 import { 
   SET_ALERTS, 
+  SET_ALL_ALERTS,
   SET_RECENT_ALERTS,
   LIKE_ALERT, 
   UNLIKE_ALERT, 
@@ -13,17 +14,20 @@ import {
   SET_USER_PROFILE,
   SET_SEARCH,
   REMOVE_SUGGESTIONS,
-  LOADING_ALERTS
+  LOADING_ALERTS,
+  LOADING_ALL_ALERTS
 } from '../types'
 
 const initialState = {
   alerts: [],
+  allAlerts: [],
   recentAlerts: [],
   userAlerts: [],
   alert: {},
   location: {},
   loading: false,
   loadingAlerts: false,
+  loadingAllAlerts: false,
   newAlert: {
     images: []
   },
@@ -53,6 +57,12 @@ export default function(state = initialState, action){
         ...state,
         alerts: action.payload,
         loadingAlerts: false
+      }
+    case SET_ALL_ALERTS:
+      return {
+        ...state,
+        allAlerts: action.payload,
+        loadingAllAlerts: false
       }
     case SET_RECENT_ALERTS:
       return {
@@ -133,6 +143,11 @@ export default function(state = initialState, action){
       return {
         ...state,
         loadingAlerts: true
+      }
+    case LOADING_ALL_ALERTS:
+      return {
+        ...state,
+        loadingAllAlerts: true
       }
     default:
      return state

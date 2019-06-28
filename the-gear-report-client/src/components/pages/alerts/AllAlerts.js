@@ -44,7 +44,7 @@ export class AllTickets extends React.Component {
   }
 
   render() {
-    const { alerts, classes } = this.props
+    const { alerts, classes, loading } = this.props
     if(alerts.length > 0) alerts.forEach((alert, i) => alerts[i].createdAt = dayjs(alert.createdAt).format('DD-MM-YYYY'))
     if(this.state.redirect){
       return <Redirect push to={`/profile/${this.state.user}`} />
@@ -55,6 +55,7 @@ export class AllTickets extends React.Component {
         <MaterialTable 
           className={classes.allAlertsTable} 
           onRowClick= {(e, rowData) => this.handleRowClick(e, rowData)}
+          isLoading={loading}
           columns={[
             { title: 'Title', field: 'title', filtering: false, },
             { title: 'Severity', field: 'severity', type: 'numeric'},
@@ -104,8 +105,9 @@ const styles = theme => ({
 })
 
 const mapStateToProps = state => ({
-  alerts: state.data.alerts,
-  authenticated: state.user.authenticated
+  alerts: state.data.allAlerts,
+  authenticated: state.user.authenticated,
+  loading: state.data.loadingAllAlerts
 })
 
 const mapDispatchToProps = {

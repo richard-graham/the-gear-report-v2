@@ -43,7 +43,7 @@ const {
  } = require('./handlers/tc')
  
 // Alert routes
-app.get('/alerts', getAllAlerts)
+app.get('/alerts/all', getAllAlerts)
 app.get('/alerts/recent', getRecentAlerts)
 app.get('/alert/:alertId', getAlert)
 app.get('/alerts/:userHandle', getAlertsByUser)

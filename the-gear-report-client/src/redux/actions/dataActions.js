@@ -1,5 +1,6 @@
 import { 
   SET_ALERTS,
+  SET_ALL_ALERTS,
   SET_RECENT_ALERTS,
   LOADING_DATA, 
   LOADING_ALERTS,
@@ -20,16 +21,17 @@ import {
   SET_USER_PROFILE,
   SET_SEARCH,
   REMOVE_SUGGESTIONS,
+  LOADING_ALL_ALERTS,
 } from '../types'
 import axios from 'axios'
 
 // Get all alerts
 export const getAlerts = () => (dispatch) => {
-  dispatch({ type: LOADING_DATA })
-  axios.get('/alerts')
+  dispatch({ type: LOADING_ALL_ALERTS })
+  axios.get('/alerts/all')
     .then(res => {
       dispatch({ 
-        type: SET_ALERTS, 
+        type: SET_ALL_ALERTS, 
         payload: res.data
       })
     })

@@ -29,7 +29,6 @@ export const getLocationData = (location) => (dispatch) => {
 
 export const getNode = (nodeId) => (dispatch) => {
   dispatch({ type: LOADING_LOCATION })
-  // const url = `https://brendan.thecrag.com/api/node/id/${NodeID}?show=info,children&key=${key}`
   axios.get(`tc/node/${nodeId}`)
     .then(res => {
       let { data } = res.data
