@@ -37,7 +37,8 @@ const {
    getLocationData,
    getNode,
    updateSearchLocation,
-   getChildrenAndAncestors
+   getChildrenAndAncestors,
+   getChildren
  } = require('./handlers/tc')
  
 // Alert routes
@@ -69,7 +70,8 @@ app.post('/unsubscribe/crag', FBAuth, unsubscribeFromCrag)
 app.get('/tc/location/:location', getLocationData)
 app.get('/tc/node/:nodeID', getNode)
 app.get('/tc/search/location/:id', updateSearchLocation)
-app.get('/tc/node/locations/:nodeID', getChildrenAndAncestors)
+app.get('/tc/node/location/:nodeID/relatives', getChildrenAndAncestors)
+app.get('/tc/node/location/:nodeID/children', getChildren)
 
 exports.api = functions.region('us-central1').https.onRequest(app) 
 // exports.api = functions.region('europe-west1').https.onRequest(app)

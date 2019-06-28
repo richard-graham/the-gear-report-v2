@@ -25,10 +25,7 @@ import Select from '@material-ui/core/Select'
 //Icons
 import EditIcon from '@material-ui/icons/Edit'
 
-import { key } from '../../util/keys'
 import { Typography } from '@material-ui/core';
-
-const proxyUrl = "https://cors-anywhere.herokuapp.com/"
 
 class CreateAlert extends React.Component {
 
@@ -55,11 +52,11 @@ class CreateAlert extends React.Component {
     })
     if(openedWithLoc &&
       checkIfCrag(type, subType)){
-        this.getLocations(this.props.location.id)
+        this.getRelatives(this.props.location.id)
       }
     if(openedWithLoc &&
       checkIfBelowCrag(type, subType)){
-        this.getLocations(this.props.location.parentID)
+        this.getRelatives(this.props.location.parentID)
       }
   }
 
@@ -97,13 +94,10 @@ class CreateAlert extends React.Component {
 
   handleRefinement = (e) => {
     e.persist()
-    const url = `https://brendan.thecrag.com/api/node/id/${e.target.value}?show=children&key=${key}`
     e.target.value ?
-    (fetch(proxyUrl + url)
+    (axios.get(`/tc/node/location/${e.target.value}/children`)
       .then(res => {
-        return res.json()
-      })
-      .then(data => {
+        const { data } = res
         var nameArr = e.target.name.split('')
         var iteration = Number(nameArr[nameArr.length - 1])
         this.setState({ 
@@ -151,8 +145,8 @@ class CreateAlert extends React.Component {
      this.props.closeAllDialogs()
   }
 
-  getLocations = (id) => {
-    axios.get(`/tc/node/locations/${id}`)
+  getRelatives = (id) => {
+    axios.get(`/tc/node/location/${id}/relatives`)
       .then(res => {
         const { data } = res
         var result = []
@@ -263,14 +257,14 @@ class CreateAlert extends React.Component {
             {renderLocOptions && !use
                ? <Search 
                 searchType={'Alert'} 
-                returnIdToParent={this.getLocations} 
+                returnIdToParent={this.getRelatives} 
               />
               : use && alertLocation && alertLocation.id
               ? ''
               : !renderLocOptions
               ? <Search 
                 searchType={'Alert'} 
-                returnIdToParent={this.getLocations} 
+                returnIdToParent={this.getRelatives} 
               />
               : ''}
 
