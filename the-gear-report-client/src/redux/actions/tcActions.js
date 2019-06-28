@@ -30,7 +30,7 @@ export const getLocationData = (location) => (dispatch) => {
   })
 }
 
-export const getNode = (NodeID, country) => (dispatch) => {
+export const getNode = (NodeID) => (dispatch) => {
   dispatch({ type: LOADING_LOCATION })
   const url = `https://brendan.thecrag.com/api/node/id/${NodeID}?show=info,children&key=${key}`
   fetch(proxyUrl + url)

@@ -63,17 +63,29 @@ const getNode = (req, res) => {
 
 const updateSearchLocation = (req, res) => {
   fetch(`https://brendan.thecrag.com/api/node/id/${req.params.id}?show=info,children,ancestors&key=${key.key}`)
-  .then(response => response.json())
-  .then(resData => {
-    res.send(resData)
-  })
-  .catch(err => {
-    console.log(err);
-  })
+    .then(response => response.json())
+    .then(resData => {
+      res.send(resData)
+    })
+    .catch(err => {
+      console.log(err);
+    })
+}
+
+const getChildrenAndAncestors = (req, res) => {
+  fetch(`https://brendan.thecrag.com/api/node/id/${req.params.nodeID}?show=children,ancestors&key=${key.key}`)
+    .then(response => response.json())
+    .then(resData => {
+      res.send(resData)
+    })
+    .catch(err => {
+      console.log(err);
+    })
 }
 
 module.exports = {
   getLocationData,
   getNode,
-  updateSearchLocation
+  updateSearchLocation,
+  getChildrenAndAncestors
 }

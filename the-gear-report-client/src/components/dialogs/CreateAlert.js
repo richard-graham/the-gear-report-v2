@@ -3,6 +3,7 @@ import { uploadAlertImage, postAlert, resetAlertImages } from '../../redux/actio
 import { connect } from 'react-redux'
 import { checkIfCrag, checkIfBelowCrag } from '../../util/functions'
 import Search from '../../util/Search'
+import axios from 'axios'
 //Mui
 import Grid from '@material-ui/core/Grid'
 import { withStyles } from '@material-ui/core/styles'
@@ -151,13 +152,11 @@ class CreateAlert extends React.Component {
   }
 
   getLocations = (id) => {
-    const url = `https://brendan.thecrag.com/api/node/id/${id}?show=children,ancestors&key=${key}`
-    fetch(proxyUrl + url)
+    axios.get(`/tc/node/locations/${id}`)
       .then(res => {
-        return res.json()
-      })
-      .then(data => {
+        const { data } = res
         var result = []
+        console.log(data);
         data.data.ancestors.forEach(ancestor => {
           result.push({
             id: ancestor.id,
