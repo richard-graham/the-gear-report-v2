@@ -45,14 +45,13 @@ import axios from 'axios'
 //   );
 // }
 
-export const loginUser = (userData, history) => (dispatch) => { 
+export const loginUser = (userData) => (dispatch) => { 
   dispatch({ type: LOADING_UI })
   axios.post('/login', userData)
       .then(res => {
         setAuthorizationHeader(res.data.token)
         dispatch(getUserData())
         dispatch({ type: CLEAR_ERRORS })
-        history.push('/')
       })
       .catch(err => {
         dispatch({ 
@@ -62,7 +61,7 @@ export const loginUser = (userData, history) => (dispatch) => {
       })
 }
 
-export const signupUser = (newUserData, history) => (dispatch) => { 
+export const signupUser = (newUserData) => (dispatch) => { 
   dispatch({ type: LOADING_UI })
   axios.post('/signup', newUserData)
       .then(res => {
@@ -73,7 +72,6 @@ export const signupUser = (newUserData, history) => (dispatch) => {
           type: SET_MESSAGE,
           payload: 'Sign up successful'
         })
-        history.push('/')
       })
       .catch(err => {
         console.log(err.response.data);

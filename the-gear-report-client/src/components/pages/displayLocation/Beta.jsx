@@ -34,7 +34,10 @@ const styles = theme => ({
   ...theme,
   header: {
     textAlign: 'left',
-    overFlowWrap: 'break-word'
+    overflowWrap: 'break-word',
+    [theme.breakpoints.up('md')]: {
+      maxWidth: 150
+    }
   },
   content: {
     textAlign: 'left',
@@ -54,7 +57,10 @@ const styles = theme => ({
   },
   headerContainer: {
     padding: 4,
-    minWidth: 130
+    minWidth: 350,
+    [theme.breakpoints.up('md')]: {
+      minWidth: 170
+    }
   },
   contentContainer: {
     padding: 4

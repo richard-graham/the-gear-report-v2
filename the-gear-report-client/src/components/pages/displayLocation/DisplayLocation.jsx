@@ -31,6 +31,8 @@ export class DisplayCrag extends Component {
       this.props.updateSearchLocation(match.params.locationID, country)
       this.props.getAlertsByLocation(match.params.locationID)
     }
+    // Scroll to top when new location is entered
+    if(prevProps.location.id !== location.id) window.scrollTo(0, 0)
   }
 
   hasUniqueBeta = beta => {

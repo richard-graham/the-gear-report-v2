@@ -37,7 +37,7 @@ export class FormPersonalDetails extends Component {
       bio: this.state.bio,
       city: this.state.city,
     }
-    this.props.signupUser(newUserData, this.props.history)
+    this.props.signupUser(newUserData)
   }
 
 
