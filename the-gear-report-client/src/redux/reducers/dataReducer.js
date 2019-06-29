@@ -15,7 +15,9 @@ import {
   SET_SEARCH,
   REMOVE_SUGGESTIONS,
   LOADING_ALERTS,
-  LOADING_ALL_ALERTS
+  LOADING_ALL_ALERTS,
+  LIKE_COMMENT,
+  UNLIKE_COMMENT
 } from '../types'
 
 const initialState = {
@@ -148,6 +150,36 @@ export default function(state = initialState, action){
       return {
         ...state,
         loadingAllAlerts: true
+      }
+    case LIKE_COMMENT:
+      var updatedComments = []
+      state.alert.comments.forEach(comment => {
+        if(action.payload.commentId === comment.id){
+          comment.likeCount++
+        }
+        updatedComments.push(comment)
+      })
+      return {
+        ...state,
+        alert: {
+          ...state.alert,
+          comments: updatedComments
+        }
+      }
+    case UNLIKE_COMMENT:
+      var updatedComments = []
+      state.alert.comments.forEach(comment => {
+        if(action.payload.commentId === comment.id){
+          comment.likeCount--
+        }
+        updatedComments.push(comment)
+      })
+      return {
+        ...state,
+        alert: {
+          ...state.alert,
+          comments: updatedComments
+        }
       }
     default:
      return state

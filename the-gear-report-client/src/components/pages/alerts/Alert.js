@@ -141,7 +141,7 @@ export class Alert extends Component {
 
                   
                   {comments && comments.map((comment, index) => {
-                    const { body, createdAt, userImage, userHandle, id } = comment
+                    const { body, createdAt, userImage, userHandle, id, likeCount } = comment
                     var liked = false
                     likes.forEach(like => {
                       if(like.commentId === id) liked = true
@@ -167,15 +167,19 @@ export class Alert extends Component {
                           <Typography variant='body1' className={classes.commentText}>
                             {body}
                           </Typography>
-                          { liked ? <Favorited 
-                                      className={classes.likeComment} 
-                                      onClick={() => this.handleCommentUnlike(id)}
-                                      color='secondary' />  
-                                  : <Favorite 
+                          <div className={classes.likeContainer} >
+                            {liked ? <Favorited 
+                                    className={classes.likeComment} 
+                                    onClick={() => this.handleCommentUnlike(id)}
+                                    color='secondary' />  
+                                  : <Favorited 
                                       className={classes.likeComment} 
                                       // onMouseOver={change class}
+                                      style={{ color: 'lightGrey'}}
                                       onClick={() => this.handleCommentLike(id)}
                                       />}
+                            <Typography >{likeCount}</Typography>
+                          </div>
                         </div>
                       </div>
                     )
@@ -274,7 +278,11 @@ const styles = theme => ({
   },
   likeComment: {
     width: 18,
-    height: 18
+    height: 18,
+    marginRight: 5
+  },
+  likeContainer: {
+    display: 'flex'
   }
 })
 
