@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import withStyles from '@material-ui/core/styles/withStyles'
-import { loginUser } from '../../../redux/actions/userActions'
+import { loginUser, clearErrors } from '../../../redux/actions/userActions'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 //Mui
@@ -15,6 +15,10 @@ export class Login extends Component {
   state = {
     email: '',
     password: ''
+  }
+
+  componentWillUnmount = () => {
+    this.props.clearErrors()
   }
 
   handleChange = e => {
@@ -100,4 +104,9 @@ const mapStateToProps = state => ({
   loading: state.user.loading
 })
 
-export default connect(mapStateToProps, { loginUser })(withStyles(styles)(Login))
+const mapDispatchToProps = {
+  loginUser,
+  clearErrors
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Login))

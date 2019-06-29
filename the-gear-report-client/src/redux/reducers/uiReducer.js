@@ -98,7 +98,9 @@ export default function(state = initialState, action){
       return {
         ...state,
         loading: false,
-        errors: {}
+        errors: {
+          general: []
+        }
       }
     case LOADING_UI:
       return {

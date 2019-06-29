@@ -124,6 +124,10 @@ export const setError = (error) => (dispatch) => {
   })
 }
 
+export const clearErrors = () => dispatch => {
+  dispatch({ type: CLEAR_ERRORS })
+}
+
 export const subscribeToCrag = (cragDetails) => dispatch => {
   axios.post('/subscribe/crag', cragDetails)
     .then(res => {
