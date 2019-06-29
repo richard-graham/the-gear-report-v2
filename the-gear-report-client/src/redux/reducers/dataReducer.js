@@ -152,33 +152,33 @@ export default function(state = initialState, action){
         loadingAllAlerts: true
       }
     case LIKE_COMMENT:
-      var updatedComments = []
+      var newLikeComments = []
       state.alert.comments.forEach(comment => {
         if(action.payload.commentId === comment.id){
           comment.likeCount++
         }
-        updatedComments.push(comment)
+        newLikeComments.push(comment)
       })
       return {
         ...state,
         alert: {
           ...state.alert,
-          comments: updatedComments
+          comments: newLikeComments
         }
       }
     case UNLIKE_COMMENT:
-      var updatedComments = []
+      var newUnlikeComments = []
       state.alert.comments.forEach(comment => {
         if(action.payload.commentId === comment.id){
           comment.likeCount--
         }
-        updatedComments.push(comment)
+        newUnlikeComments.push(comment)
       })
       return {
         ...state,
         alert: {
           ...state.alert,
-          comments: updatedComments
+          comments: newUnlikeComments
         }
       }
     default:

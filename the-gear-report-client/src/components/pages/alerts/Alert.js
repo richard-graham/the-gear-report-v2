@@ -6,6 +6,7 @@ import dayjs from 'dayjs'
 import AlertImageGallery from './AlertImageGallery'
 import { Link } from 'react-router-dom'
 import ProfilePic from '../../../util/ProfilePic'
+import classNames from 'classnames'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
@@ -16,8 +17,7 @@ import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 //Icons
-import Favorite from '@material-ui/icons/FavoriteBorderOutlined'
-import Favorited from '@material-ui/icons/Favorite'
+import Favorite from '@material-ui/icons/Favorite'
 
 export class Alert extends Component {
 
@@ -49,6 +49,14 @@ export class Alert extends Component {
   handleCommentSubmit = () => {
     this.props.submitComment(this.props.alert.alertId, {body: this.state.comment})
     this.setState({ comment: '' })
+  }
+
+  handleMouseEnter = key => {
+    this.setState({ [key]: true })
+  }
+
+  handleMouseLeave = key => {
+    this.setState({ [key]: false })
   }
 
   render() {
@@ -143,6 +151,7 @@ export class Alert extends Component {
                   {comments && comments.map((comment, index) => {
                     const { body, createdAt, userImage, userHandle, id, likeCount } = comment
                     var liked = false
+                    const key = `comment${index}open`
                     likes.forEach(like => {
                       if(like.commentId === id) liked = true
                     })
@@ -168,14 +177,22 @@ export class Alert extends Component {
                             {body}
                           </Typography>
                           <div className={classes.likeContainer} >
-                            {liked ? <Favorited 
-                                    className={classes.likeComment} 
+                            {liked ? <Favorite 
+                                    className={classNames(classes.likedIcon, {
+                                      [classes.likeIcon]: this.state[key] === true,
+                                      [classes.likedIcon]: this.state[key] === false
+                                    })}
                                     onClick={() => this.handleCommentUnlike(id)}
-                                    color='secondary' />  
-                                  : <Favorited 
-                                      className={classes.likeComment} 
-                                      // onMouseOver={change class}
-                                      style={{ color: 'lightGrey'}}
+                                    onMouseEnter={() => this.handleMouseEnter(key)}
+                                    onMouseLeave={() => this.handleMouseLeave(key)}
+                                    />  
+                                  : <Favorite 
+                                      className={classNames(classes.likeIcon, {
+                                      [classes.likeIcon]: this.state[key] === false,
+                                      [classes.likedIcon]: this.state[key] === true
+                                      })}
+                                      onMouseEnter={() => this.handleMouseEnter(key)}
+                                      onMouseLeave={() => this.handleMouseLeave(key)}
                                       onClick={() => this.handleCommentLike(id)}
                                       />}
                             <Typography >{likeCount}</Typography>
@@ -283,6 +300,12 @@ const styles = theme => ({
   },
   likeContainer: {
     display: 'flex'
+  },
+  likeIcon: {
+    color: 'lightGray'
+  },
+  likedIcon: {
+    color: '#F50057'
   }
 })
 

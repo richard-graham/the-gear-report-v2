@@ -128,14 +128,18 @@ export const unsubscribeFromCrag = (cragDetails) => dispatch => {
 }
 
 export const likeComment = messageId => dispatch => {
+  dispatch({ 
+    type: LIKE_COMMENT,
+    payload: { commentId: messageId }
+  })
   axios.get(`/comment/${messageId}/like`)
     .then(res => {
-      if(res.data.error) dispatch({ type: SET_ERRORS, payload: res.data.error })
+      if(res.data.error) {
+        dispatch({ type: SET_ERRORS, payload: res.data.error })
+        dispatch({ type: UNLIKE_COMMENT, payload: { commentId: messageId } })
+      }
       if(res.data.message) dispatch({ type: SET_MESSAGE, payload: res.data.message })
-      dispatch({
-        type: LIKE_COMMENT,
-        payload: res.data
-      })
+
     })
     .catch(err => {
       console.log(err);
@@ -143,14 +147,17 @@ export const likeComment = messageId => dispatch => {
 }
 
 export const unlikeComment = messageId => dispatch => {
+  dispatch({
+    type: UNLIKE_COMMENT,
+    payload: { commentId: messageId }
+  })
   axios.get(`/comment/${messageId}/unlike`)
   .then(res => {
-    if(res.data.error) dispatch({ type: SET_ERRORS, payload: res.data.error })
+    if(res.data.error){
+      dispatch({ type: SET_ERRORS, payload: res.data.error })
+      dispatch({ type: LIKE_COMMENT, payload: { commentId: messageId } })
+    }
     if(res.data.message) dispatch({ type: SET_MESSAGE, payload: res.data.message })
-    dispatch({
-      type: UNLIKE_COMMENT,
-      payload: res.data
-    })
   })
   .catch(err => {
     console.log(err);
