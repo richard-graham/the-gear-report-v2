@@ -91,9 +91,29 @@ exports.createNotificationOnLike = functions.region('us-central1').firestore.doc
           createdAt: new Date().toISOString(),
           recipient: doc.data().userHandle,
           sender: snapshot.data().userHandle,
-          type: 'like',
+          type: 'alertLike',
           read: false,
           alertId: doc.id
+        })
+      }
+    })
+    .catch(err => {
+      console.error(err)
+    })
+  })
+
+  exports.createNotificationOnCommentLike = functions.region('us-central1').firestore.document('likes/{id}')
+  .onCreate((snapshot) => {
+    return db.doc(`/comments/${snapshot.data().commentId}`).get()
+    .then(doc => {
+      if(doc.exists && doc.data().userHandle !== snapshot.data().userHandle){ // don't send a notification is liking or commenting on their own post
+        return db.doc(`/notifications/${snapshot.id}`).set({
+          createdAt: new Date().toISOString(),
+          recipient: doc.data().userHandle,
+          sender: snapshot.data().userHandle,
+          type: 'commentLike',
+          read: false,
+          messageId: doc.id
         })
       }
     })
