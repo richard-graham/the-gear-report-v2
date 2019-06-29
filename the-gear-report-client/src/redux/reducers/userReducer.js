@@ -81,7 +81,7 @@ export default function(state = initialState, action){
     case UNLIKE_ALERT:
       return {
         ...state,
-        likes: state.likes.filter((like) => like.alertId === action.payload.alertId)
+        likes: state.likes.filter((like) => like.alertId !== action.payload.alertId)
       }
     case MARK_NOTIFICATIONS_READ:
      state.notifications.forEach(note => note.read = true)
@@ -102,7 +102,7 @@ export default function(state = initialState, action){
     case UNLIKE_COMMENT:
       return {
         ...state,
-        likes: state.likes.filter(like => like.messageId === action.payload.commentId)
+        likes: state.likes.filter(like => like.commentId !== action.payload.commentId)
       }
     default:
       return state
