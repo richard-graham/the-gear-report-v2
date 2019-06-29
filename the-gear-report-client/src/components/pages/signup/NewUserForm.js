@@ -44,9 +44,6 @@ export class NewUserForm extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
-    this.setState({
-      loading: true
-    })
     const newUserData = {
       email: this.state.email,
       password: this.state.password,
@@ -91,7 +88,6 @@ export class NewUserForm extends Component {
             prevStep={this.prevStep}
             values={values} 
             handleSubmit={this.handleSubmit}
-            errors={errors}
           />
         )
       default:
@@ -102,7 +98,7 @@ export class NewUserForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  errors: state.UI.errors
+  errors: state.UI.errors.general
 })
 
 export default connect(mapStateToProps, { signupUser })(NewUserForm)

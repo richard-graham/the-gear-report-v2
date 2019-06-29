@@ -2,7 +2,6 @@ import {
   SET_USER, 
   SET_ERRORS, 
   CLEAR_ERRORS, 
-  LOADING_UI, 
   SET_UNAUTHENTICATED, 
   LOADING_USER, 
   STOP_LOADING_USER,
@@ -39,7 +38,7 @@ export const loginUser = (userData, history) => (dispatch) => {
 }
 
 export const signupUser = (newUserData, history) => (dispatch) => { 
-  dispatch({ type: LOADING_UI })
+  dispatch({ type: LOADING_USER })
   axios.post('/signup', newUserData)
       .then(res => {
         setAuthorizationHeader(res.data.token)
@@ -52,11 +51,18 @@ export const signupUser = (newUserData, history) => (dispatch) => {
         history.goBack()
       })
       .catch(err => {
-        console.log(err);
+        let errors = []
+        Object.keys(err.response.data).forEach(error => {
+          let errMessage = ''
+          errMessage = err.response.data[error].toLowerCase()
+          errMessage = errMessage.charAt(0).toUpperCase() + errMessage.slice(1)
+          errors.push(errMessage)
+        })
         dispatch({ 
           type: SET_ERRORS, 
-          payload: err
+          payload: errors
         })
+        dispatch({ type: STOP_LOADING_USER })
       })
 }
 

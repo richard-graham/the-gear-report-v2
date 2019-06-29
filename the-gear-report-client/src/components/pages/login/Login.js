@@ -62,7 +62,6 @@ export class Login extends Component {
           <Fragment>
             <br />
             {errors.general.map((error, i) => {
-              console.log(error);
               return (
                 <Typography className={classes.formError} key={i}>{error}</Typography>
               )

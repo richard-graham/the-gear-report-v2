@@ -39,7 +39,7 @@ class RenderMenu extends Component {
         <MenuItem 
           onClick={this.handleLogout}
         >Logout</MenuItem> :
-        <MenuList>
+        <MenuList style={{ outline: 'none' }}>
           <MenuItem onClick={handleMenuClose} component={Link} to='/login'>Sign In</MenuItem>
           <MenuItem onClick={handleMenuClose} component={Link} to='/signup'>Register</MenuItem>
         </MenuList>

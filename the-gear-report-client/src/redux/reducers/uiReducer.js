@@ -15,7 +15,7 @@ import {
 const initialState = {
   loading: false,
   errors: {
-    general: ''
+    general: []
   },  
   message: '',
   country: [],

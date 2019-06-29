@@ -112,6 +112,7 @@ export default {
   formError: {
     color: 'red',
     fontSize: '1rem',
+    margin: 7
   },
   //Nav
   navAvatar: {
