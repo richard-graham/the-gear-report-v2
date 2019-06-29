@@ -167,6 +167,7 @@ export const submitComment = (alertId, commentData) => dispatch => {
       dispatch({ type: SUBMIT_COMMENT, payload: res.data })
       dispatch({ type: SET_MESSAGE, payload: 'Comment submitted successfully'})
       dispatch(clearErrors())
+      dispatch(getAlert(alertId))
     })
     .catch(err => {
       dispatch({

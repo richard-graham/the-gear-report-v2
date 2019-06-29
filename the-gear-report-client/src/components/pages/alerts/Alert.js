@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getAlert } from '../../../redux/actions/dataActions'
+import { getAlert, submitComment } from '../../../redux/actions/dataActions'
+import { likeComment, unlikeComment } from '../../../redux/actions/userActions'
 import dayjs from 'dayjs'
 import AlertImageGallery from './AlertImageGallery'
 import { Link } from 'react-router-dom'
 import ProfilePic from '../../../util/ProfilePic'
-import { submitComment } from '../../../redux/actions/dataActions'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
@@ -16,6 +16,8 @@ import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 //Icons
+import Favorite from '@material-ui/icons/FavoriteBorderOutlined'
+import Favorited from '@material-ui/icons/Favorite'
 
 export class Alert extends Component {
 
@@ -37,6 +39,13 @@ export class Alert extends Component {
     })
   }
 
+  handleCommentLike = id => {
+    this.props.likeComment(id)
+  }
+  handleCommentUnlike = id => {
+    this.props.unlikeComment(id)
+  }
+
   handleCommentSubmit = () => {
     this.props.submitComment(this.props.alert.alertId, {body: this.state.comment})
     this.setState({ comment: '' })
@@ -56,7 +65,8 @@ export class Alert extends Component {
         comments,
         commentCount
       },
-      loading
+      loading,
+      likes
     } = this.props
     return (
       <Paper className={classes.paper}>
@@ -131,36 +141,43 @@ export class Alert extends Component {
 
                   
                   {comments && comments.map((comment, index) => {
-                    const { body, createdAt, userImage, userHandle } = comment
+                    const { body, createdAt, userImage, userHandle, id } = comment
+                    var liked = false
+                    likes.forEach(like => {
+                      if(like.commentId === id) liked = true
+                    })
                     return (
-                        <Grid item sm={12} key={index} >
-                          <Grid container className={classes.commentContainer}>
-
-                              <img alt='words' src={userImage} className={classes.userImage} />
-  
-                            <Grid item sm={3}>
-                              <div className={classes.userData}>
-                                <Typography 
-                                  variant='body1' 
-                                  component={Link} 
-                                  to={`/profile/${userHandle}`} 
-                                  color='primary'
-                                  style={{ textDecoration: 'none'}}
-                                >
-                                  {userHandle}
-                                </Typography>
-                                <Typography variant='body2' color='textSecondary'>
-                                  {dayjs(createdAt).format('h:mm a, MMMM DD YYYY')}
-                                </Typography>
-                              </div>
-                            </Grid>
-                            <Grid item sm={8} style={{ marginTop: 6 }}>
-                              <Typography variant='body1' className={classes.commentText}>
-                                {body}
-                              </Typography>
-                            </Grid>
-                          </Grid>
-                        </Grid>
+                      <div className={classes.commentContainer} key={index}> 
+                        <img alt='words' src={userImage} className={classes.userImage} />
+                        <div className={classes.comment}>
+                          <div className={classes.userData}>
+                            <Typography 
+                              variant='body1' 
+                              component={Link} 
+                              to={`/profile/${userHandle}`} 
+                              color='primary'
+                              className={classes.commentUserName}
+                            >
+                              {userHandle}
+                            </Typography>
+                            <Typography variant='body2' color='textSecondary'>
+                              {dayjs(createdAt).format('h:mm a, MMMM DD YYYY')}
+                            </Typography>
+                          </div>
+                          <Typography variant='body1' className={classes.commentText}>
+                            {body}
+                          </Typography>
+                          { liked ? <Favorited 
+                                      className={classes.likeComment} 
+                                      onClick={() => this.handleCommentUnlike(id)}
+                                      color='secondary' />  
+                                  : <Favorite 
+                                      className={classes.likeComment} 
+                                      // onMouseOver={change class}
+                                      onClick={() => this.handleCommentLike(id)}
+                                      />}
+                        </div>
+                      </div>
                     )
                   })}
                   </div>
@@ -208,7 +225,6 @@ const styles = theme => ({
     flexGrow: 1,
   },
   userImage: {
-    width: 40,
     height: 40,
     borderRadius: '50%',
     marginRight: 15
@@ -226,7 +242,9 @@ const styles = theme => ({
     marginBottom: 20
   },
   commentContainer: {
-    paddingTop: 10
+    paddingTop: 10,
+    display: 'flex',
+    width: '100%'
   },
   commentData: {
     marginLeft: 20
@@ -240,29 +258,37 @@ const styles = theme => ({
     display: 'flex',
     marginBottom: 20
   },
-  userData: {
-    float: 'left',
-    marginRight: 10,
-    height: 8,
-    textAlign: 'center',
-    minWidth: 172
-  },
   commentButton: {
     marginLeft: 10
   },
   commentText: {
+    textAlign: 'left',
+    overflowWrap: 'break-word'
+  },
+  comment: {
     textAlign: 'left'
+  },
+  commentUserName: {
+    textDecoration: 'none',
+    textAlign: 'left'
+  },
+  likeComment: {
+    width: 18,
+    height: 18
   }
 })
 
 const mapStateToProps = (state) => ({
   alert: state.data.alert,
-  loading: state.UI.loading
+  loading: state.UI.loading,
+  likes: state.user.likes
 })
 
 const mapDispatchToProps = {
   submitComment,
-  getAlert
+  getAlert,
+  likeComment,
+  unlikeComment
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Alert))

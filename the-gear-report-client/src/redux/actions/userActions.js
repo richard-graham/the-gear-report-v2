@@ -7,43 +7,10 @@ import {
   LOADING_USER, 
   MARK_NOTIFICATIONS_READ,
   SET_MESSAGE,
+  LIKE_COMMENT,
+  UNLIKE_COMMENT,
 } from '../types'
 import axios from 'axios'
-
-// export const updateUserLocation = () => (dispatch) => {
-//   navigator.geolocation.getCurrentPosition((userPosition) => { 
-//     dispatch({ // user agrees to sharing location
-//       type: SET_USER_LOCATION,
-//       payload: {
-//         lat: userPosition.coords.latitude,
-//         lng: userPosition.coords.longitude,
-//         zoom: 11,
-//         haveUsersLocation: true
-//       }
-//     })
-// }, () => { // if user says no to tracking location use api
-//   fetch('https://ipapi.co/json')
-//     .then(res => res.json())
-//     .then(position => {
-//       dispatch({ 
-//         type: SET_USER_LOCATION,
-//         payload: {
-//           lat: -41.00485,
-//           lng: 172.6775,
-//           zoom: 5,
-//           haveUsersLocation: false,
-//           countryName: position.country_name,
-//           regionName: position.region 
-//         }
-//       })
-//     })
-//   }, {
-//     enableHighAccuracy: false,
-//     timeout: 5000,
-//     maximumAge: Infinity
-//   }
-//   );
-// }
 
 export const loginUser = (userData, history) => (dispatch) => { 
   dispatch({ type: LOADING_UI })
@@ -158,6 +125,36 @@ export const unsubscribeFromCrag = (cragDetails) => dispatch => {
       if(res.data.message) dispatch({ type: SET_MESSAGE, payload: res.data.message })
       dispatch(getUserData())
     })
+}
+
+export const likeComment = messageId => dispatch => {
+  axios.get(`/comment/${messageId}/like`)
+    .then(res => {
+      if(res.data.error) dispatch({ type: SET_ERRORS, payload: res.data.error })
+      if(res.data.message) dispatch({ type: SET_MESSAGE, payload: res.data.message })
+      dispatch({
+        type: LIKE_COMMENT,
+        payload: res.data
+      })
+    })
+    .catch(err => {
+      console.log(err);
+    })
+}
+
+export const unlikeComment = messageId => dispatch => {
+  axios.get(`/comment/${messageId}/unlike`)
+  .then(res => {
+    if(res.data.error) dispatch({ type: SET_ERRORS, payload: res.data.error })
+    if(res.data.message) dispatch({ type: SET_MESSAGE, payload: res.data.message })
+    dispatch({
+      type: UNLIKE_COMMENT,
+      payload: res.data
+    })
+  })
+  .catch(err => {
+    console.log(err);
+  })
 }
 
 const setAuthorizationHeader = (token) => {

@@ -6,7 +6,9 @@ import {
   LOADING_USER,
   LIKE_ALERT,
   UNLIKE_ALERT,
-  MARK_NOTIFICATIONS_READ
+  MARK_NOTIFICATIONS_READ,
+  LIKE_COMMENT,
+  UNLIKE_COMMENT
 } from '../types'
 
 const initialState = {
@@ -79,13 +81,29 @@ export default function(state = initialState, action){
     case UNLIKE_ALERT:
       return {
         ...state,
-        likes: state.likes.filter((like) => like.alertId !== action.payload.alertId)
+        likes: state.likes.filter((like) => like.alertId === action.payload.alertId)
       }
     case MARK_NOTIFICATIONS_READ:
      state.notifications.forEach(note => note.read = true)
      return {
        ...state
      }
+    case LIKE_COMMENT:
+      return {
+        ...state,
+        likes: [
+          ...state.likes,
+          {
+            userHandle: state.credentials.handle,
+            commentId: action.payload.commentId
+          }
+        ]
+      }
+    case UNLIKE_COMMENT:
+      return {
+        ...state,
+        likes: state.likes.filter(like => like.messageId === action.payload.commentId)
+      }
     default:
       return state
   }

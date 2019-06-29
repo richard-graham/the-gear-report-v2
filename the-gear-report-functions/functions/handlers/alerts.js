@@ -342,7 +342,7 @@ exports.likeComment = (req, res) => {
         .then(() => {
           return res.json(commentData) // success!
         })
-      } else { // user has already liked this alert
+      } else { // user has already liked this comment
         return res.status(400).json({ error: 'Comment already liked' })
       }
     })
@@ -350,6 +350,50 @@ exports.likeComment = (req, res) => {
       console.error(err)
       res.status(500).json({ error: err.code })
     })
+}
+
+exports.unlikeComment = (req, res) => {
+  // check to see if alert already liked & check if alert exists
+   const likeDocument = 
+   db
+    .collection('likes')
+    .where('userHandle', '==', req.user.handle)
+    .where('commentId', '==', req.params.commentId)
+   .limit(1) // will return arr with 1x doc
+const commentDocument = db.doc(`/comments/${req.params.commentId}`)
+let commentData
+
+commentDocument
+  .get()
+  .then(doc => {
+    if(doc.exists){
+      commentData = doc.data()
+      commentData.commentId = doc.id
+      return likeDocument.get()
+    } else {
+      return res.status(404).json({ error: 'Comment not found' })
+    }
+  })
+  .then(data => {
+    if(data.empty){
+      return res.status(400).json({ error: 'Comment not liked' })
+    } else { 
+      return db
+        .doc(`/likes/${data.docs[0].id}`)
+        .delete()
+        .then(() => {
+          commentData.likeCount--
+          return commentDocument.update({ likeCount: commentData.likeCount })
+        })
+        .then(() => {
+          res.json(commentData)
+        })
+    }
+  })
+  .catch(err => {
+    console.error(err)
+    res.status(500).json({ error: err.code })
+  })
 }
 
 exports.unlikeAlert = (req, res) => {
