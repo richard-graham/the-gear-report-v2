@@ -8,7 +8,8 @@ import {
   UNLIKE_ALERT,
   MARK_NOTIFICATIONS_READ,
   LIKE_COMMENT,
-  UNLIKE_COMMENT
+  UNLIKE_COMMENT,
+  STOP_LOADING_USER
 } from '../types'
 
 const initialState = {
@@ -66,6 +67,11 @@ export default function(state = initialState, action){
       return {
         ...state,
         loading: true
+      }
+    case STOP_LOADING_USER:
+      return {
+        ...state,
+        loading: false
       }
     case LIKE_ALERT:
       return {

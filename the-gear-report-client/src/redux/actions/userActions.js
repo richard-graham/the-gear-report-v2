@@ -5,6 +5,7 @@ import {
   LOADING_UI, 
   SET_UNAUTHENTICATED, 
   LOADING_USER, 
+  STOP_LOADING_USER,
   MARK_NOTIFICATIONS_READ,
   SET_MESSAGE,
   LIKE_COMMENT,
@@ -13,7 +14,7 @@ import {
 import axios from 'axios'
 
 export const loginUser = (userData, history) => (dispatch) => { 
-  dispatch({ type: LOADING_UI })
+  dispatch({ type: LOADING_USER })
   axios.post('/login', userData)
       .then(res => {
         setAuthorizationHeader(res.data.token)
@@ -22,10 +23,18 @@ export const loginUser = (userData, history) => (dispatch) => {
         history.goBack()
       })
       .catch(err => {
+        let errors = []
+        Object.keys(err.response.data).forEach(error => {
+          let errMessage = ''
+          errMessage = `${error} ${err.response.data[error].toLowerCase()}`
+          errMessage = errMessage.charAt(0).toUpperCase() + errMessage.slice(1)
+          errors.push(errMessage)
+        })
         dispatch({ 
           type: SET_ERRORS, 
-          payload: err.response.data 
+          payload: errors
         })
+        dispatch({ type: STOP_LOADING_USER })
       })
 }
 

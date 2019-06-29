@@ -50,6 +50,7 @@ const styles1 = theme => ({
 function MySnackbarContent(props) {
   const { classes, className, message, onClose, variant, ...other } = props;
   const Icon = variantIcon[variant];
+  console.log(message);
 
   return (
     <SnackbarContent
@@ -104,7 +105,7 @@ class CustomizedSnackbars extends React.Component {
   render() {
     const { variant, message } = this.props;
 
-    return (
+    return message.length === 1 ? (
       <div>
         <Snackbar
           anchorOrigin={{
@@ -118,11 +119,11 @@ class CustomizedSnackbars extends React.Component {
           <MySnackbarContentWrapper
             onClose={this.handleClose}
             variant={variant}
-            message={message}
+            message={message[0]}
           />
         </Snackbar>
       </div>
-    );
+    ) : ''
   }
 }
 

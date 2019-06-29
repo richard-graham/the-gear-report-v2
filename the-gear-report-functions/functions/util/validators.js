@@ -14,21 +14,21 @@ const isEmail = (email) => {
 }
 
 exports.validateSignUpData = (data) => {
-  let errors = {}
+  let errors = []
   if (isEmpty(data.email)) {
-    errors.email = 'Email must not be empty'
+    errors.push('Email must not be empty')
   } else if (!isEmail(data.email)) {
-    errors.email = 'Must be a valid email address'
+    errors.push('Must be a valid email address')
   }
 
-  if (isEmpty(data.password)) errors.password = 'Password must not be empty'
-  if (!data.password || !data.confirmPassword) errors.password = 'Password must not be empty'
-  if (data.password !== data.confirmPassword) errors.confirmPassword = 'Passwords must match'
-  if (isEmpty(data.handle)) errors.handle = 'Name must not be empty'
-  if (isEmpty(data.city)) errors.city = 'City must not be empty'
+  if (isEmpty(data.password)) errors.push('Password must not be empty')
+  if (!data.password || !data.confirmPassword) errors.push('Password must not be empty')
+  if (data.password !== data.confirmPassword) errors.push('Passwords must match')
+  if (isEmpty(data.handle)) errors.push('Name must not be empty')
+  if (isEmpty(data.city)) errors.push('City must not be empty')
   return {
     errors,
-    valid: Object.keys(errors).length === 0 ? true : false
+    valid: errors.length === 0 ? true : false
   }
 }
 

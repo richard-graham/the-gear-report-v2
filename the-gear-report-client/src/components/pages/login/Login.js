@@ -25,9 +25,6 @@ export class Login extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    this.setState({
-      loading: true
-    })
     const userData = {
       email: this.state.email,
       password: this.state.password,
@@ -36,7 +33,7 @@ export class Login extends Component {
   }
 
   render() {
-    const { classes, UI: { loading, errors } } = this.props
+    const { classes, UI: {  errors }, loading } = this.props
     const { email, password } = this.state
     return (
       <div className={classes.formContainer}>
@@ -61,7 +58,16 @@ export class Login extends Component {
             type='password'
           />
           <br />
-          {errors && <Fragment><br /><Typography className={classes.formError}>{errors.general}</Typography></Fragment>}
+          {errors.general && 
+          <Fragment>
+            <br />
+            {errors.general.map((error, i) => {
+              console.log(error);
+              return (
+                <Typography className={classes.formError} key={i}>{error}</Typography>
+              )
+            })}
+          </Fragment>}
           <Button 
             color='primary'
             className={classes.signupMultiButton}
@@ -91,7 +97,8 @@ const styles = theme => ({
 })
 
 const mapStateToProps = state => ({
-  UI: state.UI
+  UI: state.UI,
+  loading: state.user.loading
 })
 
 export default connect(mapStateToProps, { loginUser })(withStyles(styles)(Login))
