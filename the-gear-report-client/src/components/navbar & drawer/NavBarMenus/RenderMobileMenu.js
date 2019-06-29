@@ -11,7 +11,13 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 
 export class RenderMobileMenu extends Component {
   render() {
-    const { mobileMoreAnchorEl, isMobileMenuOpen, handleMenuClose, handleMobileMenuClose, handleProfileMenuOpen } = this.props
+    const { 
+      mobileMoreAnchorEl, 
+      isMobileMenuOpen, 
+      handleMenuClose, 
+      handleMobileMenuClose, 
+      handleMenuOpen 
+    } = this.props
     return (
       <Menu
         anchorEl={mobileMoreAnchorEl}
@@ -36,7 +42,7 @@ export class RenderMobileMenu extends Component {
           </IconButton>
           <p>Notifications</p>
         </MenuItem>
-        <MenuItem onClick={handleProfileMenuOpen}>
+        <MenuItem onClick={handleMenuOpen}>
           <IconButton color="inherit">
             <ProfilePic size={30} />
           </IconButton>

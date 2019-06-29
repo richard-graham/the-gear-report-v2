@@ -113,7 +113,8 @@ exports.createNotificationOnLike = functions.region('us-central1').firestore.doc
           sender: snapshot.data().userHandle,
           type: 'commentLike',
           read: false,
-          messageId: doc.id
+          commentId: doc.id,
+          alertId: doc.data().alertId
         })
       }
     })

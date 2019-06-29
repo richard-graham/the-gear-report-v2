@@ -284,6 +284,7 @@ exports.markNotificationsRead = (req, res) => {
   // when user opens notification dropdown send server arr of id's  -> notifications just seen
   // and mark as read
   let batch = db.batch() // batch allows you to update multiple documents
+  console.log(req.body);
   req.body.forEach(notificationId => {
     const notification = db.doc(`/notifications/${notificationId}`)
     batch.update(notification, { read: true })

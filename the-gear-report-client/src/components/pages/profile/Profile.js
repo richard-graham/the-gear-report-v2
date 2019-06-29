@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import { uploadUserImage } from '../../../redux/actions/userActions'
 import { getAlertsByUser, getUserData } from '../../../redux/actions/dataActions'
-import dayjs from 'dayjs'
+import moment from 'moment'
 import UpdateDetails from '../../dialogs/UpdateDetails'
 //Mui
 import Button from '@material-ui/core/Button'
@@ -97,7 +97,7 @@ export class Profile extends Component {
         <Typography variant='subtitle2'>{bio}</Typography>
         <br />
         <Typography variant='subtitle1'>Member Since</Typography>
-        <Typography variant='subtitle2'>{dayjs(createdAt).format('MMM YYYY')}</Typography>
+        <Typography variant='subtitle2'>{moment(createdAt).format('MMM YYYY')}</Typography>
         <br />
         {isMyProfile && 
         <Button color='primary' variant='contained' onClick={this.handleChangeDetails}>

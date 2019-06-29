@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getAlert, submitComment } from '../../../redux/actions/dataActions'
 import { likeComment, unlikeComment } from '../../../redux/actions/userActions'
-import dayjs from 'dayjs'
+import moment from 'moment'
 import AlertImageGallery from './AlertImageGallery'
 import { Link } from 'react-router-dom'
 import ProfilePic from '../../../util/ProfilePic'
@@ -90,7 +90,7 @@ export class Alert extends Component {
                   <br />
                   {createdAt && 
                   <Typography className={classes.alertDate}>
-                    {`Created At: ${dayjs(createdAt).format('DD-MM-YYYY')}`}
+                    {`Created At: ${moment(createdAt).format('DD-MM-YYYY')}`}
                   </Typography>}
                   <Typography>{`Status: ${resolved ? 'Resolved' : 'Not Resolved'}`}</Typography>
                   <Typography>{`Sponsored: ${sponsored ? 'True' : 'False'}`}</Typography>
@@ -170,7 +170,7 @@ export class Alert extends Component {
                               {userHandle}
                             </Typography>
                             <Typography variant='body2' color='textSecondary'>
-                              {dayjs(createdAt).format('h:mm a, MMMM DD YYYY')}
+                              {moment(createdAt).format('h:mm a, MMMM DD YYYY')}
                             </Typography>
                           </div>
                           <Typography variant='body1' className={classes.commentText}>
@@ -195,7 +195,7 @@ export class Alert extends Component {
                                       onMouseLeave={() => this.handleMouseLeave(key)}
                                       onClick={() => this.handleCommentLike(id)}
                                       />}
-                            <Typography >{likeCount}</Typography>
+                            <Typography className={classes.likeCount}>{likeCount}</Typography>
                           </div>
                         </div>
                       </div>
@@ -284,7 +284,8 @@ const styles = theme => ({
   },
   commentText: {
     textAlign: 'left',
-    overflowWrap: 'break-word'
+    overflowWrap: 'break-word',
+    marginTop: 4
   },
   comment: {
     textAlign: 'left'
@@ -299,13 +300,19 @@ const styles = theme => ({
     marginRight: 5
   },
   likeContainer: {
-    display: 'flex'
+    display: 'flex',
+    marginTop: 4
   },
   likeIcon: {
     color: 'lightGray'
   },
   likedIcon: {
     color: '#F50057'
+  },
+  likeCount: {
+    lineHeight: 1.65,
+    marginLeft: 4,
+    fontSize: '1rem',
   }
 })
 

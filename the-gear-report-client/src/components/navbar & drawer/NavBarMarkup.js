@@ -6,6 +6,8 @@ import RenderMenu from './NavBarMenus/RenderMenu'
 import { RenderMobileMenu } from './NavBarMenus/RenderMobileMenu'
 import ProfilePic from '../../util/ProfilePic'
 import Search from '../../util/Search'
+import Notifications from './NavBarMenus/Notifications'
+import { markNotificationsRead } from '../../redux/actions/userActions'
 //Mui
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -26,15 +28,31 @@ class NavBar extends React.Component {
   state = {
     anchorEl: null,
     mobileMoreAnchorEl: null,
+    notificationsAnchor: null
   };
 
-  handleProfileMenuOpen = event => {
+  handleMenuOpen = event => {
     this.setState({ anchorEl: event.currentTarget });
   };
 
+  handleNotificationsOpen = (event, notes) => {
+    this.setState({ 
+      notificationsAnchor: event.currentTarget
+     })
+  }
+
+  handleNotificationsClose = (notes) => {
+    this.props.markNotificationsRead(notes)
+    this.setState({
+      notificationsAnchor: null
+    })
+  }
+
   handleMenuClose = () => {
-    this.setState({ anchorEl: null });
-    this.handleMobileMenuClose();
+    this.setState({ 
+      anchorEl: null,
+      mobileMoreAnchorEl: null
+    })
   };
 
   handleMobileMenuOpen = event => {
@@ -46,10 +64,12 @@ class NavBar extends React.Component {
   };
 
   render() {
-    const { anchorEl, mobileMoreAnchorEl } = this.state;
+    const { anchorEl, mobileMoreAnchorEl, notificationsAnchor } = this.state;
     const { classes, user } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+    let unreadNotifications = []
+    user.notifications.forEach(note =>{ if(!note.read) unreadNotifications.push(note.notificationId) })
     return (
       <Fragment>
           <Typography component={Link} to='/' className={classes.navTitle} variant="h6" color="inherit" noWrap>
@@ -64,15 +84,25 @@ class NavBar extends React.Component {
               <MailIcon />
             </Badge>
           </IconButton>
-          <IconButton color="inherit">
-            <Badge badgeContent={17} color="secondary">
+          <IconButton 
+            color="inherit"
+            aria-haspopup="true"
+            onClick={this.handleNotificationsOpen}
+            >
+            <Badge badgeContent={unreadNotifications.length} color="secondary">
               <NotificationsIcon />
             </Badge>
           </IconButton>
+          {unreadNotifications.length > 0 && 
+          <Notifications 
+            anchorEl={notificationsAnchor}
+            handleMenuClose={this.handleNotificationsClose}
+            noteIds={unreadNotifications}
+          />}
           <IconButton
             aria-owns={isMenuOpen ? 'material-appbar' : undefined}
             aria-haspopup="true"
-            onClick={this.handleProfileMenuOpen}
+            onClick={this.handleMenuOpen}
             color="inherit"
           >
             {user ? <ProfilePic user={user} size={30} /> : ''}
@@ -82,18 +112,20 @@ class NavBar extends React.Component {
           <IconButton aria-haspopup="true" onClick={this.handleMobileMenuOpen} color="inherit">
             <MoreIcon />
           </IconButton>
-          {<RenderMenu 
+          <RenderMenu 
             anchorEl={anchorEl} 
             isMenuOpen={isMenuOpen} 
             handleMenuClose={this.handleMenuClose} 
-          />}
-        {<RenderMobileMenu 
-          mobileMoreAnchorEl={mobileMoreAnchorEl}
-          isMobileMenuOpen={isMobileMenuOpen}
-          handleMenuClose={this.handleMenuClose}
-          handleMobileMenuClose={this.handleMenuClose}
-          handleProfileMenuOpen={this.handleProfileMenuOpen}
-        />}
+          />
+          <RenderMobileMenu 
+            mobileMoreAnchorEl={mobileMoreAnchorEl}
+            isMobileMenuOpen={isMobileMenuOpen}
+            handleMenuClose={this.handleMenuClose}
+            handleMobileMenuClose={this.handleMenuClose}
+            handleMenuOpen={this.handleMenuOpen}
+          />
+         
+
         </div>
       </Fragment>
     )
@@ -108,4 +140,8 @@ const mapStateToProps = state => ({
   user: state.user
 })
 
-export default connect(mapStateToProps)(withStyles(styles)(NavBar))
+const mapDispatchToProps = {
+  markNotificationsRead
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(NavBar))

@@ -6,7 +6,7 @@ import MaterialTable from 'material-table'
 import { withStyles } from '@material-ui/core/styles'
 import CreateAlert from '../../dialogs/CreateAlert'
 import { Redirect } from 'react-router-dom'
-import dayjs from 'dayjs'
+import moment from 'moment'
 //Mui
 import {
   AccountCircle
@@ -45,7 +45,7 @@ export class AllTickets extends React.Component {
 
   render() {
     const { alerts, classes, loading } = this.props
-    if(alerts.length > 0) alerts.forEach((alert, i) => alerts[i].createdAt = dayjs(alert.createdAt).format('DD-MM-YYYY'))
+    if(alerts.length > 0) alerts.forEach((alert, i) => alerts[i].createdAt = moment(alert.createdAt).format('DD-MM-YYYY'))
     if(this.state.redirect){
       return <Redirect push to={`/profile/${this.state.user}`} />
     }

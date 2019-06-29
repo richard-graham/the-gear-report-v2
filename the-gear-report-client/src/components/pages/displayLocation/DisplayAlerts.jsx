@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import dayjs from 'dayjs'
+import moment from 'moment'
 import { withRouter } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 //Mui
@@ -60,7 +60,7 @@ export class CardList extends Component {
                         </span>
                       </Link>
                       <Typography variant='body2' className={classes.myCardDate} >
-                        {dayjs(createdAt).format('DD-MM-YYYY')}
+                        {moment(createdAt).format('DD-MM-YYYY')}
                       </Typography>
                     </div>
                   </div>
