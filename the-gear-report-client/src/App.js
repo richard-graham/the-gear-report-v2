@@ -15,7 +15,7 @@ import Alert from './components/pages/alerts/Alert'
 import DirectoryContainer from './components/directory/DirectoryContainer'
 import SearchRouter from './components/SearchRouter'
 import DisplayLocation from './components/pages/displayLocation/DisplayLocation'
-//mui
+//mui./components/navbar & drawer/loadingLocation/LoadingLocation
 import { withStyles } from '@material-ui/core/styles';
 
 

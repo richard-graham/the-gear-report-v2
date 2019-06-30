@@ -157,7 +157,7 @@ export class GlobeNav extends Component {
             key={'baselvl0'}
             button
             selected={selectedIndex === 'baselvl0'}
-            onClick={() => this.handleListItemClick('baselvl0', country.parent, 5)}
+            onClick={() => this.handleListItemClick('baselvl0', country.parent, 6)}
           >
             <ListItemText primary={country.parent.name} />
           </ListItem>
@@ -172,7 +172,7 @@ export class GlobeNav extends Component {
                     key={key}
                     button
                     selected={selectedIndex === i}
-                    onClick={() => this.handleListItemClick(key, loc, 6)}
+                    onClick={() => this.handleListItemClick(key, loc, 7)}
                   >
                     <ListItemText primary={loc.name} />
                   </ListItem>
@@ -187,7 +187,7 @@ export class GlobeNav extends Component {
                             key={key}
                             button
                             selected={selectedIndex === i}
-                            onClick={() => this.handleListItemClick(key, loc, 8)}
+                            onClick={() => this.handleListItemClick(key, loc, 9)}
                             open={this.state.key}
                           >
                             <ListItemText primary={loc.name} />
@@ -203,7 +203,7 @@ export class GlobeNav extends Component {
                                     key={key}
                                     button
                                     selected={selectedIndex === i}
-                                    onClick={() => this.handleListItemClick(key, loc, 9)}
+                                    onClick={() => this.handleListItemClick(key, loc, 11)}
                                     open={this.state.key}
                                   >
                                     <ListItemText primary={loc.name} />
@@ -219,7 +219,7 @@ export class GlobeNav extends Component {
                                           key={key}
                                           button
                                           selected={selectedIndex === i}
-                                          onClick={() => this.handleListItemClick(key, loc, 9)}
+                                          onClick={() => this.handleListItemClick(key, loc, 12)}
                                           open={this.state.key}
                                         >
                                           <ListItemText primary={loc.name} />
@@ -234,7 +234,7 @@ export class GlobeNav extends Component {
                                               key={key}
                                               button
                                               selected={selectedIndex === i}
-                                              onClick={() => this.handleListItemClick(key, loc, 9)}
+                                              onClick={() => this.handleListItemClick(key, loc, 16)}
                                               open={this.state.key}
                                             >
                                               <ListItemText primary={loc.name} />

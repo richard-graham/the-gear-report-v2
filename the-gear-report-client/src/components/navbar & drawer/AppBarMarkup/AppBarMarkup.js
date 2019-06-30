@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import NavBarMarkup from '../NavBarMarkup'
 import classNames from 'classnames';
+import LoadingLocation from '../loadingLocation/LoadingLocation'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar';
@@ -32,10 +33,11 @@ class AppBarMarkup extends Component {
               <MenuIcon />
             </IconButton>
 
-            <NavBarMarkup />
-
+            <NavBarMarkup />           
           </Toolbar>
+          <LoadingLocation />
         </AppBar>
+        
       </Fragment>
     )
   }

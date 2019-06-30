@@ -1,16 +1,14 @@
 import React from 'react'
 import { getAlerts } from '../../../redux/actions/dataActions'
-import { setError } from '../../../redux/actions/userActions'
+import { setError, clearErrors } from '../../../redux/actions/userActions'
 import { connect } from 'react-redux'
 import MaterialTable from 'material-table'
 import { withStyles } from '@material-ui/core/styles'
 import CreateAlert from '../../dialogs/CreateAlert'
 import { Redirect } from 'react-router-dom'
-import moment from 'moment'
+import dayjs from 'dayjs'
 //Mui
-import {
-  AccountCircle
-} from '@material-ui/icons'
+import { AccountCircle } from '@material-ui/icons'
 
 export class AllTickets extends React.Component {
   state = {
@@ -23,6 +21,10 @@ export class AllTickets extends React.Component {
     if(this.props.alerts.length < 1){
       this.props.getAlerts()
     }
+  }
+
+  componentWillUnmount = () => {
+    this.props.clearErrors()
   }
 
   closeCreateAlert = () => {
@@ -44,8 +46,9 @@ export class AllTickets extends React.Component {
   }
 
   render() {
-    const { alerts, classes, loading } = this.props
-    if(alerts.length > 0) alerts.forEach((alert, i) => alerts[i].createdAt = moment(alert.createdAt).format('DD-MM-YYYY'))
+    const { classes, loading } = this.props
+    let { alerts } = this.props
+    if(alerts.length > 0) alerts.forEach((alert, i) => alerts[i].createdAt = dayjs(alert.createdAt.substring(0, 10)).format('DD/MM/YYYY'))
     if(this.state.redirect){
       return <Redirect push to={`/profile/${this.state.user}`} />
     }
@@ -61,7 +64,7 @@ export class AllTickets extends React.Component {
             { title: 'Sponsored', field: 'sponsored', type: 'boolean', },
             { title: 'Resolved', field: 'resolved', type: 'boolean' },
             { title: 'Created By', field: 'userHandle'},
-            { title: 'Date Created', field: 'createdAt', type: 'date', filtering: false,},
+            { title: 'Date Created', field: 'createdAt', type: 'datetime', filtering: false,},
           ]}
           style={{
             maxWidth: '100%'
@@ -111,7 +114,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   getAlerts,
-  setError
+  setError,
+  clearErrors
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AllTickets))

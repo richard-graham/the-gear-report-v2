@@ -9,7 +9,7 @@ import {
   SET_LOCATION,
   RESET_LOCATION,
   LOADING_LOCATION,
-  REMOVE_SEARCHED
+  REMOVE_SEARCHED,
 } from '../types'
 
 const initialState = {

@@ -123,9 +123,7 @@ class NavBar extends React.Component {
             handleMenuClose={this.handleMenuClose}
             handleMobileMenuClose={this.handleMenuClose}
             handleMenuOpen={this.handleMenuOpen}
-          />
-         
-
+          /> 
         </div>
       </Fragment>
     )
