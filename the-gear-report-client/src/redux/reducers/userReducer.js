@@ -9,7 +9,7 @@ import {
   MARK_NOTIFICATIONS_READ,
   LIKE_COMMENT,
   UNLIKE_COMMENT,
-  STOP_LOADING_USER
+  STOP_LOADING_USER,
 } from '../types'
 
 const initialState = {

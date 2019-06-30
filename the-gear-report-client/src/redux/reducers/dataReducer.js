@@ -17,7 +17,9 @@ import {
   LOADING_ALERTS,
   LOADING_ALL_ALERTS,
   LIKE_COMMENT,
-  UNLIKE_COMMENT
+  UNLIKE_COMMENT,
+  LOADING_USER_PROFILE,
+  UPDATE_USER_PROFILE
 } from '../types'
 
 const initialState = {
@@ -35,6 +37,7 @@ const initialState = {
   },
   searchResults: [{label: 'test'}],
   userProfile: {
+    loading: false,
     user: {
       imageUrl: '',
       handle: '',
@@ -53,6 +56,21 @@ export default function(state = initialState, action){
       return {
         ...state,
         loading: true
+      }
+    case LOADING_USER_PROFILE:
+      return {
+        ...state,
+        userProfile: {
+          ...state.userProfile,
+          loading: true
+        }
+      }
+    case UPDATE_USER_PROFILE:
+      return {
+        ...state,
+        userProfile: {
+          user: action.payload
+        }
       }
     case SET_ALERTS:
       return {

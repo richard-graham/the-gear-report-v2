@@ -3,6 +3,7 @@ import {
   SET_ALL_ALERTS,
   SET_RECENT_ALERTS,
   LOADING_DATA, 
+  LOADING_USER_PROFILE,
   LOADING_ALERTS,
   LIKE_ALERT, 
   UNLIKE_ALERT, 
@@ -162,12 +163,11 @@ export const unlikeAlert = (alertId) => (dispatch) => {
 
 //Submit a comment
 export const submitComment = (alertId, commentData) => dispatch => {
+
   axios.post(`/alert/${alertId}/comment`, commentData)
     .then(res => {
       dispatch({ type: SUBMIT_COMMENT, payload: res.data })
-      dispatch({ type: SET_MESSAGE, payload: 'Comment submitted successfully'})
-      dispatch(clearErrors())
-      dispatch(getAlert(alertId))
+      dispatch({ type: SET_MESSAGE, payload: ['Comment submitted successfully']})
     })
     .catch(err => {
       dispatch({
@@ -186,7 +186,7 @@ export const deleteAlert = (alertId) => (dispatch) => {
 }
 
 export const getUserData = (userHandle) => dispatch => {
-  dispatch({ type: LOADING_DATA })
+  dispatch({ type: LOADING_USER_PROFILE })
   axios.get(`/user/${userHandle}`)
     .then(res => {
       dispatch({ 
@@ -196,8 +196,8 @@ export const getUserData = (userHandle) => dispatch => {
     })
     .catch(() => {
       dispatch({
-        type: SET_ALERTS,
-        payload: null
+        type: SET_ERRORS,
+        payload: ['Failed to load profile']
       })
     })
 }

@@ -116,7 +116,7 @@ export class Alert extends Component {
                   <div className={classes.commentHeader}>
                     <Typography>{`${commentCount ? commentCount : 0} Comments`}</Typography>
                   </div>
-                  <div className={classes.userComment}>
+                  <form className={classes.userComment}>
                     <ProfilePic size={40} />
                     <TextField
                       className={classes.commentInputRoot}                    
@@ -141,10 +141,11 @@ export class Alert extends Component {
                       variant='contained'
                       className={classes.commentButton}
                       onClick={this.handleCommentSubmit}
+                      type='submit'
                     >
                     Comment
                     </Button>
-                  </div>
+                  </form>
                   <div>
 
                   
@@ -251,7 +252,8 @@ const styles = theme => ({
     marginRight: 15
   },
   progress: {
-    marginTop: '30%'
+    position: 'absolute',
+    top: '50%'
   },
   content: {
     marginTop: 20,

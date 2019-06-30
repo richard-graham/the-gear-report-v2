@@ -16,20 +16,15 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 export class Profile extends Component {
 
   state = {
-    updateOpen: false
-  }
-
-  componentWillReceiveProps = (nextProps) => {
-    if (!this.props.user.loading &&
-      this.props.userProfile.handle !== 
-      nextProps.match.params.userHandle){
-      this.props.getUserData(nextProps.match.params.userHandle) 
-    }
+    updateOpen: false,
+    loading: false
   }
 
   componentDidMount = () => {
-    if(!this.props.loading){
-      this.props.getUserData(this.props.match.params.userHandle)
+    if (!this.props.loading &&
+      this.props.userProfile.user.handle !== 
+      this.props.match.params.userHandle){
+      this.props.getUserData(this.props.match.params.userHandle) 
     }
   }
 
@@ -57,75 +52,67 @@ export class Profile extends Component {
     const { 
       classes,
       userProfile : {
-          imageUrl,
-          handle,
-          email,
-          city,
-          createdAt,
-          occupation,
-          bio
+        user
       },
       loading
     } = this.props
 
-    const isMyProfile = handle === this.props.user.credentials.handle ? true : false
-    const profileMarkup = (
-      <Fragment>
-        <br />
-        {isMyProfile ? (
-          <Fragment>
-            <Tooltip title='Change Photo' placement='right'>
-              <img src={imageUrl} className={classes.profilePic} onClick={this.handleEditPicture} alt='User Profile' />
-            </Tooltip>
-            <input type='file' id='imageInput' onChange={this.handleImageChange} hidden='hidden'/>
-          </Fragment>
-        ) : (
-          <img src={imageUrl} className={classes.profilePic} onClick={this.handleEditPicture} alt='User Profile' />
-        )}
-        <Typography variant='h6'>{handle}</Typography>
-        <br />
-        <Typography variant='subtitle1'>Email</Typography>
-        <Typography variant='subtitle2'>{email}</Typography>
-        <br />
-        <Typography variant='subtitle1'>Occupation</Typography>
-        <Typography variant='subtitle2'>{occupation}</Typography>
-        <br />
-        <Typography variant='subtitle1'>City</Typography>
-        <Typography variant='subtitle2'>{city}</Typography>
-        <br />
-        <Typography variant='subtitle1'>Bio</Typography>
-        <Typography variant='subtitle2'>{bio}</Typography>
-        <br />
-        <Typography variant='subtitle1'>Member Since</Typography>
-        <Typography variant='subtitle2'>{moment(createdAt).format('MMM YYYY')}</Typography>
-        <br />
-        {isMyProfile && 
-        <Button color='primary' variant='contained' onClick={this.handleChangeDetails}>
-          Update Details 
-        </Button>}
-      </Fragment>
-    )
+    const {
+      imageUrl,
+      handle,
+      email,
+      city,
+      createdAt,
+      occupation,
+      bio
+    } = user
 
-    return (
+    const isMyProfile = handle === this.props.user.credentials.handle ? true : false
+
+    return loading ? (
+      <CircularProgress className={classes.progress} size={70} />
+    ) : imageUrl ? (
       <div className={classes.profileContainer}>
         <Paper className={classes.profilePaper}>
-          {loading ? 
-            <CircularProgress className={classes.progress} size={70} /> :
-            profileMarkup}
+          {isMyProfile ? (
+            <Fragment>
+              <Tooltip title='Change Photo' placement='right'>
+                <img src={imageUrl} className={classes.profilePic} onClick={this.handleEditPicture} alt='User Profile' />
+              </Tooltip>
+              <input type='file' id='imageInput' onChange={this.handleImageChange} hidden='hidden'/>
+            </Fragment>
+          ) : (
+            <img src={imageUrl} className={classes.profilePic} onClick={this.handleEditPicture} alt='User Profile' />
+          )}
+          <Typography variant='h6'>{handle}</Typography>
+          <br />
+          <Typography variant='subtitle1'>Email</Typography>
+          <Typography variant='subtitle2'>{email}</Typography>
+          <br />
+          <Typography variant='subtitle1'>Occupation</Typography>
+          <Typography variant='subtitle2'>{occupation}</Typography>
+          <br />
+          <Typography variant='subtitle1'>City</Typography>
+          <Typography variant='subtitle2'>{city}</Typography>
+          <br />
+          <Typography variant='subtitle1'>Bio</Typography>
+          <Typography variant='subtitle2'>{bio}</Typography>
+          <br />
+          <Typography variant='subtitle1'>Member Since</Typography>
+          <Typography variant='subtitle2'>{moment(createdAt).format('MMM YYYY')}</Typography>
+          <br />
+          {isMyProfile && 
+          <Button color='primary' variant='contained' onClick={this.handleChangeDetails}>
+            Update Details 
+          </Button>}
         </Paper>
-        <UpdateDetails 
-          open={this.state.updateOpen} 
-          toggleClose={this.toggleClose} 
-          imageUrl={imageUrl}
-          handle={handle}
-          email={email}
-          city={city}
-          createdAt={createdAt}
-          occupation={occupation}
-          bio={bio}
-        />
+          <UpdateDetails 
+            open={this.state.updateOpen} 
+            toggleClose={this.toggleClose} 
+            user={user}
+          />
       </div>
-    )
+    ) : ''
   }
 }
 
@@ -159,14 +146,15 @@ const styles = theme => ({
     flexDirection: 'column'
   },
   progress: {
-    marginTop: '50%'
+    position: 'absolute',
+    top: '50%'
   }
 })
 
 const mapStateToProps = state => ({
   user: state.user,
-  userProfile: state.data.userProfile.user,
-  loading: state.data.loading
+  userProfile: state.data.userProfile,
+  loading: state.data.userProfile.loading
 })
 
 const mapActionsToProps = {

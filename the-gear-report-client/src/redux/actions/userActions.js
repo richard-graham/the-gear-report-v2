@@ -9,6 +9,7 @@ import {
   SET_MESSAGE,
   LIKE_COMMENT,
   UNLIKE_COMMENT,
+  UPDATE_USER_PROFILE
 } from '../types'
 import axios from 'axios'
 
@@ -99,9 +100,9 @@ export const uploadUserImage = (formData) => (dispatch) => {
 }
 
 export const editUserDetails = (userDetails) => (dispatch) => {
+  dispatch({ type: UPDATE_USER_PROFILE, payload: userDetails })
   axios.post('/user', userDetails)
     .then((res) => {
-      dispatch(getUserData()) 
       dispatch({ type: SET_MESSAGE, payload: res.data.message })
     })
     .catch(err => {

@@ -39,9 +39,9 @@ export class App extends Component {
 
           {authenticated === true && <Route path='/' component={ActionButton} />}
     
-          {error ?  
+          {error.length > 0 ?  
             <MySnackBar variant='error' message={error} /> : 
-            message ? 
+            message.length > 0 ? 
             <MySnackBar variant='success' message={message} /> : 
             ''}
     </div>

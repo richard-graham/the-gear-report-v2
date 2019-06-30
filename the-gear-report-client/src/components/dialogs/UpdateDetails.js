@@ -20,13 +20,16 @@ export class UpdateDetails extends Component {
     })
   }
 
-  handleSubmit = () => {
+  handleSubmit = (e) => {
+    e.preventDefault()
     const newUserData = {
+      ...this.props.user,
       ...this.state,
-      handle: this.props.handle
+      handle: this.props.user.handle
     }
-
+    //fire dispatch
     this.props.editUserDetails(newUserData)
+    //reset state
     const newObj = this.state
     Object.keys(this.state).forEach(key => newObj[key] = '')
     this.setState(newObj)
@@ -38,7 +41,8 @@ export class UpdateDetails extends Component {
       classes, 
       UI: { errors } ,
       open,
-      toggleClose
+      toggleClose,
+      user
     } = this.props
 
     return (
@@ -48,70 +52,73 @@ export class UpdateDetails extends Component {
         onClose={toggleClose}
       >
         <DialogContent style={{ margin: 40 }}>
-          <Typography variant='h6'>Edit Details</Typography>
-          <TextField 
-            name='email'
-            variant='outlined'
-            margin='dense'
-            type='text'
-            className={classes.signupTextField}
-            label='Email' 
-            onChange={this.handleChange}
-            defaultValue={this.props.email}
-            error={errors.email ? true : false}
-            helperText={errors.email}
-          />
-          <br/>
-          <TextField 
-            name='occupation'
-            variant='outlined'
-            margin='dense'
-            type='text'
-            className={classes.signupTextField}
-            placeholder='Enter Your Occupation'
-            label='Occupation' 
-            onChange={this.handleChange}
-            defaultValue={this.props.occupation}
-          />
-          <br />
-          <TextField 
-            name='city'
-            variant='outlined'
-            margin='dense'
-            type='text'
-            className={classes.signupTextField}
-            placeholder='Enter Your City'
-            label='City' 
-            onChange={this.handleChange}
-            defaultValue={this.props.city}
-            error={errors.city ? true : false}
-            helperText={errors.city}
-          />
-          <br />
-          <TextField 
-            name='bio'
-            variant='outlined'
-            margin='dense'
-            type='text'
-            className={classes.signupTextField}
-            placeholder='Enter Your Bio'
-            multiline
-            rows="3"
-            label='Bio' 
-            onChange={this.handleChange}
-            defaultValue={this.props.bio}
-          />
-          <br />
-          {errors && (
-            Object.values(errors).map((error, i) => <Typography key={i} variant='h2' className={classes.formError}>{error}</Typography>)
-          )}
-          <Button 
-            color='primary'
-            className={classes.signupButton}
-            onClick={this.handleSubmit}
-            variant="contained"
-          >Submit
-          </Button>
+          <form>
+            <Typography variant='h6' style={{ marginBottom: 16 }}>Edit Details</Typography>
+            <TextField 
+              name='email'
+              variant='outlined'
+              margin='dense'
+              type='text'
+              className={classes.signupTextField}
+              label='Email' 
+              onChange={this.handleChange}
+              defaultValue={user.email}
+              error={errors.email ? true : false}
+              helperText={errors.email}
+            />
+            <br/>
+            <TextField 
+              name='occupation'
+              variant='outlined'
+              margin='dense'
+              type='text'
+              className={classes.signupTextField}
+              placeholder='Enter Your Occupation'
+              label='Occupation' 
+              onChange={this.handleChange}
+              defaultValue={user.occupation}
+            />
+            <br />
+            <TextField 
+              name='city'
+              variant='outlined'
+              margin='dense'
+              type='text'
+              className={classes.signupTextField}
+              placeholder='Enter Your City'
+              label='City' 
+              onChange={this.handleChange}
+              defaultValue={user.city}
+              error={errors.city ? true : false}
+              helperText={errors.city}
+            />
+            <br />
+            <TextField 
+              name='bio'
+              variant='outlined'
+              margin='dense'
+              type='text'
+              className={classes.signupTextField}
+              placeholder='Enter Your Bio'
+              multiline
+              rows="3"
+              label='Bio' 
+              onChange={this.handleChange}
+              defaultValue={user.bio}
+            />
+            <br />
+            {errors && (
+              Object.values(errors).map((error, i) => <Typography key={i} variant='h2' className={classes.formError}>{error}</Typography>)
+            )}
+            <Button 
+              color='primary'
+              className={classes.submit}
+              onClick={this.handleSubmit}
+              variant="contained"
+              type='submit'
+            >Submit
+            </Button>
+          </form>
         </DialogContent>
       </Dialog>
     // </div>
@@ -129,6 +136,9 @@ const styles = (theme) => ({
   buttonProgress: { 
     position: 'absolute'
   },
+  submit: {
+    marginTop: 24
+  }
 })
 
 const mapStateToProps = state => ({
