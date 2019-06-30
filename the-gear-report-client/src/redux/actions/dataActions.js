@@ -89,7 +89,6 @@ export const getAlertsByUser = (userHandle) => (dispatch) => {
 export const postAlert = (newAlert) => dispatch => {
   dispatch({ type: LOADING_UI })
   axios.post('/alert', newAlert)
-
     .then(res => {
       dispatch({ 
         type: POST_ALERT, 
@@ -98,7 +97,7 @@ export const postAlert = (newAlert) => dispatch => {
       dispatch(clearErrors())
       dispatch({
         type: SET_MESSAGE,
-        payload: 'Alert created successfully'
+        payload: ['Alert created successfully']
       })
     })
     .catch(err => {
@@ -122,7 +121,7 @@ export const uploadAlertImage = (formData) => (dispatch) => {
     .then(() => {
       dispatch({
         type: SET_MESSAGE,
-        payload: 'Image uploaded successfully'
+        payload: ['Image uploaded successfully']
       })
     })
     .catch(err => {

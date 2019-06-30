@@ -28,6 +28,7 @@ export class Login extends Component {
   }
 
   handleSubmit = (e) => {
+    console.log(this.props.history);
     e.preventDefault()
     const userData = {
       email: this.state.email,
@@ -42,46 +43,49 @@ export class Login extends Component {
     return (
       <div className={classes.formContainer}>
         <Paper className={classes.loginPaper}>
-        <Typography variant='h2' className={classes.formHeader}>Welcome to the Gear Report</Typography>
-          <TextField 
-            variant='outlined'
-            className={classes.signupTextField}
-            label='Email' 
-            onChange={this.handleChange}
-            defaultValue={email}
-            name='email'
-          />
-          <br />
-          <TextField 
-            variant='outlined'
-            className={classes.signupTextField}
-            label='Password' 
-            onChange={this.handleChange}
-            defaultValue={password}
-            name='password'
-            type='password'
-          />
-          <br />
-          {errors.general && 
-          <Fragment>
+          <form>
+            <Typography variant='h2' className={classes.formHeader}>Welcome to the Gear Report</Typography>
+            <TextField 
+              variant='outlined'
+              className={classes.signupTextField}
+              label='Email' 
+              onChange={this.handleChange}
+              defaultValue={email}
+              name='email'
+            />
             <br />
-            {errors.general.map((error, i) => {
-              return (
-                <Typography className={classes.formError} key={i}>{error}</Typography>
-              )
-            })}
-          </Fragment>}
-          <Button 
-            color='primary'
-            className={classes.signupMultiButton}
-            onClick={this.handleSubmit}
-            variant="contained"
-            disabled={loading}
-          >
-          Submit
-          {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
-          </Button>
-          <Typography style={{ marginBottom: 30}}>Don't have an account? Click <Link to={'/signup'}>here</Link></Typography>
+            <TextField 
+              variant='outlined'
+              className={classes.signupTextField}
+              label='Password' 
+              onChange={this.handleChange}
+              defaultValue={password}
+              name='password'
+              type='password'
+            />
+            <br />
+            {errors.general && 
+            <Fragment>
+              <br />
+              {errors.general.map((error, i) => {
+                return (
+                  <Typography className={classes.formError} key={i}>{error}</Typography>
+                )
+              })}
+            </Fragment>}
+            <Button 
+              color='primary'
+              className={classes.loginSubmitButton}
+              onClick={this.handleSubmit}
+              variant="contained"
+              disabled={loading}
+              type='submit'
+            >
+            Submit
+            {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+            </Button>
+            <Typography style={{ marginBottom: 30}}>Don't have an account? Click <Link to={'/signup'}>here</Link></Typography>
+          </form>
         </Paper>
       </div>
     )
@@ -96,6 +100,10 @@ const styles = theme => ({
     left: '50%',
     marginTop: -12,
     marginLeft: -12,
+  },
+  loginSubmitButton: {
+    marginBottom: 24,
+    marginTop: 8
   }
 })
 

@@ -55,6 +55,7 @@ export class DisplayCrag extends Component {
       country, 
       alerts,
       classes,
+      authenticated
     } = this.props
 
     return additionalInfo ? (
@@ -67,7 +68,7 @@ export class DisplayCrag extends Component {
         <Grid container spacing={32}>
           <Grid item xs={12} >
             <LocationInfo location={location} />
-            <SubButton />
+            {subType === 'Crag' && authenticated && <SubButton />}
           </Grid>
           {beta && this.hasUniqueBeta(beta) && 
             <Beta locationBeta={beta} />}
@@ -83,9 +84,7 @@ export class DisplayCrag extends Component {
           </Grid>}
         </Grid>
       </div>
-    ) : (''
-      //add spinner here
-    )
+    ) : ''
   }
 }
 
@@ -119,7 +118,8 @@ const mapStateToProps = (state) => ({
   country: state.UI.country,
   loading: state.UI.location.loading,
   loadingAlerts: state.UI.location.loadingAlerts,
-  alerts: state.data.alerts
+  alerts: state.data.alerts,
+  authenticated: state.user.authenticated
 })
 
 const mapDispatchToProps = {

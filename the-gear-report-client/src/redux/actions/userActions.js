@@ -20,7 +20,7 @@ export const loginUser = (userData, history) => (dispatch) => {
         setAuthorizationHeader(res.data.token)
         dispatch(getUserData())
         dispatch({ type: CLEAR_ERRORS })
-        history.goBack()
+        history.push('/')
       })
       .catch(err => {
         let errors = []
@@ -47,7 +47,7 @@ export const signupUser = (newUserData, history) => (dispatch) => {
         dispatch({ type: CLEAR_ERRORS })
         dispatch({
           type: SET_MESSAGE,
-          payload: 'Sign up successful'
+          payload: ['Sign up successful']
         })
         history.goBack()
       })
@@ -103,7 +103,7 @@ export const editUserDetails = (userDetails) => (dispatch) => {
   dispatch({ type: UPDATE_USER_PROFILE, payload: userDetails })
   axios.post('/user', userDetails)
     .then((res) => {
-      dispatch({ type: SET_MESSAGE, payload: res.data.message })
+      dispatch({ type: SET_MESSAGE, payload: [res.data.message] })
     })
     .catch(err => {
       console.log(err);
@@ -133,7 +133,7 @@ export const subscribeToCrag = (cragDetails) => dispatch => {
   axios.post('/subscribe/crag', cragDetails)
     .then(res => {
       if(res.data.error) dispatch({ type: SET_ERRORS, payload: res.data.error })
-      if(res.data.message) dispatch({ type: SET_MESSAGE, payload: res.data.message })
+      if(res.data.message) dispatch({ type: SET_MESSAGE, payload: [res.data.message] })
       dispatch(getUserData())
     })
 }
@@ -142,7 +142,7 @@ export const unsubscribeFromCrag = (cragDetails) => dispatch => {
   axios.post('/unsubscribe/crag', cragDetails)
     .then(res => {
       if(res.data.error) dispatch({ type: SET_ERRORS, payload: res.data.error })
-      if(res.data.message) dispatch({ type: SET_MESSAGE, payload: res.data.message })
+      if(res.data.message) dispatch({ type: SET_MESSAGE, payload: [res.data.message] })
       dispatch(getUserData())
     })
 }
@@ -158,7 +158,7 @@ export const likeComment = commentId => dispatch => {
         dispatch({ type: SET_ERRORS, payload: res.data.error })
         dispatch({ type: UNLIKE_COMMENT, payload: { commentId: commentId } })
       }
-      if(res.data.message) dispatch({ type: SET_MESSAGE, payload: res.data.message })
+      if(res.data.message) dispatch({ type: SET_MESSAGE, payload: [res.data.message] })
 
     })
     .catch(err => {
@@ -177,7 +177,7 @@ export const unlikeComment = commentId => dispatch => {
       dispatch({ type: SET_ERRORS, payload: res.data.error })
       dispatch({ type: LIKE_COMMENT, payload: { commentId: commentId } })
     }
-    if(res.data.message) dispatch({ type: SET_MESSAGE, payload: res.data.message })
+    if(res.data.message) dispatch({ type: SET_MESSAGE, payload: [res.data.message] })
   })
   .catch(err => {
     console.log(err);

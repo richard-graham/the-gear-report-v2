@@ -74,7 +74,9 @@ class CreateAlert extends React.Component {
     } else {
       this.setState({
         use: false,
-        pick: true
+        pick: true,
+        refinements: { refinement1: {} },
+        alertLocation: {}
       })
     }
   }
@@ -142,7 +144,7 @@ class CreateAlert extends React.Component {
        body: '',
      })
      this.props.resetAlertImages()
-     this.props.closeAllDialogs()
+     this.props.closeAllDialogs() 
   }
 
   getRelatives = (id) => {
@@ -332,7 +334,7 @@ class CreateAlert extends React.Component {
             <Button onClick={closeAllDialogs} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleSubmit} color="primary">
+            <Button onClick={this.handleSubmit} color="primary" type='submit'>
               Submit
             </Button>
           </DialogActions>

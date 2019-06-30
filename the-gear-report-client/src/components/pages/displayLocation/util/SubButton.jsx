@@ -14,23 +14,9 @@ export class SubButton extends Component {
     this.props.unsubscribeFromCrag(this.props.location)
   }
 
-  checkCondition = () => {
-    if(
-      this.props.user &&
-      this.props.location.subType === 'Crag' && 
-      this.props.user.authenticated && 
-      this.props.subAreas 
-    ){
-      return true
-    } else {
-      return false
-    }
-  }
-
   render(){
     const { location, subAreas } = this.props
-    const shouldRender = this.checkCondition()
-    return shouldRender ? (
+    return subAreas ? (
       <Fragment>
         {subAreas[location.id] ? (
             <Button
