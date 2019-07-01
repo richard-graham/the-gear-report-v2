@@ -116,7 +116,7 @@ export class Profile extends Component {
           <UpdateDetails 
             open={this.state.updateOpen} 
             toggleClose={this.toggleClose} 
-            user={user}
+            user={user.credentials}
           />
       </div>
     ) : ''

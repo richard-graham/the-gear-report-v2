@@ -56,7 +56,7 @@ export const getRecentAlerts = () => (dispatch) => {
     .catch(err => {
       dispatch({
         type: SET_ERRORS,
-        payload: 'Error: Could not retrieve alerts'
+        payload: ['Error: Could not retrieve alerts']
       })
     })
 }
@@ -104,7 +104,7 @@ export const postAlert = (newAlert) => dispatch => {
       console.log(err.response);
       dispatch({ 
         type: SET_ERRORS, 
-        payload: { general: `Error post failed`}
+        payload: [`Error post failed`]
       })
     })
 }
@@ -127,7 +127,7 @@ export const uploadAlertImage = (formData) => (dispatch) => {
     .catch(err => {
       dispatch({
         type: SET_ERRORS,
-        payload: 'Upload failed'
+        payload: ['Upload failed']
       })
     })
 }
@@ -171,7 +171,7 @@ export const submitComment = (alertId, commentData) => dispatch => {
     .catch(err => {
       dispatch({
         type: SET_ERRORS,
-        payload: err.response.data
+        payload: [err.response.data]
       })
     })
 }

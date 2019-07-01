@@ -35,7 +35,7 @@ class CreateAlert extends React.Component {
     use: true,
     pick: false,
     refinements: { refinement1: {} },
-    error: ''
+    errors: []
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -120,11 +120,13 @@ class CreateAlert extends React.Component {
   }
 
   handleSubmit = (event) => {
-    const { alertLocation, refinements } = this.state
-    if(!alertLocation){
-      this.setState({ error: 'Please select a crag' })
-      return
-    }
+    const { alertLocation, refinements, title, body } = this.state
+    let errorsToAdd = []
+    if(!alertLocation) errorsToAdd.push('Please select a crag')
+    if(title === '') errorsToAdd.push('Please add a title')
+    if(body === '') errorsToAdd.push('Please add a description')
+    if(errorsToAdd.length > 0) return this.setState({ errors: errorsToAdd })
+
     event.preventDefault()
     var imageObj = {}
     var locations = [alertLocation.id]
@@ -152,7 +154,6 @@ class CreateAlert extends React.Component {
       .then(res => {
         const { data } = res
         var result = []
-        console.log(data);
         data.data.ancestors.forEach(ancestor => {
           result.push({
             id: ancestor.id,
@@ -185,7 +186,7 @@ class CreateAlert extends React.Component {
       pick,
       alertLocation,
       refinements,
-      error
+      errors
     } = this.state
 
     const renderLocOptions = location && (checkIfCrag(location.type, location.subType) ||
@@ -328,7 +329,10 @@ class CreateAlert extends React.Component {
               </FormControl>
             </form>
             }
-            {error ? <Typography align='center' color='secondary' >Please select a Crag before submitting</Typography> : ''}
+            {errors ? errors.map((err, i) => {
+              return <Typography align='center' color='secondary' key={i}>{err}</Typography> 
+            })
+            : ''}
           </DialogContent>
           <DialogActions>
             <Button onClick={closeAllDialogs} color="primary">
