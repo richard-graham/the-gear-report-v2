@@ -85,7 +85,6 @@ export default function(state = initialState, action){
         }
       }
     case SET_USER_IMAGE:
-      console.log(action.payload);
       return {
         ...state,
         credentials: {

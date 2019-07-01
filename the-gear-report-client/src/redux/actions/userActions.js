@@ -98,7 +98,7 @@ export const uploadUserImage = (formData) => (dispatch) => {
         type: SET_USER_IMAGE,
         payload: res.data.response
       })
-      dispatch({
+      dispatch({  
         type: SET_MESSAGE,
         payload: [res.data.message]
       })

@@ -19,7 +19,8 @@ import {
   LIKE_COMMENT,
   UNLIKE_COMMENT,
   LOADING_USER_PROFILE,
-  UPDATE_USER_PROFILE
+  UPDATE_USER_PROFILE,
+  SET_USER_IMAGE
 } from '../types'
 
 const initialState = {
@@ -70,6 +71,17 @@ export default function(state = initialState, action){
         ...state,
         userProfile: {
           user: action.payload
+        }
+      }
+    case SET_USER_IMAGE:
+      return {
+        ...state,
+        userProfile: {
+          ...state.userProfile,
+          user: {
+            ...state.userProfile.user,
+            imageUrl: action.payload
+          }
         }
       }
     case SET_ALERTS:

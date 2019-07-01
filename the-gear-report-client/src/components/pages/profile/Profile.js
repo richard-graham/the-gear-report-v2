@@ -51,10 +51,8 @@ export class Profile extends Component {
   render() {
     const { 
       classes,
-      userProfile : {
-        user
-      },
-      loading
+      loading,
+      user
     } = this.props
 
     const {
@@ -65,9 +63,9 @@ export class Profile extends Component {
       createdAt,
       occupation,
       bio
-    } = user
+    } = this.props.userProfile.user
 
-    const isMyProfile = handle === this.props.user.credentials.handle ? true : false
+    const isMyProfile = handle === user.credentials.handle ? true : false
 
     return loading ? (
       <CircularProgress className={classes.progress} size={70} />
@@ -76,10 +74,19 @@ export class Profile extends Component {
         <Paper className={classes.profilePaper}>
           {isMyProfile ? (
             <Fragment>
-              <Tooltip title='Change Photo' placement='right'>
-                <img src={imageUrl} className={classes.profilePic} onClick={this.handleEditPicture} alt='User Profile' />
-              </Tooltip>
-              <input type='file' id='imageInput' onChange={this.handleImageChange} hidden='hidden'/>
+              {user.credentials.loadingImage ? (
+                <div className={classes.profilePicLoading}>
+                  <CircularProgress className={classes.profilePicSpinner} />
+                </div>
+              ) : (
+                <Fragment>
+                  <Tooltip title='Change Photo' placement='right'>
+                    <img src={imageUrl} className={classes.profilePic} onClick={this.handleEditPicture} alt='User Profile' />
+                  </Tooltip>
+                  <input type='file' id='imageInput' onChange={this.handleImageChange} hidden='hidden'/>
+                </Fragment>
+              )}
+              
             </Fragment>
           ) : (
             <img src={imageUrl} className={classes.profilePic} onClick={this.handleEditPicture} alt='User Profile' />
@@ -138,6 +145,18 @@ const styles = theme => ({
     marginTop: 40,
     marginBottom: 10,
     borderRadius: '50%'
+  },
+  profilePicLoading: {
+    height: 100,
+    width: 100,
+    marginTop: 40,
+    marginBottom: 10,
+    marginLeft: 'auto',
+    marginRight: 'auto'
+  },
+  profilePicSpinner: {
+    position: 'relative',
+    top: '25%'
   },
   profileContainer: {
     width: '100%',
