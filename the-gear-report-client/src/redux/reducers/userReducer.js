@@ -10,12 +10,15 @@ import {
   LIKE_COMMENT,
   UNLIKE_COMMENT,
   STOP_LOADING_USER,
+  LOADING_USER_IMAGE,
+  SET_USER_IMAGE
 } from '../types'
 
 const initialState = {
   authenticated: false,
   loading:false,
   credentials: {
+    loadingImage: false,
     city: '',
     handle: '',
     email: '',
@@ -72,6 +75,24 @@ export default function(state = initialState, action){
       return {
         ...state,
         loading: false
+      }
+    case LOADING_USER_IMAGE: 
+      return {
+        ...state,
+        credentials: {
+          ...state.credentials,
+          loadingImage: true
+        }
+      }
+    case SET_USER_IMAGE:
+      console.log(action.payload);
+      return {
+        ...state,
+        credentials: {
+          ...state.credentials,
+          loadingImage: false,
+          imageUrl: action.payload
+        }
       }
     case LIKE_ALERT:
       return {

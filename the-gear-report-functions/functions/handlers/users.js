@@ -265,10 +265,14 @@ exports.uploadImage = (req, res) => {
     .then(() => {
       // next construct the image url to add it to the user
       const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`
-      return db.doc(`/users/${req.user.handle}`).update({ imageUrl: imageUrl }) // Note: req.user comes from the FBAuth middleware in index.js
+      db.doc(`/users/${req.user.handle}`).update({ imageUrl: imageUrl }) // Note: req.user comes from the FBAuth middleware in index.js
+      return imageUrl
     })
-    .then(() => {
-      return res.json({ message: 'Image uploaded successfully' })
+    .then((response) => {
+      return res.json({ 
+        message: 'Image uploaded successfully',
+        response: response
+      })
     })
     .catch(err => {
       console.error(err)

@@ -9,7 +9,9 @@ import {
   SET_MESSAGE,
   LIKE_COMMENT,
   UNLIKE_COMMENT,
-  UPDATE_USER_PROFILE
+  UPDATE_USER_PROFILE,
+  LOADING_USER_IMAGE,
+  SET_USER_IMAGE
 } from '../types'
 import axios from 'axios'
 
@@ -89,10 +91,17 @@ export const getUserData = () => (dispatch) => {
 }
 
 export const uploadUserImage = (formData) => (dispatch) => {  
-  dispatch({ type: LOADING_USER })
+  dispatch({ type: LOADING_USER_IMAGE })
   axios.post('/user/image', formData)
-    .then(() => {
-      dispatch(getUserData())
+    .then((res) => {
+      dispatch({
+        type: SET_USER_IMAGE,
+        payload: res.data.response
+      })
+      dispatch({
+        type: SET_MESSAGE,
+        payload: [res.data.message]
+      })
     })
     .catch(err => {
       console.log(err);

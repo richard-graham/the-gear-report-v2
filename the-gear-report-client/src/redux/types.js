@@ -9,6 +9,8 @@ export const LIKE_SCREAM = 'LIKE_SCREAM'
 export const SET_AUTHENTICATED = 'SET_AUTHENTICATED'
 export const LIKE_COMMENT = 'LIKE_COMMENT'
 export const UNLIKE_COMMENT = 'UNLIKE_COMMENT'
+export const LOADING_USER_IMAGE = 'LOADING_USER_IMAGE'
+export const SET_USER_IMAGE = 'SET_USER_IMAGE'
  // UI reducers
 export const SET_ERRORS = 'SET_ERRORS'
 export const CLEAR_ERRORS = 'CLEAR_ERRORS'

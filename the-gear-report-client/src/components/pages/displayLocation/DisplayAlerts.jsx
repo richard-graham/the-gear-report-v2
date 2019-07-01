@@ -43,7 +43,7 @@ export class CardList extends Component {
                 <div className={classes.myCard} style={{ padding: 0}} key={`a${i}`}>
                   <div className={classes.header}>
                     <div className={classes.myAvatarContainer}>
-                      <Link to={`/profile /${alert.userHandle}`} style={{ textDecoration: 'none' }}>
+                      <Link to={`/profile/${alert.userHandle}`} style={{ textDecoration: 'none' }}>
                         {alert.userImage === defaultPic ? (
                         <Avatar aria-label='User' className={classes.myAvatar}>
                           {userAvatarLetters}
