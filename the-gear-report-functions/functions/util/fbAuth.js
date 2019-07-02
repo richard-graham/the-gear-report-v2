@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
                 .split('Bearer ')[1] // splits the auth header into an arr, 1st val = 'Bearer ' 2nd val = token
   } else {
     console.error('No token found')
-    return res.status(403).json({ error: 'Unauthorized' })
+    return res.status(403).json({ error: 'Unauthorized, please login' })
   }
 
   admin

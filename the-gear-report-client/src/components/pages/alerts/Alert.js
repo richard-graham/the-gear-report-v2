@@ -4,7 +4,7 @@ import { getAlert, submitComment } from '../../../redux/actions/dataActions'
 import { likeComment, unlikeComment } from '../../../redux/actions/userActions'
 import moment from 'moment'
 import AlertImageGallery from './AlertImageGallery'
-import Link from '@material-ui/core/Link'
+import { Link } from 'react-router-dom'
 import ProfilePic from '../../../util/ProfilePic'
 import classNames from 'classnames'
 //Mui
@@ -29,10 +29,6 @@ export class Alert extends Component {
   componentDidMount = () => {
     this.props.getAlert(this.props.match.params.alertId)
     window.scrollTo(0, 0)
-  }
-
-  handleCrumbClick = (id) => {
-    this.props.history.push(`/location/${id}`)
   }
 
   handleCancel = () => {
@@ -96,12 +92,12 @@ export class Alert extends Component {
                     .map((location, i) => {
                       // check if last location 
                       return (
-                          <Link 
+                          <Link
                             key={i} 
-                            color='inherit'
-                            onClick={() => this.handleCrumbClick(locations[i + 5])}
+                            style={{ textDecoration: 'none' }}
+                            to={`/location/${locations[i + 5]}`}
                             >
-                            {location}
+                            <Typography color='textSecondary' >{location}</Typography>
                           </Link>
                       )
                     })
@@ -199,7 +195,7 @@ export class Alert extends Component {
                                 variant='body1' 
                                 component={Link} 
                                 to={`/profile/${userHandle}`} 
-                                color='primary'
+                                color='textPrimary'
                                 className={classes.commentUserName}
                               >
                                 {userHandle}
@@ -346,7 +342,7 @@ const styles = theme => ({
   },
   likeCount: {
     lineHeight: 1.65,
-    marginLeft: 4,
+    marginLeft: 5,
     fontSize: '1rem',
   },
   breadcrumbRoot: {
