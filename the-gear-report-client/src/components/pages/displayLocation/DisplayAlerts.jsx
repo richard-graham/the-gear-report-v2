@@ -12,7 +12,6 @@ import GridList from '@material-ui/core/GridList'
 //Icons
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
-import Search from '@material-ui/icons/Search'
 
 
 export class CardList extends Component {
