@@ -83,7 +83,8 @@ exports.postOneAlert = (req, res) => {
     commentCount: 0,
     sponsored: false,
     resolved: false,
-    locations: req.body.locations
+    locations: req.body.locations,
+    locationNames: req.body.locationNames
   } 
 
   db

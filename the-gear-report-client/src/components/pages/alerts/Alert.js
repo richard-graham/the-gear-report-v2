@@ -89,20 +89,17 @@ export class Alert extends Component {
                   <Divider/>
                   <br />
                   {createdAt && 
-                  <Typography className={classes.alertDate}>
-                    {`Created At: ${moment(createdAt).format('DD-MM-YYYY')}`}
-                  </Typography>}
+                  <Typography>{`Created At: ${moment(createdAt).format('DD-MM-YYYY')}`}</Typography>}
                   <Typography>{`Status: ${resolved ? 'Resolved' : 'Not Resolved'}`}</Typography>
                   <Typography>{`Sponsored: ${sponsored ? 'True' : 'False'}`}</Typography>
                   <Typography>{`Created By: ${userHandle}`}</Typography>
                   <br />
                   <Typography >{`Description: ${body}`}</Typography>
-                  <Typography >{title}</Typography>
                 </div>
               </Grid>
               <Grid item lg={4} md={5} sm={5} xs ={10} >
                 <Paper>
-                  <AlertImageGallery images={images} />
+                  <AlertImageGallery images={images} style={{marginTop: 40 }} />
                 </Paper>
               </Grid>
 
@@ -158,7 +155,13 @@ export class Alert extends Component {
                     })
                     return (
                       <div className={classes.commentContainer} key={index}> 
-                        <img alt='words' src={userImage} className={classes.userImage} />
+                        <Link to={`/profile/${userHandle}`}>
+                          <img 
+                            alt='words' 
+                            src={userImage} 
+                            className={classes.userImage}
+                          />
+                        </Link>
                         <div className={classes.comment}>
                           <div className={classes.userData}>
                             <Typography 
@@ -237,9 +240,6 @@ const styles = theme => ({
   headerGrid: {
     marginBottom: '10px'
   },
-  alertDate: {
-    fontSize: 15,
-  },
   paper: {
     width: '100%',
     minHeight: '100vh',
@@ -248,6 +248,7 @@ const styles = theme => ({
   },
   userImage: {
     height: 40,
+    width: 40,
     borderRadius: '50%',
     marginRight: 15
   },

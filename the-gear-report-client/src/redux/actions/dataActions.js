@@ -101,7 +101,6 @@ export const postAlert = (newAlert) => dispatch => {
       })
     })
     .catch(err => {
-      console.log(err.response);
       dispatch({ 
         type: SET_ERRORS, 
         payload: [`Error post failed`]

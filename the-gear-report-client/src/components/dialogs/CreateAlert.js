@@ -129,17 +129,31 @@ class CreateAlert extends React.Component {
 
     event.preventDefault()
     var imageObj = {}
-    var locations = [alertLocation.id]
+    var locations = []
+    var locationNames = []
+    // handle images
     this.props.images.forEach((image, i) => {
       imageObj[i] = image
-    });
-    alertLocation.ancestors.forEach(ancestor => locations.push(ancestor.id))
-    Object.keys(refinements).forEach(refinement => locations.push(refinements[refinement].id))
+    })
+    // handle locations
+    alertLocation.ancestors.forEach(ancestor => {
+      locations.push(ancestor.id)
+      locationNames.push(ancestor.name)
+    })
+    locations.push(alertLocation.id)
+    locationNames.push(alertLocation.name)
+    Object.keys(refinements).forEach(refinement => {
+      if(refinements[refinement].id !== undefined) {
+        locations.push(refinements[refinement].id)
+        locationNames.push(refinements[refinement].name)
+      }
+    })
     this.props.postAlert({ 
       body: this.state.body,
       title: this.state.title,
       images: this.props.images,
-      locations: locations
+      locations: locations,
+      locationNames: locationNames
      })
      this.setState({
        title: '',

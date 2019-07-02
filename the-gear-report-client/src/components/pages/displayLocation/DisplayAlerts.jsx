@@ -40,7 +40,7 @@ export class CardList extends Component {
             {alerts.map((alert, i) => {
               const { userAvatarLetters, title, createdAt, images } = alert
               return (
-                <div className={classes.myCard} style={{ padding: 0}} key={`a${i}`}>
+                <div className={classes.myCard} style={{ padding: 0, marginRight: 5 }} key={`a${i}`}>
                   <div className={classes.header}>
                     <div className={classes.myAvatarContainer}>
                       <Link to={`/profile/${alert.userHandle}`} style={{ textDecoration: 'none' }}>
@@ -80,18 +80,6 @@ export class CardList extends Component {
                     <IconButton aria-label="Share">
                       <ShareIcon />
                     </IconButton>
-                    <Link 
-                      to={`/profile/${alert.userHandle}`} 
-                      style={{ 
-                        textDecoration: 'none', 
-                        marginLeft: 'auto' 
-                      }}>
-                      <IconButton 
-                        aria-label="Show more" 
-                        >
-                        <Search />
-                      </IconButton>
-                    </Link>
                   </div>
                 </div>
               )

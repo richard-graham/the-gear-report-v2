@@ -28,7 +28,6 @@ export class Login extends Component {
   }
 
   handleSubmit = (e) => {
-    console.log(this.props.history);
     e.preventDefault()
     const userData = {
       email: this.state.email,
