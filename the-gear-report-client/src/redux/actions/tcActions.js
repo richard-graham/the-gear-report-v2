@@ -3,7 +3,8 @@ import {
   LOADING_UI,
   SET_ERRORS,
   SET_LOCATION,
-  LOADING_LOCATION
+  LOADING_LOCATION,
+  RESET_LOCATION
 } from '../types'
 import axios from 'axios'
 
@@ -28,6 +29,7 @@ export const getLocationData = (location) => (dispatch) => {
 }
 
 export const getNode = (nodeId) => (dispatch) => {
+  dispatch({ type: RESET_LOCATION })
   dispatch({ type: LOADING_LOCATION })
   axios.get(`tc/node/${nodeId}`)
     .then(res => {

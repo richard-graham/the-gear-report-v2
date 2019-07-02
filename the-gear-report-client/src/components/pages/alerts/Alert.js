@@ -99,7 +99,7 @@ export class Alert extends Component {
                           <Link 
                             key={i} 
                             color='inherit'
-                            onClick={() => this.handleCrumbClick(locations[i])}
+                            onClick={() => this.handleCrumbClick(locations[i + 5])}
                             >
                             {location}
                           </Link>
