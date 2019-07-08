@@ -52,7 +52,7 @@ const getLocationData = (req, res) => {
 }
 
 const getNode = (req, res) => {
-  fetch(`https://brendan.thecrag.com/api/node/id/${req.params.nodeID}?show=info,children&key=${key.key}`)
+  fetch(`https://brendan.thecrag.com/api/node/id/${req.params.nodeID}?show=info,children,ancestors&key=${key.key}`)
   .then(response => response.json())
   .then(resData => {
     res.send(resData)

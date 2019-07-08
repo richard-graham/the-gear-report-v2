@@ -242,7 +242,7 @@ class CreateAlert extends React.Component {
             />
             <br />
             <input type='file' id='imageInput' onChange={this.handleImageChange} hidden='hidden' />
-            <MyButton styles={{marginTop: 5, marginBottom: 5}} tip='Add image to alert' onClick={this.handleEditPicture} btnClassName='button'>
+            <MyButton className={classes.imgButton} tip='Add image to alert' onClick={this.handleEditPicture} btnClassName='button'>
               {loading ? <CircularProgress size={25}/> : <EditIcon color='primary' />}
             </MyButton>
             <br />
@@ -379,6 +379,10 @@ const styles = theme => ({
   },
   select: {
     marginBottom: '10px'
+  },
+  imgButton: {
+    marginTop: 10,
+    marginBottom: 10
   }
 });
 

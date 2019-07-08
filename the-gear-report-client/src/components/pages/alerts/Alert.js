@@ -90,7 +90,6 @@ export class Alert extends Component {
                   {locationNames
                     .filter((location, i) => (i > 4))
                     .map((location, i) => {
-                      // check if last location 
                       return (
                           <Link
                             key={i} 

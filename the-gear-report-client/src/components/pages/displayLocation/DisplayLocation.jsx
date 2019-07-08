@@ -7,6 +7,7 @@ import Beta from './Beta'
 import ChildTable from './ChildTable'
 import LocationInfo from './locationInfo/LocationInfo'
 import SubButton from './util/SubButton'
+import Breadcrumb from './breadcrumb/Breadcrumb'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
@@ -60,6 +61,7 @@ export class DisplayCrag extends Component {
 
     return additionalInfo ? (
       <div className={classes.container}>
+        <Breadcrumb />
         <Typography
           gutterBottom
           variant={'h3'}
