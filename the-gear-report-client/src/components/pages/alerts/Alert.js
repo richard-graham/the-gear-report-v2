@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { getAlert, submitComment } from '../../../redux/actions/dataActions'
+import { getAlert, submitComment, deleteAlert } from '../../../redux/actions/dataActions'
 import { likeComment, unlikeComment } from '../../../redux/actions/userActions'
 import moment from 'moment'
 import AlertImageGallery from './AlertImageGallery'
@@ -53,6 +53,10 @@ export class Alert extends Component {
     this.setState({ comment: '' })
   }
 
+  handleDelete = () => {
+    this.props.deleteAlert(this.props.alert.alertId, this.props.history)
+  }
+
   handleMouseEnter = key => {
     this.setState({ [key]: true })
   }
@@ -75,10 +79,11 @@ export class Alert extends Component {
         comments,
         commentCount,
         locations,
-        locationNames
+        locationNames,
       },
       loading,
-      likes
+      likes,
+      user
     } = this.props
     return (
       <Paper className={classes.paper}>
@@ -104,8 +109,14 @@ export class Alert extends Component {
                 </Breadcrumbs>
               </div>}
               <Grid container spacing={8} style={{ marginLeft: 10 }}>
-                <Grid item xs={12} className={classes.headerGrid}>
+                <Grid item xs={11} className={classes.headerGrid}>
                   <Typography variant='body1' className={classes.alertHeader}>{title}</Typography>
+                  {userHandle === user.credentials.handle && <Button 
+                    className={classes.deleteButton} 
+                    variant='contained'
+                    color='primary'
+                    onClick={this.handleDelete}
+                  >Delete Alert</Button>}
                 </Grid>
                 <Grid item sm={7} xs={12}>
                   <div className={classes.action}>
@@ -349,20 +360,25 @@ const styles = theme => ({
     flexWrap: 'wrap',
     marginTop: 20,
     marginBottom: 30
+  },
+  deleteButton: {
+    float: 'right'
   }
 })
 
 const mapStateToProps = (state) => ({
   alert: state.data.alert,
   loading: state.UI.loading,
-  likes: state.user.likes
+  likes: state.user.likes,
+  user: state.user
 })
 
 const mapDispatchToProps = {
   submitComment,
   getAlert,
   likeComment,
-  unlikeComment
+  unlikeComment,
+  deleteAlert
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Alert))

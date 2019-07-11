@@ -175,10 +175,12 @@ export const submitComment = (alertId, commentData) => dispatch => {
     })
 }
 
-export const deleteAlert = (alertId) => (dispatch) => {
+export const deleteAlert = (alertId, history) => (dispatch) => {
   axios.delete(`/alert/${alertId}`)
     .then(() => {
       dispatch({ type: DELETE_ALERT, payload: alertId })
+      dispatch({ type: SET_MESSAGE, payload: ['Alert deleted successfully']})
+      history.push('/')
     })
     .catch(err => console.log(err))
 }
