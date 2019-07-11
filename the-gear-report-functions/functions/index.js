@@ -9,12 +9,18 @@ const { db } = require('./util/admin')
 
 const { 
   getAllAlerts, 
+  getRecentAlerts,
   postOneAlert, 
   getAlert, 
   commentOnAlert, 
+  uploadAlertImage,
   likeAlert, 
   unlikeAlert,
-  deleteAlert
+  deleteAlert,
+  getAlertsByUser,
+  getAlertsByLocations,
+  likeComment,
+  unlikeComment
 } = require('./handlers/alerts')
 
 const { 
@@ -24,15 +30,32 @@ const {
   addUserDetails, 
   getAuthenticatedUser,
   getUserDetails,
-  markNotificationsRead
+  markNotificationsRead,
+  subscribeToCrag,
+  unsubscribeFromCrag
  } = require('./handlers/users')
 
-// Scream routes
-app.get('/alerts', getAllAlerts)
+ const {
+   getLocationData,
+   getNode,
+   updateSearchLocation,
+   getChildrenAndAncestors,
+   getChildren,
+   textCompletion
+ } = require('./handlers/tc')
+ 
+// Alert routes
+app.get('/alerts/all', getAllAlerts)
+app.get('/alerts/recent', getRecentAlerts)
 app.get('/alert/:alertId', getAlert)
+app.get('/alerts/:userHandle', getAlertsByUser)
+app.get('/alerts/location/:location', getAlertsByLocations) 
 app.post('/alert', FBAuth, postOneAlert)
+app.post('/alert/add/image', FBAuth, uploadAlertImage)
 app.post('/alert/:alertId/comment', FBAuth, commentOnAlert)
 app.get('/alert/:alertId/like', FBAuth, likeAlert)
+app.get('/comment/:commentId/like', FBAuth, likeComment)
+app.get('/comment/:commentId/unlike', FBAuth, unlikeComment)
 app.get('/alert/:alertId/unlike', FBAuth, unlikeAlert)
 app.delete('/alert/:alertId', FBAuth, deleteAlert)
 
@@ -45,7 +68,16 @@ app.post('/user', FBAuth, addUserDetails)
 app.get('/user', FBAuth, getAuthenticatedUser)
 app.get('/user/:handle', getUserDetails)
 app.post('/notifications', FBAuth, markNotificationsRead)
+app.post('/subscribe/crag', FBAuth, subscribeToCrag)
+app.post('/unsubscribe/crag', FBAuth, unsubscribeFromCrag)
 
+// The Crag routes
+app.get('/tc/location/:location', getLocationData)
+app.get('/tc/node/:nodeID', getNode)
+app.get('/tc/search/location/:id', updateSearchLocation)
+app.get('/tc/node/location/:nodeID/relatives', getChildrenAndAncestors)
+app.get('/tc/node/location/:nodeID/children', getChildren)
+app.get('/tc/search/textcompletion/:input', textCompletion)
 
 exports.api = functions.region('us-central1').https.onRequest(app) 
 // exports.api = functions.region('europe-west1').https.onRequest(app)
@@ -59,9 +91,30 @@ exports.createNotificationOnLike = functions.region('us-central1').firestore.doc
           createdAt: new Date().toISOString(),
           recipient: doc.data().userHandle,
           sender: snapshot.data().userHandle,
-          type: 'like',
+          type: 'alertLike',
           read: false,
           alertId: doc.id
+        })
+      }
+    })
+    .catch(err => {
+      console.error(err)
+    })
+  })
+
+  exports.createNotificationOnCommentLike = functions.region('us-central1').firestore.document('likes/{id}')
+  .onCreate((snapshot) => {
+    return db.doc(`/comments/${snapshot.data().commentId}`).get()
+    .then(doc => {
+      if(doc.exists && doc.data().userHandle !== snapshot.data().userHandle){ // don't send a notification is liking or commenting on their own post
+        return db.doc(`/notifications/${snapshot.id}`).set({
+          createdAt: new Date().toISOString(),
+          recipient: doc.data().userHandle,
+          sender: snapshot.data().userHandle,
+          type: 'commentLike',
+          read: false,
+          commentId: doc.id,
+          alertId: doc.data().alertId
         })
       }
     })

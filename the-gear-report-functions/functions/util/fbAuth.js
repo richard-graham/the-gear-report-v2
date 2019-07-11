@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
                 .split('Bearer ')[1] // splits the auth header into an arr, 1st val = 'Bearer ' 2nd val = token
   } else {
     console.error('No token found')
-    return res.status(403).json({ error: 'Unauthorized' })
+    return res.status(403).json({ error: 'Unauthorized, please login' })
   }
 
   admin
@@ -25,7 +25,8 @@ module.exports = (req, res, next) => {
       req.user.handle = data.docs[0] // even though we only request one object it's still returned in docs which is an arr
                             .data() // extracts the data from the function
                             .handle
-      req.user.imageUrl = data.docs[0].data().imageUrl
+      req.user.imageUrl = data.docs[0].data().imageUrl,
+      req.user.avatarLetters = data.docs[0].data().avatarLetters
       return next() // allows the request to proceed
     })
     .catch(err => {

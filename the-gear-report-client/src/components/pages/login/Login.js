@@ -1,88 +1,89 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
+import withStyles from '@material-ui/core/styles/withStyles'
+import { loginUser, clearErrors } from '../../../redux/actions/userActions'
 import { connect } from 'react-redux'
-import { loginUser } from '../../../redux/actions/userActions'
-import { withStyles } from '@material-ui/core/styles'
-
+import { Link } from 'react-router-dom'
 //Mui
-import Paper from '@material-ui/core/Paper'
-import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
+import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import Paper from '@material-ui/core/Paper'
 
 
-export class NewUserForm extends Component {
-
+export class Login extends Component {
   state = {
     email: '',
-    password: '',
-    errors: {}
+    password: ''
   }
 
-  handleSubmit = (event) => {
-    event.preventDefault()
-
-    const userData = {
-      email: this.state.email,
-      password: this.state.password
-    } 
-    this.props.loginUser(userData, this.props.history)
+  componentWillUnmount = () => {
+    this.props.clearErrors()
   }
 
-  handleChange = (event) => {
+  handleChange = e => {
     this.setState({
-      [event.target.name]: event.target.value
+      [e.target.name]: e.target.value
     })
   }
 
+  handleSubmit = (e) => {
+    e.preventDefault()
+    const userData = {
+      email: this.state.email,
+      password: this.state.password,
+    }
+    this.props.loginUser(userData, this.props.history)
+  }
+
   render() {
+    const { classes, UI: {  errors }, loading } = this.props
     const { email, password } = this.state
-    const { classes, UI: { loading, errors } } = this.props
     return (
-      <div className={classes.signupContainer} >
-        <Paper className={classes.signupPaper}>
-          <Typography variant='h2' className={classes.loginHeader}>Welcome to the Gear Report</Typography>
-          <form noValidate>
+      <div className={classes.formContainer}>
+        <Paper className={classes.loginPaper}>
+          <form>
+            <Typography variant='h2' className={classes.formHeader}>Welcome to the Gear Report</Typography>
             <TextField 
-              name='email'
-              type='email'
               variant='outlined'
               className={classes.signupTextField}
-              error={errors.email ? true : false}
-              helperText={errors.email}
               label='Email' 
               onChange={this.handleChange}
-              value={email}
+              defaultValue={email}
+              name='email'
             />
             <br />
             <TextField 
-              name='password'
-              type='password'
               variant='outlined'
               className={classes.signupTextField}
-              error={errors.password ? true : false}
-              helperText={errors.password}
               label='Password' 
               onChange={this.handleChange}
-              value={password}
+              defaultValue={password}
+              name='password'
+              type='password'
             />
-            {errors && (
-                <Typography variant='body2' className={classes.customError}>
-                  {errors.general}
-                </Typography>
-              )}
             <br />
+            {errors.general && 
+            <Fragment>
+              <br />
+              {errors.general.map((error, i) => {
+                return (
+                  <Typography className={classes.formError} key={i}>{error}</Typography>
+                )
+              })}
+            </Fragment>}
             <Button 
-              type="submit"
-              variant='contained'
               color='primary'
-              className={classes.loginButton}
-              disabled={loading}
+              className={classes.loginSubmitButton}
               onClick={this.handleSubmit}
+              variant="contained"
+              disabled={loading}
+              type='submit'
             >
-            Login
+            Submit
             {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
             </Button>
+            <Typography style={{ marginBottom: 30}}>Don't have an account? Click <Link to={'/signup'}>here</Link></Typography>
           </form>
         </Paper>
       </div>
@@ -90,12 +91,29 @@ export class NewUserForm extends Component {
   }
 }
 
-const styles = (theme) => ({
+const styles = theme => ({
   ...theme,
+  buttonProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
+  loginSubmitButton: {
+    marginBottom: 24,
+    marginTop: 8
+  }
 })
 
 const mapStateToProps = state => ({
-  UI: state.UI
+  UI: state.UI,
+  loading: state.user.loading
 })
 
-export default connect(mapStateToProps, { loginUser })(withStyles(styles)(NewUserForm))
+const mapDispatchToProps = {
+  loginUser,
+  clearErrors
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Login))

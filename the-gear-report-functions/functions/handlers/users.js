@@ -11,16 +11,28 @@ const { validateSignUpData, validateLoginData, reduceUserDetails } = require('..
 // SIGN UP
 
 exports.signup = (req, res) => {
+
+  let avatarLetters = ''
+  req.body.handle.split(' ').map((word) => {
+    avatarLetters += word.charAt(0).toUpperCase()
+  })
+
   const newUser = {
     email: req.body.email,
     password: req.body.password,
     confirmPassword: req.body.confirmPassword,
     handle: req.body.handle,
-    city: req.body.city,
-    location: req.body.location,
-    bio: req.body.bio,
+    city: req.body.city ? req.body.city : '',
+    bio: req.body.bio ? req.body.bio : '',
+    occupation: req.body.occupation ? req.body.occupation : '',
+    avatarLetters: avatarLetters,
+    subAreas: {
+      '879850311': {
+        name: 'Maungarei Springs',
+        id: '879850311'
+      }
+    }
   }
-  
 
   const { valid, errors } = validateSignUpData(newUser)
 
@@ -34,7 +46,7 @@ exports.signup = (req, res) => {
     .get()
     .then(doc => {
       if(doc.exists){ // user handle is taken
-        return res.status(400).json({ handle: 'This handle is already taken' })
+        return res.status(400).json({ handle: 'This name is already taken' })
       } else {
         // create user
         return firebase
@@ -54,7 +66,11 @@ exports.signup = (req, res) => {
         email:newUser.email,
         createdAt: new Date().toISOString(),
         userId: userId,
-        city: newUser.city
+        imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${noImg}?alt=media`,
+        city: newUser.city,
+        avatarLetters: newUser.avatarLetters,
+        bio: newUser.bio,
+        subAreas: newUser.subAreas
       }
       return db.doc(`/users/${newUser.handle}`).set(userCredentials)
     })
@@ -87,7 +103,7 @@ exports.login = (req, res) => {
   if(Object.keys(errors).length > 0) return res.status(400).json(errors)
 
   // Login
-
+  console.log(user);
   firebase
     .auth()
     .signInWithEmailAndPassword(user.email, user.password)
@@ -105,16 +121,14 @@ exports.login = (req, res) => {
     })
 }
 
-// ADD USER
+// EDIT USER
 
 exports.addUserDetails = (req,res) => {
-  console.log(req.body);
   let userDetails = reduceUserDetails(req.body)
-
   db.doc(`/users/${req.user.handle}`)
     .update(userDetails)
     .then(() => {
-      return res.json({ messgae: 'Details added successfully'} )
+      return res.json({ message: 'Details added successfully'} )
     })
     .catch(err => {
       console.error(err)
@@ -126,6 +140,7 @@ exports.addUserDetails = (req,res) => {
 
 exports.getAuthenticatedUser = (req, res) => {
   let userData = {}
+  // console.log(req.user.handle);
   db.doc(`/users/${req.user.handle}`)
     .get()
     .then(doc => {
@@ -135,6 +150,7 @@ exports.getAuthenticatedUser = (req, res) => {
       }
     })
     .then(data => {
+      console.log(data);
       userData.likes = []
       data.forEach(doc => {
         userData.likes.push(doc.data())
@@ -231,6 +247,13 @@ exports.uploadImage = (req, res) => {
     file.pipe(fs.createWriteStream(filepath))
   })
   busboy.on('finish', () => {
+    // convert to low res image
+    const im = require('imagemagick')
+    im.resize({
+      srcPath: imageToBeUploaded.filepath,
+      dstPath: imageToBeUploaded.filepath,
+      width: 180
+    })
     admin.storage().bucket().upload(imageToBeUploaded.filepath, {
       resumable: false,
       metadata: {
@@ -242,10 +265,14 @@ exports.uploadImage = (req, res) => {
     .then(() => {
       // next construct the image url to add it to the user
       const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`
-      return db.doc(`/users/${req.user.handle}`).update({ imageUrl: imageUrl }) // Note: req.user comes from the FBAuth middleware in index.js
+      db.doc(`/users/${req.user.handle}`).update({ imageUrl: imageUrl }) // Note: req.user comes from the FBAuth middleware in index.js
+      return imageUrl
     })
-    .then(() => {
-      return res.json({ message: 'Image uploaded successfully' })
+    .then((response) => {
+      return res.json({ 
+        message: 'Image uploaded successfully',
+        response: response
+      })
     })
     .catch(err => {
       console.error(err)
@@ -261,6 +288,7 @@ exports.markNotificationsRead = (req, res) => {
   // when user opens notification dropdown send server arr of id's  -> notifications just seen
   // and mark as read
   let batch = db.batch() // batch allows you to update multiple documents
+  console.log(req.body);
   req.body.forEach(notificationId => {
     const notification = db.doc(`/notifications/${notificationId}`)
     batch.update(notification, { read: true })
@@ -273,4 +301,60 @@ exports.markNotificationsRead = (req, res) => {
     console.error(err)
     return res.status(500).json({ error: err.code })
   })
+}
+
+// SUBSCRIBE TO CRAG
+exports.subscribeToCrag = (req, res) => {
+  db
+    .doc(`/users/${req.user.handle}`)
+    .get()
+    .then(doc => {
+      if(doc.exists){
+        return doc.data()
+      } else {
+        return res.status(404).json({ error: 'User not found' })
+      }
+    })
+    .then(data => {
+      var subAreas = data.subAreas
+      if(subAreas[req.body.id]) return res.json({ error: `${req.body.name} already subscribed to`})
+      subAreas[req.body.id] = { name: req.body.name, id: req.body.id }
+      db
+        .doc(`/users/${req.user.handle}`)
+        .update({ subAreas: subAreas })
+    })
+    .then(() => {
+      return res.json({ message: `${req.body.name} added successfully` })
+    })
+    .catch(err => {
+      console.log(err);
+    })
+}
+
+// UNSUBSCRIBE FROM CRAG
+exports.unsubscribeFromCrag = (req, res) => {
+  db
+    .doc(`/users/${req.user.handle}`)
+    .get()
+    .then(doc => {
+      if(doc.exists){
+        return doc.data()
+      } else {
+        return res.status(404).json({ error: 'User not found' })
+      }
+    })
+    .then(data => {
+      var subAreas = data.subAreas
+      if(!subAreas[req.body.id]) return res.json({ error: `${req.body.name} not subscribed to`})
+      delete subAreas[req.body.id]
+      db
+        .doc(`/users/${req.user.handle}`)
+        .update({ subAreas: subAreas })
+    })
+    .then(() => {
+      return res.json({ message: `${req.body.name} removed successfully` })
+    })
+    .catch(err => {
+      console.log(err);
+    })
 }

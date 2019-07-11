@@ -23,31 +23,26 @@ export class FormPersonalDetails extends Component {
     this.props.prevStep()
   }
 
-  handleSubmit = (event) => {
-    event.preventDefault()
-    this.setState({
-      loading: true
-    })
-    const newUserData = {
-      email: this.state.email,
-      password: this.state.password,
-      confirmPassword: this.state.confirmPassword,
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      bio: this.state.bio,
-      city: this.state.city,
-    }
-    this.props.signupUser(newUserData, this.props.history)
-  }
-
-
   render() {
-    const { values: { firstName, lastName, email, occupation, city, bio }, UI: { loading }, classes, handleSubmit, errors } = this.props
+    const { 
+      values: { 
+        firstName, 
+        lastName, 
+        email, 
+        occupation, 
+        city, 
+        bio 
+      }, 
+      classes, 
+      handleSubmit, 
+      errors ,
+      loading
+    } = this.props
 
     return (
-      <div className={classes.signupContainer}>
+      <div className={classes.formContainer}>
         <Paper className={classes.signupPaper}>
-          <Typography variant='h2' className={classes.signupHeader}>Welcome to the Gear Report</Typography>
+          <Typography variant='h2' className={classes.formHeader}>Welcome to the Gear Report</Typography>
           <List>
             <ListItemText 
               primary='First Name'
@@ -81,10 +76,10 @@ export class FormPersonalDetails extends Component {
               className={classes.text}
             />
           </List>
+          {errors.length > 0 && (
+            errors.map((error, i) => <Typography key={i} variant='h2' className={classes.formError}>{error}</Typography>)
+            )}
           <br />
-          {errors && (
-              Object.values(errors).map(error => <Typography variant='h2' className={classes.signupError}>{error}</Typography>)
-              )}
           <Button 
             color='secondary'
             className={classes.signupButton}
@@ -98,7 +93,7 @@ export class FormPersonalDetails extends Component {
             variant="contained"
             disabled={loading}
           >Submit
-          {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+          {loading && <CircularProgress size={24} className={classes.submitProgress} />}
           </Button>
         </Paper>
       </div>
@@ -110,11 +105,20 @@ const styles = theme => ({
   ...theme,
   text: {
     margin: theme.spacing.unit * 2
+  },
+  submitProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
   }
 })
 
 const mapStateToProps = state => ({
-  UI: state.UI
+  UI: state.UI,
+  errors: state.UI.errors.general,
+  loading: state.user.loading
 })
 
 export default connect(mapStateToProps)(withStyles(styles)(FormPersonalDetails))

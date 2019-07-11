@@ -1,39 +1,22 @@
 import { 
-  SET_USER_LOCATION, 
-  SET_USER_COUNTRY,
   SET_USER, 
   SET_ERRORS, 
   CLEAR_ERRORS, 
-  LOADING_UI, 
   SET_UNAUTHENTICATED, 
   LOADING_USER, 
-  MARK_NOTIFICATIONS_READ 
+  STOP_LOADING_USER,
+  MARK_NOTIFICATIONS_READ,
+  SET_MESSAGE,
+  LIKE_COMMENT,
+  UNLIKE_COMMENT,
+  UPDATE_USER_PROFILE,
+  LOADING_USER_IMAGE,
+  SET_USER_IMAGE
 } from '../types'
 import axios from 'axios'
 
-export const updateUserLocation = (position) => (dispatch) => {
-    dispatch({ 
-      type: SET_USER_LOCATION,
-      payload: {
-        ...position
-      }
-    })
-}
-
-export const updateUserCountry = (location) => (dispatch) => {
-  console.log(location);
-  dispatch({
-    type: SET_USER_COUNTRY,
-    payload: {
-      country: location.countryName,
-      region: location.regionName
-    }
-  })
-}
-
-
-export const loginUser = (userData, history) => (dispatch) => { //where is history coming from?
-  dispatch({ type: LOADING_UI })
+export const loginUser = (userData, history) => (dispatch) => { 
+  dispatch({ type: LOADING_USER })
   axios.post('/login', userData)
       .then(res => {
         setAuthorizationHeader(res.data.token)
@@ -42,30 +25,47 @@ export const loginUser = (userData, history) => (dispatch) => { //where is histo
         history.push('/')
       })
       .catch(err => {
+        let errors = []
+        Object.keys(err.response.data).forEach(error => {
+          let errMessage = ''
+          errMessage = `${error} ${err.response.data[error].toLowerCase()}`
+          errMessage = errMessage.charAt(0).toUpperCase() + errMessage.slice(1)
+          errors.push(errMessage)
+        })
         dispatch({ 
           type: SET_ERRORS, 
-          payload: err.response.data 
+          payload: errors
         })
+        dispatch({ type: STOP_LOADING_USER })
       })
 }
 
-export const signupUser = (newUserData, history) => (dispatch) => { //where is history coming from?
-  dispatch({ type: LOADING_UI })
-  console.log(newUserData );
+export const signupUser = (newUserData, history) => (dispatch) => { 
+  dispatch({ type: LOADING_USER })
   axios.post('/signup', newUserData)
       .then(res => {
-        console.log(res);
         setAuthorizationHeader(res.data.token)
         dispatch(getUserData())
         dispatch({ type: CLEAR_ERRORS })
-        history.push('/')
+        dispatch({
+          type: SET_MESSAGE,
+          payload: ['Sign up successful']
+        })
+        history.goBack()
       })
       .catch(err => {
-        console.log(err.response.data);
+        let errors = []
+        Object.keys(err.response.data).forEach(error => {
+          let errMessage = ''
+          errMessage = err.response.data[error].toLowerCase()
+          errMessage = errMessage.charAt(0).toUpperCase() + errMessage.slice(1)
+          errors.push(errMessage)
+        })
         dispatch({ 
           type: SET_ERRORS, 
-          payload: err.response.data 
+          payload: errors
         })
+        dispatch({ type: STOP_LOADING_USER })
       })
 }
 
@@ -80,7 +80,6 @@ export const getUserData = () => (dispatch) => {
   dispatch({ type: LOADING_USER })
   axios.get('/user')
     .then(res => {
-      console.log(res.data.credentials);
       dispatch({ 
         type: SET_USER,
         payload: res.data
@@ -91,11 +90,18 @@ export const getUserData = () => (dispatch) => {
     })
 }
 
-export const uploadImage = (formData) => (dispatch) => {
-  dispatch({ type: LOADING_USER })
+export const uploadUserImage = (formData) => (dispatch) => {  
+  dispatch({ type: LOADING_USER_IMAGE })
   axios.post('/user/image', formData)
-    .then(() => {
-      dispatch(getUserData())
+    .then((res) => {
+      dispatch({
+        type: SET_USER_IMAGE,
+        payload: res.data.response
+      })
+      dispatch({  
+        type: SET_MESSAGE,
+        payload: [res.data.message]
+      })
     })
     .catch(err => {
       console.log(err);
@@ -103,10 +109,10 @@ export const uploadImage = (formData) => (dispatch) => {
 }
 
 export const editUserDetails = (userDetails) => (dispatch) => {
-  dispatch({ type: LOADING_USER })
+  dispatch({ type: UPDATE_USER_PROFILE, payload: userDetails })
   axios.post('/user', userDetails)
-    .then(() => {
-      dispatch(getUserData()) 
+    .then((res) => {
+      dispatch({ type: SET_MESSAGE, payload: [res.data.message] })
     })
     .catch(err => {
       console.log(err);
@@ -119,6 +125,72 @@ export const markNotificationsRead = (notificationIds) => (dispatch) => {
       dispatch({ type: MARK_NOTIFICATIONS_READ })
     })
     .catch(err => console.log(err))
+}
+
+export const setError = (error) => (dispatch) => {
+  dispatch({
+    type: SET_ERRORS,
+    payload: [error]
+  })
+}
+
+export const clearErrors = () => dispatch => {
+  dispatch({ type: CLEAR_ERRORS })
+}
+
+export const subscribeToCrag = (cragDetails) => dispatch => {
+  axios.post('/subscribe/crag', cragDetails)
+    .then(res => {
+      if(res.data.error) dispatch({ type: SET_ERRORS, payload: res.data.error })
+      if(res.data.message) dispatch({ type: SET_MESSAGE, payload: [res.data.message] })
+      dispatch(getUserData())
+    })
+}
+
+export const unsubscribeFromCrag = (cragDetails) => dispatch => {
+  axios.post('/unsubscribe/crag', cragDetails)
+    .then(res => {
+      if(res.data.error) dispatch({ type: SET_ERRORS, payload: res.data.error })
+      if(res.data.message) dispatch({ type: SET_MESSAGE, payload: [res.data.message] })
+      dispatch(getUserData())
+    })
+}
+
+export const likeComment = commentId => dispatch => {
+  dispatch({ 
+    type: LIKE_COMMENT,
+    payload: { commentId: commentId }
+  })
+  axios.get(`/comment/${commentId}/like`)
+    .then(res => {
+      if(res.data.error) {
+        dispatch({ type: SET_ERRORS, payload: res.data.error })
+        dispatch({ type: UNLIKE_COMMENT, payload: { commentId: commentId } })
+      }
+      if(res.data.message) dispatch({ type: SET_MESSAGE, payload: [res.data.message] })
+
+    })
+    .catch(err => {
+      console.log(err);
+    })
+}
+
+export const unlikeComment = commentId => dispatch => {
+  dispatch({
+    type: UNLIKE_COMMENT,
+    payload: { commentId: commentId }
+  })
+  axios.get(`/comment/${commentId}/unlike`)
+  .then(res => {
+    if(res.data.error){
+      dispatch({ type: SET_ERRORS, payload: res.data.error })
+      dispatch({ type: LIKE_COMMENT, payload: { commentId: commentId } })
+    }
+    if(res.data.message) dispatch({ type: SET_MESSAGE, payload: [res.data.message] })
+  })
+  .catch(err => {
+    console.log(err);
+  })
 }
 
 const setAuthorizationHeader = (token) => {

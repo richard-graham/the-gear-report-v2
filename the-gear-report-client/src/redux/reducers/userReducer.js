@@ -1,26 +1,45 @@
 import { 
   SET_USER_LOCATION,
-  SET_USER_COUNTRY,
   SET_USER, 
   SET_AUTHENTICATED, 
   SET_UNAUTHENTICATED,
   LOADING_USER,
   LIKE_ALERT,
   UNLIKE_ALERT,
-  MARK_NOTIFICATIONS_READ
+  MARK_NOTIFICATIONS_READ,
+  LIKE_COMMENT,
+  UNLIKE_COMMENT,
+  STOP_LOADING_USER,
+  LOADING_USER_IMAGE,
+  SET_USER_IMAGE
 } from '../types'
 
 const initialState = {
   authenticated: false,
   loading:false,
-  credentials: {},
+  credentials: {
+    loadingImage: false,
+    city: '',
+    handle: '',
+    email: '',
+    userId: '',
+    bio: '',
+    imageUrl: '',
+    createdAt: '',
+    avatarLetters: ''
+  },
   likes: [],
   notifications: [],
   lat: -30.209985,
   lng: 145.095043,
-  haveUsersLocation: false,
-  zoom: 4,
-  countryName: ''
+}
+
+const logoutState = {
+  authenticated: false,
+  loading:false,
+  credentials: {},
+  likes: [],
+  notifications: []
 }
 
 export default function(state = initialState, action){
@@ -30,18 +49,16 @@ export default function(state = initialState, action){
         ...state,
         ...action.payload
       }
-    case SET_USER_COUNTRY:
-      return {
-        ...state,
-        ...action.payload 
-      }
       case SET_AUTHENTICATED:
       return {
         ...state,
         authenticated: true
       }
     case SET_UNAUTHENTICATED:
-      return initialState
+      return {
+        ...state,
+        ...logoutState
+      }
     case SET_USER:
       return {
         ...state,
@@ -53,6 +70,28 @@ export default function(state = initialState, action){
       return {
         ...state,
         loading: true
+      }
+    case STOP_LOADING_USER:
+      return {
+        ...state,
+        loading: false
+      }
+    case LOADING_USER_IMAGE: 
+      return {
+        ...state,
+        credentials: {
+          ...state.credentials,
+          loadingImage: true
+        }
+      }
+    case SET_USER_IMAGE:
+      return {
+        ...state,
+        credentials: {
+          ...state.credentials,
+          loadingImage: false,
+          imageUrl: action.payload
+        }
       }
     case LIKE_ALERT:
       return {
@@ -75,6 +114,22 @@ export default function(state = initialState, action){
      return {
        ...state
      }
+    case LIKE_COMMENT:
+      return {
+        ...state,
+        likes: [
+          ...state.likes,
+          {
+            userHandle: state.credentials.handle,
+            commentId: action.payload.commentId
+          }
+        ]
+      }
+    case UNLIKE_COMMENT:
+      return {
+        ...state,
+        likes: state.likes.filter(like => like.commentId !== action.payload.commentId)
+      }
     default:
       return state
   }

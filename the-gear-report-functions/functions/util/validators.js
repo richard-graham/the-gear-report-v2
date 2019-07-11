@@ -1,4 +1,5 @@
 const isEmpty = (string) => {
+  if (!string) return true
   if (string.trim() === '') return true
   else return false 
 }
@@ -13,22 +14,21 @@ const isEmail = (email) => {
 }
 
 exports.validateSignUpData = (data) => {
-  let errors = {}
-
+  let errors = []
   if (isEmpty(data.email)) {
-    errors.email = 'Email must not be empty'
+    errors.push('Email must not be empty')
   } else if (!isEmail(data.email)) {
-    errors.email = 'Must be a valid email address'
+    errors.push('Must be a valid email address')
   }
 
-  if (isEmpty(data.password)) errors.password = 'Password must not be empty'
-  if (!data.password || !data.confirmPassword) errors.password = 'Password must not be empty'
-  if (data.password !== data.confirmPassword) errors.confirmPassword = 'Passwords must match'
-  if (isEmpty(data.handle)) errors.handle = 'Name must not be empty'
-  if (isEmpty(data.city)) errors.city = 'City must not be empty'
+  if (isEmpty(data.password)) errors.push('Password must not be empty')
+  if (!data.password || !data.confirmPassword) errors.push('Password must not be empty')
+  if (data.password !== data.confirmPassword) errors.push('Passwords must match')
+  if (isEmpty(data.handle)) errors.push('Name must not be empty')
+  if (isEmpty(data.city)) errors.push('City must not be empty')
   return {
     errors,
-    valid: Object.keys(errors).length === 0 ? true : false
+    valid: errors.length === 0 ? true : false
   }
 }
 
@@ -49,14 +49,16 @@ exports.reduceUserDetails = (data) => {
 
   // makes sure we don't submit empty strings overwriting prev user data
 
-  if(!isEmpty(data.bio.trim())) userDetails.bio = data.bio
-  if(!isEmpty(data.city.trim())) userDetails.city = data.city
-  if(!isEmpty(data.website.trim())){
+  if(data.bio && !isEmpty(data.bio.trim())) userDetails.bio = data.bio
+  if(data.city && !isEmpty(data.city.trim())) userDetails.city = data.city
+  if(data.occupation && !isEmpty(data.occupation.trim())) userDetails.occupation = data.occupation
+  if(data.experience && !isEmpty(data.experience.trim())) userDetails.experience = data.experience
+  if(data.email && !isEmpty(data.email.trim())) userDetails.email = data.email
+  if(data.website && !isEmpty(data.website.trim())){
     // validate if user enters www.test.com as opposed to http://www.test.com
     if(data.website.trim().substring(0, 4) !== 'http'){
       userDetails.website = `http://${data.website.trim()}`
     } else userDetails.website = data.website
   }
-
   return userDetails
 }

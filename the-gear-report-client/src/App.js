@@ -1,43 +1,75 @@
-import React, { Component } from 'react';
-import './App.css';
-import jwtDecode from 'jwt-decode'
-import axios from 'axios'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import AuthRoute from './util/AuthRoute'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+// Components
+import Navigation from './components/navbar & drawer/Navigation'
+import home from './components/pages/home/home'
+import NewUserForm from './components/pages/signup/NewUserForm'
+import Login from './components/pages/login/Login'
+import ActionButton from './components/ActionButton'
+import MySnackBar from './util/MySnackBar'
+import Profile from './components/pages/profile/Profile'
+import AllAlerts from './components/pages/alerts/AllAlerts'
+import Alert from './components/pages/alerts/Alert'
+import DirectoryContainer from './components/directory/DirectoryContainer'
+import SearchRouter from './components/SearchRouter'
+import DisplayLocation from './components/pages/displayLocation/DisplayLocation'
+//mui./components/navbar & drawer/loadingLocation/LoadingLocation
+import { withStyles } from '@material-ui/core/styles';
 
-//Redux
-import { Provider } from 'react-redux'
-import store from './redux/store'
-import { SET_AUTHENTICATED } from './redux/types'
-import { logoutUser, getUserData } from './redux/actions/userActions'
 
-// components
-import Navigation from './components/navbar/Navigation'
+export class App extends Component {
 
-axios.defaults.baseURL = 'https://us-central1-the-gear-report-a2ce8.cloudfunctions.net/api'
-
-const token = localStorage.FBIdToken
-if(token){
-  const decodedToken = jwtDecode(token) // decodedToken.exp hold the expiry time of the token
-  if(decodedToken.exp * 1000 < Date.now()) {
-    store.dispatch(logoutUser())
-    window.location.href = '/login'
-  } else {
-    store.dispatch({ type: SET_AUTHENTICATED })
-    axios.defaults.headers.common['Authorization'] = token
-    store.dispatch(getUserData())
-  }
-}
-
-class App extends Component {
   render() {
+    const { classes, authenticated, error, message } = this.props
+
+
+    const content = (
+      <div className={classes.root}>
+          <Route path='/*' component={SearchRouter} />
+          <Route exact path='/' component={home} />
+          <Route exact path='/signup' component={NewUserForm} />
+          <Route exact path='/login' component={Login} />
+          <AuthRoute path='/profile/:userHandle' component={Profile} />
+          <Route exact path='/alerts' render={(props) => <AllAlerts {...props} handleDrawerClose={this.props.handleDrawerClose}/>} />
+          <Route exact path='/alert/:alertId' component={Alert} />
+          <Route exact path='/map' component={DirectoryContainer} />
+          <Route path='/location/:locationID' component={DisplayLocation} />
+
+          {authenticated === true && <Route path='/' component={ActionButton} />}
+    
+          {error.length > 0 ?  
+            <MySnackBar variant='error' message={error} /> : 
+            message.length > 0 ? 
+            <MySnackBar variant='success' message={message} /> : 
+            ''}
+    </div>
+    
+    )
+
     return (
-      <Provider store={store}>
-        <div className="App">
-            <Navigation />
-            
-        </div>
-      </Provider>
-    );
+      <Router>
+        <Navigation content={content} />
+      </Router>
+    )
   }
 }
 
-export default App;
+const styles = theme => ({
+  root: {
+    width: '100%',
+    minHeight: 'calc(100vh - 64px)',
+    display: 'flex',
+    justifyContent: 'center',
+    textAlign: 'center'
+  },
+})
+
+const mapStateToProps = state => ({
+  authenticated: state.user.authenticated,
+  error: state.UI.errors.general,
+  message: state.UI.message,
+})
+
+export default connect(mapStateToProps)(withStyles(styles)(App))

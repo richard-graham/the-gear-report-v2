@@ -18,16 +18,18 @@ export class FormUserDetails extends Component {
     const { values, handleChange, classes, UI: { errors } } = this.props
 
     return (
-      <div className={classes.signupContainer}>
+      <div className={classes.formContainer}>
         
         <Paper className={classes.signupPaper}>
-        <Typography variant='h2' className={classes.signupHeader}>Welcome to the Gear Report</Typography>
+        <Typography variant='h2' className={classes.formHeader}>Welcome to the Gear Report</Typography>
           <TextField 
             variant='outlined'
             className={classes.signupTextField}
             label='First Name' 
             onChange={handleChange('firstName')}
             defaultValue={values.firstName}
+            error={errors.handle ? true : false}
+            helperText={errors.handle}
           />
           <br />
           <TextField 
@@ -36,6 +38,8 @@ export class FormUserDetails extends Component {
             label='Last Name' 
             onChange={handleChange('lastName')}
             defaultValue={values.lastName}
+            error={errors.handle ? true : false}
+            helperText={errors.handle}
           />
           <br />
           <TextField 

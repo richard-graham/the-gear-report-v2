@@ -3,7 +3,7 @@ import FormUserDetails from './FormUserDetails'
 import FormPersonalDetails from './FormPersonalDetails'
 import Confirm from './Confirm'
 import { connect } from 'react-redux'
-import { signupUser } from '../../../redux/actions/userActions'
+import { signupUser, clearErrors } from '../../../redux/actions/userActions'
 
 export class NewUserForm extends Component {
   state = {
@@ -14,6 +14,10 @@ export class NewUserForm extends Component {
     occupation: '',
     city: '',
     bio: '',
+  }
+
+  componentWillUnmount = () => {
+    this.props.clearErrors()
   }
 
   // Proceed to the next step
@@ -42,18 +46,8 @@ export class NewUserForm extends Component {
     })
   }
 
-  // componentWillReceiveProps(nextProps){
-  //   if(nextProps.UI.errors){
-  //     this.setState({ errors: nextProps.UI.errors })
-  //   }
-  // }
-
   handleSubmit = (event) => {
-    console.log(this.state);
     event.preventDefault()
-    this.setState({
-      loading: true
-    })
     const newUserData = {
       email: this.state.email,
       password: this.state.password,
@@ -98,7 +92,6 @@ export class NewUserForm extends Component {
             prevStep={this.prevStep}
             values={values} 
             handleSubmit={this.handleSubmit}
-            errors={errors}
           />
         )
       default:
@@ -109,7 +102,12 @@ export class NewUserForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  errors: state.UI.errors
+  errors: state.UI.errors.general
 })
 
-export default connect(mapStateToProps, { signupUser })(NewUserForm)
+const mapDispatchToProps = {
+  signupUser,
+  clearErrors
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewUserForm)
