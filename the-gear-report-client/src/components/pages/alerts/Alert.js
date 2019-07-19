@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { getAlert, submitComment } from '../../../redux/actions/dataActions'
+import { getAlert, submitComment, deleteComment } from '../../../redux/actions/dataActions'
 import { likeComment, unlikeComment } from '../../../redux/actions/userActions'
 import moment from 'moment'
 import AlertImageGallery from './AlertImageGallery'
@@ -12,12 +12,12 @@ import { withStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid'
+import Divider from '@material-ui/core/Divider'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
-import Breadcrumbs from '@material-ui/lab/Breadcrumbs';
+import Breadcrumbs from '@material-ui/lab/Breadcrumbs'
 //Icons
 import Favorite from '@material-ui/icons/Favorite'
 import Clear from '@material-ui/icons/Clear'
@@ -55,8 +55,8 @@ export class Alert extends Component {
     this.setState({ comment: '' })
   }
 
-  handleDelComment = () => {
-    console.log('deleted');
+  handleDelComment = (id) => {
+    this.props.deleteComment(id)
   }
 
   handleMouseEnter = key => {
@@ -206,7 +206,7 @@ export class Alert extends Component {
                           <div className={classes.comment}>
                             <div className={classes.userData}>
                               <IconButton 
-                                onClick={this.handleDelComment} 
+                                onClick={() => this.handleDelComment(comment.id)} 
                                 className={classes.deleteCommentButton}
                               >
                                 <Clear /> 
@@ -390,7 +390,8 @@ const mapDispatchToProps = {
   submitComment,
   getAlert,
   likeComment,
-  unlikeComment
+  unlikeComment,
+  deleteComment
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Alert))

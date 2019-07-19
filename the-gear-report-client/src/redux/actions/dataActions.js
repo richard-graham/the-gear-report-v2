@@ -23,6 +23,7 @@ import {
   SET_SEARCH,
   REMOVE_SUGGESTIONS,
   LOADING_ALL_ALERTS,
+  DELETE_COMMENT
 } from '../types'
 import axios from 'axios'
 
@@ -179,6 +180,15 @@ export const deleteAlert = (alertId) => (dispatch) => {
   axios.delete(`/alert/${alertId}`)
     .then(() => {
       dispatch({ type: DELETE_ALERT, payload: alertId })
+    })
+    .catch(err => console.log(err))
+}
+
+export const deleteComment = (commentId) => (dispatch) => {
+  console.log(commentId);
+  axios.delete(`/comment/${commentId}`)
+    .then(() => {
+      dispatch({ type: DELETE_COMMENT, payload: commentId })
     })
     .catch(err => console.log(err))
 }

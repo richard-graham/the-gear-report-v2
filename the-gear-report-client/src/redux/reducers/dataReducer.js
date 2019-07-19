@@ -20,7 +20,8 @@ import {
   UNLIKE_COMMENT,
   LOADING_USER_PROFILE,
   UPDATE_USER_PROFILE,
-  SET_USER_IMAGE
+  SET_USER_IMAGE,
+  DELETE_COMMENT
 } from '../types'
 
 const initialState = {
@@ -117,9 +118,15 @@ export default function(state = initialState, action){
       return {
         ...state
       }
-    case DELETE_ALERT: // instead of doing a full reload just delete the scream locally in state
+    case DELETE_ALERT: // instead of doing a full reload just delete the alert locally in state
       index = state.alerts.findIndex(alert => alert.alertId === action.payload)
       state.alerts.splice(index, 1)
+      return {
+        ...state
+      }
+    case DELETE_COMMENT:
+      index = state.alert.comments.findIndex(comment => comment.id === action.payload)
+      state.alert.comments.splice(index, 1)
       return {
         ...state
       }

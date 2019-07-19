@@ -19,7 +19,7 @@
     "imagemagick": "^0.1.3"
   },
   "engines": {
-    "node": "11"
+    "node": "10"
   },
   "private": true
 }

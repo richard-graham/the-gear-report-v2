@@ -73,7 +73,7 @@ app.post('/notifications', FBAuth, markNotificationsRead)
 app.post('/subscribe/crag', FBAuth, subscribeToCrag)
 app.post('/unsubscribe/crag', FBAuth, unsubscribeFromCrag)
 
-// The Crag routes
+// The Crag routesx1x
 app.get('/tc/location/:location', getLocationData)
 app.get('/tc/node/:nodeID', getNode)
 app.get('/tc/search/location/:id', updateSearchLocation)
