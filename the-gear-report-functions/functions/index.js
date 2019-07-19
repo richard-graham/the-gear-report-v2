@@ -20,7 +20,8 @@ const {
   getAlertsByUser,
   getAlertsByLocations,
   likeComment,
-  unlikeComment
+  unlikeComment,
+  deleteComment
 } = require('./handlers/alerts')
 
 const { 
@@ -58,6 +59,7 @@ app.get('/comment/:commentId/like', FBAuth, likeComment)
 app.get('/comment/:commentId/unlike', FBAuth, unlikeComment)
 app.get('/alert/:alertId/unlike', FBAuth, unlikeAlert)
 app.delete('/alert/:alertId', FBAuth, deleteAlert)
+app.delete('/comment/:commentId', FBAuth, deleteComment)
 
 
 // User routes
