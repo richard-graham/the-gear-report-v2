@@ -473,8 +473,8 @@ exports.deleteComment = (req, res) => {
       if(doc.data().userHandle !== req.user.handle){
         return res.status(403).json({ error: 'Unauthorized' })
       } else {
-        return doc.ref.update({ commentCount: doc.data().commentCount - 1 })
-        return document.delete()
+        doc.ref.update({ commentCount: doc.data().commentCount - 1 })
+        document.delete()
       }
     })
     .then(() => {

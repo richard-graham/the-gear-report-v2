@@ -186,12 +186,15 @@ export const deleteAlert = (alertId) => (dispatch) => {
 }
 
 export const deleteComment = (commentId) => (dispatch) => {
-  console.log(commentId);
   axios.delete(`/comment/${commentId}`)
-    .then(() => {
+    .then((res) => {
       dispatch({ type: DELETE_COMMENT, payload: commentId })
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      err = { err }
+      let message = err
+      dispatch({ type: SET_ERRORS, payload: [ message.err.response.data.error ] });
+    })
 }
 
 export const getUserData = (userHandle) => dispatch => {
