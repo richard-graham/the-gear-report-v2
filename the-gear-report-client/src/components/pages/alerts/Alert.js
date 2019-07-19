@@ -84,7 +84,8 @@ export class Alert extends Component {
         locationNames
       },
       loading,
-      likes
+      likes,
+      user
     } = this.props
     return (
       <Paper className={classes.paper}>
@@ -205,12 +206,14 @@ export class Alert extends Component {
                           </Link>
                           <div className={classes.comment}>
                             <div className={classes.userData}>
-                              <IconButton 
-                                onClick={() => this.handleDelComment(comment.id)} 
-                                className={classes.deleteCommentButton}
-                              >
-                                <Clear /> 
-                              </IconButton>
+                              {user && user.handle && userHandle === user.handle &&
+                                <IconButton 
+                                  onClick={() => this.handleDelComment(comment.id)} 
+                                  className={classes.deleteCommentButton}
+                                >
+                                  <Clear /> 
+                                </IconButton>
+                              }
                               <Typography 
                                 variant='body1' 
                                 component={Link} 
@@ -383,7 +386,8 @@ const styles = theme => ({
 const mapStateToProps = (state) => ({
   alert: state.data.alert,
   loading: state.UI.loading,
-  likes: state.user.likes
+  likes: state.user.likes,
+  user: state.user.credentials
 })
 
 const mapDispatchToProps = {
