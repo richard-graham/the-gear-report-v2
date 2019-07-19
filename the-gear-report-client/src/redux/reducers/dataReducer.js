@@ -119,16 +119,20 @@ export default function(state = initialState, action){
         ...state
       }
     case DELETE_ALERT: // instead of doing a full reload just delete the alert locally in state
-      index = state.alerts.findIndex(alert => alert.alertId === action.payload)
-      state.alerts.splice(index, 1)
+      let alertIndex = state.alerts.findIndex(alert => alert.alertId === action.payload)
+      state.alerts.splice(alertIndex, 1)
       return {
         ...state
       }
     case DELETE_COMMENT:
-      index = state.alert.comments.findIndex(comment => comment.id === action.payload)
-      state.alert.comments.splice(index, 1)
+      let commentIndex = state.alert.comments.findIndex(comment => comment.id === action.payload)
+      state.alert.comments.splice(commentIndex, 1)
       return {
-        ...state
+        ...state,
+        alert: {
+          ...state.alert,
+          commentCount: state.alert.commentCount - 1
+        }
       }
     case POST_ALERT:
       return {
@@ -143,7 +147,8 @@ export default function(state = initialState, action){
         ...state,
         alert: {
           ...state.alert,
-          comments: [action.payload, ...state.alert.comments] // put new comment to the top of the list in alertDialog
+          comments: [action.payload, ...state.alert.comments], // put new comment to the top of the list in alertDialog
+          commentCount: state.alert.commentCount + 1
         }
       }
     case SET_ALERT_IMAGE:

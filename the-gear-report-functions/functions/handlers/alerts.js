@@ -191,11 +191,12 @@ exports.commentOnAlert = (req, res) => {
       return doc.ref.update({ commentCount: doc.data().commentCount + 1 })
     })
     .then(() => {
-      return db.collection('comments').add(newComment)
-    })
-    .then(() => {
-      //return comment to front end
-      res.json(newComment)
+      db.collection('comments').add(newComment).then(doc => {
+        res.json({
+          ...newComment,
+          id: doc.id
+        })
+      })
     })
     .catch(err => {
       console.error(err)
@@ -472,6 +473,7 @@ exports.deleteComment = (req, res) => {
       if(doc.data().userHandle !== req.user.handle){
         return res.status(403).json({ error: 'Unauthorized' })
       } else {
+        return doc.ref.update({ commentCount: doc.data().commentCount - 1 })
         return document.delete()
       }
     })
