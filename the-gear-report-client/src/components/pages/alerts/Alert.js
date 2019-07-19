@@ -16,9 +16,11 @@ import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
 import Breadcrumbs from '@material-ui/lab/Breadcrumbs';
 //Icons
 import Favorite from '@material-ui/icons/Favorite'
+import Clear from '@material-ui/icons/Clear'
 
 export class Alert extends Component {
 
@@ -51,6 +53,10 @@ export class Alert extends Component {
   handleCommentSubmit = () => {
     this.props.submitComment(this.props.alert.alertId, {body: this.state.comment})
     this.setState({ comment: '' })
+  }
+
+  handleDelComment = () => {
+    console.log('deleted');
   }
 
   handleMouseEnter = key => {
@@ -116,7 +122,16 @@ export class Alert extends Component {
                     <Typography>{`Created At: ${moment(createdAt).format('DD-MM-YYYY')}`}</Typography>}
                     <Typography>{`Status: ${resolved ? 'Resolved' : 'Not Resolved'}`}</Typography>
                     <Typography>{`Sponsored: ${sponsored ? 'True' : 'False'}`}</Typography>
-                    <Typography>{`Created By: ${userHandle}`}</Typography>
+                    <Typography>{`Created By: `}
+                      <Link
+                        style={{ textDecoration: 'none' }}
+                        to={`/profile/${userHandle}`}
+                        className={classes.createdByLink}
+                        >
+                        {userHandle}
+                      </Link>
+                    </Typography>
+                    
                     <br />
                     <Typography >{`Description: ${body}`}</Typography>
                   </div>
@@ -190,6 +205,12 @@ export class Alert extends Component {
                           </Link>
                           <div className={classes.comment}>
                             <div className={classes.userData}>
+                              <IconButton 
+                                onClick={this.handleDelComment} 
+                                className={classes.deleteCommentButton}
+                              >
+                                <Clear /> 
+                              </IconButton>
                               <Typography 
                                 variant='body1' 
                                 component={Link} 
@@ -318,7 +339,8 @@ const styles = theme => ({
     marginTop: 4
   },
   comment: {
-    textAlign: 'left'
+    textAlign: 'left',
+    width: '100%'
   },
   commentUserName: {
     textDecoration: 'none',
@@ -349,6 +371,12 @@ const styles = theme => ({
     flexWrap: 'wrap',
     marginTop: 20,
     marginBottom: 30
+  },
+  createdByLink: {
+    color: 'inherit',
+  },
+  deleteCommentButton: {
+    float: 'right'
   }
 })
 
