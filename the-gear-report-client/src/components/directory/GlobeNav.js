@@ -62,7 +62,7 @@ export class GlobeNav extends Component {
       })
 
       if(checkIfBelowCrag(loc.type)){
-        history.push('/test')
+        history.push(`/location/${loc.id}`)
       }
   }
 
