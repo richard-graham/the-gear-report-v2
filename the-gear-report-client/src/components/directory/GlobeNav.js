@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types';
 import { updateLocation } from '../../redux/actions/UIActions'
 import { connect } from 'react-redux'
+import { checkIfBelowCrag } from '../../util/functions'
+import history from '../../util/history'
 //Mui
 import { withStyles } from '@material-ui/core/styles';
 import Collapse from '@material-ui/core/Collapse'
@@ -58,6 +60,10 @@ export class GlobeNav extends Component {
         [index]: this.state[index] ? !this.state[index] : true,
         selectedIndex: index,
       })
+
+      if(checkIfBelowCrag(loc.type)){
+        history.push('/test')
+      }
   }
 
   findIndex = (i, noOfIndex, newState, location) => {
@@ -114,26 +120,6 @@ export class GlobeNav extends Component {
       default:
         return []
     }
-  }
-
-  componentWillReceiveProps = (nextProps) => {
-    // var location = nextProps.location
-    // if(nextProps.location.searched){
-    //   //close all current drawers and rebuild them based on search
-    //   var oldState = {}
-    //   Object.keys(this.state).forEach(key => oldState[key] = false)
-    //   this.setState(oldState, () => { // once old state is overwritten
-    //     var noOfIndex = Number(location.depth)
-    //     var newState = {
-
-    //     }
-    //     for (var i = 0; i < noOfIndex; i++){
-    //       if(i === 0) newState.selectedIndex = this.findIndex(i, noOfIndex, newState, location) 
-    //       newState[this.findIndex(i, noOfIndex, newState, location)] = true
-    //     }
-    //     this.setState(newState)  
-    //   })
-    // }
   }
 
   render() {

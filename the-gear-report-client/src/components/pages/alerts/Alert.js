@@ -18,6 +18,7 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import Breadcrumbs from '@material-ui/lab/Breadcrumbs'
+import Tooltip from '@material-ui/core/Tooltip';
 //Icons
 import Favorite from '@material-ui/icons/Favorite'
 import Clear from '@material-ui/icons/Clear'
@@ -207,12 +208,14 @@ export class Alert extends Component {
                           <div className={classes.comment}>
                             <div className={classes.userData}>
                               {user && user.handle && userHandle === user.handle &&
-                                <IconButton 
-                                  onClick={() => this.handleDelComment(comment.id)} 
-                                  className={classes.deleteCommentButton}
-                                >
-                                  <Clear /> 
-                                </IconButton>
+                                <Tooltip title='Delete Comment' placement='right' >
+                                  <IconButton 
+                                    onClick={() => this.handleDelComment(comment.id)} 
+                                    className={classes.deleteCommentButton}
+                                  >
+                                    <Clear /> 
+                                  </IconButton>
+                                </Tooltip>
                               }
                               <Typography 
                                 variant='body1' 
