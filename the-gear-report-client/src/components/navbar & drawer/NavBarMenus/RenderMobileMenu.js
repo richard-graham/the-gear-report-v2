@@ -40,7 +40,6 @@ export class RenderMobileMenu extends Component {
       handleMobileMenuClose, 
       handleMenuOpen,
       user,
-      handleNotificationsClose
     } = this.props
 
     const {
