@@ -45,7 +45,9 @@ export class Alert extends Component {
   }
 
   handleCommentLike = id => {
-    this.props.likeComment(id)
+    this.props.user.authenticated ? 
+    this.props.likeComment(id) : 
+    this.props.history.push('/login')
   }
   handleCommentUnlike = id => {
     this.props.unlikeComment(id)
