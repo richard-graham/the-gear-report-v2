@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
-import { addDays } from 'date-fns'
+import moment from 'moment'
+
 
 class DatePickerApp extends Component {
 
@@ -20,7 +21,7 @@ class DatePickerApp extends Component {
         onChange={handleDateChange}
         dateFormat='dd/MM/yyyy'
         minDate={new Date()}
-        maxDate={addDays(new Date(), 14)}
+        maxDate={moment().add(14, 'days').toDate()}
       />
     )
   }
