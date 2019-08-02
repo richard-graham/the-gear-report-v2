@@ -7,6 +7,9 @@ import Dialog from '@material-ui/core/Dialog'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Radio from '@material-ui/core/Radio'
+import Input from '@material-ui/core/Input'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import FormControl from '@material-ui/core/FormControl'
 
 export class WorkPlanDialog extends Component {
 
@@ -14,11 +17,20 @@ export class WorkPlanDialog extends Component {
     open: false,
     selectedDate: new Date(),
     yesSponsor: true,
-    noSponsor: false
+    noSponsor: false,
+    cost: '',
+    plan: ''
   }
 
   handleDialogClose = () => {
-    this.setState({ open: false })
+    this.setState({ 
+      open: false,
+      selectedDate: new Date(),
+      yesSponsor: true,
+      noSponsor: false,
+      cost: '',
+      plan: ''
+     })
   }
 
   handleButtonClick = () => {
@@ -41,6 +53,13 @@ export class WorkPlanDialog extends Component {
       yesSponsor: false,
       noSponsor: true
     })
+  }
+
+  handleCostChange = () => (e) => {
+    this.setState({ cost: e.target.value })
+  }
+  handlePlanChange = () => (e) => {
+    this.setState({ plan: e.target.value })
   }
 
   render() {
@@ -69,7 +88,7 @@ export class WorkPlanDialog extends Component {
         >
           <div className={classes.dialogContainer}>
             <Typography variant='h6' className={classes.dialogTitle}>Create Work Plan</Typography>
-            <Typography variant='subtitle1' className={classes.dialogSubtitle}>Please select expected completion date</Typography>
+            <Typography variant='subtitle1' className={classes.dialogSubtitle}>Select expected completion date</Typography>
             <DatePickerApp 
               className={classes.datePick} 
               selectedDate={selectedDate}
@@ -90,6 +109,32 @@ export class WorkPlanDialog extends Component {
                 className={classes.radio} 
               /><Typography>No</Typography>
             </div>
+            {yesSponsor && 
+            <FormControl fullWidth className={classes.estimated} >
+              <Typography variant='subtitle1' className={classes.dialogSubtitle}>Estimated Cost</Typography>
+              <Input
+                value={this.state.cost}
+                type='number'
+                onChange={this.handleCostChange()}
+                startAdornment={<InputAdornment position="start">$</InputAdornment>}
+              />
+            </FormControl>}
+            <FormControl fullWidth className={classes.estimated} >
+              <Typography variant='subtitle1' className={classes.dialogSubtitle}>Plan to resolve alert</Typography>
+              <Input
+                value={this.state.plan}
+                onChange={this.handlePlanChange()}
+                multiline
+                rows={3}
+              />
+            </FormControl>
+            <Button
+              className={classes.submit}
+              variant='contained'
+              color='primary'
+            >
+              Submit
+            </Button>
           </div>
         </Dialog>
       </Fragment>
@@ -99,10 +144,11 @@ export class WorkPlanDialog extends Component {
 
 const styles = {
   dialogContainer: {
-   padding: 24
+   padding: 36,
+   minWidth: 516
   },
   dialogTitle: {
-    marginBottom: 5
+    marginBottom: 20
   },
   datePick: {
     minWidth: 150,
@@ -117,6 +163,12 @@ const styles = {
   dialogSubtitle: {
     marginTop: 10,
     marginBottom: 3
+  },
+  estimated: {
+    marginTop: 12
+  },
+  submit: {
+    marginTop: 25
   }
 }
 
