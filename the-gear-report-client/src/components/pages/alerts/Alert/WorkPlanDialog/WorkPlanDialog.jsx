@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import DatePickerApp from './DatePicker'
+import { createAssignment } from '../../../../../redux/actions/assignmentActions.js'
+import moment from 'moment'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Dialog from '@material-ui/core/Dialog'
@@ -63,6 +65,16 @@ export class WorkPlanDialog extends Component {
     this.setState({ plan: e.target.value })
   }
 
+  handleSubmit = (selectedDate, yesSponsor, cost, plan) => {
+    this.props.createAssignment(
+      selectedDate.toISOString(), 
+      yesSponsor, 
+      cost, 
+      plan,
+      this.props.alertId
+    )
+  }
+
   render() {
     const {
       classes
@@ -72,7 +84,9 @@ export class WorkPlanDialog extends Component {
       open,
       selectedDate,
       yesSponsor,
-      noSponsor
+      noSponsor,
+      cost,
+      plan
     } = this.state
     return (
       <Fragment>
@@ -101,6 +115,7 @@ export class WorkPlanDialog extends Component {
                 checked={yesSponsor} 
                 onChange={this.handleYesSponsor} 
                 className={classes.radio} 
+                color='primary'
               /><Typography>Yes</Typography>
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -129,20 +144,6 @@ export class WorkPlanDialog extends Component {
                 rows={3}
               />
             </FormControl>
-            {/* <Button
-              className={classes.submit}
-              variant='contained'
-              color='primary'
-            >
-              Submit
-            </Button>
-            <Button
-              className={classes.cancel}
-              variant='contained'
-              color='secondary'
-            >
-              Cancel
-            </Button> */}
             <DialogActions className={classes.actions}>
               <Button 
                 color="primary"
@@ -150,7 +151,11 @@ export class WorkPlanDialog extends Component {
               >
                 Cancel
               </Button>
-              <Button color="primary" type='submit'>
+              <Button 
+                color="primary" 
+                type='submit'
+                onClick={() => this.handleSubmit(selectedDate, yesSponsor, cost, plan)}
+              >
                 Submit
               </Button>
             </DialogActions>
@@ -200,11 +205,11 @@ const styles = {
 }
 
 const mapStateToProps = (state) => ({
-  
+  alertId: state.data.alert.alertId
 })
 
 const mapDispatchToProps = {
-  
+  createAssignment
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(WorkPlanDialog))

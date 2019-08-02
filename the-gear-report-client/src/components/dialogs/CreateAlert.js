@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { uploadAlertImage, postAlert, resetAlertImages } from '../../redux/actions/dataActions'
+import { uploadAlertImage, postAlert, resetAlertImages } from '../../redux/actions/alertActions'
 import { connect } from 'react-redux'
 import { checkIfCrag, checkIfBelowCrag } from '../../util/functions'
 import Search from '../../util/Search'

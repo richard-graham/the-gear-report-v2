@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { getAlert } from '../../../../redux/actions/dataActions'
+import { getAlert } from '../../../../redux/actions/alertActions'
 import moment from 'moment'
 import AlertImageGallery from '../AlertImageGallery'
 import { Link } from 'react-router-dom'

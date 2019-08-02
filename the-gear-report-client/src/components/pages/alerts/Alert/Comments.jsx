@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { likeComment, unlikeComment } from '../../../../redux/actions/userActions'
-import { submitComment, deleteComment } from '../../../../redux/actions/dataActions'
+import { submitComment, deleteComment } from '../../../../redux/actions/alertActions'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 import ProfilePic from '../../../../util/ProfilePic'

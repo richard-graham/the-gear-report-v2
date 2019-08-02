@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux'
 import { isCragOrUnder } from '../../util/functions'
 import { updateSearchLocation } from '../../redux/actions/tcActions'
-import { updateLocation } from '../../redux/actions/UIActions'
+import { updateLocation } from '../../redux/actions/locationActions'
 import { withRouter } from 'react-router-dom'
 // leaflet
 import 'leaflet/dist/leaflet.css'

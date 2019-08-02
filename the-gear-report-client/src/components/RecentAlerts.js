@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { getRecentAlerts } from '../redux/actions/dataActions'
+import { getRecentAlerts } from '../redux/actions/alertActions'
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { AutoSizer, Column, SortDirection, Table } from 'react-virtualized';

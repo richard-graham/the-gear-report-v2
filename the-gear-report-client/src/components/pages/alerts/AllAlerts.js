@@ -1,5 +1,5 @@
 import React from 'react'
-import { getAlerts } from '../../../redux/actions/dataActions'
+import { getAlerts } from '../../../redux/actions/alertActions'
 import { setError, clearErrors } from '../../../redux/actions/userActions'
 import { connect } from 'react-redux'
 import MaterialTable from 'material-table'

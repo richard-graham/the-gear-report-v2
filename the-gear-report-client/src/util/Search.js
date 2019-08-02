@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import deburr from 'lodash/deburr';
 import Downshift from 'downshift';
-import { textCompletion, removeSuggestions, getAlertsByLocation } from '../redux/actions/dataActions'
+import { textCompletion, removeSuggestions } from '../redux/actions/dataActions'
+import { getAlertsByLocation } from '../redux/actions/alertActions'
 import { updateSearchLocation } from '../redux/actions/tcActions'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router'

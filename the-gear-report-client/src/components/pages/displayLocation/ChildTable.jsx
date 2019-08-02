@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { updateSearchLocation, getNode } from '../../../redux/actions/tcActions'
-import { getAlertsByLocation } from '../../../redux/actions/dataActions'
+import { getAlertsByLocation } from '../../../redux/actions/alertActions'
 import CragMarkup from './util/CragMarkup'
 import CliffMarkup from './util/CliffMarkup'
 import { withRouter } from 'react-router-dom'

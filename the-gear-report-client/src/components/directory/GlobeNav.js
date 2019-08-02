@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types';
-import { updateLocation } from '../../redux/actions/UIActions'
+import { updateLocation } from '../../redux/actions/locationActions'
 import { connect } from 'react-redux'
 import { checkIfBelowCrag } from '../../util/functions'
 import history from '../../util/history'
