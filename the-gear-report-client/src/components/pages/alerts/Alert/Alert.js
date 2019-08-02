@@ -5,6 +5,7 @@ import moment from 'moment'
 import AlertImageGallery from '../AlertImageGallery'
 import { Link } from 'react-router-dom'
 import Comments from './Comments'
+import WorkPlanDialog from './WorkPlanDialog/WorkPlanDialog'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
@@ -90,12 +91,7 @@ export class Alert extends Component {
                     <br />
                     <Typography >{`Description: ${body}`}</Typography>
                     <br />
-                    <Button
-                      color='primary'
-                      size='small'
-                      variant='outlined'
-                      className={classes.workButton}
-                    >Create Work Plan</Button>
+                    <WorkPlanDialog />
                   </div>
                 </Grid>
                 <Grid item lg={4} md={5} sm={5} xs ={10} >
