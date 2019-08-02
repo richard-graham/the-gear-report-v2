@@ -10,6 +10,7 @@ import Radio from '@material-ui/core/Radio'
 import Input from '@material-ui/core/Input'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import FormControl from '@material-ui/core/FormControl'
+import DialogActions from '@material-ui/core/DialogActions'
 
 export class WorkPlanDialog extends Component {
 
@@ -128,13 +129,31 @@ export class WorkPlanDialog extends Component {
                 rows={3}
               />
             </FormControl>
-            <Button
+            {/* <Button
               className={classes.submit}
               variant='contained'
               color='primary'
             >
               Submit
             </Button>
+            <Button
+              className={classes.cancel}
+              variant='contained'
+              color='secondary'
+            >
+              Cancel
+            </Button> */}
+            <DialogActions className={classes.actions}>
+              <Button 
+                color="primary"
+                onClick={this.handleDialogClose}
+              >
+                Cancel
+              </Button>
+              <Button color="primary" type='submit'>
+                Submit
+              </Button>
+            </DialogActions>
           </div>
         </Dialog>
       </Fragment>
@@ -144,8 +163,8 @@ export class WorkPlanDialog extends Component {
 
 const styles = {
   dialogContainer: {
-   padding: 36,
-   minWidth: 516
+   padding: 24,
+   minWidth: 450
   },
   dialogTitle: {
     marginBottom: 20
@@ -169,6 +188,14 @@ const styles = {
   },
   submit: {
     marginTop: 25
+  },
+  cancel: {
+    marginTop: 25,
+    marginLeft: 50
+  },
+  actions: {
+    margin: 0,
+    marginTop: 20
   }
 }
 
