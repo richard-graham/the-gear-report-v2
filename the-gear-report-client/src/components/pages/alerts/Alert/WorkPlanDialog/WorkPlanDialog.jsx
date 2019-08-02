@@ -69,45 +69,27 @@ export class WorkPlanDialog extends Component {
         >
           <div className={classes.dialogContainer}>
             <Typography variant='h6' className={classes.dialogTitle}>Create Work Plan</Typography>
-            <Typography variant='subtitle1' style={{ paddingBottom: 5 }}>Please select expected completion date</Typography>
+            <Typography variant='subtitle1' className={classes.dialogSubtitle}>Please select expected completion date</Typography>
             <DatePickerApp 
               className={classes.datePick} 
               selectedDate={selectedDate}
               handleDateChange={this.handleDateChange}  
             />
-            <br />
-            <br />
-            {/* <FormControl component="fieldset" className={classes.formControl}>
-              <FormLabel component="legend">Allow Sponsorship?</FormLabel>
-                <FormControlLabel
-                  control={
-                    <Checkbox checked={yesSponsor} onChange={this.handleYesSponsor} />
-                  }
-                  label='Yes'
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox checked={noSponsor} onChange={this.handleNoSponsor} />
-                  }
-                  label='No'
-                />
-            </FormControl> */}
-            {/* <RadioGroup> */}
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Radio 
-                  checked={yesSponsor} 
-                  onChange={this.handleYesSponsor} 
-                  className={classes.radio} 
-                /><Typography>Yes</Typography>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Radio 
-                  checked={noSponsor} 
-                  onChange={this.handleNoSponsor} 
-                  className={classes.radio} 
-                /><Typography>No</Typography>
-              </div>
-            {/* </RadioGroup> */}
+            <Typography variant='subtitle1' className={classes.dialogSubtitle} >Allow Sponsorship</Typography>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <Radio 
+                checked={yesSponsor} 
+                onChange={this.handleYesSponsor} 
+                className={classes.radio} 
+              /><Typography>Yes</Typography>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <Radio 
+                checked={noSponsor} 
+                onChange={this.handleNoSponsor} 
+                className={classes.radio} 
+              /><Typography>No</Typography>
+            </div>
           </div>
         </Dialog>
       </Fragment>
@@ -120,7 +102,7 @@ const styles = {
    padding: 24
   },
   dialogTitle: {
-    paddingBottom: 20
+    marginBottom: 5
   },
   datePick: {
     minWidth: 150,
@@ -128,9 +110,13 @@ const styles = {
   },
   radio: {
     padding: 0,
-    paddingTop: 6,
-    paddingBottom: 6,
+    paddingTop: 4,
+    paddingBottom: 4,
     paddingRight: 6
+  },
+  dialogSubtitle: {
+    marginTop: 10,
+    marginBottom: 3
   }
 }
 
