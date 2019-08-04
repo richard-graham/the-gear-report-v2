@@ -22,11 +22,7 @@ export class Profile extends Component {
   }
 
   componentDidMount = () => {
-    if (!this.props.loading &&
-      this.props.userProfile.user.handle !== 
-      this.props.match.params.userHandle){
-      this.props.getUserData(this.props.match.params.userHandle) 
-    }
+    this.props.getUserData(this.props.match.params.userHandle) 
   }
 
   handleImageChange = (event) => {

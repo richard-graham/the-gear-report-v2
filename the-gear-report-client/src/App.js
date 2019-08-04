@@ -31,7 +31,7 @@ export class App extends Component {
             <Route exact path='/' component={home} />
             <Route exact path='/signup' component={NewUserForm} />
             <Route exact path='/login' component={Login} />
-            <AuthRoute path='/profile/:userHandle' component={Profile} />
+            <Route path='/profile/:userHandle' component={Profile} />
             <Route exact path='/alerts' render={(props) => <AllAlerts {...props} handleDrawerClose={this.props.handleDrawerClose}/>} />
             <Route exact path='/alert/:alertId' component={Alert} />
             <Route exact path='/map' component={DirectoryContainer} />
