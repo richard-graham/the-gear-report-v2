@@ -26,6 +26,22 @@ export class Alert extends Component {
     window.scrollTo(0, 0)
   }
 
+  shouldRenderButton = (assignments) => {
+    let isCompleted = false
+    let hasCurrentAssignment = false
+    assignments.forEach(assignment => {
+      const { completed, completionDate } = assignment
+      if(completed === false && 
+        moment(completionDate).add('2', 'd').isAfter(new Date())){
+          hasCurrentAssignment = true
+        } else if (completed === true){
+          isCompleted = true
+        }
+    })
+    if(!isCompleted && !hasCurrentAssignment) return true 
+    else return false
+  }
+
 
   render() {
     const { 
@@ -39,7 +55,8 @@ export class Alert extends Component {
         resolved,
         userHandle,
         locations,
-        locationNames
+        locationNames,
+        assignments
       },
       loading,
     } = this.props
@@ -93,7 +110,7 @@ export class Alert extends Component {
                     <br />
                     <Typography >{`Description: ${body}`}</Typography>
                     <br />
-                    <WorkPlanDialog />
+                    {this.shouldRenderButton(assignments) &&  <WorkPlanDialog />}
                   </div>
                 </Grid>
                 <Grid item lg={4} md={5} sm={5} xs ={10} >
@@ -166,7 +183,7 @@ const mapStateToProps = (state) => ({
   alert: state.data.alert,
   loading: state.UI.loading,
   likes: state.user.likes,
-  user: state.user.credentials
+  user: state.user.credentials,
 })
 
 const mapDispatchToProps = {

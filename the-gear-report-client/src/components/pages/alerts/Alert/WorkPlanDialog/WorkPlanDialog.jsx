@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import DatePickerApp from './DatePicker'
 import { createAssignment, setError } from '../../../../../redux/actions/assignmentActions.js'
 import history from '../../../../../util/history'
+import moment from 'moment'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Dialog from '@material-ui/core/Dialog'
@@ -86,13 +87,14 @@ export class WorkPlanDialog extends Component {
         plan,
         this.props.alertId
       )
+      this.renderButton = false
       this.handleDialogClose()
     }
   }
 
   render() {
     const {
-      classes
+      classes,
     } = this.props
 
     const {
@@ -105,6 +107,7 @@ export class WorkPlanDialog extends Component {
       planError,
       costError
     } = this.state
+
     return (
       <Fragment>
         <Button
@@ -225,7 +228,7 @@ const styles = {
 
 const mapStateToProps = (state) => ({
   alertId: state.data.alert.alertId,
-  authenticated: state.user.authenticated
+  authenticated: state.user.authenticated,
 })
 
 const mapDispatchToProps = {
