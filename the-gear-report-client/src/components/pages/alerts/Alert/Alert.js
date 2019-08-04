@@ -134,8 +134,10 @@ export class Alert extends Component {
                       <br />
                       <WorkPlanDialog />
                     </Fragment>}
-                    {!loadingAssignments && assignments.length > 0 &&
-                    <WorkPlan assignments={assignments} />}
+                    <Fragment>
+                      {!loadingAssignments && assignments.length > 0 &&
+                      <WorkPlan assignments={assignments} />}
+                    </Fragment>
                   </div>
                 </Grid>
                 <Grid item lg={4} md={5} sm={5} xs ={10} >
