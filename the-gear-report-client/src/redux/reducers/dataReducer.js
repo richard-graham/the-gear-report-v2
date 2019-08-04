@@ -21,7 +21,9 @@ import {
   LOADING_USER_PROFILE,
   UPDATE_USER_PROFILE,
   SET_USER_IMAGE,
-  DELETE_COMMENT
+  DELETE_COMMENT,
+  SET_ASSIGNMENT,
+  GET_ASSIGNMENTS
 } from '../types'
 
 const initialState = {
@@ -29,7 +31,9 @@ const initialState = {
   allAlerts: [],
   recentAlerts: [],
   userAlerts: [],
-  alert: {},
+  alert: {
+    assignments: []
+  },
   location: {},
   loading: false,
   loadingAlerts: false,
@@ -106,7 +110,10 @@ export default function(state = initialState, action){
     case SET_ALERT:
       return {
         ...state,
-        alert: action.payload
+        alert: {
+          ...action.payload,
+          assignments: state.alert.assignments
+        }
       }
     case LIKE_ALERT:
     case UNLIKE_ALERT: // in both cases do the same thing
@@ -223,6 +230,29 @@ export default function(state = initialState, action){
           comments: newUnlikeComments
         }
       }
+      case SET_ASSIGNMENT:
+        console.log(state.alert);
+        let newAssignments = state.alert.assignments
+        console.log(newAssignments);
+        newAssignments.push(action.payload)
+        return {
+          ...state,
+          alert: {
+            ...state.alert,
+            assignments: newAssignments
+          }
+        }
+      case GET_ASSIGNMENTS:
+        console.log(action.payload);
+        return {
+          ...state,
+          alert: {
+            ...state.alert,
+            assignments: action.payload
+          }
+        }
+       
+
     default:
      return state
   }

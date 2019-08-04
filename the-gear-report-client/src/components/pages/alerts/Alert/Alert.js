@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { getAlert } from '../../../../redux/actions/alertActions'
+import { getAssignmentByAlert } from '../../../../redux/actions/assignmentActions'
 import moment from 'moment'
 import AlertImageGallery from '../AlertImageGallery'
 import { Link } from 'react-router-dom'
@@ -19,7 +20,9 @@ import Breadcrumbs from '@material-ui/lab/Breadcrumbs'
 export class Alert extends Component {
 
   componentDidMount = () => {
-    this.props.getAlert(this.props.match.params.alertId)
+    const { alertId } = this.props.match.params 
+    this.props.getAlert(alertId)
+    this.props.getAssignmentByAlert(alertId)
     window.scrollTo(0, 0)
   }
 
@@ -168,6 +171,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getAlert,
+  getAssignmentByAlert
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Alert))

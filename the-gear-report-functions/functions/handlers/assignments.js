@@ -26,3 +26,20 @@ exports.postAssignment = (req, res) => {
       res.status(500).json({ general: 'something went wrong 500'})
     })
 }
+
+exports.getAssignmentByAlert = (req, res) => {
+  let assignmentsData = []
+  db
+  .collection('assignments')
+  .orderBy('completionDate', 'desc')
+  .where('alertId', '==', req.params.alertId)
+  .get()
+  .then(data => {
+    data.forEach(assignment => {
+      var newAssignment = assignment.data()
+      newAssignment.id = assignment.id
+      assignmentsData.push(newAssignment)
+    })
+    return res.json(assignmentsData)
+  })
+}

@@ -46,7 +46,8 @@ const {
  } = require('./handlers/tc')
 
  const {
-   postAssignment
+   postAssignment,
+   getAssignmentByAlert
  } = require('./handlers/assignments')
  
 // Alert routes
@@ -87,6 +88,7 @@ app.get('/tc/search/textcompletion/:input', textCompletion)
 
 // Assignment routes
 app.post('/assignment', FBAuth, postAssignment)
+app.get('/assignment/alert/:alertId', getAssignmentByAlert)
 
 exports.api = functions.region('us-central1').https.onRequest(app) 
 // exports.api = functions.region('europe-west1').https.onRequest(app)

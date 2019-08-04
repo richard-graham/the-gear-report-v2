@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import DatePickerApp from './DatePicker'
-import { createAssignment } from '../../../../../redux/actions/assignmentActions.js'
-import moment from 'moment'
+import { createAssignment, setError } from '../../../../../redux/actions/assignmentActions.js'
+import history from '../../../../../util/history'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Dialog from '@material-ui/core/Dialog'
@@ -32,12 +32,18 @@ export class WorkPlanDialog extends Component {
       yesSponsor: true,
       noSponsor: false,
       cost: '',
-      plan: ''
+      plan: '',
+      planError: false,
+      costError: false
      })
   }
 
   handleButtonClick = () => {
-    this.setState({ open: true })
+    if(!this.props.authenticated){
+      history.push('/login')
+    } else {
+      this.setState({ open: true })
+    }
   }
 
   handleDateChange = (val) => {
@@ -66,13 +72,22 @@ export class WorkPlanDialog extends Component {
   }
 
   handleSubmit = (selectedDate, yesSponsor, cost, plan) => {
-    this.props.createAssignment(
-      selectedDate.toISOString(), 
-      yesSponsor, 
-      cost, 
-      plan,
-      this.props.alertId
-    )
+    if(yesSponsor && cost === ''){
+      this.setState({ costError: true })
+      this.props.setError('Please add estimated cost')
+    } else if ( plan === '' ) {
+      this.setState({ planError: true })
+      this.props.setError('Please add plan')
+    } else {
+      this.props.createAssignment(
+        selectedDate.toISOString(), 
+        yesSponsor, 
+        cost, 
+        plan,
+        this.props.alertId
+      )
+      this.handleDialogClose()
+    }
   }
 
   render() {
@@ -86,7 +101,9 @@ export class WorkPlanDialog extends Component {
       yesSponsor,
       noSponsor,
       cost,
-      plan
+      plan,
+      planError,
+      costError
     } = this.state
     return (
       <Fragment>
@@ -132,6 +149,7 @@ export class WorkPlanDialog extends Component {
                 value={this.state.cost}
                 type='number'
                 onChange={this.handleCostChange()}
+                error={costError}
                 startAdornment={<InputAdornment position="start">$</InputAdornment>}
               />
             </FormControl>}
@@ -140,6 +158,7 @@ export class WorkPlanDialog extends Component {
               <Input
                 value={this.state.plan}
                 onChange={this.handlePlanChange()}
+                error={planError}
                 multiline
                 rows={3}
               />
@@ -205,11 +224,13 @@ const styles = {
 }
 
 const mapStateToProps = (state) => ({
-  alertId: state.data.alert.alertId
+  alertId: state.data.alert.alertId,
+  authenticated: state.user.authenticated
 })
 
 const mapDispatchToProps = {
-  createAssignment
+  createAssignment,
+  setError
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(WorkPlanDialog))
