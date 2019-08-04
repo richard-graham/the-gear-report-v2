@@ -1,7 +1,8 @@
 import {
   SET_ERRORS,
-  SET_ASSIGNMENT,
-  GET_ASSIGNMENTS
+  SET_NEW_ASSIGNMENT,
+  SET_ASSIGNMENTS,
+  LOADING_ASSIGNMENTS
 } from '../types.js'
 import axios from 'axios'
 
@@ -16,15 +17,16 @@ export const createAssignment = (selectedDate, yesSponsor, cost, plan, alertId) 
   axios
     .post('/assignment', newAssignment)
     .then(doc => {
-      dispatch({ type: SET_ASSIGNMENT, payload: doc.data })
+      dispatch({ type: SET_NEW_ASSIGNMENT, payload: doc.data })
     })
 }
 
 export const getAssignmentByAlert = (alertId) => dispatch => {
+  dispatch({ type: LOADING_ASSIGNMENTS })
   axios
     .get(`/assignment/alert/${alertId}`)
     .then(doc => {
-      dispatch({ type: GET_ASSIGNMENTS, payload: doc.data })
+      dispatch({ type: SET_ASSIGNMENTS, payload: doc.data })
     })
 }
 

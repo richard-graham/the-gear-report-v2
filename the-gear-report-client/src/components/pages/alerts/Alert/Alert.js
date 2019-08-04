@@ -7,6 +7,7 @@ import AlertImageGallery from '../AlertImageGallery'
 import { Link } from 'react-router-dom'
 import Comments from './Comments'
 import WorkPlanDialog from './WorkPlanDialog/WorkPlanDialog'
+import WorkPlan from './WorkPlan/WorkPlan'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
@@ -26,19 +27,30 @@ export class Alert extends Component {
     window.scrollTo(0, 0)
   }
 
-  shouldRenderButton = (assignments) => {
-    let isCompleted = false
-    let hasCurrentAssignment = false
+  currentAssignments = assignments => {
+    let current = []
     assignments.forEach(assignment => {
       const { completed, completionDate } = assignment
-      if(completed === false && 
-        moment(completionDate).add('2', 'd').isAfter(new Date())){
-          hasCurrentAssignment = true
-        } else if (completed === true){
-          isCompleted = true
-        }
+      const notExpired = moment(completionDate).add('2', 'd').isAfter(new Date())
+      if(completed === false && notExpired){
+        current.push(assignment)
+      }
     })
-    if(!isCompleted && !hasCurrentAssignment) return true 
+    return current
+  }
+
+  hasCompletedAssignment = assignments => {
+    let res = false
+    assignments.forEach(assignment => {
+      if (assignment.completed === true){
+        res = true
+      }
+    })
+    return res
+  }
+
+  shouldRenderButton = (assignments) => {
+    if(this.currentAssignments(assignments).length === 0 && !this.hasCompletedAssignment(assignments)) return true 
     else return false
   }
 
@@ -56,7 +68,8 @@ export class Alert extends Component {
         userHandle,
         locations,
         locationNames,
-        assignments
+        assignments,
+        loadingAssignments
       },
       loading,
     } = this.props
@@ -110,7 +123,19 @@ export class Alert extends Component {
                     <br />
                     <Typography >{`Description: ${body}`}</Typography>
                     <br />
-                    {this.shouldRenderButton(assignments) &&  <WorkPlanDialog />}
+                    <Typography>Work Plan</Typography>
+                    <Divider/>
+                    <br />
+                    {!loadingAssignments && 
+                    this.shouldRenderButton(assignments) &&  
+                    <Fragment>
+                      <Typography>There are no current plans to fix this alert.</Typography>
+                      <Typography>Planning on fixing this? Let others know and request sponsorship by creating a work plan</Typography>
+                      <br />
+                      <WorkPlanDialog />
+                    </Fragment>}
+                    {!loadingAssignments && assignments.length > 0 &&
+                    <WorkPlan assignments={assignments} />}
                   </div>
                 </Grid>
                 <Grid item lg={4} md={5} sm={5} xs ={10} >

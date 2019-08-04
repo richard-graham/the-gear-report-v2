@@ -22,8 +22,9 @@ import {
   UPDATE_USER_PROFILE,
   SET_USER_IMAGE,
   DELETE_COMMENT,
-  SET_ASSIGNMENT,
-  GET_ASSIGNMENTS
+  SET_NEW_ASSIGNMENT,
+  SET_ASSIGNMENTS,
+  LOADING_ASSIGNMENTS
 } from '../types'
 
 const initialState = {
@@ -32,7 +33,8 @@ const initialState = {
   recentAlerts: [],
   userAlerts: [],
   alert: {
-    assignments: []
+    assignments: [],
+    loadingAssignments: false
   },
   location: {},
   loading: false,
@@ -112,7 +114,8 @@ export default function(state = initialState, action){
         ...state,
         alert: {
           ...action.payload,
-          assignments: state.alert.assignments
+          assignments: state.alert.assignments,
+          loadingAssignments: state.alert.loadingAssignments,
         }
       }
     case LIKE_ALERT:
@@ -230,10 +233,8 @@ export default function(state = initialState, action){
           comments: newUnlikeComments
         }
       }
-      case SET_ASSIGNMENT:
-        console.log(state.alert);
+      case SET_NEW_ASSIGNMENT:
         let newAssignments = state.alert.assignments
-        console.log(newAssignments);
         newAssignments.push(action.payload)
         return {
           ...state,
@@ -242,17 +243,23 @@ export default function(state = initialState, action){
             assignments: newAssignments
           }
         }
-      case GET_ASSIGNMENTS:
-        console.log(action.payload);
+      case SET_ASSIGNMENTS:
         return {
           ...state,
           alert: {
             ...state.alert,
-            assignments: action.payload
+            assignments: action.payload,
+            loadingAssignments: false
           }
         }
-       
-
+      case LOADING_ASSIGNMENTS:
+        return {
+          ...state,
+          alert: {
+            ...state.alert,
+            loadingAssignments: true
+          }
+        }
     default:
      return state
   }

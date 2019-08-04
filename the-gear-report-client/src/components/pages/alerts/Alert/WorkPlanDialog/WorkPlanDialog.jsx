@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import DatePickerApp from './DatePicker'
 import { createAssignment, setError } from '../../../../../redux/actions/assignmentActions.js'
 import history from '../../../../../util/history'
-import moment from 'moment'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Dialog from '@material-ui/core/Dialog'
