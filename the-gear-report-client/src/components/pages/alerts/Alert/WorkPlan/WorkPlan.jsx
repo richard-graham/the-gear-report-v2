@@ -6,8 +6,11 @@ import { withStyles } from '@material-ui/core/styles'
 import Slider from '@material-ui/lab/Slider';
 import Tooltip from '@material-ui/core/Tooltip'
 import Green from '@material-ui/core/colors/green'
-import Paper from '@material-ui/core/Paper'
 import Avatar from '@material-ui/core/Avatar'
+import ExpansionPanel from '@material-ui/core/ExpansionPanel'
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
+import Button from '@material-ui/core/Button'
 //Mui Icons
 import AttachMoney from '@material-ui/icons/AttachMoneyOutlined'
 import { Typography } from '@material-ui/core';
@@ -39,85 +42,94 @@ export class WorkPlan extends Component {
           console.log(assignment);
           const { userImage, userHandle, allowSponsors, completed, completionDate, estimatedCost, plan, totalPledged, userAvatarLetters } = assignment
           return (
-            <Paper className={classes.paper} key={i} elevation={2}>
-              <div className={classes.header}>
-                <div className={classes.myAvatarContainer}>
-                  <Link to={`/profile/${userHandle}`} style={{ textDecoration: 'none' }}>
-                    {userImage === defaultPic ? (
-                    <Avatar aria-label='User' className={classes.myAvatar}>
-                      {userAvatarLetters}
-                    </Avatar>
-                    ) : (
-                      <img src={userImage} className={classes.userImage} alt='user' />
-                    )}
-                  </Link>
-                </div>
-                <div className={classes.myCardHeaderContent}>
-                    <span className={classes.myCardTitle} >
-                      Completion Date
-                    </span>
-                  <Typography variant='body2' className={classes.myCardDate} >
-                    {moment(completionDate).format('Do MMMM YYYY')}
-                  </Typography>
-                </div>
-              </div>
-              <div className={classes.contentContainer} >
-                <div className={classes.content}>
-                  <Typography 
-                    variant={'body2'}
-                    className={classes.plan}
-                  >"{plan}"</Typography>
-                  <Typography variant='subtitle2'>
-                    <Link 
-                      to={`/profile/${userHandle}`} 
-                      style={{ textDecoration: 'none', color: '#212121'}}
-                    >-{userHandle}</Link>
-                  </Typography>
-                  <div className={classes.pledgeContainer}> 
-                    <div className={classes.calculationContainer}>
-                    <Typography variant='h6'>Pledge</Typography>
-                      <div className={classes.calculation}>
-                        <Typography>Estimated Cost:</Typography>
-                        <Typography variant='h6'>${estimatedCost}</Typography>
+              <ExpansionPanel key={i}>
+                <ExpansionPanelSummary className={classes.header}>
+                    <div className={classes.myAvatarContainer}>
+                      <Link to={`/profile/${userHandle}`} style={{ textDecoration: 'none' }}>
+                        {userImage === defaultPic ? (
+                        <Avatar aria-label='User' className={classes.myAvatar}>
+                          {userAvatarLetters}
+                        </Avatar>
+                        ) : (
+                          <img src={userImage} className={classes.userImage} alt='user' />
+                        )}
+                      </Link>
+                    </div>
+                    <div className={classes.myCardHeaderContent}>
+                        <span className={classes.myCardTitle} >
+                          Completion Date
+                        </span>
+                      <Typography variant='body2' className={classes.myCardDate} >
+                        {moment(completionDate).format('Do MMMM YYYY')}
+                      </Typography>
+                    </div>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                <div className={classes.contentContainer} >
+                  <div className={classes.content}>
+                    <Typography 
+                      variant={'body2'}
+                      className={classes.plan}
+                    >"{plan}"</Typography>
+                    <Typography variant='subtitle2'>
+                      <Link 
+                        to={`/profile/${userHandle}`} 
+                        style={{ textDecoration: 'none', color: '#212121'}}
+                      >-{userHandle}</Link>
+                    </Typography>
+                    <div className={classes.pledgeContainer}> 
+                      <div className={classes.calculationContainer}>
+                      <Typography variant='h6'>Pledge</Typography>
+                        <div className={classes.calculation}>
+                          <Typography>Estimated Cost:</Typography>
+                          <Typography variant='h6'>${estimatedCost}</Typography>
+                        </div>
+                        <div className={classes.calculation}>
+                          <Typography>Total Pledged:</Typography>
+                          <Typography variant='h6'>${totalPledged + pledged}</Typography>
+                        </div>
+                        <div className={classes.calculation}>
+                          <Typography>Your Contribution:</Typography>
+                          <Typography variant='h6'>${pledged}</Typography>
+                        </div>
+          
+                        <Slider
+                          value={pledged}
+                          aria-labelledby="slider-image"
+                          onChange={this.handleChange}
+                          min={0}
+                          max={Number(estimatedCost)}
+                          step={5}
+                          classes={{
+                            container: classes.slider,
+                            thumbIconWrapper: classes.thumbIconWrapper,
+                          }}
+                          thumb={
+                            <Tooltip 
+                              title={pledged} 
+                              className={classes.tooltip}
+                              interactive
+                              leaveDelay={24}
+                            >
+                              <AttachMoney style={{ color: Green[500], height: 36, width: 36, borderRadius: '50%' }} />
+                            </Tooltip>}
+                        />
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                          <Button
+                            color='primary'
+                            variant='raised'
+                            size='small'
+                            className={classes.submitButton}
+                          >Submit Pledge</Button>
+                          <Typography style={{ textAlign: 'center' }}>New to pledging? Learn more <Link to='/'>here</Link>.</Typography>
+                        </div>
                       </div>
-                      <div className={classes.calculation}>
-                        <Typography>Total Pledged:</Typography>
-                        <Typography variant='h6'>${totalPledged + pledged}</Typography>
-                      </div>
-                      <div className={classes.calculation}>
-                        <Typography>Your Contribution:</Typography>
-                        <Typography variant='h6'>${pledged}</Typography>
-                      </div>
-         
-                      <Slider
-                        value={pledged}
-                        aria-labelledby="slider-image"
-                        onChange={this.handleChange}
-                        min={0}
-                        max={Number(estimatedCost)}
-                        step={5}
-                        classes={{
-                          container: classes.slider,
-                          thumbIconWrapper: classes.thumbIconWrapper,
-                        }}
-                        thumb={
-                          <Tooltip 
-                            title={pledged} 
-                            className={classes.tooltip}
-                            interactive
-                            leaveDelay={24}
-                          >
-                            <AttachMoney style={{ color: Green[500], height: 36, width: 36, borderRadius: '50%' }} />
-                          </Tooltip>}
-                      />
-                      <br />
-                      <Typography style={{ textAlign: 'center' }}>New to pledging? Learn more <Link to='/'>here</Link>.</Typography>
                     </div>
                   </div>
                 </div>
-              </div>
-              
-            </Paper>
+
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
           )
         })}
       </Fragment>
@@ -134,7 +146,6 @@ const styles = {
     marginTop: 10,
     marginLeft: 'auto',
     marginRight: 'auto',
-    // maxWidth: '70%'
   },
   thumbIcon: {
     borderRadius: '50%',
@@ -145,10 +156,6 @@ const styles = {
   },
   tooltip: {
     backgroundColor: '#fff',
-  },
-  paper: {
-    marginBottom: 25,
-    backgroundColor: Green[100]
   },
   userImage: {
     height: 30,
@@ -180,9 +187,8 @@ const styles = {
   },
   header: {
     display: 'flex',
-    padding: 13,
-    paddingBottom: 11,
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: Green[100]
   },
   userImage: {
     height: 37,
@@ -215,6 +221,12 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center'
+  },
+  submitButton: {
+    marginTop: 15,
+    maxWidth: 'fit-content',
+    alignSelf: 'center',
+    marginBottom: 15
   }
 };
 
