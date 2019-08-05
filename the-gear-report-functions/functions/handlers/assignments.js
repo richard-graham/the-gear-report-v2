@@ -8,10 +8,13 @@ exports.postAssignment = (req, res) => {
     estimatedCost: req.body.cost,
     plan: req.body.plan,
     userHandle: req.user.handle,
+    userAvatarLetters: req.user.avatarLetters,
     createdAt: new Date().toISOString(), // recognized time type
     userImage: req.user.imageUrl,
     completed: false,
     alertId: req.body.alertId,
+    totalPledged: 0,
+    pledges: []
   } 
 
   db
