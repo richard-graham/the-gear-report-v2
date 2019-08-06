@@ -20,7 +20,11 @@ import {
   UNLIKE_COMMENT,
   LOADING_USER_PROFILE,
   UPDATE_USER_PROFILE,
-  SET_USER_IMAGE
+  SET_USER_IMAGE,
+  DELETE_COMMENT,
+  SET_NEW_ASSIGNMENT,
+  SET_ASSIGNMENTS,
+  LOADING_ASSIGNMENTS
 } from '../types'
 
 const initialState = {
@@ -28,7 +32,10 @@ const initialState = {
   allAlerts: [],
   recentAlerts: [],
   userAlerts: [],
-  alert: {},
+  alert: {
+    assignments: [],
+    loadingAssignments: false
+  },
   location: {},
   loading: false,
   loadingAlerts: false,
@@ -105,7 +112,11 @@ export default function(state = initialState, action){
     case SET_ALERT:
       return {
         ...state,
-        alert: action.payload
+        alert: {
+          ...action.payload,
+          assignments: state.alert.assignments,
+          loadingAssignments: state.alert.loadingAssignments,
+        }
       }
     case LIKE_ALERT:
     case UNLIKE_ALERT: // in both cases do the same thing
@@ -117,11 +128,21 @@ export default function(state = initialState, action){
       return {
         ...state
       }
-    case DELETE_ALERT: // instead of doing a full reload just delete the scream locally in state
-      index = state.alerts.findIndex(alert => alert.alertId === action.payload)
-      state.alerts.splice(index, 1)
+    case DELETE_ALERT: // instead of doing a full reload just delete the alert locally in state
+      let alertIndex = state.alerts.findIndex(alert => alert.alertId === action.payload)
+      state.alerts.splice(alertIndex, 1)
       return {
         ...state
+      }
+    case DELETE_COMMENT:
+      let commentIndex = state.alert.comments.findIndex(comment => comment.id === action.payload)
+      state.alert.comments.splice(commentIndex, 1)
+      return {
+        ...state,
+        alert: {
+          ...state.alert,
+          commentCount: state.alert.commentCount - 1
+        }
       }
     case POST_ALERT:
       return {
@@ -136,7 +157,8 @@ export default function(state = initialState, action){
         ...state,
         alert: {
           ...state.alert,
-          comments: [action.payload, ...state.alert.comments] // put new comment to the top of the list in alertDialog
+          comments: [action.payload, ...state.alert.comments], // put new comment to the top of the list in alertDialog
+          commentCount: state.alert.commentCount + 1
         }
       }
     case SET_ALERT_IMAGE:
@@ -211,6 +233,33 @@ export default function(state = initialState, action){
           comments: newUnlikeComments
         }
       }
+      case SET_NEW_ASSIGNMENT:
+        let newAssignments = state.alert.assignments
+        newAssignments.push(action.payload)
+        return {
+          ...state,
+          alert: {
+            ...state.alert,
+            assignments: newAssignments
+          }
+        }
+      case SET_ASSIGNMENTS:
+        return {
+          ...state,
+          alert: {
+            ...state.alert,
+            assignments: action.payload,
+            loadingAssignments: false
+          }
+        }
+      case LOADING_ASSIGNMENTS:
+        return {
+          ...state,
+          alert: {
+            ...state.alert,
+            loadingAssignments: true
+          }
+        }
     default:
      return state
   }

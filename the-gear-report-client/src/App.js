@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import AuthRoute from './util/AuthRoute'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+// import AuthRoute from './util/AuthRoute'
+import { Router, Route, Switch } from 'react-router-dom'
+import history from './util/history'
 // Components
 import Navigation from './components/navbar & drawer/Navigation'
 import home from './components/pages/home/home'
@@ -11,11 +12,10 @@ import ActionButton from './components/ActionButton'
 import MySnackBar from './util/MySnackBar'
 import Profile from './components/pages/profile/Profile'
 import AllAlerts from './components/pages/alerts/AllAlerts'
-import Alert from './components/pages/alerts/Alert'
+import Alert from './components/pages/alerts/Alert/Alert'
 import DirectoryContainer from './components/directory/DirectoryContainer'
 import SearchRouter from './components/SearchRouter'
 import DisplayLocation from './components/pages/displayLocation/DisplayLocation'
-//mui./components/navbar & drawer/loadingLocation/LoadingLocation
 import { withStyles } from '@material-ui/core/styles';
 
 
@@ -27,15 +27,15 @@ export class App extends Component {
 
     const content = (
       <div className={classes.root}>
-          <Route path='/*' component={SearchRouter} />
-          <Route exact path='/' component={home} />
-          <Route exact path='/signup' component={NewUserForm} />
-          <Route exact path='/login' component={Login} />
-          <AuthRoute path='/profile/:userHandle' component={Profile} />
-          <Route exact path='/alerts' render={(props) => <AllAlerts {...props} handleDrawerClose={this.props.handleDrawerClose}/>} />
-          <Route exact path='/alert/:alertId' component={Alert} />
-          <Route exact path='/map' component={DirectoryContainer} />
-          <Route path='/location/:locationID' component={DisplayLocation} />
+            <Route path='/*' component={SearchRouter} />
+            <Route exact path='/' component={home} />
+            <Route exact path='/signup' component={NewUserForm} />
+            <Route exact path='/login' component={Login} />
+            <Route path='/profile/:userHandle' component={Profile} />
+            <Route exact path='/alerts' render={(props) => <AllAlerts {...props} handleDrawerClose={this.props.handleDrawerClose}/>} />
+            <Route exact path='/alert/:alertId' component={Alert} />
+            <Route exact path='/map' component={DirectoryContainer} />
+            <Route path='/location/:locationID' component={DisplayLocation} />
 
           {authenticated === true && <Route path='/' component={ActionButton} />}
     
@@ -49,8 +49,10 @@ export class App extends Component {
     )
 
     return (
-      <Router>
-        <Navigation content={content} />
+      <Router history={history}>
+        <Switch>
+          <Navigation content={content} />
+        </Switch>
       </Router>
     )
   }

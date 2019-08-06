@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { updateSearchLocation, getNode } from '../../../redux/actions/tcActions'
-import { getAlertsByLocation } from '../../../redux/actions/dataActions'
+import { getAlertsByLocation } from '../../../redux/actions/alertActions'
 import DisplayAlerts from './DisplayAlerts'
 import Beta from './Beta'
 import ChildTable from './ChildTable'

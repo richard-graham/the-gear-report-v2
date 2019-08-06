@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { removeSearched } from '../redux/actions/UIActions'
+import { removeSearched } from '../redux/actions/locationActions'
 import { getLocationData } from '../redux/actions/tcActions'
 
 export class SearchRouter extends Component {

@@ -2,7 +2,8 @@ import React, { Component, Fragment } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import { uploadUserImage } from '../../../redux/actions/userActions'
-import { getAlertsByUser, getUserData } from '../../../redux/actions/dataActions'
+import { getUserData } from '../../../redux/actions/dataActions'
+import { getAlertsByUser } from '../../../redux/actions/alertActions'
 import moment from 'moment'
 import UpdateDetails from '../../dialogs/UpdateDetails'
 //Mui
@@ -21,11 +22,7 @@ export class Profile extends Component {
   }
 
   componentDidMount = () => {
-    if (!this.props.loading &&
-      this.props.userProfile.user.handle !== 
-      this.props.match.params.userHandle){
-      this.props.getUserData(this.props.match.params.userHandle) 
-    }
+    this.props.getUserData(this.props.match.params.userHandle) 
   }
 
   handleImageChange = (event) => {

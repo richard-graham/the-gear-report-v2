@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import ProfilePic from '../../../util/ProfilePic'
+import { connect } from 'react-redux'
+import Notifications from './Notifications'
+// import { markNotificationsRead } from '../../../redux/actions/userActions'
 //Mui
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -10,14 +13,42 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
 export class RenderMobileMenu extends Component {
+
+  state = {
+    notificationsAnchor: null
+  }
+
+  handleNotificationsOpen = (event, notes) => {
+    console.log(event.currentTarget);
+    this.setState({ 
+      notificationsAnchor: event.currentTarget
+     })
+  }
+
+  // handleNotificationsClose = (notes) => {
+  //   this.props.markNotificationsRead(notes)
+  //   this.setState({
+  //     notificationsAnchor: null
+  //   })
+  // }
+
   render() {
     const { 
       mobileMoreAnchorEl, 
       isMobileMenuOpen, 
       handleMenuClose, 
       handleMobileMenuClose, 
-      handleMenuOpen 
+      handleMenuOpen,
+      user,
     } = this.props
+
+    const {
+      notificationsAnchor
+    } = this.state
+
+    let unreadNotifications = []
+    user.notifications.forEach(note =>{ if(!note.read) unreadNotifications.push(note.notificationId) })
+
     return (
       <Menu
         anchorEl={mobileMoreAnchorEl}
@@ -34,12 +65,21 @@ export class RenderMobileMenu extends Component {
           </IconButton>
           <p>Messages</p>
         </MenuItem>
-        <MenuItem onClick={handleMobileMenuClose}>
-          <IconButton color="inherit">
-            <Badge badgeContent={11} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
+        <MenuItem onClick={this.handleNotificationsOpen} >
+          <IconButton 
+              color="inherit"
+              aria-haspopup="true"
+              >
+              <Badge badgeContent={unreadNotifications.length} color="secondary">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+            {unreadNotifications.length > 0 && 
+            <Notifications 
+              anchorEl={notificationsAnchor}
+              handleMenuClose={this.props.handleNotificationsClose}
+              noteIds={unreadNotifications}
+            />}
           <p>Notifications</p>
         </MenuItem>
         <MenuItem onClick={handleMenuOpen}>
@@ -53,4 +93,8 @@ export class RenderMobileMenu extends Component {
   }
 }
 
-export default RenderMobileMenu
+const mapDispatchToProps = {
+  // markNotificationsRead
+}
+
+export default connect(null, mapDispatchToProps)(RenderMobileMenu)

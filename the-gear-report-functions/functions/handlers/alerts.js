@@ -191,11 +191,12 @@ exports.commentOnAlert = (req, res) => {
       return doc.ref.update({ commentCount: doc.data().commentCount + 1 })
     })
     .then(() => {
-      return db.collection('comments').add(newComment)
-    })
-    .then(() => {
-      //return comment to front end
-      res.json(newComment)
+      db.collection('comments').add(newComment).then(doc => {
+        res.json({
+          ...newComment,
+          id: doc.id
+        })
+      })
     })
     .catch(err => {
       console.error(err)
@@ -462,3 +463,25 @@ exports.deleteAlert = (req, res) => {
     })
 }
 
+exports.deleteComment = (req, res) => {
+  const document = db.doc(`/comments/${req.params.commentId}`)
+  document.get()
+    .then(doc => {
+      if(!doc.exists){
+        return res.status(404).json({ error: 'Comment not found'})
+      }
+      if(doc.data().userHandle !== req.user.handle){
+        return res.status(403).json({ error: 'Unauthorized' })
+      } else {
+        doc.ref.update({ commentCount: doc.data().commentCount - 1 })
+        document.delete()
+      }
+    })
+    .then(() => {
+      res.json({ message: 'Comment deleted successfully' })
+    })
+    .catch(err => {
+      console.log(err)
+      return res.status(500).json({ error: err.code })
+    })
+}

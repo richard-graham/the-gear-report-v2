@@ -20,7 +20,8 @@ const {
   getAlertsByUser,
   getAlertsByLocations,
   likeComment,
-  unlikeComment
+  unlikeComment,
+  deleteComment
 } = require('./handlers/alerts')
 
 const { 
@@ -43,6 +44,11 @@ const {
    getChildren,
    textCompletion
  } = require('./handlers/tc')
+
+ const {
+   postAssignment,
+   getAssignmentByAlert
+ } = require('./handlers/assignments')
  
 // Alert routes
 app.get('/alerts/all', getAllAlerts)
@@ -58,6 +64,7 @@ app.get('/comment/:commentId/like', FBAuth, likeComment)
 app.get('/comment/:commentId/unlike', FBAuth, unlikeComment)
 app.get('/alert/:alertId/unlike', FBAuth, unlikeAlert)
 app.delete('/alert/:alertId', FBAuth, deleteAlert)
+app.delete('/comment/:commentId', FBAuth, deleteComment)
 
 
 // User routes
@@ -78,6 +85,10 @@ app.get('/tc/search/location/:id', updateSearchLocation)
 app.get('/tc/node/location/:nodeID/relatives', getChildrenAndAncestors)
 app.get('/tc/node/location/:nodeID/children', getChildren)
 app.get('/tc/search/textcompletion/:input', textCompletion)
+
+// Assignment routes
+app.post('/assignment', FBAuth, postAssignment)
+app.get('/assignment/alert/:alertId', getAssignmentByAlert)
 
 exports.api = functions.region('us-central1').https.onRequest(app) 
 // exports.api = functions.region('europe-west1').https.onRequest(app)
