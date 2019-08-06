@@ -142,7 +142,7 @@ export class WorkPlan extends Component {
                             variant='contained'
                             size='small'
                             className={classes.submitButton}
-                          >Submit Pledge</Button>
+                          >Submit</Button>
                           <Typography style={{ textAlign: 'center' }}>New to pledging? Learn more <Link to='/'>here</Link>.</Typography>
                         </div>
                       </div>
@@ -187,12 +187,12 @@ const styles = {
     backgroundColor: '#fff',
   },
   plan: {
-    // minWidth: '100%',
     marginTop: 5
   },
   planContainer: {
     marginLeft: 'auto',
-    marginRight: 'auto'
+    marginRight: 'auto',
+    width: 500
   },
   contentContainer: {
     backgroundColor: '#FFFFFF',
@@ -200,7 +200,8 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    width: '100%'
   },
   content: {
     marginLeft: 13,
@@ -247,7 +248,7 @@ const styles = {
   calculationContainer: {
     marginLeft: 'auto',
     marginRight: 'auto',
-    maxWidth: '50%'
+    maxWidth: '50%',
   },
   calculation: {
     display: 'flex',
