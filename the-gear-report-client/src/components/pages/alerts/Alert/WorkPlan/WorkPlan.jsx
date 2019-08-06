@@ -6,6 +6,7 @@ import { withStyles } from '@material-ui/core/styles'
 import Slider from '@material-ui/lab/Slider';
 import Tooltip from '@material-ui/core/Tooltip'
 import Green from '@material-ui/core/colors/green'
+import Indigo from '@material-ui/core/colors/indigo'
 import Avatar from '@material-ui/core/Avatar'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
@@ -30,6 +31,10 @@ export class WorkPlan extends Component {
     return !moment(assignment.completionDate).add('2', 'd').isAfter(new Date())
   }
 
+  planStatus = (completed, completionDate) => {
+
+  }
+
   render() {
     const { assignments, classes } = this.props
     const { pledged } = this.state;
@@ -39,8 +44,19 @@ export class WorkPlan extends Component {
     return (
       <Fragment>
         {assignments.map((assignment, i) => {
-          console.log(assignment);
-          const { userImage, userHandle, allowSponsors, completed, completionDate, estimatedCost, plan, totalPledged, userAvatarLetters } = assignment
+          const { 
+            userImage, 
+            userHandle, 
+            allowSponsors, 
+            completed, 
+            completionDate, 
+            estimatedCost, 
+            plan, 
+            totalPledged, 
+            userAvatarLetters 
+          } = assignment
+
+          
           return (
               <ExpansionPanel key={i}>
                 <ExpansionPanelSummary className={classes.header}>
@@ -64,19 +80,24 @@ export class WorkPlan extends Component {
                       </Typography>
                     </div>
                 </ExpansionPanelSummary>
+
                 <ExpansionPanelDetails>
                 <div className={classes.contentContainer} >
                   <div className={classes.content}>
-                    <Typography 
-                      variant={'body2'}
-                      className={classes.plan}
-                    >"{plan}"</Typography>
-                    <Typography variant='subtitle2'>
-                      <Link 
-                        to={`/profile/${userHandle}`} 
-                        style={{ textDecoration: 'none', color: '#212121'}}
-                      >-{userHandle}</Link>
-                    </Typography>
+                    <div className={classes.planContainer}>
+                      <Typography 
+                        variant={'body2'}
+                        className={classes.plan}
+                      >"{plan}"</Typography>
+                      <Typography variant='subtitle2'>
+                        <Link 
+                          to={`/profile/${userHandle}`} 
+                          style={{ textDecoration: 'none', color: '#212121'}}
+                        >-{userHandle}</Link>
+                      </Typography>
+                    </div>
+                    
+                    {allowSponsors &&
                     <div className={classes.pledgeContainer}> 
                       <div className={classes.calculationContainer}>
                       <Typography variant='h6'>Pledge</Typography>
@@ -105,26 +126,27 @@ export class WorkPlan extends Component {
                             thumbIconWrapper: classes.thumbIconWrapper,
                           }}
                           thumb={
-                            <Tooltip 
-                              title={pledged} 
-                              className={classes.tooltip}
-                              interactive
-                              leaveDelay={24}
-                            >
-                              <AttachMoney style={{ color: Green[500], height: 36, width: 36, borderRadius: '50%' }} />
-                            </Tooltip>}
+                            // <Tooltip 
+                            //   title={pledged} 
+                            //   className={classes.tooltip}
+                            //   interactive
+                            //   leaveDelay={24}
+                            // >
+                              <AttachMoney className={classes.dollar} />
+                            // </Tooltip>}
+                          }
                         />
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                           <Button
                             color='primary'
-                            variant='raised'
+                            variant='contained'
                             size='small'
                             className={classes.submitButton}
                           >Submit Pledge</Button>
                           <Typography style={{ textAlign: 'center' }}>New to pledging? Learn more <Link to='/'>here</Link>.</Typography>
                         </div>
                       </div>
-                    </div>
+                    </div>}
                   </div>
                 </div>
 
@@ -140,6 +162,13 @@ export class WorkPlan extends Component {
 const styles = {
   root: {
     width: 300,
+  },
+  dollar: {
+    color: Green[500], 
+    height: 36, 
+    width: 36, 
+    borderRadius: '50%',
+    backgroundColor: Indigo[50]
   },
   slider: {
     padding: '22px 0px',
@@ -157,18 +186,21 @@ const styles = {
   tooltip: {
     backgroundColor: '#fff',
   },
-  userImage: {
-    height: 30,
-    width: 30,
-    borderRadius: '50%',
-    marginRight: 15,
-  },
   plan: {
+    // minWidth: '100%',
     marginTop: 5
+  },
+  planContainer: {
+    marginLeft: 'auto',
+    marginRight: 'auto'
   },
   contentContainer: {
     backgroundColor: '#FFFFFF',
-    paddingTop: 10
+    paddingTop: 10,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   content: {
     marginLeft: 13,

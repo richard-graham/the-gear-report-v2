@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import AuthRoute from './util/AuthRoute'
+// import AuthRoute from './util/AuthRoute'
 import { Router, Route, Switch } from 'react-router-dom'
 import history from './util/history'
 // Components
