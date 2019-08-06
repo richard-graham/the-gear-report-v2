@@ -222,6 +222,9 @@ const styles = {
   actions: {
     margin: 0,
     marginTop: 20
+  },
+  workButton: {
+    marginBottom: 20
   }
 }
 

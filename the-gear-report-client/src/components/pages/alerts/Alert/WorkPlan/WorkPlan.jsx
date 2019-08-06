@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from 'react'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
+import classNames from 'classnames'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Slider from '@material-ui/lab/Slider';
-import Tooltip from '@material-ui/core/Tooltip'
 import Green from '@material-ui/core/colors/green'
+import Red from '@material-ui/core/colors/red'
 import Indigo from '@material-ui/core/colors/indigo'
 import Avatar from '@material-ui/core/Avatar'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
@@ -27,12 +28,17 @@ export class WorkPlan extends Component {
     this.setState({ pledged });
   };
 
-  isExpired = assignment => {
-    return !moment(assignment.completionDate).add('2', 'd').isAfter(new Date())
-  }
-
   planStatus = (completed, completionDate) => {
-
+    let expired = !moment(completionDate).add('2', 'd').isAfter(new Date())
+    let status
+    if (completed) {
+      status = 'Completed'
+    } else if (expired) {
+      status = 'Expired'
+    } else {
+      status = 'Current'
+    }
+    return status
   }
 
   render() {
@@ -55,11 +61,20 @@ export class WorkPlan extends Component {
             totalPledged, 
             userAvatarLetters 
           } = assignment
-
-          
+          const status = this.planStatus(completed, completionDate)
+          const expired = status === 'Expired' ? true : false
+          console.log(status);
           return (
               <ExpansionPanel key={i}>
-                <ExpansionPanelSummary className={classes.header}>
+                <ExpansionPanelSummary 
+                  className={classNames(
+                    classes.header, {
+                      [classes.green]: status === 'Completed',
+                      [classes.red]: status === 'Expired',
+                      [classes.indigo]: status === 'Current'
+                    }
+                  )}
+                >
                     <div className={classes.myAvatarContainer}>
                       <Link to={`/profile/${userHandle}`} style={{ textDecoration: 'none' }}>
                         {userImage === defaultPic ? (
@@ -85,6 +100,7 @@ export class WorkPlan extends Component {
                 <div className={classes.contentContainer} >
                   <div className={classes.content}>
                     <div className={classes.planContainer}>
+                      <Typography>Status: {status}</Typography>
                       <Typography 
                         variant={'body2'}
                         className={classes.plan}
@@ -119,23 +135,17 @@ export class WorkPlan extends Component {
                           aria-labelledby="slider-image"
                           onChange={this.handleChange}
                           min={0}
-                          max={Number(estimatedCost)}
+                          max={expired ? 0 : Number(estimatedCost)}
                           step={5}
                           classes={{
                             container: classes.slider,
                             thumbIconWrapper: classes.thumbIconWrapper,
                           }}
                           thumb={
-                            // <Tooltip 
-                            //   title={pledged} 
-                            //   className={classes.tooltip}
-                            //   interactive
-                            //   leaveDelay={24}
-                            // >
-                              <AttachMoney className={classes.dollar} />
-                            // </Tooltip>}
+                            <AttachMoney className={classes.dollar} />
                           }
                         />
+                        {expired && <Typography color='secondary' style={{ textAlign: 'center' }}>This plan has expired</Typography>}
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                           <Button
                             color='primary'
@@ -220,8 +230,16 @@ const styles = {
   },
   header: {
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'center'
+  },
+  green: {
     backgroundColor: Green[100]
+  },
+  red: {
+    backgroundColor: Red[100]
+  },
+  indigo: {
+    backgroundColor: Indigo[50]
   },
   userImage: {
     height: 37,
