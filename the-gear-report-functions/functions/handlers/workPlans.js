@@ -46,3 +46,27 @@ exports.getWorkPlansByAlert = (req, res) => {
     return res.json(workPlansData)
   })
 }
+
+exports.submitPledge = (req, res) => {
+
+  const newPledge = {
+    amount: req.body.pledgeAmount,
+    userHandle: req.user.handle,
+    userAvatarLetters: req.user.avatarLetters,
+    createdAt: new Date().toISOString(), // recognized time type
+    userImage: req.user.imageUrl,
+    workPlanId: req.params.workPlanId
+  }
+
+  db
+    .collection('pledges')
+    .add(newPledge)
+    .then(doc => {
+      const resPledge = newPledge
+      resPledge.pledgeId = doc.id
+      res.json(resPledge)
+    })
+    .catch(() => {
+      res.status(500).json({ general: 'something went wrong 500'})
+    })
+}

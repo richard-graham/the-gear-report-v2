@@ -47,7 +47,8 @@ const {
 
  const {
    postWorkPlan,
-   getWorkPlansByAlert
+   getWorkPlansByAlert,
+   submitPledge
  } = require('./handlers/workPlans')
  
 // Alert routes
@@ -89,6 +90,7 @@ app.get('/tc/search/textcompletion/:input', textCompletion)
 // Work Plan routes
 app.post('/workPlan', FBAuth, postWorkPlan)
 app.get('/workPlan/alert/:alertId', getWorkPlansByAlert)
+app.post('/workPlan/pledge/:workPlanId', FBAuth, submitPledge)
 
 exports.api = functions.region('us-central1').https.onRequest(app) 
 // exports.api = functions.region('europe-west1').https.onRequest(app)

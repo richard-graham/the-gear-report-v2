@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 import classNames from 'classnames'
+import { connect } from 'react-redux'
+import { submitPledge } from '../../../../../redux/actions/workPlanActions'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Slider from '@material-ui/lab/Slider';
@@ -27,6 +29,10 @@ export class WorkPlan extends Component {
   handleChange = (event, pledged) => {
     this.setState({ pledged });
   };
+
+  handlePledgeSubmit = (id) => {
+    this.props.submitPledge(this.state.pledged, id)
+  }
 
   planStatus = (completed, completionDate) => {
     let expired = !moment(completionDate).add('2', 'd').isAfter(new Date())
@@ -59,7 +65,8 @@ export class WorkPlan extends Component {
             estimatedCost, 
             plan, 
             totalPledged, 
-            userAvatarLetters 
+            userAvatarLetters,
+            id
           } = workPlan
           const status = this.planStatus(completed, completionDate)
           const expired = status === 'Expired' ? true : false
@@ -152,6 +159,7 @@ export class WorkPlan extends Component {
                             variant='contained'
                             size='small'
                             className={classes.submitButton}
+                            onClick={() => this.handlePledgeSubmit(id)}
                           >Submit</Button>
                           <Typography style={{ textAlign: 'center' }}>New to pledging? Learn more <Link to='/'>here</Link>.</Typography>
                         </div>
@@ -287,4 +295,8 @@ const styles = theme => ({
   }
 })
 
-export default withStyles(styles)(WorkPlan)
+const mapDispatchToProps = {
+  submitPledge
+}
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(WorkPlan))
