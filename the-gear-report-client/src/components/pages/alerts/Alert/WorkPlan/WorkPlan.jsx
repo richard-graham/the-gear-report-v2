@@ -70,7 +70,6 @@ export class WorkPlan extends Component {
           } = workPlan
           const status = this.planStatus(completed, completionDate)
           const expired = status === 'Expired' ? true : false
-          console.log(status);
           return (
               <ExpansionPanel key={i}>
                 <ExpansionPanelSummary 

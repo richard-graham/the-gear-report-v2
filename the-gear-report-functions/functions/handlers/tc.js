@@ -1,8 +1,8 @@
-const key = require('../util/key')
+const tcKey = require('../util/key')
 
 
 const getLocationData = (req, res) => {
-  fetch(`https://brendan.thecrag.com/api/index/detail/${req.params.location}?withdata=NodeID,ParentID,Name,NumberRoutes,AreaType,Point&to=arealeaf&key=${key.key}`)
+  fetch(`https://brendan.thecrag.com/api/index/detail/${req.params.location}?withdata=NodeID,ParentID,Name,NumberRoutes,AreaType,Point&to=arealeaf&key=${tcKey.tcKey}`)
     .then(response => {
       return response.json()
     })
@@ -52,7 +52,7 @@ const getLocationData = (req, res) => {
 }
 
 const getNode = (req, res) => {
-  fetch(`https://brendan.thecrag.com/api/node/id/${req.params.nodeID}?show=info,children,ancestors&key=${key.key}`)
+  fetch(`https://brendan.thecrag.com/api/node/id/${req.params.nodeID}?show=info,children,ancestors&key=${tcKey.tcKey}`)
   .then(response => response.json())
   .then(resData => {
     res.send(resData)
@@ -63,7 +63,7 @@ const getNode = (req, res) => {
 }
 
 const updateSearchLocation = (req, res) => {
-  fetch(`https://brendan.thecrag.com/api/node/id/${req.params.id}?show=info,children,ancestors&key=${key.key}`)
+  fetch(`https://brendan.thecrag.com/api/node/id/${req.params.id}?show=info,children,ancestors&key=${tcKey.tcKey}`)
     .then(response => response.json())
     .then(resData => {
       res.send(resData)
@@ -74,7 +74,7 @@ const updateSearchLocation = (req, res) => {
 }
 
 const getChildrenAndAncestors = (req, res) => {
-  fetch(`https://brendan.thecrag.com/api/node/id/${req.params.nodeID}?show=children,ancestors&key=${key.key}`)
+  fetch(`https://brendan.thecrag.com/api/node/id/${req.params.nodeID}?show=children,ancestors&key=${tcKey.tcKey}`)
     .then(response => response.json())
     .then(resData => {
       res.send(resData)
@@ -85,7 +85,7 @@ const getChildrenAndAncestors = (req, res) => {
 }
 
 const getChildren = (req, res) => {
-  fetch(`https://brendan.thecrag.com/api/node/id/${req.params.nodeID}?show=children&key=${key.key}`)
+  fetch(`https://brendan.thecrag.com/api/node/id/${req.params.nodeID}?show=children&key=${tcKey.tcKey}`)
     .then(response => response.json())
     .then(resData => {
       res.send(resData)
@@ -96,7 +96,7 @@ const getChildren = (req, res) => {
 }
 
 const textCompletion = (req, res) => {
-  fetch(`https://brendan.thecrag.com/api/lookup/crag?search=${req.params.input}&key=${key.key}`)
+  fetch(`https://brendan.thecrag.com/api/lookup/crag?search=${req.params.input}&key=${tcKey.tcKey}`)
     .then(response => response.json())
       .then(resData => {
         res.send(resData)

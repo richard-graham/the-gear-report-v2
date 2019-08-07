@@ -1,12 +1,12 @@
 const { admin, db } = require('../util/admin')
-
+const { stripeKey } = require('../util/key.js')
+const stripe = require('stripe')(stripeKey)
 const config = require('../util/config')
 
 const firebase = require('firebase')
 firebase.initializeApp(config)
 
 const { validateSignUpData, validateLoginData, reduceUserDetails } = require('../util/validators')
-
 
 // SIGN UP
 
@@ -75,6 +75,17 @@ exports.signup = (req, res) => {
       return db.doc(`/users/${newUser.handle}`).set(userCredentials)
     })
     .then(() => {
+
+      stripe.customers.create({
+        description: userId,
+        // source: "tok_visa", // obtained with Stripe.js
+        email: newUser.email,
+      }, function(err, customer) {
+        console.log('err', err);
+        console.log('customer', customer.id);
+        return db.doc(`/users/${newUser.handle}`).update({ stripeId: customer.id })
+      });
+
       return res.status(201).json({ token })
     })
     .catch(err => {
