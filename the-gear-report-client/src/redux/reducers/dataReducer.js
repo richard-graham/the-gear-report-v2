@@ -22,9 +22,9 @@ import {
   UPDATE_USER_PROFILE,
   SET_USER_IMAGE,
   DELETE_COMMENT,
-  SET_NEW_ASSIGNMENT,
-  SET_ASSIGNMENTS,
-  LOADING_ASSIGNMENTS
+  SET_NEW_WORK_PLAN,
+  SET_WORK_PLANS,
+  LOADING_WORK_PLANS
 } from '../types'
 
 const initialState = {
@@ -33,8 +33,8 @@ const initialState = {
   recentAlerts: [],
   userAlerts: [],
   alert: {
-    assignments: [],
-    loadingAssignments: false
+    workPlans: [],
+    loadingWorkPlans: false
   },
   location: {},
   loading: false,
@@ -114,8 +114,8 @@ export default function(state = initialState, action){
         ...state,
         alert: {
           ...action.payload,
-          assignments: state.alert.assignments,
-          loadingAssignments: state.alert.loadingAssignments,
+          workPlans: state.alert.workPlans,
+          loadingWorkPlans: state.alert.loadingWorkPlans,
         }
       }
     case LIKE_ALERT:
@@ -233,31 +233,31 @@ export default function(state = initialState, action){
           comments: newUnlikeComments
         }
       }
-      case SET_NEW_ASSIGNMENT:
-        let newAssignments = state.alert.assignments
-        newAssignments.push(action.payload)
+      case SET_NEW_WORK_PLAN:
+        let newWorkPlans = state.alert.workPlans
+        newWorkPlans.push(action.payload)
         return {
           ...state,
           alert: {
             ...state.alert,
-            assignments: newAssignments
+            workPlans: newWorkPlans
           }
         }
-      case SET_ASSIGNMENTS:
+      case SET_WORK_PLANS:
         return {
           ...state,
           alert: {
             ...state.alert,
-            assignments: action.payload,
-            loadingAssignments: false
+            workPlans: action.payload,
+            loadingWorkPlans: false
           }
         }
-      case LOADING_ASSIGNMENTS:
+      case LOADING_WORK_PLANS:
         return {
           ...state,
           alert: {
             ...state.alert,
-            loadingAssignments: true
+            loadingWorkPlans: true
           }
         }
     default:

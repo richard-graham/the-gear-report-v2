@@ -46,9 +46,9 @@ const {
  } = require('./handlers/tc')
 
  const {
-   postAssignment,
-   getAssignmentByAlert
- } = require('./handlers/assignments')
+   postWorkPlan,
+   getWorkPlansByAlert
+ } = require('./handlers/workPlans')
  
 // Alert routes
 app.get('/alerts/all', getAllAlerts)
@@ -86,9 +86,9 @@ app.get('/tc/node/location/:nodeID/relatives', getChildrenAndAncestors)
 app.get('/tc/node/location/:nodeID/children', getChildren)
 app.get('/tc/search/textcompletion/:input', textCompletion)
 
-// Assignment routes
-app.post('/assignment', FBAuth, postAssignment)
-app.get('/assignment/alert/:alertId', getAssignmentByAlert)
+// Work Plan routes
+app.post('/workPlan', FBAuth, postWorkPlan)
+app.get('/workPlan/alert/:alertId', getWorkPlansByAlert)
 
 exports.api = functions.region('us-central1').https.onRequest(app) 
 // exports.api = functions.region('europe-west1').https.onRequest(app)

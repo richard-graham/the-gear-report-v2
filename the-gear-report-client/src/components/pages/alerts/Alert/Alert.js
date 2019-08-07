@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { getAlert } from '../../../../redux/actions/alertActions'
-import { getAssignmentByAlert } from '../../../../redux/actions/assignmentActions'
+import { getWorkPlansByAlert } from '../../../../redux/actions/workPlanActions'
 import moment from 'moment'
 import AlertImageGallery from '../AlertImageGallery'
 import { Link } from 'react-router-dom'
@@ -23,34 +23,34 @@ export class Alert extends Component {
   componentDidMount = () => {
     const { alertId } = this.props.match.params 
     this.props.getAlert(alertId)
-    this.props.getAssignmentByAlert(alertId)
+    this.props.getWorkPlansByAlert(alertId)
     window.scrollTo(0, 0)
   }
 
-  currentAssignments = assignments => {
+  currentWorkPlans = workPlans => {
     let current = []
-    assignments.forEach(assignment => {
-      const { completed, completionDate } = assignment
+    workPlans.forEach(workPlan => {
+      const { completed, completionDate } = workPlan
       const notExpired = moment(completionDate).add('2', 'd').isAfter(new Date())
       if(completed === false && notExpired){
-        current.push(assignment)
+        current.push(workPlan)
       }
     })
     return current
   }
 
-  hasCompletedAssignment = assignments => {
+  hasCompletedWorkPlan = workPlans => {
     let res = false
-    assignments.forEach(assignment => {
-      if (assignment.completed === true){
+    workPlans.forEach(workPlan => {
+      if (workPlan.completed === true){
         res = true
       }
     })
     return res
   }
 
-  shouldRenderButton = (assignments) => {
-    if(this.currentAssignments(assignments).length === 0 && !this.hasCompletedAssignment(assignments)) return true 
+  shouldRenderButton = (workPlans) => {
+    if(this.currentWorkPlans(workPlans).length === 0 && !this.hasCompletedWorkPlan(workPlans)) return true 
     else return false
   }
 
@@ -68,8 +68,8 @@ export class Alert extends Component {
         userHandle,
         locations,
         locationNames,
-        assignments,
-        loadingAssignments
+        workPlans,
+        loadingWorkPlans
       },
       loading,
     } = this.props
@@ -126,8 +126,8 @@ export class Alert extends Component {
                     <Typography>Work Plan</Typography>
                     <Divider/>
                     <br />
-                    {!loadingAssignments && 
-                    this.shouldRenderButton(assignments) &&  
+                    {!loadingWorkPlans && 
+                    this.shouldRenderButton(workPlans) &&  
                     <Fragment>
                       <Typography>There are no current plans to fix this alert.</Typography>
                       <Typography>Planning on fixing this? Let others know and request sponsorship by creating a work plan</Typography>
@@ -135,8 +135,8 @@ export class Alert extends Component {
                       <WorkPlanDialog />
                     </Fragment>}
                     <Fragment>
-                      {!loadingAssignments && assignments.length > 0 &&
-                      <WorkPlan assignments={assignments} />}
+                      {!loadingWorkPlans && workPlans.length > 0 &&
+                      <WorkPlan workPlans={workPlans} />}
                     </Fragment>
                   </div>
                 </Grid>
@@ -215,7 +215,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getAlert,
-  getAssignmentByAlert
+  getWorkPlansByAlert
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Alert))

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import DatePickerApp from './DatePicker'
-import { createAssignment, setError } from '../../../../../redux/actions/assignmentActions.js'
+import { createWorkPlan, setError } from '../../../../../redux/actions/workPlanActions.js'
 import history from '../../../../../util/history'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
@@ -79,7 +79,7 @@ export class WorkPlanDialog extends Component {
       this.setState({ planError: true })
       this.props.setError('Please add plan')
     } else {
-      this.props.createAssignment(
+      this.props.createWorkPlan(
         selectedDate.toISOString(), 
         yesSponsor, 
         cost, 
@@ -234,7 +234,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  createAssignment,
+  createWorkPlan,
   setError
 }
 

@@ -1,8 +1,8 @@
 const { db } = require('../util/admin')
 
-exports.postAssignment = (req, res) => {
+exports.postWorkPlan = (req, res) => {
 
-  const newAssignment = {
+  const newWorkPlan = {
     completionDate: new Date(req.body.completionDate).toISOString(),
     allowSponsors: req.body.sponsored,
     estimatedCost: req.body.cost,
@@ -18,31 +18,31 @@ exports.postAssignment = (req, res) => {
   } 
 
   db
-    .collection('assignments')
-    .add(newAssignment)
+    .collection('workPlans')
+    .add(newWorkPlan)
     .then((doc) => {
-      const resAssignment = newAssignment
-      resAssignment.assignmentId = doc.id
-      res.json(resAssignment)
+      const resWorkPlan = newWorkPlan
+      resWorkPlan.workPlanId = doc.id
+      res.json(resWorkPlan)
     })
     .catch(() => {
       res.status(500).json({ general: 'something went wrong 500'})
     })
 }
 
-exports.getAssignmentByAlert = (req, res) => {
-  let assignmentsData = []
+exports.getWorkPlansByAlert = (req, res) => {
+  let workPlansData = []
   db
-  .collection('assignments')
+  .collection('workPlans')
   .orderBy('completionDate', 'desc')
   .where('alertId', '==', req.params.alertId)
   .get()
   .then(data => {
-    data.forEach(assignment => {
-      var newAssignment = assignment.data()
-      newAssignment.id = assignment.id
-      assignmentsData.push(newAssignment)
+    data.forEach(workPlan => {
+      var newWorkPlan = workPlan.data()
+      newWorkPlan.id = workPlan.id
+      workPlansData.push(newWorkPlan)
     })
-    return res.json(assignmentsData)
+    return res.json(workPlansData)
   })
 }

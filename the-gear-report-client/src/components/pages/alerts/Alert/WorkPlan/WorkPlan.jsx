@@ -42,14 +42,14 @@ export class WorkPlan extends Component {
   }
 
   render() {
-    const { assignments, classes } = this.props
+    const { workPlans, classes } = this.props
     const { pledged } = this.state;
     const defaultPic = "https://firebasestorage.googleapis.com/v0/b/the-gear-report-a2ce8.appspot.com/o/no-image.png?alt=media"
 
 
     return (
       <Fragment>
-        {assignments.map((assignment, i) => {
+        {workPlans.map((workPlan, i) => {
           const { 
             userImage, 
             userHandle, 
@@ -60,7 +60,7 @@ export class WorkPlan extends Component {
             plan, 
             totalPledged, 
             userAvatarLetters 
-          } = assignment
+          } = workPlan
           const status = this.planStatus(completed, completionDate)
           const expired = status === 'Expired' ? true : false
           console.log(status);
@@ -169,7 +169,8 @@ export class WorkPlan extends Component {
   }
 }
 
-const styles = {
+const styles = theme => ({
+  ...theme,
   root: {
     width: 300,
   },
@@ -202,7 +203,7 @@ const styles = {
   planContainer: {
     marginLeft: 'auto',
     marginRight: 'auto',
-    width: 500
+    width: '100%'
   },
   contentContainer: {
     backgroundColor: '#FFFFFF',
@@ -214,8 +215,7 @@ const styles = {
     width: '100%'
   },
   content: {
-    marginLeft: 13,
-    marginRight: 13
+    margin: 13
   },
   pledgeContainer: {
     marginTop: 20,
@@ -266,7 +266,13 @@ const styles = {
   calculationContainer: {
     marginLeft: 'auto',
     marginRight: 'auto',
-    maxWidth: '50%',
+    maxWidth: '55%',
+    paddingTop: 10,
+    [theme.breakpoints.down('md')]: {
+      paddingTop: 0,
+      maxWidth: '100%'
+    }
+
   },
   calculation: {
     display: 'flex',
@@ -279,6 +285,6 @@ const styles = {
     alignSelf: 'center',
     marginBottom: 15
   }
-};
+})
 
 export default withStyles(styles)(WorkPlan)
