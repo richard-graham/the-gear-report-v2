@@ -172,7 +172,7 @@ export class WorkPlan extends Component {
                   <Checkout 
                             name={'Make Pledge'}
                             description={`to ${userHandle}'s work plan`}
-                            amount={pledged}
+                            pledge={pledged}
                           />
 
                 </div>

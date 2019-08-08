@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios';
-import StripeCheckout from 'react-stripe-checkout';
+import { StripeProvider, Elements } from 'react-stripe-elements';
 import STRIPE_PUBLISHABLE from './constants/stripe';
+import CheckoutForm from './CheckoutForm'
 import { connect } from 'react-redux'
 
 
@@ -28,28 +29,15 @@ const onToken = (amount, description) => token =>
     .then(successPayment)
     .catch(errorPayment);
 
-class Checkout extends Component{
+export class Checkout extends Component{
   render() {
-    const { 
-      name, 
-      description, 
-      amount,
-      credentials
-    } = this.props
-
+    const { pledge } = this.props
     return(
-      <StripeCheckout 
-        name={name}
-        description={description}
-        amount={fromDollarToCent(amount)}
-        token={onToken(amount, description)}
-        currency={CURRENCY}
-        stripeKey={STRIPE_PUBLISHABLE}
-        email={credentials.email}
-        
-      >
-        
-      </StripeCheckout>
+      <StripeProvider apiKey={STRIPE_PUBLISHABLE}>
+        <Elements>
+          <CheckoutForm pledge={pledge} />  
+        </Elements>
+      </StripeProvider>
     )
   }
 } 

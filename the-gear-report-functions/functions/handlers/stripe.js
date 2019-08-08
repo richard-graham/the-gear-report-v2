@@ -1,16 +1,29 @@
 const { stripeKey } = require('../util/key.js')
 const stripe = require('stripe')(stripeKey)
 
-const postStripeCharge = res => (stripeErr, stripeRes) => {
-  if (stripeErr) {
-    res.status(500).send({ error: stripeErr });
-  } else {
-    res.status(200).send({ success: stripeRes });
-  }
+const charge = (token, amount, currency) => {
+  return stripe.charges.create({
+    amount: amount,
+    currency: currency,
+    source: token,
+    description: 'test'
+  })
 }
 
 exports.postPayment = (req, res) => {
-  stripe.charges.create(req.body, postStripeCharge(res));
+  
+  return stripe.charges.create({
+    amount: req.body.amount,
+    source: req.body.token,
+    currency: req.body.currency,
+    description: 'test'
+  })
+  .then(data => {
+    res.send(data)
+  })
+  .catch(err => {
+    res.send(err)
+  })
 };
 
 exports.getPayment = (req, res) => {
