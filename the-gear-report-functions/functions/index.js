@@ -51,6 +51,12 @@ const {
    submitPledge
  } = require('./handlers/workPlans')
  
+
+ const {
+  postPayment,
+  getPayment
+ } = require('./handlers/stripe')
+
 // Alert routes
 app.get('/alerts/all', getAllAlerts)
 app.get('/alerts/recent', getRecentAlerts)
@@ -91,6 +97,10 @@ app.get('/tc/search/textcompletion/:input', textCompletion)
 app.post('/workPlan', FBAuth, postWorkPlan)
 app.get('/workPlan/alert/:alertId', getWorkPlansByAlert)
 app.post('/workPlan/pledge/:workPlanId', FBAuth, submitPledge)
+
+// Stripe Routes
+app.get('/stripe/payment', getPayment)
+app.post('/stripe/payment', postPayment)
 
 exports.api = functions.region('us-central1').https.onRequest(app) 
 // exports.api = functions.region('europe-west1').https.onRequest(app)

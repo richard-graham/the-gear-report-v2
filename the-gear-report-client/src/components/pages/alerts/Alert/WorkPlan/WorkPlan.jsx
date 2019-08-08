@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { submitPledge } from '../../../../../redux/actions/workPlanActions'
+import Checkout from '../../../../stripe/Checkout'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Slider from '@material-ui/lab/Slider';
@@ -152,19 +153,28 @@ export class WorkPlan extends Component {
                           }
                         />
                         {expired && <Typography color='secondary' style={{ textAlign: 'center' }}>This plan has expired</Typography>}
-                        <div style={{ display: 'flex', flexDirection: 'column' }}>
-                          <Button
-                            color='primary'
-                            variant='contained'
-                            size='small'
-                            className={classes.submitButton}
-                            onClick={() => this.handlePledgeSubmit(id)}
-                          >Submit</Button>
-                          <Typography style={{ textAlign: 'center' }}>New to pledging? Learn more <Link to='/'>here</Link>.</Typography>
-                        </div>
+                        {/* <div style={{ display: 'flex', flexDirection: 'column' }}> */}
+                          
+                          
+                          {/* <Button
+                              color='primary'
+                              variant='contained'
+                              size='small'
+                              className={classes.submitButton}
+                              onClick={() => this.handlePledgeSubmit(id)}
+                          >Submit</Button> */}
+                        {/* </div> */}
                       </div>
                     </div>}
                   </div>
+                  <Typography style={{ textAlign: 'center' }}>New to pledging? Learn more <Link to='/'>here</Link>.</Typography>
+                  <br />
+                  <Checkout 
+                            name={'Make Pledge'}
+                            description={`to ${userHandle}'s work plan`}
+                            amount={pledged}
+                          />
+
                 </div>
 
                 </ExpansionPanelDetails>
@@ -291,7 +301,7 @@ const styles = theme => ({
     maxWidth: 'fit-content',
     alignSelf: 'center',
     marginBottom: 15
-  }
+  },
 })
 
 const mapDispatchToProps = {
