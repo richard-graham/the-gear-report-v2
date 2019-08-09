@@ -54,7 +54,9 @@ const {
 
  const {
   postPayment,
-  getPayment
+  getPayment,
+  createIntent,
+  addPaymentMethod
  } = require('./handlers/stripe')
 
 // Alert routes
@@ -101,6 +103,8 @@ app.post('/workPlan/pledge/:workPlanId', FBAuth, submitPledge)
 // Stripe Routes
 app.get('/stripe/payment', getPayment)
 app.post('/stripe/payment', postPayment)
+app.post('/stripe/intent/create', createIntent)
+app.post('/stripe/paymentMethods/add', FBAuth, addPaymentMethod)
 
 exports.api = functions.region('us-central1').https.onRequest(app) 
 // exports.api = functions.region('europe-west1').https.onRequest(app)

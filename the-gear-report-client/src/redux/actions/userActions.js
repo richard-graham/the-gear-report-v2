@@ -45,13 +45,16 @@ export const signupUser = (newUserData, history) => (dispatch) => {
   axios.post('/signup', newUserData)
       .then(res => {
         setAuthorizationHeader(res.data.token)
-        dispatch(getUserData())
+        dispatch({ 
+          type: SET_USER,
+          payload: res.data.user
+        })
         dispatch({ type: CLEAR_ERRORS })
         dispatch({
           type: SET_MESSAGE,
           payload: ['Sign up successful']
         })
-        history.goBack()
+        history && history.goBack()
       })
       .catch(err => {
         let errors = []

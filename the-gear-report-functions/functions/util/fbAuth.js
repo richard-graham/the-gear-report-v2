@@ -27,6 +27,7 @@ module.exports = (req, res, next) => {
                             .handle
       req.user.imageUrl = data.docs[0].data().imageUrl,
       req.user.avatarLetters = data.docs[0].data().avatarLetters
+      req.user.stripeId = data.docs[0].data().stripeId
       return next() // allows the request to proceed
     })
     .catch(err => {

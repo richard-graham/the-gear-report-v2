@@ -26,7 +26,8 @@ const initialState = {
     bio: '',
     imageUrl: '',
     createdAt: '',
-    avatarLetters: ''
+    avatarLetters: '',
+    stripeId: ''
   },
   likes: [],
   notifications: [],

@@ -76,17 +76,20 @@ exports.signup = (req, res) => {
     })
     .then(() => {
 
+      // create stripe cust and add stripeId to user
+
       stripe.customers.create({
         description: userId,
         // source: "tok_visa", // obtained with Stripe.js
         email: newUser.email,
       }, function(err, customer) {
-        console.log('err', err);
-        console.log('customer', customer.id);
-        return db.doc(`/users/${newUser.handle}`).update({ stripeId: customer.id })
-      });
-
-      return res.status(201).json({ token })
+        newUser.stripeId = customer.id
+        db.doc(`/users/${newUser.handle}`)
+          .update({ stripeId: customer.id })
+          .then(() => {
+            return res.json({ token: token, user: newUser })
+          })
+      })
     })
     .catch(err => {
       console.error(err)
