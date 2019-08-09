@@ -5,7 +5,6 @@ import AddCc from './AddCc'
 import Confirm from './Confirm'
 import { connect } from 'react-redux'
 import { signupUser, clearErrors } from '../../../redux/actions/userActions'
-import axios from 'axios'
 
 export class NewUserForm extends Component {
   state = {
@@ -19,19 +18,6 @@ export class NewUserForm extends Component {
     dialogOpen: false,
     client: ''
   }
-
-  // componentDidMount = () => {
-  //   console.log('mounted');
-  //   axios
-  //     .post('/stripe/intent/create')
-  //     .then((data) => {
-  //       console.log(data);
-  //       this.setState({ client: data.client_secret })
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     })
-  // }
 
   componentWillUnmount = () => {
     this.props.clearErrors()
@@ -66,19 +52,18 @@ export class NewUserForm extends Component {
   handleSubmit = (event, addCc) => {
     const { history, signupUser } = this.props
     event.preventDefault()
-    // const newUserData = {
-    //   email: this.state.email,
-    //   password: this.state.password,
-    //   confirmPassword: this.state.confirmPassword,
-    //   firstName: this.state.firstName,
-    //   lastName: this.state.lastName,
-    //   bio: this.state.bio,
-    //   city: this.state.city,
-    //   handle: `${this.state.firstName} ${this.state.lastName}`
-    // }
-    // addCc ? signupUser(newUserData) : signupUser(newUserData, history)
-    // addCc && this.nextStep()
-    this.nextStep()
+    const newUserData = {
+      email: this.state.email,
+      password: this.state.password,
+      confirmPassword: this.state.confirmPassword,
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      bio: this.state.bio,
+      city: this.state.city,
+      handle: `${this.state.firstName} ${this.state.lastName}`
+    }
+    addCc ? signupUser(newUserData) : signupUser(newUserData, history)
+    addCc && this.nextStep()
   }
 
   render() {

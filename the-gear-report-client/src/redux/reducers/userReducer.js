@@ -11,7 +11,8 @@ import {
   UNLIKE_COMMENT,
   STOP_LOADING_USER,
   LOADING_USER_IMAGE,
-  SET_USER_IMAGE
+  SET_USER_IMAGE,
+  SET_HAS_PAY_TYPE
 } from '../types'
 
 const initialState = {
@@ -27,12 +28,15 @@ const initialState = {
     imageUrl: '',
     createdAt: '',
     avatarLetters: '',
-    stripeId: ''
   },
   likes: [],
   notifications: [],
   lat: -30.209985,
   lng: 145.095043,
+  stripe: {
+    stripeId: '',
+    hasPaymentMethod: false
+  }
 }
 
 const logoutState = {
@@ -130,6 +134,14 @@ export default function(state = initialState, action){
       return {
         ...state,
         likes: state.likes.filter(like => like.commentId !== action.payload.commentId)
+      }
+    case SET_HAS_PAY_TYPE:
+      return {
+        ...state,
+        stripe: {
+          ...state.stripe,
+          hasPaymentMethod: true
+        }
       }
     default:
       return state

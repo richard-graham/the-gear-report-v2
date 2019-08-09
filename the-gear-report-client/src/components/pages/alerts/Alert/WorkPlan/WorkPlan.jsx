@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { submitPledge } from '../../../../../redux/actions/workPlanActions'
-import Checkout from '../../../../stripe/Checkout'
+// import Checkout from '../../../../stripe/Checkout'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Slider from '@material-ui/lab/Slider';
@@ -15,7 +15,6 @@ import Avatar from '@material-ui/core/Avatar'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
-import Button from '@material-ui/core/Button'
 //Mui Icons
 import AttachMoney from '@material-ui/icons/AttachMoneyOutlined'
 import { Typography } from '@material-ui/core';
@@ -67,7 +66,6 @@ export class WorkPlan extends Component {
             plan, 
             totalPledged, 
             userAvatarLetters,
-            id
           } = workPlan
           const status = this.planStatus(completed, completionDate)
           const expired = status === 'Expired' ? true : false
@@ -169,11 +167,11 @@ export class WorkPlan extends Component {
                   </div>
                   <Typography style={{ textAlign: 'center' }}>New to pledging? Learn more <Link to='/'>here</Link>.</Typography>
                   <br />
-                  <Checkout 
+                  {/* <Checkout 
                             name={'Make Pledge'}
                             description={`to ${userHandle}'s work plan`}
                             pledge={pledged}
-                          />
+                          /> */}
 
                 </div>
 

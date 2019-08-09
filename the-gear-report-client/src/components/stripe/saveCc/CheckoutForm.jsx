@@ -1,17 +1,19 @@
 import React, { Component } from 'react'
 import { CardElement, injectStripe } from 'react-stripe-elements'
 import axios from 'axios'
+import { connect } from 'react-redux'
+import { createMessage, createError, hasPaymentType } from '../../../redux/actions/stripeActions'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
-import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
-import Input from '@material-ui/core/Input'
 import Button from '@material-ui/core/Button'
+import Indigo from '@material-ui/core/colors/indigo'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 class CheckoutForm extends Component {
 
   state = {
-    name: ''
+    name: '',
+    loading: false
   }
 
   handleChange = (e) => {
@@ -19,8 +21,8 @@ class CheckoutForm extends Component {
   }
 
   handleSubmit = async (e) => {
+    this.setState({ loading: true })
     e.preventDefault()
-      let currency = 'NZD'
       axios.post('/stripe/intent/create')
       .then(success => {
         let secret = success.data.client_secret
@@ -29,29 +31,40 @@ class CheckoutForm extends Component {
             this.props.stripe.handleCardSetup(secret, <CardElement />, { payment_method_data: { paymentMethod } } )
               .then(({ setupIntent }) => {
                 axios.post(`/stripe/paymentMethods/add`, { paymentMethod: setupIntent.payment_method })
-                  .then(data => {
-                    console.log(data);
+                  .then(() => {
+                    this.setState({ loading: false })
+                    this.props.createMessage('Card added successfully')
+                    this.props.hasPaymentType()
                   })
-                
               })
           })
       })
       .catch(err => {
-        console.log(err);
+        createError('Something went wrong')
       });
   }
 
   render() {
     const { classes } = this.props
+    const { loading } = this.state
     return (
       <form 
         className={classes.form}
         onSubmit={(e) => this.handleSubmit(e)}
       >
-        <CardElement className={classes.cardEl} />
+        <div className={classes.cardBackground} >
+          <CardElement className={classes.cardEl} />
+        </div>
+        
         <br />
-        <Button type={'submit'} variant='contained' className={classes.submitButton}>
+        <Button 
+          type={'submit'} 
+          variant='contained' className={classes.submitButton}
+          color='primary'
+          disabled={loading}
+        >
           Submit
+          {loading && <CircularProgress size={24} className={classes.submitProgress} />}
         </Button>
       </form>
     )
@@ -72,9 +85,28 @@ const styles = {
     marginBottom: 10,
     border: '1px solid black',
     borderRadius: 5,
-    padding: 7,
-    width: '75%'
+    padding: 10,
+    minWidth: '75%',
+
+  },
+  cardBackground: {
+    backgroundColor: Indigo[50],
+    width: '75%',
+    margin: '0px auto'
+  },
+  submitProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
   }
 }
 
-export default withStyles(styles)(injectStripe(CheckoutForm))
+const mapDispatchToProps = {
+  createMessage,
+  createError,
+  hasPaymentType
+}
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(injectStripe(CheckoutForm)))

@@ -1,5 +1,6 @@
 const { stripeKey } = require('../util/key.js')
 const stripe = require('stripe')(stripeKey)
+const { db } = require('../util/admin')
 
 exports.postPayment = (req, res) => {
   
@@ -35,11 +36,14 @@ exports.addPaymentMethod = (req, res) => {
   return stripe.paymentMethods.attach(
     req.body.paymentMethod,
     {
-      customer: req.user.stripeId
+      customer: req.user.stripe.stripeId
     }
   )
-  .then(data => {
-    res.json(data)
+  .then(() => {
+    db.doc(`/users/${req.user.handle}`).update({ 'stripe.hasPaymentMethod': true })
+  })
+  .then((data) => {
+    return res.json(data)
   })
   .catch(err => {
     res.json({ err: err })

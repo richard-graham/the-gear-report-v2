@@ -31,6 +31,10 @@ exports.signup = (req, res) => {
         name: 'Maungarei Springs',
         id: '879850311'
       }
+    },
+    stripe: {
+      stripeId: '',
+      hasPaymentMethod: false
     }
   }
 
@@ -70,12 +74,14 @@ exports.signup = (req, res) => {
         city: newUser.city,
         avatarLetters: newUser.avatarLetters,
         bio: newUser.bio,
-        subAreas: newUser.subAreas
+        subAreas: newUser.subAreas,
+        stripe: {
+          hasPaymentMethod: false
+        }
       }
       return db.doc(`/users/${newUser.handle}`).set(userCredentials)
     })
     .then(() => {
-
       // create stripe cust and add stripeId to user
 
       stripe.customers.create({
@@ -83,9 +89,9 @@ exports.signup = (req, res) => {
         // source: "tok_visa", // obtained with Stripe.js
         email: newUser.email,
       }, function(err, customer) {
-        newUser.stripeId = customer.id
+        newUser.stripe.stripeId = customer.id
         db.doc(`/users/${newUser.handle}`)
-          .update({ stripeId: customer.id })
+          .update({ stripe: { stripeId: customer.id, hasPaymentMethod: false }  })
           .then(() => {
             return res.json({ token: token, user: newUser })
           })

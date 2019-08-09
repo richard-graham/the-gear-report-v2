@@ -11,6 +11,7 @@ export const LIKE_COMMENT = 'LIKE_COMMENT'
 export const UNLIKE_COMMENT = 'UNLIKE_COMMENT'
 export const LOADING_USER_IMAGE = 'LOADING_USER_IMAGE'
 export const SET_USER_IMAGE = 'SET_USER_IMAGE'
+export const SET_HAS_PAY_TYPE = 'SET_HAS_PAY_TYPE'
  // UI reducers
 export const SET_ERRORS = 'SET_ERRORS'
 export const CLEAR_ERRORS = 'CLEAR_ERRORS'
@@ -49,3 +50,4 @@ export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const SET_NEW_WORK_PLAN = 'SET_WORK_PLAN'
 export const SET_WORK_PLANS = 'GET_WORK_PLANS'
 export const LOADING_WORK_PLANS = 'LOADING_WORK_PLANS'
+

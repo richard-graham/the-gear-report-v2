@@ -15,7 +15,6 @@ module.exports = (req, res, next) => {
     .verifyIdToken(idToken)
     .then(decodedToken => {
       req.user = decodedToken
-      console.log(decodedToken);
       return db.collection('users') // handle is not stored in fbauth so need to add manually 
                 .where('userId', '==', req.user.uid)
                 .limit(1)
@@ -27,7 +26,7 @@ module.exports = (req, res, next) => {
                             .handle
       req.user.imageUrl = data.docs[0].data().imageUrl,
       req.user.avatarLetters = data.docs[0].data().avatarLetters
-      req.user.stripeId = data.docs[0].data().stripeId
+      req.user.stripe = data.docs[0].data().stripe
       return next() // allows the request to proceed
     })
     .catch(err => {
