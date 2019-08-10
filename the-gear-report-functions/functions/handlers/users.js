@@ -35,7 +35,8 @@ exports.signup = (req, res) => {
     stripe: {
       stripeId: '',
       hasPaymentMethod: false
-    }
+    },
+    invoices: []
   }
 
   const { valid, errors } = validateSignUpData(newUser)
@@ -75,9 +76,8 @@ exports.signup = (req, res) => {
         avatarLetters: newUser.avatarLetters,
         bio: newUser.bio,
         subAreas: newUser.subAreas,
-        stripe: {
-          hasPaymentMethod: false
-        }
+        stripe: newUser.stripe,
+        invoices: newUser.invoices
       }
       return db.doc(`/users/${newUser.handle}`).set(userCredentials)
     })

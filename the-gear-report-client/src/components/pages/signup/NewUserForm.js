@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import FormUserDetails from './FormUserDetails'
 import FormPersonalDetails from './FormPersonalDetails'
-import AddCc from './AddCc'
+import AddCc from '../../stripe/saveCc/AddCc'
 import Confirm from './Confirm'
 import { connect } from 'react-redux'
 import { signupUser, clearErrors } from '../../../redux/actions/userActions'

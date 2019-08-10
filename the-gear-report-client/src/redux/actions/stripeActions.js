@@ -17,14 +17,15 @@ export const hasPaymentType = () => dispatch => {
   dispatch({ type: SET_HAS_PAY_TYPE })
 }
 
-export const generateAutoInvoice = (stripeId, workPlanId, pledged, alertId) => dispatch => {
+export const generateAutoInvoice = (stripeId, workPlanId, pledged, alertId) => {
   const invoiceDetails = {
     stripeId,
     workPlanId,
     pledged,
     alertId
   }
-  console.log('auto', invoiceDetails);
+  console.log(invoiceDetails);
+  axios.post('/stripe/invoice/auto', invoiceDetails).then(res => console.log(res))
 }
 
 export const generateManualInvoice = (stripeId, workPlanId, pledged) => dispatch => {

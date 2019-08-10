@@ -7,6 +7,7 @@ import { submitPledge } from '../../../../../redux/actions/workPlanActions'
 import PaymentConfirmation from './PaymentConfirmation.jsx'
 import history from '../../../../../util/history'
 import { generateAutoInvoice, generateManualInvoice } from '../../../../../redux/actions/stripeActions'
+import axios from 'axios'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Slider from '@material-ui/lab/Slider';
@@ -36,13 +37,22 @@ export class WorkPlan extends Component {
 
   handlePledgeSubmit = (workPlanId, workPlanStatus, pledged) => {
     console.log(history);
-    const { user, generateAutoInvoice, generateManualInvoice, alertId } = this.props
+    const { user, generateManualInvoice, alertId } = this.props
     const { stripeId } = user.credentials.stripe
 
-    workPlanStatus === 'Completed' ? generateAutoInvoice(stripeId, workPlanId, pledged, alertId) :
-    workPlanStatus === 'Current' ? generateManualInvoice(stripeId, workPlanId, pledged, alertId) : 
-    console.log('status error');
-   
+    // workPlanStatus === 'Completed' ? generateAutoInvoice(stripeId, workPlanId, pledged, alertId) :
+    // workPlanStatus === 'Current' ? generateManualInvoice(stripeId, workPlanId, pledged, alertId) : 
+    // console.log('status error');
+   if(workPlanStatus === 'Completed'){
+    const invoiceDetails = {
+      stripeId,
+      workPlanId,
+      pledged,
+      alertId
+    }
+    console.log(invoiceDetails);
+    axios.post('/stripe/invoice/auto', invoiceDetails).then(res => console.log(res))
+   }
     // this.props.submitPledge(this.state.pledged, id)
   }
 
@@ -336,7 +346,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   submitPledge,
-  generateAutoInvoice,
   generateManualInvoice
 }
 

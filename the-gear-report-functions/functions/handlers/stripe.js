@@ -75,28 +75,28 @@ exports.createAutoInvoice = (req, res) => {
         alertId: alertId
       },
     }, (err, invoice) => {
+
+      const newInvoice = {
+        invoiceId: invoice.id,
+        amount: invoice.total,
+        alertId: alertId,
+        workPlanId: workPlanId,
+        userHandle: req.user.handle
+      }
+
       db
-        .doc(`/users/${req.user.handle}`)
-        .get()
+        .collection('invoices')
+        .add(newInvoice)
         .then(doc => {
-          if(!doc.exists){
-            return res.status(404).json({ error: 'User not found' })
-          } 
-          const invoiceRef = {
-            id: invoice.id,
-            amount: invoice.total,
-            alertId: alertId,
-            workPlanId: workPlanId,
-          }
-          let invoices = doc.data().invoices
-          invoices.push(invoiceRef)
-            
-          doc.ref.update({ invoices: invoices })
-        })
-        .then(() => {
-          return res.json(invoiceRef)
+          const resInvoice = newInvoice
+          resInvoice.invoiceId = doc.id
+          
+          return res.json(resInvoice)
         })
     })
+  })
+  .catch(err => {
+    return res.json(err)
   })
 }
 

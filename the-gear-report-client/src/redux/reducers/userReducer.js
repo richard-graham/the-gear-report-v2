@@ -33,7 +33,8 @@ const initialState = {
       stripeId: '',
       hasPaymentMethod: false
     },
-    subAreas: []
+    subAreas: [],
+    invoices: []
   },
   likes: [],
   notifications: [],

@@ -16,6 +16,7 @@ import Alert from './components/pages/alerts/Alert/Alert'
 import DirectoryContainer from './components/directory/DirectoryContainer'
 import SearchRouter from './components/SearchRouter'
 import DisplayLocation from './components/pages/displayLocation/DisplayLocation'
+import AddCc from './components/stripe/saveCc/AddCc'
 import { withStyles } from '@material-ui/core/styles';
 
 
@@ -32,11 +33,11 @@ export class App extends Component {
             <Route exact path='/signup' component={NewUserForm} />
             <Route exact path='/login' component={Login} />
             <Route path='/profile/:userHandle' component={Profile} />
-            <Route exact path='/alerts' render={(props) => <AllAlerts {...props} handleDrawerClose={this.props.handleDrawerClose}/>} />
+            <Route exact path='/alerts' component={AllAlerts} />
             <Route exact path='/alert/:alertId' component={Alert} />
             <Route exact path='/map' component={DirectoryContainer} />
             <Route path='/location/:locationID' component={DisplayLocation} />
-
+            <Route path='/add/payment' component={AddCc} />
           {authenticated === true && <Route path='/' component={ActionButton} />}
     
           {error.length > 0 ?  

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Checkout from '../../stripe/saveCc/Checkout'
+import CheckoutForm from './CheckoutForm'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
@@ -19,7 +19,7 @@ class AddCc extends Component {
           <Typography variant='h2' className={classes.formHeader}>Add Credit Card Details</Typography>
           <br />
           <Typography>Here is some stuff about how we won't do anything illegal</Typography>
-          <Checkout />
+          <CheckoutForm />
          
         </Paper>
       </div>
