@@ -3,11 +3,9 @@ import moment from 'moment'
 import { Link } from 'react-router-dom'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
-import { submitPledge } from '../../../../../redux/actions/workPlanActions'
 import PaymentConfirmation from './PaymentConfirmation.jsx'
 import history from '../../../../../util/history'
 import { generateAutoInvoice, generateManualInvoice } from '../../../../../redux/actions/stripeActions'
-import axios from 'axios'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Slider from '@material-ui/lab/Slider';
@@ -31,18 +29,20 @@ export class WorkPlan extends Component {
     confirmationOpen: false
   };
 
+  componentDidUpdate = nextProps => {
+    if(!this.props.creatingInvoice && nextProps.creatingInvoice){
+      this.setState({ confirmationOpen: false })
+    }
+  }
+
   handleChange = (event, pledged) => {
     this.setState({ pledged });
   };
 
-  handlePledgeSubmit = (workPlanId, workPlanStatus, pledged) => {
-    console.log(history);
-    const { user, generateManualInvoice, alertId } = this.props
+  handlePledgeSubmit = async (workPlanId, workPlanStatus, pledged) => {
+    const { user, generateManualInvoice, generateAutoInvoice, alertId } = this.props
     const { stripeId } = user.credentials.stripe
 
-    // workPlanStatus === 'Completed' ? generateAutoInvoice(stripeId, workPlanId, pledged, alertId) :
-    // workPlanStatus === 'Current' ? generateManualInvoice(stripeId, workPlanId, pledged, alertId) : 
-    // console.log('status error');
    if(workPlanStatus === 'Completed'){
     const invoiceDetails = {
       stripeId,
@@ -50,10 +50,8 @@ export class WorkPlan extends Component {
       pledged,
       alertId
     }
-    console.log(invoiceDetails);
-    axios.post('/stripe/invoice/auto', invoiceDetails).then(res => console.log(res))
+    generateAutoInvoice(stripeId, workPlanId, pledged, alertId)
    }
-    // this.props.submitPledge(this.state.pledged, id)
   }
 
   closePaymentConfirmation = () => this.setState({ confirmationOpen: false })
@@ -83,8 +81,12 @@ export class WorkPlan extends Component {
   }
 
   render() {
-    const { workPlans, classes } = this.props
-    const { pledged, confirmationOpen } = this.state;
+    const { 
+      workPlans, 
+      classes,
+      creatingInvoice
+    } = this.props
+    const { pledged, confirmationOpen } = this.state
     const defaultPic = "https://firebasestorage.googleapis.com/v0/b/the-gear-report-a2ce8.appspot.com/o/no-image.png?alt=media"
 
 
@@ -211,6 +213,8 @@ export class WorkPlan extends Component {
                 handleCancel={this.closePaymentConfirmation} 
                 onSubmit={() => this.handlePledgeSubmit(id, status, pledged)} 
                 pledged={pledged}
+                status={status}
+                loading={creatingInvoice}
               />
             </Fragment>
           )
@@ -341,12 +345,13 @@ const styles = theme => ({
 
 const mapStateToProps = state => ({
   user: state.user,
-  alertId: state.data.alert.alertId
+  alertId: state.data.alert.alertId,
+  creatingInvoice: state.UI.creatingInvoice
 })
 
 const mapDispatchToProps = {
-  submitPledge,
-  generateManualInvoice
+  generateManualInvoice,
+  generateAutoInvoice
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(WorkPlan))

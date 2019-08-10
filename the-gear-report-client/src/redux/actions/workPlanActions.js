@@ -30,15 +30,6 @@ export const getWorkPlansByAlert = (alertId) => dispatch => {
     })
 }
 
-export const submitPledge = (pledgeAmount, workPlanId) => dispatch => {
-  
-  axios
-    .post(`/workPlan/pledge/${workPlanId}`, { pledgeAmount })
-    .then(doc => {
-      console.log(doc.data);
-    })
-}
-
 export const setError = error => dispatch => {
   dispatch({ type: SET_ERRORS, payload: [error]})
 }
