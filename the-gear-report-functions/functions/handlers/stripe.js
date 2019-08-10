@@ -75,18 +75,28 @@ exports.createAutoInvoice = (req, res) => {
         alertId: alertId
       },
     }, (err, invoice) => {
-
       const newInvoice = {
         invoiceId: invoice.id,
         amount: invoice.total,
         alertId: alertId,
         workPlanId: workPlanId,
-        userHandle: req.user.handle
+        userHandle: req.user.handle,
+        createdAt: new Date().toISOString()
       }
 
-      db
-        .collection('invoices')
-        .add(newInvoice)
+      db.collection('invoices').add(newInvoice)
+      db.doc(`/workPlans/${workPlanId}`).get()
+        .then((doc) => {
+          let planPledges = doc.data().pledges
+          let newTotalPledged = doc.data().totalPledged
+          planPledges.push({
+            amount: invoice.total,
+            userHandle: req.user.handle,
+            createdAt: new Date().toISOString()
+          })
+          newTotalPledged += invoice.total
+          return doc.ref.update({ pledges: planPledges, totalPledged: newTotalPledged })
+        })
         .then(doc => {
           const resInvoice = newInvoice
           resInvoice.invoiceId = doc.id

@@ -11,6 +11,7 @@ import { withStyles } from '@material-ui/core/styles'
 import Slider from '@material-ui/lab/Slider';
 import Green from '@material-ui/core/colors/green'
 import Red from '@material-ui/core/colors/red'
+import Grey from '@material-ui/core/colors/grey'
 import Indigo from '@material-ui/core/colors/indigo'
 import Avatar from '@material-ui/core/Avatar'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
@@ -26,12 +27,12 @@ export class WorkPlan extends Component {
 
   state = {
     pledged: 0,
-    confirmationOpen: false
+    confirmationOpen: {}
   };
 
   componentDidUpdate = nextProps => {
     if(!this.props.creatingInvoice && nextProps.creatingInvoice){
-      this.setState({ confirmationOpen: false })
+      this.setState({ confirmationOpen: {} })
     }
   }
 
@@ -54,16 +55,16 @@ export class WorkPlan extends Component {
    }
   }
 
-  closePaymentConfirmation = () => this.setState({ confirmationOpen: false })
+  closePaymentConfirmation = (id) => this.setState({ confirmationOpen: false })
 
-  openPaymentConfirmation = () => {
+  openPaymentConfirmation = (id) => {
     const { user } = this.props
     if(!user.authenticated){
       history.push('/login')
     } else if(!user.credentials.stripe.hasPaymentMethod){
       history.push('/add/payment')
     } else {
-      this.setState({ confirmationOpen: true })
+      this.setState({ confirmationOpen: { [id]: true } })
     }
   }
 
@@ -103,12 +104,13 @@ export class WorkPlan extends Component {
             plan, 
             totalPledged, 
             userAvatarLetters,
-            id
+            id,
+            pledges
           } = workPlan
           const status = this.planStatus(completed, completionDate)
           const expired = status === 'Expired' ? true : false
           return (
-            <Fragment key={i}>
+            <div key={i} className={classes.planContainer}>
               <ExpansionPanel>
                 <ExpansionPanelSummary 
                   className={classNames(
@@ -143,7 +145,7 @@ export class WorkPlan extends Component {
                 <ExpansionPanelDetails>
                 <div className={classes.contentContainer} >
                   <div className={classes.content}>
-                    <div className={classes.planContainer}>
+                    <div className={classes.planDetails}>
                       <Typography>Status: {status}</Typography>
                       <Typography 
                         variant={'body2'}
@@ -167,13 +169,26 @@ export class WorkPlan extends Component {
                         </div>
                         <div className={classes.calculation}>
                           <Typography>Total Pledged:</Typography>
-                          <Typography variant='h6'>${totalPledged + pledged}</Typography>
+                          <Typography variant='h6'>${totalPledged / 100 + pledged }</Typography>
                         </div>
                         <div className={classes.calculation}>
                           <Typography>Your Contribution:</Typography>
                           <Typography variant='h6'>${pledged}</Typography>
                         </div>
-          
+
+                        <div className={classes.donationsContainer}>
+                          {pledges.map((pledge, i) => {
+                            return (
+                              <Typography className={classes.donater} key={i}>
+                                <Link
+                                  to={`/profile/${pledge.userHandle}`}
+                                  style={{ textDecoration: 'none', color: 'inherit' }}
+                                >{pledge.userHandle}</Link> donated ${pledge.amount / 100}
+                              </Typography>
+                            )
+                          })}
+                        </div>
+
                         <Slider
                           value={pledged}
                           aria-labelledby="slider-image"
@@ -190,6 +205,7 @@ export class WorkPlan extends Component {
                             <AttachMoney className={classes.dollar} />
                           }
                         />
+
                         {expired && <Typography color='secondary' style={{ textAlign: 'center' }}>This plan has expired</Typography>}
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                           <Button
@@ -197,7 +213,7 @@ export class WorkPlan extends Component {
                               variant='contained'
                               size='medium'
                               className={classes.submitButton}
-                              onClick={this.openPaymentConfirmation}
+                              onClick={() => this.openPaymentConfirmation(id)}
                               disabled={pledged === 0}
                           >Submit</Button>
                         </div>
@@ -209,14 +225,14 @@ export class WorkPlan extends Component {
                 </ExpansionPanelDetails>
               </ExpansionPanel>
               <PaymentConfirmation 
-                open={confirmationOpen} 
-                handleCancel={this.closePaymentConfirmation} 
+                open={confirmationOpen[id] ? confirmationOpen[id] : false} 
+                handleCancel={() => this.closePaymentConfirmation(id)} 
                 onSubmit={() => this.handlePledgeSubmit(id, status, pledged)} 
                 pledged={pledged}
                 status={status}
                 loading={creatingInvoice}
               />
-            </Fragment>
+            </div>
           )
         })}
       </Fragment>
@@ -256,7 +272,7 @@ const styles = theme => ({
   plan: {
     marginTop: 5
   },
-  planContainer: {
+  planDetails: {
     marginLeft: 'auto',
     marginRight: 'auto',
     width: '100%'
@@ -271,7 +287,8 @@ const styles = theme => ({
     width: '100%'
   },
   content: {
-    margin: 13
+    margin: 13,
+    width: '90%'
   },
   pledgeContainer: {
     marginTop: 20,
@@ -341,6 +358,19 @@ const styles = theme => ({
     alignSelf: 'center',
     marginBottom: 15
   },
+  planContainer: {
+    marginBottom: 20
+  },
+  donationsContainer: {
+    padding: 10,
+    margin: '15px auto',
+    borderRadius: 5,
+    backgroundColor: Grey[100],
+    minWidth: '75%'
+  },
+  donater: {
+    textAlign: 'center'
+  }
 })
 
 const mapStateToProps = state => ({
