@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { submitPledge } from '../../../../../redux/actions/workPlanActions'
-// import Checkout from '../../../../stripe/Checkout'
+import PaymentConfirmation from './PaymentConfirmation.jsx'
+import history from '../../../../../util/history'
+import { generateAutoInvoice, generateManualInvoice } from '../../../../../redux/actions/stripeActions'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Slider from '@material-ui/lab/Slider';
@@ -24,16 +26,37 @@ import { Typography } from '@material-ui/core';
 export class WorkPlan extends Component {
 
   state = {
-    pledged: 0
+    pledged: 0,
+    confirmationOpen: false
   };
 
   handleChange = (event, pledged) => {
     this.setState({ pledged });
   };
 
-  handlePledgeSubmit = (id, user) => {
-    const { user } 
-    this.props.submitPledge(this.state.pledged, id)
+  handlePledgeSubmit = (workPlanId, workPlanStatus, pledged) => {
+    console.log(history);
+    const { user, generateAutoInvoice, generateManualInvoice, alertId } = this.props
+    const { stripeId } = user.credentials.stripe
+
+    workPlanStatus === 'Completed' ? generateAutoInvoice(stripeId, workPlanId, pledged, alertId) :
+    workPlanStatus === 'Current' ? generateManualInvoice(stripeId, workPlanId, pledged, alertId) : 
+    console.log('status error');
+   
+    // this.props.submitPledge(this.state.pledged, id)
+  }
+
+  closePaymentConfirmation = () => this.setState({ confirmationOpen: false })
+
+  openPaymentConfirmation = () => {
+    const { user } = this.props
+    if(!user.authenticated){
+      history.push('/login')
+    } else if(!user.credentials.stripe.hasPaymentMethod){
+      history.push('/add/payment')
+    } else {
+      this.setState({ confirmationOpen: true })
+    }
   }
 
   planStatus = (completed, completionDate) => {
@@ -50,8 +73,8 @@ export class WorkPlan extends Component {
   }
 
   render() {
-    const { workPlans, classes, user } = this.props
-    const { pledged } = this.state;
+    const { workPlans, classes } = this.props
+    const { pledged, confirmationOpen } = this.state;
     const defaultPic = "https://firebasestorage.googleapis.com/v0/b/the-gear-report-a2ce8.appspot.com/o/no-image.png?alt=media"
 
 
@@ -73,7 +96,8 @@ export class WorkPlan extends Component {
           const status = this.planStatus(completed, completionDate)
           const expired = status === 'Expired' ? true : false
           return (
-              <ExpansionPanel key={i}>
+            <Fragment key={i}>
+              <ExpansionPanel>
                 <ExpansionPanelSummary 
                   className={classNames(
                     classes.header, {
@@ -161,24 +185,24 @@ export class WorkPlan extends Component {
                               variant='contained'
                               size='medium'
                               className={classes.submitButton}
-                              onClick={() => this.handlePledgeSubmit(id, user)}
+                              onClick={this.openPaymentConfirmation}
+                              disabled={pledged === 0}
                           >Submit</Button>
                         </div>
                       </div>
                     </div>}
                   </div>
                   <Typography style={{ textAlign: 'center' }}>New to pledging? Learn more <Link to='/'>here</Link>.</Typography>
-                  <br />
-                  {/* <Checkout 
-                            name={'Make Pledge'}
-                            description={`to ${userHandle}'s work plan`}
-                            pledge={pledged}
-                          /> */}
-
                 </div>
-
                 </ExpansionPanelDetails>
               </ExpansionPanel>
+              <PaymentConfirmation 
+                open={confirmationOpen} 
+                handleCancel={this.closePaymentConfirmation} 
+                onSubmit={() => this.handlePledgeSubmit(id, status, pledged)} 
+                pledged={pledged}
+              />
+            </Fragment>
           )
         })}
       </Fragment>
@@ -306,11 +330,14 @@ const styles = theme => ({
 })
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  alertId: state.data.alert.alertId
 })
 
 const mapDispatchToProps = {
-  submitPledge
+  submitPledge,
+  generateAutoInvoice,
+  generateManualInvoice
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(WorkPlan))

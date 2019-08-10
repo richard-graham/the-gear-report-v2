@@ -46,7 +46,6 @@ export const signupUser = (newUserData, history) => (dispatch) => {
   axios.post('/signup', newUserData)
       .then(res => {
         setAuthorizationHeader(res.data.token)
-        console.log(res.data);
         dispatch({ 
           type: SET_NEW_USER,
           payload: res.data.user

@@ -56,7 +56,9 @@ const {
   postPayment,
   getPayment,
   createIntent,
-  addPaymentMethod
+  addPaymentMethod,
+  createAutoInvoice,
+  createManualInvoice
  } = require('./handlers/stripe')
 
 // Alert routes
@@ -105,6 +107,8 @@ app.get('/stripe/payment', getPayment)
 app.post('/stripe/payment', postPayment)
 app.post('/stripe/intent/create', createIntent)
 app.post('/stripe/paymentMethods/add', FBAuth, addPaymentMethod)
+app.post('/stripe/invoice/auto', FBAuth, createAutoInvoice)
+app.post('/stripe/invoice/manual', FBAuth, createManualInvoice)
 
 exports.api = functions.region('us-central1').https.onRequest(app) 
 // exports.api = functions.region('europe-west1').https.onRequest(app)
