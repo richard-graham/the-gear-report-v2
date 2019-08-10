@@ -11,7 +11,8 @@ import {
   UNLIKE_COMMENT,
   UPDATE_USER_PROFILE,
   LOADING_USER_IMAGE,
-  SET_USER_IMAGE
+  SET_USER_IMAGE,
+  SET_NEW_USER
 } from '../types'
 import axios from 'axios'
 
@@ -45,8 +46,9 @@ export const signupUser = (newUserData, history) => (dispatch) => {
   axios.post('/signup', newUserData)
       .then(res => {
         setAuthorizationHeader(res.data.token)
+        console.log(res.data);
         dispatch({ 
-          type: SET_USER,
+          type: SET_NEW_USER,
           payload: res.data.user
         })
         dispatch({ type: CLEAR_ERRORS })

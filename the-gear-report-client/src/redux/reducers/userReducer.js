@@ -28,15 +28,16 @@ const initialState = {
     imageUrl: '',
     createdAt: '',
     avatarLetters: '',
+    stripe: {
+      stripeId: '',
+      hasPaymentMethod: false
+    },
+    subAreas: []
   },
   likes: [],
   notifications: [],
   lat: -30.209985,
   lng: 145.095043,
-  stripe: {
-    stripeId: '',
-    hasPaymentMethod: false
-  }
 }
 
 const logoutState = {
@@ -69,7 +70,9 @@ export default function(state = initialState, action){
         ...state,
         authenticated: true,
         loading: false,
-        ...action.payload
+        credentials: {
+          ...action.payload
+        }
       }
     case LOADING_USER:
       return {
@@ -138,9 +141,12 @@ export default function(state = initialState, action){
     case SET_HAS_PAY_TYPE:
       return {
         ...state,
-        stripe: {
-          ...state.stripe,
-          hasPaymentMethod: true
+        credentials: {
+          ...state.credentials,
+          stripe: {
+            ...state.credentials.stripe,
+            hasPaymentMethod: true
+          }
         }
       }
     default:

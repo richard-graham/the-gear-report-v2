@@ -1,6 +1,7 @@
  // User reducers
 export const SET_USER_LOCATION = 'SET_USER_LOCATION'
 export const SET_USER = 'SET_USER'
+export const SET_NEW_USER = 'SET_NEW_USER'
 export const SET_UNAUTHENTICATED = 'SET_UNAUTHENTICATED'
 export const LOADING_USER = 'LOADING_USER'
 export const STOP_LOADING_USER = 'STOP_LOADING_USER'

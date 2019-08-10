@@ -15,6 +15,7 @@ import Avatar from '@material-ui/core/Avatar'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
+import Button from '@material-ui/core/Button'
 //Mui Icons
 import AttachMoney from '@material-ui/icons/AttachMoneyOutlined'
 import { Typography } from '@material-ui/core';
@@ -30,7 +31,8 @@ export class WorkPlan extends Component {
     this.setState({ pledged });
   };
 
-  handlePledgeSubmit = (id) => {
+  handlePledgeSubmit = (id, user) => {
+    const { user } 
     this.props.submitPledge(this.state.pledged, id)
   }
 
@@ -48,7 +50,7 @@ export class WorkPlan extends Component {
   }
 
   render() {
-    const { workPlans, classes } = this.props
+    const { workPlans, classes, user } = this.props
     const { pledged } = this.state;
     const defaultPic = "https://firebasestorage.googleapis.com/v0/b/the-gear-report-a2ce8.appspot.com/o/no-image.png?alt=media"
 
@@ -66,6 +68,7 @@ export class WorkPlan extends Component {
             plan, 
             totalPledged, 
             userAvatarLetters,
+            id
           } = workPlan
           const status = this.planStatus(completed, completionDate)
           const expired = status === 'Expired' ? true : false
@@ -142,6 +145,7 @@ export class WorkPlan extends Component {
                           min={0}
                           max={expired ? 0 : Number(estimatedCost)}
                           step={5}
+                          disabled={expired}
                           classes={{
                             container: classes.slider,
                             thumbIconWrapper: classes.thumbIconWrapper,
@@ -151,17 +155,15 @@ export class WorkPlan extends Component {
                           }
                         />
                         {expired && <Typography color='secondary' style={{ textAlign: 'center' }}>This plan has expired</Typography>}
-                        {/* <div style={{ display: 'flex', flexDirection: 'column' }}> */}
-                          
-                          
-                          {/* <Button
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                          <Button
                               color='primary'
                               variant='contained'
-                              size='small'
+                              size='medium'
                               className={classes.submitButton}
-                              onClick={() => this.handlePledgeSubmit(id)}
-                          >Submit</Button> */}
-                        {/* </div> */}
+                              onClick={() => this.handlePledgeSubmit(id, user)}
+                          >Submit</Button>
+                        </div>
                       </div>
                     </div>}
                   </div>
@@ -201,6 +203,7 @@ const styles = theme => ({
     marginTop: 10,
     marginLeft: 'auto',
     marginRight: 'auto',
+    maxWidth: '80%'
   },
   thumbIcon: {
     borderRadius: '50%',
@@ -302,8 +305,12 @@ const styles = theme => ({
   },
 })
 
+const mapStateToProps = state => ({
+  user: state.user
+})
+
 const mapDispatchToProps = {
   submitPledge
 }
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(WorkPlan))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(WorkPlan))
