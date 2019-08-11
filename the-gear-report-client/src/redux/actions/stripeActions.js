@@ -20,17 +20,18 @@ export const hasPaymentType = () => dispatch => {
   dispatch({ type: SET_HAS_PAY_TYPE })
 }
 
-export const generateAutoInvoice = (stripeId, workPlanId, pledged, alertId) => dispatch => {
+export const generateInvoice = (stripeId, workPlanId, pledged, alertId, method) => dispatch => {
   dispatch({ type: CREATING_INVOICE })
   const invoiceDetails = {
     stripeId,
     workPlanId,
     pledged,
-    alertId
+    alertId,
+    method
   }
   console.log(invoiceDetails);
   axios
-    .post('/stripe/invoice/auto', invoiceDetails)
+    .post('/stripe/invoice', invoiceDetails)
     .then(res => {
       console.log(res);
       dispatch({ type: SET_MESSAGE, payload: ['Donation sent successfully'] })
@@ -41,8 +42,4 @@ export const generateAutoInvoice = (stripeId, workPlanId, pledged, alertId) => d
       dispatch({ type: STOPPED_CREATING_INVOICE })
       dispatch({ type: SET_ERRORS, payload: ['Donation failed'] })
     })
-}
-
-export const generateManualInvoice = (stripeId, workPlanId, pledged) => dispatch => {
-  console.log('manual', stripeId, workPlanId, pledged);
 }

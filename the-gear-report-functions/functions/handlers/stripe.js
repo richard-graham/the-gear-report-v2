@@ -58,8 +58,9 @@ exports.addPaymentMethod = (req, res) => {
   })
 }
 
-exports.createAutoInvoice = (req, res) => {
-  const { stripeId, pledged, workPlanId, alertId } = req.body
+exports.createInvoice = (req, res) => {
+  const { stripeId, pledged, workPlanId, alertId, method } = req.body
+  const autoAdvance = method === 'auto' ? true : false
   stripe.invoiceItems.create({
     customer: stripeId,
     amount: pledged * 100,
@@ -68,7 +69,7 @@ exports.createAutoInvoice = (req, res) => {
   }, (err, invoiceItem) => {
     stripe.invoices.create({
       customer: stripeId,
-      auto_advance: true,
+      auto_advance: autoAdvance,
       collection_method: 'charge_automatically',
       metadata: {
         workPlanId: workPlanId,
@@ -81,7 +82,8 @@ exports.createAutoInvoice = (req, res) => {
         alertId: alertId,
         workPlanId: workPlanId,
         userHandle: req.user.handle,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        status: autoAdvance ? 'donated' : 'pledged'
       }
 
       db.collection('invoices').add(newInvoice)
@@ -94,12 +96,13 @@ exports.createAutoInvoice = (req, res) => {
           planPledges.push({
             amount: invoice.total,
             userHandle: req.user.handle,
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            status: autoAdvance ? 'donated' : 'pledged'
           })
           newTotalPledged += invoice.total
           return doc.ref.update({ pledges: planPledges, totalPledged: newTotalPledged })
         })
-        .then(doc => {
+        .then((doc) => {
           const resInvoice = newInvoice
           resInvoice.invoiceId = doc.id
           
@@ -110,8 +113,4 @@ exports.createAutoInvoice = (req, res) => {
   .catch(err => {
     return res.json(err)
   })
-}
-
-exports.createManualInvoice = (req, res) => {
-
 }

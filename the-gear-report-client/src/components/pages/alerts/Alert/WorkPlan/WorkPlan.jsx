@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { connect } from 'react-redux'
 import PaymentConfirmation from './PaymentConfirmation.jsx'
 import history from '../../../../../util/history'
-import { generateAutoInvoice, generateManualInvoice } from '../../../../../redux/actions/stripeActions'
+import { generateInvoice } from '../../../../../redux/actions/stripeActions'
 //Mui
 import { withStyles } from '@material-ui/core/styles'
 import Slider from '@material-ui/lab/Slider';
@@ -43,14 +43,8 @@ export class WorkPlan extends Component {
   handlePledgeSubmit = (workPlanId, workPlanStatus, pledged) => {
     const { user, generateManualInvoice, generateAutoInvoice, alertId } = this.props
     const { stripeId } = user.credentials.stripe
-
-   if(workPlanStatus === 'Completed'){
-    generateAutoInvoice(stripeId, workPlanId, pledged, alertId)
-   }
-
-   if(workPlanStatus === 'Completed'){
-     generateManualInvoice(stripeId, workPlanId, pledged, alertId)
-   }
+    const method = workPlanStatus === 'Completed' ? 'auto' : 'manual'
+    generateInvoice(stripeId, workPlanId, pledged, alertId, method)
   }
 
   closePaymentConfirmation = (id) => this.setState({ confirmationOpen: false })
@@ -181,13 +175,13 @@ export class WorkPlan extends Component {
                                 <Link
                                   to={`/profile/${pledge.userHandle}`}
                                   style={{ textDecoration: 'none', color: 'inherit' }}
-                                >{pledge.userHandle}</Link> donated ${pledge.amount / 100}
+                                >{pledge.userHandle}</Link> {pledge.status.toLowerCase()} ${pledge.amount / 100}
                               </Typography>
                             )
                           })}
                         </div>}
 
-                        <Slider
+                        {!expired && <Slider
                           value={pledged}
                           aria-labelledby="slider-image"
                           onChange={this.handleChange}
@@ -202,9 +196,9 @@ export class WorkPlan extends Component {
                           thumb={
                             <AttachMoney className={classes.dollar} />
                           }
-                        />
+                        />}
 
-                        {expired && <Typography color='secondary' style={{ textAlign: 'center' }}>This plan has expired</Typography>}
+                        {expired && <Typography color='secondary' style={{ textAlign: 'center', marginTop: 20 }}>This plan has expired</Typography>}
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                           <Button
                               color='primary'
@@ -378,8 +372,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  generateManualInvoice,
-  generateAutoInvoice
+  generateInvoice
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(WorkPlan))
