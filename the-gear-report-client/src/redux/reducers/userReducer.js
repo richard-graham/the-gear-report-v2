@@ -13,7 +13,8 @@ import {
   STOP_LOADING_USER,
   LOADING_USER_IMAGE,
   SET_USER_IMAGE,
-  SET_HAS_PAY_TYPE
+  SET_HAS_PAY_TYPE,
+  SET_NEW_INVOICE
 } from '../types'
 
 const initialState = {

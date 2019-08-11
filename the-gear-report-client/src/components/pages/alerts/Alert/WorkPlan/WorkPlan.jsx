@@ -32,7 +32,7 @@ export class WorkPlan extends Component {
 
   componentDidUpdate = nextProps => {
     if(!this.props.creatingInvoice && nextProps.creatingInvoice){
-      this.setState({ confirmationOpen: {} })
+      this.setState({ confirmationOpen: {}, pledged: 0 })
     }
   }
 
@@ -40,18 +40,16 @@ export class WorkPlan extends Component {
     this.setState({ pledged });
   };
 
-  handlePledgeSubmit = async (workPlanId, workPlanStatus, pledged) => {
+  handlePledgeSubmit = (workPlanId, workPlanStatus, pledged) => {
     const { user, generateManualInvoice, generateAutoInvoice, alertId } = this.props
     const { stripeId } = user.credentials.stripe
 
    if(workPlanStatus === 'Completed'){
-    const invoiceDetails = {
-      stripeId,
-      workPlanId,
-      pledged,
-      alertId
-    }
     generateAutoInvoice(stripeId, workPlanId, pledged, alertId)
+   }
+
+   if(workPlanStatus === 'Completed'){
+     generateManualInvoice(stripeId, workPlanId, pledged, alertId)
    }
   }
 
@@ -176,7 +174,7 @@ export class WorkPlan extends Component {
                           <Typography variant='h6'>${pledged}</Typography>
                         </div>
 
-                        {pledges && <div className={classes.donationsContainer}>
+                        {pledges.length > 0 && <div className={classes.donationsContainer}>
                           {pledges.map((pledge, i) => {
                             return (
                               <Typography className={classes.donater} key={i}>

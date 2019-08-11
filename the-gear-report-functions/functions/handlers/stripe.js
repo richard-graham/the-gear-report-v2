@@ -87,7 +87,7 @@ exports.createAutoInvoice = (req, res) => {
       db.collection('invoices').add(newInvoice)
       db.doc(`/workPlans/${workPlanId}`).get()
         .then((doc) => {
-          if(doc.exists) return res.json({ error: 'Workplan doesnt exist' })
+          if(!doc.exists) return res.json({ error: 'Workplan doesnt exist', workPlanId: workPlanId })
           let planPledges = []
           doc.data().pledges && doc.data().pledges.forEach(pledge => planPledges.push(pledge))
           let newTotalPledged = doc.data().totalPledged

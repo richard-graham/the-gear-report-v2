@@ -262,8 +262,7 @@ export default function(state = initialState, action){
           }
         }
       case SET_NEW_INVOICE:
-        let newInvoiceWorkPlans = state.alert.workPlans
-
+        let newInvoiceWorkPlans = state.alert.workPlans ? state.alert.workPlans : []
         newInvoiceWorkPlans.forEach((plan, i) => { 
           if(plan.id === action.payload.workPlanId) {
             newInvoiceWorkPlans[i].pledges.push(action.payload)
