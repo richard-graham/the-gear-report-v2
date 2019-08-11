@@ -10,8 +10,9 @@ import {
   RESET_LOCATION,
   LOADING_LOCATION,
   REMOVE_SEARCHED,
-  CREATED_INVOICE,
-  CREATING_INVOICE
+  STOPPED_CREATING_INVOICE,
+  CREATING_INVOICE,
+  SET_NEW_INVOICE
 } from '../types'
 
 const initialState = {
@@ -128,7 +129,12 @@ export default function(state = initialState, action){
           ...state,
           creatingInvoice: true
         }
-      case CREATED_INVOICE:
+      case STOPPED_CREATING_INVOICE:
+        return {
+          ...state,
+          creatingInvoice: false
+        }
+      case SET_NEW_INVOICE:
         return {
           ...state,
           creatingInvoice: false

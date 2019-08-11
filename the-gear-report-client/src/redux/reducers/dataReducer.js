@@ -24,7 +24,8 @@ import {
   DELETE_COMMENT,
   SET_NEW_WORK_PLAN,
   SET_WORK_PLANS,
-  LOADING_WORK_PLANS
+  LOADING_WORK_PLANS,
+  SET_NEW_INVOICE
 } from '../types'
 
 const initialState = {
@@ -258,6 +259,22 @@ export default function(state = initialState, action){
           alert: {
             ...state.alert,
             loadingWorkPlans: true
+          }
+        }
+      case SET_NEW_INVOICE:
+        let newInvoiceWorkPlans = state.alert.workPlans
+
+        newInvoiceWorkPlans.forEach((plan, i) => { 
+          if(plan.id === action.payload.workPlanId) {
+            newInvoiceWorkPlans[i].pledges.push(action.payload)
+            newInvoiceWorkPlans[i].totalPledged += action.payload.amount
+          }
+        })
+        return {
+          ...state,
+          alert: {
+            ...state.alert,
+            workPlans: newInvoiceWorkPlans
           }
         }
     default:

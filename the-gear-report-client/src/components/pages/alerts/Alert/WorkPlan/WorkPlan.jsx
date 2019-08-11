@@ -176,7 +176,7 @@ export class WorkPlan extends Component {
                           <Typography variant='h6'>${pledged}</Typography>
                         </div>
 
-                        <div className={classes.donationsContainer}>
+                        {pledges && <div className={classes.donationsContainer}>
                           {pledges.map((pledge, i) => {
                             return (
                               <Typography className={classes.donater} key={i}>
@@ -187,7 +187,7 @@ export class WorkPlan extends Component {
                               </Typography>
                             )
                           })}
-                        </div>
+                        </div>}
 
                         <Slider
                           value={pledged}

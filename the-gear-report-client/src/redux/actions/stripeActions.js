@@ -3,7 +3,8 @@ import {
   SET_ERRORS,
   SET_HAS_PAY_TYPE,
   CREATING_INVOICE,
-  CREATED_INVOICE
+  STOPPED_CREATING_INVOICE,
+  SET_NEW_INVOICE
 } from '../types'
 import axios from 'axios'
 
@@ -27,14 +28,17 @@ export const generateAutoInvoice = (stripeId, workPlanId, pledged, alertId) => d
     pledged,
     alertId
   }
+  console.log(invoiceDetails);
   axios
     .post('/stripe/invoice/auto', invoiceDetails)
     .then(res => {
+      console.log(res);
       dispatch({ type: SET_MESSAGE, payload: ['Donation sent successfully'] })
-      dispatch({ type: CREATED_INVOICE })
+      dispatch({ type: SET_NEW_INVOICE, payload: res.data })
     })
     .catch(err => {
-      dispatch({ type: CREATED_INVOICE })
+      console.log('err', err);
+      dispatch({ type: STOPPED_CREATING_INVOICE })
       dispatch({ type: SET_ERRORS, payload: ['Donation failed'] })
     })
 }
