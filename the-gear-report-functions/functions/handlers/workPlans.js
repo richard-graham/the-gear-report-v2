@@ -1,3 +1,5 @@
+const { stripeKey } = require('../util/key.js')
+const stripe = require('stripe')(stripeKey)
 const { db } = require('../util/admin')
 
 exports.postWorkPlan = (req, res) => {
@@ -69,4 +71,40 @@ exports.submitPledge = (req, res) => {
     .catch(() => {
       res.status(500).json({ general: 'something went wrong 500'})
     })
+}
+
+exports.markWorkPlanCompleted = (req, res) => {
+  db
+  .doc(`/workPlans/${req.params.workPlanId}`)
+  .get()
+  .then((doc) => {
+    let newDoc = doc.data()
+    let updatedPledges = newDoc.pledges
+
+    updatedPledges.map((pledge, i) => {
+      if(pledge.status === 'pledged') {
+        updatedPledges[i].status = 'donated'
+        stripe.invoices.update(pledge.invoiceId, {
+          auto_advance: true
+        }, (err, invoice) => {
+          return 
+        })
+      } 
+      return
+    })
+    doc.ref
+      .update({ completed: true, pledges: updatedPledges })
+      .then(() => {
+        let batch = db.batch()
+        updatedPledges.map(pledge => {
+          batch.update(db.collection('invoices').doc(pledge.dbInvoiceId), { status: 'donated' })
+        })
+        return batch.commit().then(() => {
+          res.json(updatedPledges)
+        })
+      })
+  })
+  .catch(err => {
+    console.log(err);
+  })
 }

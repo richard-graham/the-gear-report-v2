@@ -41,7 +41,7 @@ export class WorkPlan extends Component {
   };
 
   handlePledgeSubmit = (workPlanId, workPlanStatus, pledged) => {
-    const { user, generateManualInvoice, generateAutoInvoice, alertId } = this.props
+    const { user, generateInvoice, alertId } = this.props
     const { stripeId } = user.credentials.stripe
     const method = workPlanStatus === 'Completed' ? 'auto' : 'manual'
     generateInvoice(stripeId, workPlanId, pledged, alertId, method)

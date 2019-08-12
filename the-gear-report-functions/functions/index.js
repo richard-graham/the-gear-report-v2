@@ -48,7 +48,8 @@ const {
  const {
    postWorkPlan,
    getWorkPlansByAlert,
-   submitPledge
+   submitPledge,
+   markWorkPlanCompleted
  } = require('./handlers/workPlans')
  
 
@@ -76,7 +77,6 @@ app.get('/alert/:alertId/unlike', FBAuth, unlikeAlert)
 app.delete('/alert/:alertId', FBAuth, deleteAlert)
 app.delete('/comment/:commentId', FBAuth, deleteComment)
 
-
 // User routes
 app.post('/signup', signup)
 app.post('/login', login)
@@ -100,6 +100,7 @@ app.get('/tc/search/textcompletion/:input', textCompletion)
 app.post('/workPlan', FBAuth, postWorkPlan)
 app.get('/workPlan/alert/:alertId', getWorkPlansByAlert)
 app.post('/workPlan/pledge/:workPlanId', FBAuth, submitPledge)
+app.post('/workPlan/completed/:workPlanId', FBAuth, markWorkPlanCompleted)
 
 // Stripe Routes
 app.get('/stripe/payment', getPayment)

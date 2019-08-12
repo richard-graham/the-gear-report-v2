@@ -86,27 +86,29 @@ exports.createInvoice = (req, res) => {
         status: autoAdvance ? 'donated' : 'pledged'
       }
 
-      db.collection('invoices').add(newInvoice)
-      db.doc(`/workPlans/${workPlanId}`).get()
-        .then((doc) => {
-          if(!doc.exists) return res.json({ error: 'Workplan doesnt exist', workPlanId: workPlanId })
-          let planPledges = []
-          doc.data().pledges && doc.data().pledges.forEach(pledge => planPledges.push(pledge))
-          let newTotalPledged = doc.data().totalPledged
-          planPledges.push({
-            amount: invoice.total,
-            userHandle: req.user.handle,
-            createdAt: new Date().toISOString(),
-            status: autoAdvance ? 'donated' : 'pledged'
+      db.collection('invoices').add(newInvoice).then(newInvoiceSnap => {
+        newInvoice.dbInvoiceId = newInvoiceSnap.id
+      
+        db.doc(`/workPlans/${workPlanId}`).get()
+          .then((doc) => {
+            if(!doc.exists) return res.json({ error: 'Workplan doesnt exist', workPlanId: workPlanId })
+            let planPledges = []
+            doc.data().pledges && doc.data().pledges.forEach(pledge => planPledges.push(pledge))
+            let newTotalPledged = doc.data().totalPledged
+            planPledges.push({
+              invoiceId: invoice.id,
+              amount: invoice.total,
+              userHandle: req.user.handle,
+              createdAt: new Date().toISOString(),
+              status: autoAdvance ? 'donated' : 'pledged',
+              dbInvoiceId: newInvoice.dbInvoiceId
+            })
+            newTotalPledged += invoice.total
+            return doc.ref.update({ pledges: planPledges, totalPledged: newTotalPledged })
           })
-          newTotalPledged += invoice.total
-          return doc.ref.update({ pledges: planPledges, totalPledged: newTotalPledged })
-        })
-        .then((doc) => {
-          const resInvoice = newInvoice
-          resInvoice.invoiceId = doc.id
-          
-          return res.json(resInvoice)
+          .then((doc) => {          
+            return res.json(newInvoice)
+          })
         })
     })
   })
