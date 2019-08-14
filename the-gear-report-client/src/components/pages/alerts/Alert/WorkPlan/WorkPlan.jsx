@@ -170,7 +170,7 @@ export class WorkPlan extends Component {
 
                         {pledges.length > 0 && <div className={classes.donationsContainer}>
                           {pledges.map((pledge, i) => {
-                            return (
+                            return pledge.status !== 'uncollectible' && (
                               <Typography className={classes.donater} key={i}>
                                 <Link
                                   to={`/profile/${pledge.userHandle}`}

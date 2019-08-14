@@ -378,3 +378,17 @@ exports.unsubscribeFromCrag = (req, res) => {
       console.log(err);
     })
 }
+
+exports.getInvoicesByUser = (req, res) => {
+  db.collection('invoices')
+    .where('userHandle', '==', req.user.handle)
+    .get()
+    .then(docs => {
+      let invoices = []
+      docs.forEach(doc => invoices.push(doc.data()))
+      res.send(invoices)
+    })
+    .catch(err => {
+      console.log(err);
+    })
+}

@@ -33,7 +33,8 @@ const {
   getUserDetails,
   markNotificationsRead,
   subscribeToCrag,
-  unsubscribeFromCrag
+  unsubscribeFromCrag,
+  getInvoicesByUser
  } = require('./handlers/users')
 
  const {
@@ -88,6 +89,7 @@ app.get('/user/:handle', getUserDetails)
 app.post('/notifications', FBAuth, markNotificationsRead)
 app.post('/subscribe/crag', FBAuth, subscribeToCrag)
 app.post('/unsubscribe/crag', FBAuth, unsubscribeFromCrag)
+app.get('/user/invoices/get', FBAuth, getInvoicesByUser)
 
 // The Crag routes
 app.get('/tc/location/:location', getLocationData)
