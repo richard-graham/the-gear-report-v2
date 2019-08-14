@@ -59,16 +59,17 @@ export const signupUser = (newUserData, history) => (dispatch) => {
       })
       .catch(err => {
         let errors = []
-        Object.keys(err.response.data).forEach(error => {
-          let errMessage = ''
-          errMessage = err.response.data[error].toLowerCase()
-          errMessage = errMessage.charAt(0).toUpperCase() + errMessage.slice(1)
-          errors.push(errMessage)
-        })
-        dispatch({ 
-          type: SET_ERRORS, 
-          payload: errors
-        })
+        // Object.keys(err.response.data).forEach(error => {
+        //   let errMessage = ''
+        //   errMessage = err.response.data[error].toLowerCase()
+        //   errMessage = errMessage.charAt(0).toUpperCase() + errMessage.slice(1)
+        //   errors.push(errMessage)
+        // })
+        // dispatch({ 
+        //   type: SET_ERRORS, 
+        //   payload: errors
+        // })
+        console.log(err);
         dispatch({ type: STOP_LOADING_USER })
       })
 }

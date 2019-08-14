@@ -59,6 +59,7 @@ const {
   createIntent,
   addPaymentMethod,
   createInvoice,
+  markUncollectible
  } = require('./handlers/stripe')
 
 // Alert routes
@@ -108,6 +109,7 @@ app.post('/stripe/payment', postPayment)
 app.post('/stripe/intent/create', createIntent)
 app.post('/stripe/paymentMethods/add', FBAuth, addPaymentMethod)
 app.post('/stripe/invoice', FBAuth, createInvoice)
+app.post('/stripe/invoice/uncollectible', markUncollectible)
 
 exports.api = functions.region('us-central1').https.onRequest(app) 
 // exports.api = functions.region('europe-west1').https.onRequest(app)

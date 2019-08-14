@@ -116,3 +116,42 @@ exports.createInvoice = (req, res) => {
     return res.json(err)
   })
 }
+
+exports.markUncollectible = (req, res) => {
+  req.body.data.object.id ? res.sendStatus(200) : res.sendStatus(300)
+  db.collection('invoices')
+    .where('invoiceId', '==', req.body.data.object.id)
+    .limit(1)
+    .get()
+    .then(docs => {
+      // returns a 'collection' so need to loop to get access to doc
+      docs.forEach(doc => {
+        let newDoc = doc.data()
+        newDoc.status = 'uncollectible'
+        db.doc(`/invoices/${doc.id}`)
+          .update({ status: newDoc.status })
+          .then(() => {
+            db.doc(`/workPlans/${newDoc.workPlanId}`)
+              .get()
+              .then(plan => {
+                let newPlan = plan.data()
+                let index
+                newPlan.pledges.forEach((pledge, i) => {
+                  if(pledge.dbInvoiceId === doc.id){
+                    return index = i  
+                  }
+                })
+                newPlan.pledges[index].status = 'uncollectible'
+                db.doc(`/workPlans/${newDoc.workPlanId}`)
+                  .update({ pledges: newPlan.pledges, totalPledged: newPlan.totalPledged -= newDoc.amount })
+                  .then(() => {
+                    return console.log('finished');
+                  })
+              })
+          })
+      })
+    })
+    .catch(err => {
+      console.log(err);
+    })
+}

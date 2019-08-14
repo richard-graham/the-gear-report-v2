@@ -1,9 +1,6 @@
 const tcKey = require('../util/key')
 
-
 const getLocationData = (req, res) => {
-  console.log(req.params.location);
-  console.log(tcKey.tcKey);
   fetch(`https://brendan.thecrag.com/api/index/detail/${req.params.location}?withdata=NodeID,ParentID,Name,NumberRoutes,AreaType,Point&to=arealeaf&key=${tcKey.tcKey}`)
     .then(response => {
 
