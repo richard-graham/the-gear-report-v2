@@ -39,7 +39,7 @@ export class FormPersonalDetails extends Component {
         firstName, 
         lastName, 
         email, 
-        occupation, 
+        phone, 
         city, 
         bio 
       }, 
@@ -71,8 +71,8 @@ export class FormPersonalDetails extends Component {
               className={classes.text}
             />
             <ListItemText 
-              primary='Occupation'
-              secondary={ occupation }
+              primary='Phone Number'
+              secondary={ phone }
               className={classes.text}
             />
             <ListItemText 

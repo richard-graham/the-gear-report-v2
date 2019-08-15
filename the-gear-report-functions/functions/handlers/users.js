@@ -24,7 +24,7 @@ exports.signup = (req, res) => {
     handle: req.body.handle,
     city: req.body.city ? req.body.city : '',
     bio: req.body.bio ? req.body.bio : '',
-    occupation: req.body.occupation ? req.body.occupation : '',
+    phone: req.body.phone ? req.body.phone : '',
     avatarLetters: avatarLetters,
     subAreas: {
       '879850311': {
@@ -68,7 +68,8 @@ exports.signup = (req, res) => {
       token = idToken
       const userCredentials = {
         handle: newUser.handle,
-        email:newUser.email,
+        email: newUser.email,
+        phone: newUser.phone,
         createdAt: new Date().toISOString(),
         userId: userId,
         imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${noImg}?alt=media`,

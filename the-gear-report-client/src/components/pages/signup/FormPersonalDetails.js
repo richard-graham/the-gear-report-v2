@@ -29,10 +29,10 @@ export class FormPersonalDetails extends Component {
           <TextField 
             variant='outlined'
             className={classes.signupTextField}
-            placeholder='Enter Your Occupation'
-            label='Occupation' 
-            onChange={handleChange('occupation')}
-            defaultValue={values.occupation}
+            placeholder='Enter Your Phone Number'
+            label='Phone' 
+            onChange={handleChange('phone')}
+            defaultValue={values.phone}
           />
           <br />
           <TextField 

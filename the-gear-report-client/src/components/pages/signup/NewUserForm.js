@@ -12,11 +12,15 @@ export class NewUserForm extends Component {
     firstName: '',
     lastName: '',
     email: '',
-    occupation: '',
+    phone: '',
     city: '',
     bio: '',
     dialogOpen: false,
     client: ''
+  }
+
+  capitalise = (name) => {
+    return name.charAt(0).toUpperCase() + name.substring(1)
   }
 
   componentWillUnmount = () => {
@@ -50,25 +54,37 @@ export class NewUserForm extends Component {
   }
 
   handleSubmit = (event, addCc) => {
+    const {
+      email,
+      password,
+      confirmPassword,
+      firstName,
+      lastName,
+      bio,
+      city,
+      phone
+    } = this.state
     const { history, signupUser } = this.props
     event.preventDefault()
     const newUserData = {
-      email: this.state.email,
-      password: this.state.password,
-      confirmPassword: this.state.confirmPassword,
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      bio: this.state.bio,
-      city: this.state.city,
-      handle: `${this.state.firstName} ${this.state.lastName}`
+      email,
+      password,
+      confirmPassword,
+      firstName,
+      lastName,
+      bio,
+      city,
+      phone,
+      handle: `${this.capitalise(firstName)} ${this.capitalise(lastName)}`
     }
+    console.log(newUserData);
     addCc ? signupUser(newUserData) : signupUser(newUserData, history)
     addCc && this.nextStep()
   }
 
   render() {
-    const { step, firstName, lastName, email, occupation, city, bio } = this.state
-    const values = { firstName, lastName, email, occupation, city, bio }
+    const { step, firstName, lastName, email, phone, city, bio } = this.state
+    const values = { firstName, lastName, email, city, bio, phone }
     const { errors } = this.props
     switch(step) {
       case 1:
