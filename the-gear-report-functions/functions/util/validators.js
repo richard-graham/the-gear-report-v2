@@ -53,6 +53,7 @@ exports.reduceUserDetails = (data) => {
   if(data.city && !isEmpty(data.city.trim())) userDetails.city = data.city
   if(data.occupation && !isEmpty(data.occupation.trim())) userDetails.occupation = data.occupation
   if(data.experience && !isEmpty(data.experience.trim())) userDetails.experience = data.experience
+  if(data.phone && !isEmpty(data.phone.trim())) userDetails.phone = data.phone
   if(data.email && !isEmpty(data.email.trim())) userDetails.email = data.email
   if(data.website && !isEmpty(data.website.trim())){
     // validate if user enters www.test.com as opposed to http://www.test.com

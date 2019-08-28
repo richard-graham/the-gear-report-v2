@@ -26,6 +26,16 @@ export class FormPersonalDetails extends Component {
       <div className={classes.formContainer}>
         <Paper className={classes.signupPaper}>
         <Typography variant='h2' className={classes.formHeader}>Welcome to the Gear Report</Typography>
+        <TextField 
+            variant='outlined'
+            className={classes.signupTextField}
+            label='Email' 
+            onChange={handleChange('email')}
+            defaultValue={values.email}
+            error={errors.email ? true : false}
+            helperText={errors.email}
+          />
+          <br/>
           <TextField 
             variant='outlined'
             className={classes.signupTextField}
@@ -53,17 +63,6 @@ export class FormPersonalDetails extends Component {
             multiline
             rows="3"
             label='Bio' 
-            onChange={handleChange('bio')}
-            defaultValue={values.bio}
-          />
-          <br />
-          <TextField 
-            variant='outlined'
-            className={classes.signupTextField}
-            placeholder="A short summary of work you've done at crags in the past if any..."
-            multiline
-            rows="3"
-            label='Experience' 
             onChange={handleChange('bio')}
             defaultValue={values.bio}
           />

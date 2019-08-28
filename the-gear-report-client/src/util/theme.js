@@ -42,16 +42,19 @@ export default {
   // form
   signupPaper: {
     width: '40%',
-    [defaultTheme.breakpoints.down('sm')]: {
+    [defaultTheme.breakpoints.up('sm')]: {
       width: '100%',
-      margin: 30,
       minWidth: 0,
-      maxWidth: 480
+      maxWidth: 480,
     },
-    [defaultTheme.breakpoints.down('lg')]: {
-      marginTop: 50
+    [defaultTheme.breakpoints.down('sm')]: {
+      height: '100%',
+      width: '100%'
     },
-    marginTop: 150,
+    [defaultTheme.breakpoints.up('lg')]: {
+      marginTop: 'auto',
+      marginBottom: 'auto'
+    },
     alignSelf: 'center',
     minWidth: 520,
     minHeight: 591,

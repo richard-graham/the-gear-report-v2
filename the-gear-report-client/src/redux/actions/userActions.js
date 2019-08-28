@@ -58,7 +58,7 @@ export const signupUser = (newUserData, history) => (dispatch) => {
         history && history.goBack()
       })
       .catch(err => {
-        let errors = []
+        // let errors = []
         // Object.keys(err.response.data).forEach(error => {
         //   let errMessage = ''
         //   errMessage = err.response.data[error].toLowerCase()

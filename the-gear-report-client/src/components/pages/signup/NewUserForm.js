@@ -5,6 +5,13 @@ import AddCc from '../../stripe/saveCc/AddCc'
 import Confirm from './Confirm'
 import { connect } from 'react-redux'
 import { signupUser, clearErrors } from '../../../redux/actions/userActions'
+//Mui
+// import Stepper from '@material-ui/core/Stepper';
+// import Step from '@material-ui/core/Step';
+// import StepLabel from '@material-ui/core/StepLabel';
+// import { withStyles } from '@material-ui/core/styles';
+// import Button from '@material-ui/core/Button';
+// import Typography from '@material-ui/core/Typography';
 
 export class NewUserForm extends Component {
   state = {
@@ -77,7 +84,6 @@ export class NewUserForm extends Component {
       phone,
       handle: `${this.capitalise(firstName)} ${this.capitalise(lastName)}`
     }
-    console.log(newUserData);
     addCc ? signupUser(newUserData) : signupUser(newUserData, history)
     addCc && this.nextStep()
   }

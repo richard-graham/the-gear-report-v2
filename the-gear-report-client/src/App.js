@@ -19,6 +19,8 @@ import DisplayLocation from './components/pages/displayLocation/DisplayLocation'
 import AddCc from './components/stripe/saveCc/AddCc'
 import { withStyles } from '@material-ui/core/styles';
 
+// Need to update so that app works offline - currently getting stripe error
+
 
 export class App extends Component {
 

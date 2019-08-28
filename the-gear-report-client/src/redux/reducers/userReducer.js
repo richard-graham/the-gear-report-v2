@@ -14,7 +14,6 @@ import {
   LOADING_USER_IMAGE,
   SET_USER_IMAGE,
   SET_HAS_PAY_TYPE,
-  SET_NEW_INVOICE
 } from '../types'
 
 const initialState = {

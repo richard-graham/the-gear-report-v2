@@ -45,16 +45,6 @@ export class FormUserDetails extends Component {
           <TextField 
             variant='outlined'
             className={classes.signupTextField}
-            label='Email' 
-            onChange={handleChange('email')}
-            defaultValue={values.email}
-            error={errors.email ? true : false}
-            helperText={errors.email}
-          />
-          <br/>
-          <TextField 
-            variant='outlined'
-            className={classes.signupTextField}
             label='Password' 
             onChange={handleChange('password')}
             defaultValue={values.password}
