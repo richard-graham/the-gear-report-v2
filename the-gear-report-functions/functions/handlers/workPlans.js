@@ -3,7 +3,7 @@ const stripe = require('stripe')(stripeKey)
 const { db } = require('../util/admin')
 
 exports.postWorkPlan = (req, res) => {
-
+  console.log('completionDate', req.body.completionDate.toISOString());
   const newWorkPlan = {
     completionDate: new Date(req.body.completionDate).toISOString(),
     allowSponsors: req.body.sponsored,

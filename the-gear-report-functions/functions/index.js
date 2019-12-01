@@ -275,7 +275,7 @@ exports.onAlertDelete = functions.region('us-central1').firestore.document('aler
               userImage: doc.data().userImage,
               body: doc.data().body,
               alertTitle: alert.data().title,
-              location: locArr[locArr.length - 1]
+              locationName: locArr[locArr.length - 1]
             })
           })
       }
@@ -283,5 +283,70 @@ exports.onAlertDelete = functions.region('us-central1').firestore.document('aler
     .catch(err => {
       console.error(err)
       return 
+    })
+  })
+
+  exports.newsFeedOnCreateWorkPLan = functions.region('us-central1').firestore.document('workPlans/{workPlanId}')
+  .onCreate((snapshot) => {
+    return db.doc(`/workPlans/${snapshot.id}`).get()
+    .then(doc => {
+      if(doc.exists){
+        db.doc(`/alerts/${doc.data().alertId}`).get()
+          .then(alert => {
+            const locArr = alert.data().locationNames
+            return db.doc(`/newsFeed/${snapshot.id}`).set({
+              type: 'newWorkPlan',
+              createdAt: new Date().toISOString(),
+              createdBy: doc.data().userHandle,
+              alertId: doc.data().alertId,
+              userImage: doc.data().userImage,
+              alertTitle: alert.data().title,
+              locationName: locArr[locArr.length - 1]
+            })
+          })
+      }
+    })
+    .catch(err => {
+      console.error(err)
+      return 
+    })
+  })
+
+  exports.newFeedOnCompleteWorkPlan = functions.region('us-central1').firestore.document('workPlans/{workPlanId}')
+  .onUpdate((change) => {
+    console.log(change);
+    const beforeCompletion = change.before.data()
+    const afterCompletion = change.after.data()
+    return db.doc(`/alerts/${afterCompletion.alertId}`).get()
+      .then(alert => {
+        if (afterCompletion.completed !== beforeCompletion.completed){
+          console.log('entered');
+          const workPlan = {
+            createdAt: new Date().toISOString(),
+            createdBy: afterCompletion.userHandle,
+            userHandle: afterCompletion.userHandle,
+            workOrderTitle: alert.data().title,
+            locationName: alert.data().locationNames[alert.data().locationNames.length - 1],
+            alertTitle: alert.data().title,
+            userImage: afterCompletion.userImage
+          }
+          if (afterCompletion.completed){
+            console.log('completed')
+            return db.doc(`/newsFeed/${change.after.id}${workPlan.createdAt}`).set({
+              ...workPlan,
+              type: 'completedWorkPlan'
+            })
+          } else if (!afterCompletion.complete){
+            console.log('not completed')
+            return db.doc(`/newsFeed/${change.after.id}${workPlan.createdAt}`).set({
+              ...workPlan,
+              type: 'unCompletedWorkPlan'
+            })
+          }
+        }
+    })
+    .catch(err => {
+      console.error(err)
+      return
     })
   })
