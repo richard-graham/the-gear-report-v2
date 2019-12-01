@@ -258,3 +258,30 @@ exports.onAlertDelete = functions.region('us-central1').firestore.document('aler
       return 
     })
   })
+
+  exports.newsFeedOnCreateComment = functions.region('us-central1').firestore.document('comments/{commentId}')
+  .onCreate((snapshot) => {
+    return db.doc(`/comments/${snapshot.id}`).get()
+    .then(doc => {
+      if(doc.exists){
+        db.doc(`/alerts/${doc.data().alertId}`).get()
+          .then(alert => {
+            const locArr = alert.data().locationNames
+            return db.doc(`/newsFeed/${snapshot.id}`).set({
+              createdAt: new Date().toISOString(),
+              createdBy: doc.data().userHandle,
+              type: 'newComment',
+              alertId: doc.data().alertId,
+              userImage: doc.data().userImage,
+              body: doc.data().body,
+              alertTitle: alert.data().title,
+              location: locArr[locArr.length - 1]
+            })
+          })
+      }
+    })
+    .catch(err => {
+      console.error(err)
+      return 
+    })
+  })
