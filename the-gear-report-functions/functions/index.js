@@ -63,6 +63,11 @@ const {
   markUncollectible
  } = require('./handlers/stripe')
 
+ const {
+   getNewsFeed,
+   getNewsFeedFromItem
+ } = require('./handlers/newsFeed')
+
 // Alert routes
 app.get('/alerts/all', getAllAlerts)
 app.get('/alerts/recent', getRecentAlerts)
@@ -112,6 +117,10 @@ app.post('/stripe/intent/create', createIntent)
 app.post('/stripe/paymentMethods/add', FBAuth, addPaymentMethod)
 app.post('/stripe/invoice', FBAuth, createInvoice)
 app.post('/stripe/invoice/uncollectible', markUncollectible)
+
+// News Feed Routes
+app.get('/newsFeed', getNewsFeed)
+app.get('/newsFeed/:newsItem', getNewsFeedFromItem)
 
 exports.api = functions.region('us-central1').https.onRequest(app) 
 // exports.api = functions.region('europe-west1').https.onRequest(app)
@@ -244,12 +253,13 @@ exports.onAlertDelete = functions.region('us-central1').firestore.document('aler
       const locArr = doc.data().locationNames
       if(doc.exists){
         return db.doc(`/newsFeed/${snapshot.id}`).set({
-          createdAt: new Date().toISOString(),
+          createdAt: new Date(),
           createdBy: doc.data().userHandle,
           type: 'newAlert',
           alertId: snapshot.id,
           userImage: doc.data().userImage,
-          locationName: locArr[locArr.length - 1] //get most refined location
+          locationName: locArr[locArr.length - 1], //get most refined location
+          images: doc.data().images
         })
       }
     })
@@ -268,7 +278,7 @@ exports.onAlertDelete = functions.region('us-central1').firestore.document('aler
           .then(alert => {
             const locArr = alert.data().locationNames
             return db.doc(`/newsFeed/${snapshot.id}`).set({
-              createdAt: new Date().toISOString(),
+              createdAt: new Date(),
               createdBy: doc.data().userHandle,
               type: 'newComment',
               alertId: doc.data().alertId,
@@ -296,7 +306,7 @@ exports.onAlertDelete = functions.region('us-central1').firestore.document('aler
             const locArr = alert.data().locationNames
             return db.doc(`/newsFeed/${snapshot.id}`).set({
               type: 'newWorkPlan',
-              createdAt: new Date().toISOString(),
+              createdAt: new Date(),
               createdBy: doc.data().userHandle,
               alertId: doc.data().alertId,
               userImage: doc.data().userImage,
@@ -314,30 +324,26 @@ exports.onAlertDelete = functions.region('us-central1').firestore.document('aler
 
   exports.newFeedOnCompleteWorkPlan = functions.region('us-central1').firestore.document('workPlans/{workPlanId}')
   .onUpdate((change) => {
-    console.log(change);
     const beforeCompletion = change.before.data()
     const afterCompletion = change.after.data()
     return db.doc(`/alerts/${afterCompletion.alertId}`).get()
       .then(alert => {
         if (afterCompletion.completed !== beforeCompletion.completed){
-          console.log('entered');
           const workPlan = {
-            createdAt: new Date().toISOString(),
+            createdAt: new Date(),
             createdBy: afterCompletion.userHandle,
             userHandle: afterCompletion.userHandle,
             workOrderTitle: alert.data().title,
             locationName: alert.data().locationNames[alert.data().locationNames.length - 1],
             alertTitle: alert.data().title,
-            userImage: afterCompletion.userImage
+            userImage: afterCompletion.userImage,
           }
           if (afterCompletion.completed){
-            console.log('completed')
             return db.doc(`/newsFeed/${change.after.id}${workPlan.createdAt}`).set({
               ...workPlan,
               type: 'completedWorkPlan'
             })
           } else if (!afterCompletion.complete){
-            console.log('not completed')
             return db.doc(`/newsFeed/${change.after.id}${workPlan.createdAt}`).set({
               ...workPlan,
               type: 'unCompletedWorkPlan'

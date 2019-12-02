@@ -16,7 +16,8 @@ exports.postWorkPlan = (req, res) => {
     completed: false,
     alertId: req.body.alertId,
     totalPledged: 0,
-    pledges: []
+    pledges: [],
+    images: []
   } 
 
   db

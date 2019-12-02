@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getNode } from '../../../redux/actions/tcActions'
+import NewsFeed from './NewsFeed/NewsFeed'
 //Mui
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
@@ -42,6 +43,7 @@ export class home extends Component {
           <Grid item xs={12}>
             <Typography variant='h2' className={classes.header}>Welcome to the Gear Report</Typography>
             <Typography variant='h1' className={classes.subtitle1}>An attempt to catalog and share dangerous climbing gear with the community to make our sport safer</Typography>
+            <NewsFeed />
           </Grid>
           {/* <Grid item md={6} xs={12}>
             <RecentAlerts history={this.props.history} />
