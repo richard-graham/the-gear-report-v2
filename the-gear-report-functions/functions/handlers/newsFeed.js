@@ -4,7 +4,7 @@ exports.getNewsFeed = (req, res) => {
   db
     .collection('newsFeed')
     .orderBy('createdAt', 'desc')
-    .limit(20)
+    .limit(30)
     .get()
     .then(data => {
       let newsFeed = []
@@ -30,8 +30,8 @@ exports.getNewsFeedFromItem = (req, res) => {
   db
     .collection('newsFeed')
     .orderBy('createdAt', 'desc')
-    .startAt('id', startingPoint)
-    // .limit(20)
+    .startAt(startingPoint)
+    .limit(20)
     .get()
     .then(data => {
       let newsFeed = []

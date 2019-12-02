@@ -253,7 +253,7 @@ exports.onAlertDelete = functions.region('us-central1').firestore.document('aler
       const locArr = doc.data().locationNames
       if(doc.exists){
         return db.doc(`/newsFeed/${snapshot.id}`).set({
-          createdAt: new Date(),
+          createdAt: new Date().toISOString(),
           createdBy: doc.data().userHandle,
           type: 'newAlert',
           alertId: snapshot.id,
@@ -278,7 +278,7 @@ exports.onAlertDelete = functions.region('us-central1').firestore.document('aler
           .then(alert => {
             const locArr = alert.data().locationNames
             return db.doc(`/newsFeed/${snapshot.id}`).set({
-              createdAt: new Date(),
+              createdAt: new Date().toISOString(),
               createdBy: doc.data().userHandle,
               type: 'newComment',
               alertId: doc.data().alertId,
@@ -306,7 +306,7 @@ exports.onAlertDelete = functions.region('us-central1').firestore.document('aler
             const locArr = alert.data().locationNames
             return db.doc(`/newsFeed/${snapshot.id}`).set({
               type: 'newWorkPlan',
-              createdAt: new Date(),
+              createdAt: new Date().toISOString(),
               createdBy: doc.data().userHandle,
               alertId: doc.data().alertId,
               userImage: doc.data().userImage,
@@ -330,7 +330,7 @@ exports.onAlertDelete = functions.region('us-central1').firestore.document('aler
       .then(alert => {
         if (afterCompletion.completed !== beforeCompletion.completed){
           const workPlan = {
-            createdAt: new Date(),
+            createdAt: new Date().toISOString(),
             createdBy: afterCompletion.userHandle,
             userHandle: afterCompletion.userHandle,
             workOrderTitle: alert.data().title,
