@@ -25,7 +25,10 @@ import {
   SET_NEW_WORK_PLAN,
   SET_WORK_PLANS,
   LOADING_WORK_PLANS,
-  SET_NEW_INVOICE
+  SET_NEW_INVOICE,
+  SET_INIT_NEWSFEED,
+  ADD_NEWSFEED,
+  LOADING_NEWSFEED
 } from '../types'
 
 const initialState = {
@@ -56,6 +59,10 @@ const initialState = {
       occupation: '',
       bio: '',
     }
+  },
+  newsFeed: {
+    loading: false,
+    items: []
   }
 }
 
@@ -274,6 +281,32 @@ export default function(state = initialState, action){
           alert: {
             ...state.alert,
             workPlans: newInvoiceWorkPlans
+          }
+        }
+      case SET_INIT_NEWSFEED:
+        return {
+          ...state,
+          newsFeed: {
+            loading: false,
+            items: [action.payload]
+          }
+        }
+      case ADD_NEWSFEED:
+        let updatedNewsFeed = state.newsFeed.items
+        updatedNewsFeed.push(action.payload)
+        return {
+          ...state,
+          newsFeed: {
+            loading: false,
+            items: updatedNewsFeed
+          }
+        }
+      case LOADING_NEWSFEED:
+        return {
+          ...state,
+          newsFeed: {
+            ...state.newsFeed,
+            loading: true
           }
         }
     default:
