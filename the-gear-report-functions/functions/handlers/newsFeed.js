@@ -24,14 +24,14 @@ exports.getNewsFeed = (req, res) => {
 
 exports.getNewsFeedFromItem = (req, res) => {
 
-  const startingPoint = req.params.newsItem
-  console.log(startingPoint);
+  const startingPoint = req.params.newsItem // starting point is the createdAt date of the last newsFeed item on the client
+
 
   db
     .collection('newsFeed')
     .orderBy('createdAt', 'desc')
     .startAt(startingPoint)
-    .limit(20)
+    .limit(21)
     .get()
     .then(data => {
       let newsFeed = []
@@ -41,6 +41,8 @@ exports.getNewsFeedFromItem = (req, res) => {
         feedItem.id = doc.id
         newsFeed.push(feedItem)
       })
+
+      newsFeed.shift() //removes first item in array
 
       return res.json(newsFeed)
     })
