@@ -7,6 +7,8 @@ import NewWorkPlan  from './components/NewWorkPlan'
 import WorkPlanStatus  from './components/WorkPlanStatus'
 //Mui
 import withStyles from '@material-ui/core/styles/withStyles'
+import Card from '@material-ui/core/Card'
+import Typography from '@material-ui/core/Typography'
 
 
 export class NewsFeed extends Component {
@@ -15,18 +17,20 @@ export class NewsFeed extends Component {
     this.props.getFirstNewsFeed()
   }
 
-  feedItem = (item) => {
+  feedItem = (item, index) => {
     switch(item.type){
       case 'newAlert':
-        return <NewAlert props={item} />
+        return <NewAlert item={item} key={index} />
       case 'newComment':
-        return <NewComment props={item} />
+        return <NewComment item={item} key={index} />
       case 'newWorkPlan':
-        return <NewWorkPlan props={item} />
+        return <NewWorkPlan item={item} key={index} />
       case 'completedWorkPlan':
-        return <WorkPlanStatus props={item} />
+        return <WorkPlanStatus item={item} key={index} />
       case 'unCompletedWorkPlan':
-        return <WorkPlanStatus props={item} />
+        return <WorkPlanStatus item={item} key={index} />
+      default:
+        return <div>Empty</div>
     }
   }
 
@@ -35,13 +39,18 @@ export class NewsFeed extends Component {
     const { classes, newsFeed, loadingNewsFeed } = this.props
 
     return (
-      <div className={classes.newsFeedContainer}>
-        {newsFeed.map(feedBlock => {
-          console.log(feedBlock);
-          feedBlock.forEach(item => this.feedItem(item))
+      <Card className={classes.newsFeedContainer}>
+        <Typography variant={'h6'} className={classes.activityHeader}>
+          Recent Activity
+        </Typography>
+        
+        {newsFeed.map((feedBlock, outerI) => {
+          return (
+            feedBlock.map((item, innerI) => { return this.feedItem(item, `${outerI}${innerI}`) } )
+          )
           // If loading spin stuff
         })}
-      </div>
+      </Card>
     )
   }
 }
